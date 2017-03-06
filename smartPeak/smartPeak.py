@@ -1,7 +1,6 @@
 # # Imports
 import os
 
-
 class smartPeak():
     """Class for smartPeak python methods"""
     # # Definitions
