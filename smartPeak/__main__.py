@@ -10,49 +10,55 @@ class main():
 
         self.cmd_params = [
             #file 1
-            {'ConvertTSVToTraML':[
-                {'param':'-in','delim':' ','value':self.data_dir+'IsolateA1.csv'},
-                {'param':'-out','delim':' ','value':self.data_dir+'IsolateA1.traML'}
-            ]},{'MRMMapper':[
+            # {'ConvertTSVToTraML':[
+            #     {'param':'-in','delim':' ','value':self.data_dir+'IsolateA1.csv'},
+            #     {'param':'-out','delim':' ','value':self.data_dir+'IsolateA1.traML'}
+            # ]},
+            {'MRMMapper':[
                 {'param':'-in','delim':' ','value':self.data_dir+'IsolateA1.mzML'},
                 {'param':'-tr','delim':' ','value':self.data_dir+'IsolateA1.traML'},
                 {'param':'-out','delim':' ','value':self.data_dir+'IsolateA1_features.mzML'},
                 {'param':'-precursor_tolerance','delim':' ','value':0.5},
                 {'param':'-product_tolerance','delim':' ','value':0.5},
                 {'param':'-no-strict','delim':' ','value':''}
-            ]},{'OpenSwathAnalyzer':[
+            ]},
+            {'OpenSwathAnalyzer':[
                 {'param':'-in','delim':' ','value':self.data_dir+'IsolateA1_features.mzML'},
                 {'param':'-tr','delim':' ','value':self.data_dir+'IsolateA1.traML'},
-                {'param':'-out','delim':' ','value':self.data_dir+'IsolateA1_openSWATH.mzML'},
+                {'param':'-out','delim':' ','value':self.data_dir+'IsolateA1.featureXML'},
                 {'param':'-no-strict','delim':' ','value':''},
                 #TODO parameters
-            ]},{'OpenSwathFeatureXMLToTSV':[
+            ]},
+            {'OpenSwathFeatureXMLToTSV':[
                 {'param':'-in','delim':' ','value':self.data_dir+'IsolateA1_openSWATH.mzML'},
                 {'param':'-tr','delim':' ','value':self.data_dir+'IsolateA1.traML'},
                 {'param':'-out','delim':' ','value':self.data_dir+'IsolateA1_openSWATH.csv'},
             ]},
-            #file 2
-            {'ConvertTSVToTraML':[
-                {'param':'-in','delim':' ','value':self.data_dir+'IsolateB1.csv'},
-                {'param':'-out','delim':' ','value':self.data_dir+'IsolateB1.traML'}
-            ]},{'MRMMapper':[
-                {'param':'-in','delim':' ','value':self.data_dir+'IsolateB1.mzML'},
-                {'param':'-tr','delim':' ','value':self.data_dir+'IsolateB1.traML'},
-                {'param':'-out','delim':' ','value':self.data_dir+'IsolateB1_features.mzML'},
-                {'param':'-precursor_tolerance','delim':' ','value':0.5},
-                {'param':'-product_tolerance','delim':' ','value':0.5},
-                {'param':'-no-strict','delim':' ','value':''},
-            ]},{'OpenSwathAnalyzer':[
-                {'param':'-in','delim':' ','value':self.data_dir+'IsolateB1_features.mzML'},
-                {'param':'-tr','delim':' ','value':self.data_dir+'IsolateB1.traML'},
-                {'param':'-out','delim':' ','value':self.data_dir+'IsolateB1_openSWATH.mzML'},
-                {'param':'-no-strict','delim':' ','value':''},
-                #TODO parameters
-            ]},{'OpenSwathFeatureXMLToTSV':[
-                {'param':'-in','delim':' ','value':self.data_dir+'IsolateB1_openSWATH.mzML'},
-                {'param':'-tr','delim':' ','value':self.data_dir+'IsolateB1.traML'},
-                {'param':'-out','delim':' ','value':self.data_dir+'IsolateB1_openSWATH.csv'},
-            ]},
+            # #file 2
+            # {'ConvertTSVToTraML':[
+            #     {'param':'-in','delim':' ','value':self.data_dir+'IsolateB1.csv'},
+            #     {'param':'-out','delim':' ','value':self.data_dir+'IsolateB1.traML'}
+            # ]},
+            # {'MRMMapper':[
+            #     {'param':'-in','delim':' ','value':self.data_dir+'IsolateB1.mzML'},
+            #     {'param':'-tr','delim':' ','value':self.data_dir+'IsolateB1.traML'},
+            #     {'param':'-out','delim':' ','value':self.data_dir+'IsolateB1_features.mzML'},
+            #     {'param':'-precursor_tolerance','delim':' ','value':0.5},
+            #     {'param':'-product_tolerance','delim':' ','value':0.5},
+            #     {'param':'-no-strict','delim':' ','value':''},
+            # ]},
+            # {'OpenSwathAnalyzer':[
+            #     {'param':'-in','delim':' ','value':self.data_dir+'IsolateB1_features.mzML'},
+            #     {'param':'-tr','delim':' ','value':self.data_dir+'IsolateB1.traML'},
+            #     {'param':'-out','delim':' ','value':self.data_dir+'IsolateB1.featureXML'},
+            #     {'param':'-no-strict','delim':' ','value':''},
+            #     #TODO parameters
+            # ]},
+            # {'OpenSwathFeatureXMLToTSV':[
+            #     {'param':'-in','delim':' ','value':self.data_dir+'IsolateB1_openSWATH.mzML'},
+            #     {'param':'-tr','delim':' ','value':self.data_dir+'IsolateB1.traML'},
+            #     {'param':'-out','delim':' ','value':self.data_dir+'IsolateB1_openSWATH.csv'},
+            # ]},
 
         ]
 
@@ -88,10 +94,9 @@ class main():
         for line in self.cmd_params:
             for fnc,params in line.items():
                 cmd = smartpeak.make_osCmd(params,fnc)
-                smartpeak.run_osCmd(cmd,verbose_I=verbose_I)                
-        
+                smartpeak.run_osCmd(cmd,verbose_I=verbose_I)
 
-    def _main(main_params):
+    def openSWATH_py(main_params):
         for params in main_params:
             # variables
             mzML_feature_i = params['mzML_feature_i']
@@ -138,55 +143,9 @@ class main():
             featurexml.store(featureXML_o, output)
             
             # write out for mProphet
-
-
-
-
-# In[ ]:
-
-# Quantification....
-
-# In[ ]:
-
-# MIsc...
-#CachedmzML #read/write mzML
-
-# In[ ]:
-
-# # Tests
-
-# In[26]:
-
-#import pytest
-
-
-class test_fastPeak():
-    """tests for fastPeak"""
-
-    def test_make_osCmd(self, verbose_I=False):
-        """"Test make_osCmd function
-
-        EXAMPLE:
-        tests = test_fastPeak()
-        tests.test_make_osCmd(verbose_I=True)
-
-        """
-        #         params = [{'param1':'value1'},
-        #                   {'param2':'value2'}]
-        params = [
-            {
-                'param': 'param1',
-                'delim': ' ',
-                'value': 'value1'
-            },
-            {
-                'param': 'param2',
-                'delim': ' ',
-                'value': 'value2'
-            },
-        ]
-        function = 'test'
-        ans = 'test param1 value1 param2 value2'
-        test = smartPeak.make_osCmd(params, function)
-        if verbose_I: print(test)
-        assert (test == ans)
+    def _main(self):
+        """ """
+        # data_dir = '/Users/domccl/"Dropbox (UCSD SBRG)"/Project_FastPeak/openMS_MRMworkflow/'
+        # m = main(data_dir_I=data_dir)
+        m = main()
+        m.openSWATH_cmd(verbose_I=True)
