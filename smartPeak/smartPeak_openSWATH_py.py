@@ -1,5 +1,8 @@
 # coding: utf-8
+#modules
 from .smartPeak import smartPeak
+#3rd part libraries
+import pyopenms
 
 class smartPeak_openSWATH_py():
     def __init__(self,data_dir_I=None):
@@ -23,10 +26,11 @@ class smartPeak_openSWATH_py():
         }]
 
     def openSWATH_py(self):
-        for params in openSWATH_py_params:
+        for params in self.openSWATH_py_params:
             # variables
             mzML_feature_i = params['mzML_feature_i']
             traML_csv_i = params['traML_csv_i']
+            traML_i = params['traML_i']
             featureXML_o = params['featureXML_o']
             feature_csv_o = params['feature_csv_o']
 

@@ -11,61 +11,7 @@ class smartPeak_openSWATH_cmd():
         if openSWATH_cmd_params_I and not openSWATH_cmd_params_I is None:
             self.openSWATH_cmd_params = openSWATH_cmd_params_I
         else:
-            self.openSWATH_cmd_params_I = None
-
-        # self.openSWATH_cmd_params = [
-        #     #file 1
-        #     {'ConvertTSVToTraML':[
-        #         {'param':'-in','delim':' ','value':self.data_dir+'IsolateA1.csv'},
-        #         {'param':'-out','delim':' ','value':self.data_dir+'IsolateA1.traML'}
-        #     ]},
-        #     {'MRMMapper':[
-        #         {'param':'-in','delim':' ','value':self.data_dir+'IsolateA1.mzML'},
-        #         {'param':'-tr','delim':' ','value':self.data_dir+'IsolateA1.traML'},
-        #         {'param':'-out','delim':' ','value':self.data_dir+'IsolateA1_features.mzML'},
-        #         {'param':'-precursor_tolerance','delim':' ','value':0.5},
-        #         {'param':'-product_tolerance','delim':' ','value':0.5},
-        #         {'param':'-no-strict','delim':' ','value':''}
-        #     ]},
-        #     {'OpenSwathAnalyzer':[
-        #         {'param':'-in','delim':' ','value':self.data_dir+'IsolateA1_features.mzML'},
-        #         {'param':'-tr','delim':' ','value':self.data_dir+'IsolateA1.traML'},
-        #         {'param':'-out','delim':' ','value':self.data_dir+'IsolateA1.featureXML'},
-        #         {'param':'-no-strict','delim':' ','value':''},
-        #         #TODO parameters
-        #     ]},
-        #     {'OpenSwathFeatureXMLToTSV':[
-        #         {'param':'-in','delim':' ','value':self.data_dir+'IsolateA1.featureXML'},
-        #         {'param':'-tr','delim':' ','value':self.data_dir+'IsolateA1.traML'},
-        #         {'param':'-out','delim':' ','value':self.data_dir+'IsolateA1_openSWATH.csv'},
-        #     ]},
-        #     #file 2
-        #     {'ConvertTSVToTraML':[
-        #         {'param':'-in','delim':' ','value':self.data_dir+'IsolateB1.csv'},
-        #         {'param':'-out','delim':' ','value':self.data_dir+'IsolateB1.traML'}
-        #     ]},
-        #     {'MRMMapper':[
-        #         {'param':'-in','delim':' ','value':self.data_dir+'IsolateB1.mzML'},
-        #         {'param':'-tr','delim':' ','value':self.data_dir+'IsolateB1.traML'},
-        #         {'param':'-out','delim':' ','value':self.data_dir+'IsolateB1_features.mzML'},
-        #         {'param':'-precursor_tolerance','delim':' ','value':0.5},
-        #         {'param':'-product_tolerance','delim':' ','value':0.5},
-        #         {'param':'-no-strict','delim':' ','value':''},
-        #     ]},
-        #     {'OpenSwathAnalyzer':[
-        #         {'param':'-in','delim':' ','value':self.data_dir+'IsolateB1_features.mzML'},
-        #         {'param':'-tr','delim':' ','value':self.data_dir+'IsolateB1.traML'},
-        #         {'param':'-out','delim':' ','value':self.data_dir+'IsolateB1.featureXML'},
-        #         {'param':'-no-strict','delim':' ','value':''},
-        #         #TODO parameters
-        #     ]},
-        #     {'OpenSwathFeatureXMLToTSV':[
-        #         {'param':'-in','delim':' ','value':self.data_dir+'IsolateB1.featureXML'},
-        #         {'param':'-tr','delim':' ','value':self.data_dir+'IsolateB1.traML'},
-        #         {'param':'-out','delim':' ','value':self.data_dir+'IsolateB1_openSWATH.csv'},
-        #     ]},
-
-        # ]
+            self.openSWATH_cmd_params = None
 
     def openSWATH_cmd(self, verbose_I=False):
         """openSWATH command line workflow
