@@ -12,17 +12,17 @@ class smartPeak_openSWATH_py():
             self.data_dir = '/home/user/openMS_MRMworkflow/'
 
         self.openSWATH_py_params = [{
-            'mzML_feature_i': 'IsolateA1_features.mzML',
-            'traML_csv_i': 'IsolateA1.csv',
-            'traML_i': 'IsolateA1.traML',
-            'featureXML_o': 'IsolateA1.featureXML',
-            'feature_csv_o': 'IsolateA1_feature.csv',
+            'mzML_feature_i': self.data_dir+'IsolateA1_features.mzML',
+            'traML_csv_i': self.data_dir+'IsolateA1.csv',
+            'traML_i': self.data_dir+'IsolateA1.traML',
+            'featureXML_o': self.data_dir+'IsolateA1.featureXML',
+            'feature_csv_o': self.data_dir+'IsolateA1_feature.csv',
         }, {
-            'mzML_feature_i': 'IsolateB1_features.mzML',
-            'traML_csv_i': 'IsolateB1.csv',
-            'traML_i': 'IsolateB1.traML',
-            'featureXML_o': 'IsolateB1.featureXML',
-            'feature_csv_o': 'IsolateB1_feature.csv',
+            'mzML_feature_i': self.data_dir+'IsolateB1_features.mzML',
+            'traML_csv_i': self.data_dir+'IsolateB1.csv',
+            'traML_i': self.data_dir+'IsolateB1.traML',
+            'featureXML_o': self.data_dir+'IsolateB1.featureXML',
+            'feature_csv_o': self.data_dir+'IsolateB1_feature.csv',
         }]
 
     def openSWATH_py(self):
@@ -37,16 +37,16 @@ class smartPeak_openSWATH_py():
             # load chromatograms
             chromatograms = pyopenms.MSExperiment()
             fh = pyopenms.FileHandler()
-            fh.loadExperiment(mzML_feature_i, chromatograms)
+            fh.loadExperiment(mzML_feature_i.encode('utf-8'), chromatograms)
 
             # # load and make the transition file
             # targeted = pyopenms.TargetedExperiment();
             # tramlfile=TransitionTSVReader()
-            # tramlfile.convertTSVToTargetedExperiment(traML_csv_i,'mrm',targeted)
+            # tramlfile.convertTSVToTargetedExperiment(traML_csv_i.encode('utf-8'),'mrm',targeted)
             # load transitions file
             targeted = pyopenms.TargetedExperiment()
             tramlfile = pyopenms.TraMLFile()
-            tramlfile.load(traML_i, targeted)
+            tramlfile.load(traML_i.encode('utf-8'), targeted)
 
             #make the decoys
             #MRMDecoy
@@ -70,6 +70,6 @@ class smartPeak_openSWATH_py():
 
             # Store outfile
             featurexml = pyopenms.FeatureXMLFile()
-            featurexml.store(featureXML_o, output)
+            featurexml.store(featureXML_o.encode('utf-8'), output)
             
             # write out for mProphet
