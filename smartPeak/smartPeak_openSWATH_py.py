@@ -36,6 +36,7 @@ class smartPeak_openSWATH_py():
             parameters,
             MRMFeatureFinderScoring_params,
             )
+        featurefinder.setParameters(parameters)
 
         # load chromatograms
         chromatograms = pyopenms.MSExperiment()
@@ -101,15 +102,15 @@ class smartPeak_openSWATH_py():
                 print("parameter not found: " + name)
                 continue
             #check supplied user parameters
-            if param['value']:
-                value = param['value'].encode('utf-8')
+            if 'value' in param.keys() and param['value']:
+                value = self.parseString(param['value'])
             else:
                 value = Param_IO.getValue(name)
-            if param['description']:
+            if 'description' in param.keys() and param['description']:
                 description = param['description'].encode('utf-8')
             else:
                 description = Param_IO.getDescription(name)
-            if param['value']:
+            if 'tags' in param.keys() and param['tags']:
                 tags = param['tags'].encode('utf-8')
             else:
                 tags = Param_IO.getTags(name)
@@ -119,6 +120,49 @@ class smartPeak_openSWATH_py():
                 description,
                 tags)
         return Param_IO
+    @staticmethod
+    def parseString(str_I):
+        """Parse string and return the eval
+        
+        Args
+            str_I (str): input string
+            
+        Returns
+            str_O (): evaluated string
+
+        Tests:
+            assert(parseString('1')==1)
+            assert(parseString('-1')==-1)
+            assert(parseString('1.0')==1.0)
+            assert(parseString('0.005')==0.005)
+            assert(parseString('-1.0')==-1.0)
+            assert(parseString('[1]')==[1])
+            assert(parseString('(1)')==(1))
+            assert(parseString('{1}')=={1})
+            assert(parseString('a')==a.encode('utf-8'))
+            
+        """
+        str_O = None;
+        try:
+            if str_I.isdigit():
+                str_O = int(str_I)
+            elif str_I[0]=='-' and str_I[1:].isdigit():
+                str_O = int(str_I)
+            elif str_I.isdecimal():
+                str_O = float(str_I)
+            elif str_I[0]=='-' and str_I[1:].isdecimal():
+                str_O = float(str_I)
+            elif str_I[0]=='[' and str_I[-1]==']':
+                str_O = list(str_I)
+            elif str_I[0]=='{' and str_I[-1]=='}':
+                str_O = dict(str_I)
+            elif str_I[0]=='(' and str_I[-1]==')':
+                str_O = tuple(str_I)
+            else:
+                str_O = str_I.encode('utf-8');
+        except Exception as e:
+            print(e);
+        return str_O;
 
     def isotopeLabeledQuantitation_py(self,
         filenames_I,):
