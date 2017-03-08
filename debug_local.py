@@ -14,4 +14,7 @@ m = __main__()
 # m.run_openSWATH_cmd(filename);
 
 # Test openSWATH_py
-m.run_openSWATH_py();
+m.run_openSWATH_py(
+    filename_filenames='C:/Users/dmccloskey/"Dropbox (UCSD SBRG)"/Project_FastPeak/openMS_MRMworkflow/filenames.csv',
+    filename_params='C:/Users/dmccloskey/"Dropbox (UCSD SBRG)"/Project_FastPeak/openMS_MRMworkflow/MRMFeatureFinderScoring_params.csv'
+    );

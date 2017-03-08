@@ -1,6 +1,7 @@
 # coding: utf-8
 from .smartPeak_openSWATH_cmd import smartPeak_openSWATH_cmd
 from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
+from .smartPeak_i import smartPeak_i
 
 class __main__():
     def run_openSWATH_cmd(
@@ -27,6 +28,9 @@ class __main__():
 
     def run_openSWATH_py(
             self,
+            filename_filenames,
+            filename_params,
+            delimiter = ','
             ):
         """Run the openSWATH python pipeline
         
@@ -38,5 +42,14 @@ class __main__():
             
         """
         openSWATH_py = smartPeak_openSWATH_py()
-        #openSWATH_py.read_openSWATH_cmd_params(filename)
-        openSWATH_py.openSWATH_py()
+        smartpeak_i = smartPeak_i();
+        smartpeak_i.read_pythonParams(filename_filenames,delimiter)
+        filenames = smartpeak_i.getData();
+        smartpeak_i.clear_data();
+        smartpeak_i.read_openMSParams(filename_params,delimiter);
+        params = smartpeak_i.getData();
+        smartpeak_i.clear_data();
+        for filename in filenames:
+            for sample,v in filename.items():
+                print("processing sample "+ sample)
+                openSWATH_py.openSWATH_py(v,params['MRMFeatureFinderScoring'])
