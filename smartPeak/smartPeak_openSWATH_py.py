@@ -153,11 +153,11 @@ class smartPeak_openSWATH_py():
             elif str_I[0]=='-' and str_I[1:].isdecimal():
                 str_O = float(str_I)
             elif str_I[0]=='[' and str_I[-1]==']':
-                str_O = list(str_I)
+                str_O = list(str_I[1:-1])
             elif str_I[0]=='{' and str_I[-1]=='}':
-                str_O = dict(str_I)
+                str_O = dict(str_I[1:-1])
             elif str_I[0]=='(' and str_I[-1]==')':
-                str_O = tuple(str_I)
+                str_O = tuple(str_I[1:-1])
             else:
                 str_O = str_I.encode('utf-8');
         except Exception as e:

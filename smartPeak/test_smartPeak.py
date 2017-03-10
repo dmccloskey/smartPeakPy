@@ -1,10 +1,12 @@
-import pytest
-from smartPeak import smartPeak
+#import pytest
+from .smartPeak import smartPeak
+from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
 
 
-class test_fastPeak():
+class test_smartPeak():
     """tests for fastPeak"""
 
+    #tests for smartPeak_openSWATH_cmd
     def test_make_osCmd(self, verbose_I=False):
         """"Test make_osCmd function
 
@@ -32,6 +34,22 @@ class test_fastPeak():
         test = smartPeak.make_osCmd(params, function)
         if verbose_I: print(test)
         assert (test == ans)
+
+    #tests for smartPeak_openSWATH_py
+    def test_parseString(self, verbose_I=False):
+        """Test parseString function
+        
+        """
+        assert(smartPeak_openSWATH_py.parseString('1')==1)
+        assert(smartPeak_openSWATH_py.parseString('-1')==-1)
+        assert(smartPeak_openSWATH_py.parseString('1.0')==1.0)
+        assert(smartPeak_openSWATH_py.parseString('0.005')==0.005)
+        assert(smartPeak_openSWATH_py.parseString('-1.0')==-1.0)
+        assert(smartPeak_openSWATH_py.parseString('[1]')==[1])
+        assert(smartPeak_openSWATH_py.parseString('(1)')==(1))
+        assert(smartPeak_openSWATH_py.parseString('{1}')=={1})
+        assert(smartPeak_openSWATH_py.parseString('a')==a.encode('utf-8'))
+        
 
     def runAllTests(self):
         """Run all unit tests"""

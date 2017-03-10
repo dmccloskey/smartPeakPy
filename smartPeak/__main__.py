@@ -41,6 +41,10 @@ class __main__():
         Eamples:
             
         """
+        from .test_smartPeak import test_smartPeak
+        tests = test_smartPeak()
+        tests.test_parseString()
+
         openSWATH_py = smartPeak_openSWATH_py()
         smartpeak_i = smartPeak_i();
         smartpeak_i.read_pythonParams(filename_filenames,delimiter)
