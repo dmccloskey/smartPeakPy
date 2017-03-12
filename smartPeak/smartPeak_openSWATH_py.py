@@ -142,16 +142,27 @@ class smartPeak_openSWATH_py():
             assert(parseString('a')==a.encode('utf-8'))
             
         """
+        def isfloat(str_i):
+            isfloat_o = True;
+            try:
+                float(str_i)
+            except Exception:
+            # except ValueError:
+                isfloat_o = False;
+            return isfloat_o;
+
         str_O = None;
         try:
             if str_I.isdigit():
                 str_O = int(str_I)
             elif str_I[0]=='-' and str_I[1:].isdigit():
                 str_O = int(str_I)
-            elif str_I.isdecimal():
+            elif isfloat(str_I):
                 str_O = float(str_I)
-            elif str_I[0]=='-' and str_I[1:].isdecimal():
-                str_O = float(str_I)
+            # elif str_I.isdecimal():
+            #     str_O = float(str_I)
+            # elif str_I[0]=='-' and str_I[1:].isdecimal():
+            #     str_O = float(str_I)
             elif str_I[0]=='[' and str_I[-1]==']':
                 str_O = list(str_I[1:-1])
             elif str_I[0]=='{' and str_I[-1]=='}':
