@@ -3,6 +3,7 @@
 import csv, sys
 #module
 from .smartPeak import smartPeak
+from .smartPeak_i import smartPeak_i
 
 
 class smartPeak_openSWATH_cmd():
@@ -32,31 +33,6 @@ class smartPeak_openSWATH_cmd():
             for fnc, params in line.items():
                 cmd = smartpeak.make_osCmd(params, fnc)
                 smartpeak.run_osCmd(cmd, verbose_I=verbose_I)
-
-    def read_csv(self, filename):
-        """read table data from csv file
-
-        Args
-            filename (str): file 
-
-        Returns
-            data (list): list of table data
-
-        """
-        data = []
-        try:
-            with open(filename, 'r') as csvfile:
-                reader = csv.DictReader(csvfile)
-                try:
-                    keys = reader.fieldnames
-                    for row in reader:
-                        data.append(row)
-                except csv.Error as e:
-                    sys.exit('file %s, line %d: %s' %
-                             (filename, reader.line_num, e))
-        except IOError as e:
-            sys.exit('%s does not exist' % e)
-        return data
 
     def parse_openSWATH_cmd_params(self, data_I):
         """parse parameters from csv file
@@ -114,7 +90,9 @@ class smartPeak_openSWATH_cmd():
                 data_O.append(function_params)
         return data_O
 
-    def read_openSWATH_cmd_params(self, filename):
+    def read_openSWATH_cmd_params(self,
+        filename,
+        delimiter = ','):
         """read table data from csv file representing
         representing the command line arguments to run the
         openSWATH workflow
@@ -130,8 +108,12 @@ class smartPeak_openSWATH_cmd():
                 table,
                 used_,
                 comment_
+            delimiiter (str): default = ','
 
         """
-        data_csv = self.read_csv(filename)
+        smartpeak_i = smartPeak_i();
+        smartpeak_i.read_csv(filename,delimiter)
+        data_csv = smartpeak_i.getData();
+        smartpeak_i.clear_data();
         data_params = self.parse_openSWATH_cmd_params(data_csv)
         self.openSWATH_cmd_params = data_params
