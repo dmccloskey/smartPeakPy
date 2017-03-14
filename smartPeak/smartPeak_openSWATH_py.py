@@ -8,6 +8,16 @@ class smartPeak_openSWATH_py():
     def __init__(self):
         pass
 
+    def calculateConcentrations(self):
+        """Calculate the concentrations 
+        
+        Args
+
+        Returns
+
+        """
+        pass;
+
     def openSWATH_py(self,
         filenames_I,
         MRMFeatureFinderScoring_params_I={},
@@ -97,13 +107,21 @@ class smartPeak_openSWATH_py():
         """
         for param in parameters_I:
             name = param['name'].encode('utf-8');
+            # #test:
+            # if name == 'rt_extraction_window'.encode('utf-8'):
+            #     print('check')
             #check if the param exists
             if not Param_IO.exists(name):
                 print("parameter not found: " + name)
-                continue
+                continue;
             #check supplied user parameters
             if 'value' in param.keys() and param['value']:
-                value = self.parseString(param['value'])
+                if 'type' in param.keys() and param['type']:
+                    value = self.castString(param['value'],param['type'])
+                else:
+                    value = self.parseString(param['value'])
+                # if not self.checkParameterValue(value):
+                #     continue;
             else:
                 value = Param_IO.getValue(name)
             if 'description' in param.keys() and param['description']:
@@ -120,6 +138,66 @@ class smartPeak_openSWATH_py():
                 description,
                 tags)
         return Param_IO
+
+    @staticmethod
+    def checkParameterValue(value_I):
+        """Check for a valid openMS parameter
+        
+        Args
+            value_I (): input value_I
+
+        Returns
+            valid_O (bool): true, if valid input
+                            false, if invalid input
+        """    
+        valid_O = True;
+        if value_I == -1:
+            valid_O = False;
+        return valid_O;
+
+    @staticmethod
+    def castString(str_I,type_I):
+        """Cast a string to the desired type 
+        and return the eval
+        
+        Args
+            str_I (str): input string
+            type_I (str): type
+
+        Returns
+            str_O (): evaluated string
+
+        Tests: todo...
+            assert(parseString('1')==1)
+            assert(parseString('-1')==-1)
+            assert(parseString('1.0')==1.0)
+            assert(parseString('0.005')==0.005)
+            assert(parseString('-1.0')==-1.0)
+            assert(parseString('[1]')==[1])
+            assert(parseString('(1)')==(1))
+            assert(parseString('{1}')=={1})
+            assert(parseString('a')==a.encode('utf-8'))
+            
+        """
+        str_O = None;
+        try:
+            if type_I == 'int':
+                str_O = int(str_I)
+            elif type_I == 'float':
+                str_O = float(str_I)
+            elif type_I == 'string' and str_I == 'TRUE':
+                str_O = 'true'.encode('utf-8')
+            elif type_I == 'string' and str_I == 'FALSE':
+                str_O = 'false'.encode('utf-8')
+            elif type_I == 'string':
+                str_O = str_I.encode('utf-8')
+            else:
+                print(type_I+ ' type not supported')
+                str_O = str_I.encode('utf-8')
+        except Exception as e:
+            print(e);
+        return str_O;
+
     @staticmethod
     def parseString(str_I):
         """Parse string and return the eval

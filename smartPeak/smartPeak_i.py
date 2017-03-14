@@ -97,6 +97,8 @@ class smartPeak_i():
                 function_param['tags'] = d['tags']
             if 'description' in d.keys():
                 function_param['description'] = d['description']
+            if 'type' in d.keys():
+                function_param['type'] = d['type']
             function_params[function_current].append(function_param)
             #add in the last value
             if i==len(data_I)-1:

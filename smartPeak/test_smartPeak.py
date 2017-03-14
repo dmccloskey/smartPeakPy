@@ -45,9 +45,9 @@ class test_smartPeak():
         assert(smartPeak_openSWATH_py.parseString('1.0')==1.0)
         assert(smartPeak_openSWATH_py.parseString('0.005')==0.005)
         assert(smartPeak_openSWATH_py.parseString('-1.0')==-1.0)
-        assert(smartPeak_openSWATH_py.parseString('[1]')==['1'])
-        assert(smartPeak_openSWATH_py.parseString('(1)')==('1'))
-        assert(smartPeak_openSWATH_py.parseString('{1}')=={'1'})
+        assert(smartPeak_openSWATH_py.parseString('[1]')==list('1'))
+        assert(smartPeak_openSWATH_py.parseString('(1)')==tuple('1'))
+        #assert(smartPeak_openSWATH_py.parseString('{1}')==dict('1'))
         assert(smartPeak_openSWATH_py.parseString('a')=='a'.encode('utf-8'))
         
 
