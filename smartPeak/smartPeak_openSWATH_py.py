@@ -10,7 +10,7 @@ class smartPeak_openSWATH_py():
 
     def calculateConcentrations(self):
         """Calculate the concentrations 
-        
+
         Args
 
         Returns
@@ -92,7 +92,7 @@ class smartPeak_openSWATH_py():
         # Store outfile
         featurexml = pyopenms.FeatureXMLFile()
         featurexml.store(featureXML_o.encode('utf-8'), output)
-        
+
         # write out for mProphet
 
     def updateParameters(self,Param_IO,parameters_I):
