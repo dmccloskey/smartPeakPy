@@ -8,7 +8,7 @@ services:
       - //C/Users//domccl/GitHub/smartPeak/:/home/user/code/
     ports:
       - "3000:3000"
-    command: python /home/user/code/debug_remote.py
+    command: python /home/user/code/py/debug_remote.py
     restart: always
     networks:
       - pyopenms_network

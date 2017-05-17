@@ -10,7 +10,7 @@ services:
       - "3000:3000"
     security_opt:
       - seccomp:unconfined
-    command: python /home/user/code/debug_remote.py
+    #command: python /home/user/code/debug_remote.py
     restart: always
     networks:
       - openms_network
