@@ -2,19 +2,21 @@ version: "3"
 
 services:
   pyopenms:
-    image: dmccloskey/docker-pyopenms-vscode
+    image: dmccloskey/docker-openms-vscode
     volumes:
       - //C/Users/domccl/Dropbox (UCSD SBRG)/Project_FastPeak/openMS_MRMworkflow/:/home/user/openMS_MRMworkflow/
       - //C/Users//domccl/GitHub/smartPeak/:/home/user/code/
     ports:
       - "3000:3000"
+    security_opt:
+      - seccomp:unconfined
     command: python /home/user/code/debug_remote.py
     restart: always
     networks:
-      - pyopenms_network
+      - openms_network
     
 networks:
-  pyopenms_network:
+  openms_network:
     ipam:
       config:
         - subnet: 172.22.0.0/16
