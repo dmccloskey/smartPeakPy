@@ -10,7 +10,8 @@ RUN apt-get update && \
 	echo 'root:toor' | chpasswd && \
 	sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
 	sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd && \
-	apt-get clean	
+	apt-get clean && \
+    /usr/bin/ssh-keygen -A
 USER user
 	
 #useradd -m -d /home/<user-name>/ -s /bin/bash -G sudo <user-name>
