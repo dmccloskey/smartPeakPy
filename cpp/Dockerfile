@@ -11,7 +11,7 @@ RUN apt-get update && \
 	sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
 	sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd && \
 	apt-get clean && \
-    /usr/sbin/ssh-keygen -A
+    /usr/bin/ssh-keygen -A
 USER user
 	
 #useradd -m -d /home/<user-name>/ -s /bin/bash -G sudo <user-name>
