@@ -18,6 +18,6 @@ RUN apt-get update && \
 	##change permissions
 	ln -s /usr/local/bin/docker-entrypoint.sh / && \
 	chmod +x /usr/local/bin/docker-entrypoint.sh && \
-	chmod +x /usr/bin/gdb
+	chmod +x /usr/bin/gdbserver
 USER user
 CMD ["docker-entrypoint.sh"]
