@@ -21,4 +21,5 @@ USER user
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["/usr/sbin/sshd", "-D"]
+##Only if no entrypoint is used
+#CMD ["/usr/sbin/sshd", "-D"]
