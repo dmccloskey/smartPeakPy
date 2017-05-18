@@ -1,5 +1,6 @@
 #!/bin/bash
 cd /home/user/code
 g++ -g main.cpp
-#gdb --interpreter=mi a.out
-/usr/sbin/sshd -D
+# gdb --interpreter=mi a.out
+# /usr/sbin/sshd -D
+sleep infinity
