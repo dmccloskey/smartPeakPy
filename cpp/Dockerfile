@@ -14,7 +14,7 @@ RUN apt-get update && \
 	# sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
 	# sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd && \
 	sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config && \
-	sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
+	sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config && \
 	apt-get clean
 
 USER user
