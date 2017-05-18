@@ -1,3 +1,4 @@
 #!/bin/bash
-g++ -g main.cpp
+cd /home/user/code
+g++ -g main.cpp > a.exe
 gdb --interpreter=mi a.exe
