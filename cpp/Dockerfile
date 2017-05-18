@@ -17,6 +17,10 @@ RUN apt-get update && \
     ##generate the keys
     # /usr/bin/ssh-keygen -A && \
     # chmod -R +x /etc/ssh && chmod +x /usr/sbin/sshd
+
+ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
+
 USER user
 
 CMD ["docker-entrypoint.sh"]
