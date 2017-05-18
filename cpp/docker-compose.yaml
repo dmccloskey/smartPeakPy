@@ -10,6 +10,7 @@ services:
       - /home/systemsbiochemistry/Documents/GitHub/smartPeak/cpp/:/home/user/code/
     ports:
       - "3000:3000"
+    privileged: true
     # security_opt:
     #   - seccomp:unconfined #https://github.com/docker/compose/issues/2813
     #command: python /home/user/code/debug_remote.py
