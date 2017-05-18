@@ -4,6 +4,7 @@
     "version": "0.1.0",
     "command": "g++",
     "isShellCommand": true,
-    "args": ["-g","${workspaceRoot}/main.cpp"],
+    "args": ["-g","${workspaceRoot}/main.cpp",">", "${workspaceRoot}/a.out"],
+    // "args": ["-g","${workspaceRoot}/main.cpp"],
     "showOutput": "always"
 }

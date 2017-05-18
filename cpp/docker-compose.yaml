@@ -5,7 +5,7 @@ services:
     image: dmccloskey/docker-openms-vscode
     volumes:
       # - //C/Users/domccl/Dropbox (UCSD SBRG)/Project_FastPeak/openMS_MRMworkflow/:/home/user/openMS_MRMworkflow/
-      # - //C/Users//domccl/GitHub/smartPeak/:/home/user/code/
+      # - //C/Users//domccl/GitHub/smartPeak/cpp/:/home/user/code/
       - /home/systemsbiochemistry/Documents/openMS_MRMworkflow/:/home/user/openMS_MRMworkflow/
       - /home/systemsbiochemistry/Documents/GitHub/smartPeak/cpp/:/home/user/code/
     ports:

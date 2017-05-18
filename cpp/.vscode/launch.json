@@ -80,9 +80,11 @@
             "cwd": "${workspaceRoot}",
             "environment": [],
             "externalConsole": true,
-            "linux": {
+            "windows": {
                 "MIMode": "gdb",
-                "miDebuggerServerAddress": "systemsbiochemistry.ucsd.edu:3000",
+                // "miDebuggerPath": "C:\\Users\\domccl\\GitHub\\smartPeak\\cpp\\remote_debug.sh",
+                "miDebuggerPath": "/usr/bin/gdb",
+                "miDebuggerServerAddress": "root@systemsbiochemistry.ucsd.edu:3000",
                 "debugServer": 3000,
                 "debugServerPath":"/usr/bin/gdb",
                 "debugServerArgs":"",
@@ -98,19 +100,6 @@
                         "description": "Auto load symbols when loading an .so file",
                         "text": "set auto-solib-add",
                         "ignoreFailures": false
-                    }
-                ]
-            },
-            "osx": {
-                "MIMode": "lldb"
-            },
-            "windows": {
-                "MIMode": "gdb",
-                "setupCommands": [
-                    {
-                        "description": "Enable pretty-printing for gdb",
-                        "text": "-enable-pretty-printing",
-                        "ignoreFailures": true
                     }
                 ]
             }
