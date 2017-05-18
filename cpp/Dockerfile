@@ -16,7 +16,7 @@ RUN apt-get update && \
 	apt-get clean && \
     ##generate the keys
     /usr/bin/ssh-keygen -A && \
-    chmod -R +x /etc/ssh
+    chmod -R +x /etc/ssh && chmod +x /usr/sbin/sshd
 USER user
 
 ENTRYPOINT ["docker-entrypoint.sh"]
