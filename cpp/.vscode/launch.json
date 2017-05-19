@@ -7,7 +7,7 @@
             "type": "cppdbg",
             "request": "launch",
             "preLaunchTask":"g++",
-            "program": "${workspaceRoot}/a.exe",
+            "program": "${workspaceRoot}/a.out",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
@@ -118,6 +118,66 @@
             "windows": {
                 "MIMode": "gdb",
                 "miDebuggerPath": "c:\\users\\domccl\\cygwin64\\bin\\gdb.exe",
+                "program": "${workspaceRoot}/a.out",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    },
+                    {
+                        "description": "Auto load symbols when loading an .so file",
+                        "text": "set auto-solib-add",
+                        "ignoreFailures": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "C++ Attach (Remote)",
+            "type": "cppdbg",
+            "request": "attach",
+            "preLaunchTask":"g++",
+            "miDebuggerServerAddress": "systemsbiochemistry.ucsd.edu:3000",
+            "processId": "${command:pickRemoteProcess}",
+            // "sourceFileMap": {
+            //     "<source-path>": "<target-path>"
+            // },
+            "linux": {
+                "MIMode": "gdb",
+                "program": "${workspaceRoot}/a.out",
+                "miDebuggerPath": "/usr/bin/gdb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    },
+                    {
+                        "description": "Auto load symbols when loading an .so file",
+                        "text": "set auto-solib-add",
+                        "ignoreFailures": false
+                    }
+                ]
+            },
+            "osx": {
+                "MIMode": "lldb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    },
+                    {
+                        "description": "Auto load symbols when loading an .so file",
+                        "text": "set auto-solib-add",
+                        "ignoreFailures": false
+                    }
+                ]
+            },
+            "windows": {
+                "MIMode": "gdb",
+                "miDebuggerPath": "c:\\users\\domccl\\cygwin64\\bin\\gdb.exe",
                 "program": "${workspaceRoot}/a.exe",
                 "setupCommands": [
                     {
@@ -150,6 +210,7 @@
                     "-p",
                     "22",
                     "root@systemsbiochemistry.ucsd.edu"
+                    //todo: setup public/private keys
                 ],
                 "debuggerPath": "/usr/bin/gdb"
             },
@@ -286,11 +347,6 @@
             "type": "cppdbg",
             "request": "attach",
             "preLaunchTask":"g++",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceRoot}",
-            "environment": [],
-            "externalConsole": true,
             "processId": "${command:pickRemoteProcess}",
             "pipeTransport": {
                 "pipeCwd": "${workspaceRoot}",
