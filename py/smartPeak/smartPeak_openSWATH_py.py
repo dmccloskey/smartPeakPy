@@ -2,7 +2,10 @@
 #modules
 from .smartPeak import smartPeak
 #3rd part libraries
-import pyopenms
+try:
+    import pyopenms
+except ImportError as e:
+    print(e)
 
 class smartPeak_openSWATH_py():
     def __init__(self):

@@ -61,7 +61,7 @@ class __main__():
         tests = test_smartPeak()
         tests.test_parseString()
 
-    def convert_MQQMethod2Feature(filename_I,filename_O):
+    def convert_MQQMethod2Feature(self,filename_I,filename_O):
         """Convert MultiQuant QMethod file to feature.csv file
         
         """
