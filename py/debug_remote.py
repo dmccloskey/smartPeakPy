@@ -9,9 +9,9 @@ ptvsd.wait_for_attach()
 from smartPeak.__main__ import __main__
 m = __main__()
 
-# Test openSWATH_cmd
-filename='/home/user/openMS_MRMworkflow/openSWATH_cmd_params_Isolate1.csv'
-m.run_openSWATH_cmd(filename);
+# # Test openSWATH_cmd
+# filename='/home/user/openMS_MRMworkflow/openSWATH_cmd_params_Isolate1.csv'
+# m.run_openSWATH_cmd(filename)
 
 # # Test openSWATH_py
 # m.run_openSWATH_py(
@@ -19,3 +19,9 @@ m.run_openSWATH_cmd(filename);
 #     filename_params='/home/user/openMS_MRMworkflow/MRMFeatureFinderScoring_params.csv',
 #     delimiter = ';'
 #     );
+
+# Test file conversions
+m.convert_MQQMethod2Feature(
+    filename_I='/home/user/openMS_MRMworkflow/qmethod.csv',
+    filename_O='/home/user/openMS_MRMworkflow/feature.csv'
+    )
