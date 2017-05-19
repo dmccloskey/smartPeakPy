@@ -2,7 +2,10 @@
 #https://hub.docker.com/r/ducatel/visual-studio-linux-build-box/
 
 FROM dmccloskey/docker-openms:latest
-EXPOSE 22
+##gbd port fowarding
+EXPOSE 3000
+##connection via sshd
+# EXPOSE 22
 USER root
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN apt-get update && \
