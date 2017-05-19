@@ -5,6 +5,6 @@ m = __main__()
 
 # Test file conversions
 m.convert_MQQMethod2Feature(
-    filename_I='C:/Users/domccl/"Dropbox (UCSD SBRG)"/Project_FastPeak/openMS_MRMworkflow/qmethod.csv',
-    filename_O='C:/Users/domccl/"Dropbox (UCSD SBRG)"/Project_FastPeak/openMS_MRMworkflow/feature.csv'
+    filename_I='C:/Users/domccl/Dropbox (UCSD SBRG)/Project_FastPeak/openMS_MRMworkflow/qmethod.csv',
+    filename_O='C:/Users/domccl/Dropbox (UCSD SBRG)/Project_FastPeak/openMS_MRMworkflow/feature.csv'
     )

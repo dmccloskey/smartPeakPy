@@ -44,13 +44,13 @@ class __main__():
             
         """
         openSWATH_py = smartPeak_openSWATH_py()
-        smartpeak_i = smartPeak_i();
+        smartpeak_i = smartPeak_i()
         smartpeak_i.read_pythonParams(filename_filenames,delimiter)
-        filenames = smartpeak_i.getData();
-        smartpeak_i.clear_data();
-        smartpeak_i.read_openMSParams(filename_params,delimiter);
-        params = smartpeak_i.getData();
-        smartpeak_i.clear_data();
+        filenames = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        smartpeak_i.read_openMSParams(filename_params,delimiter)
+        params = smartpeak_i.getData()
+        smartpeak_i.clear_data()
         for filename in filenames:
             for sample,v in filename.items():
                 print("processing sample "+ sample)

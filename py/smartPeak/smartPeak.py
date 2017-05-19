@@ -36,8 +36,7 @@ class smartPeak():
         if verbose_I: print(cmd_I)
         os.system("%s" % (cmd_I))
 
-    @staticmethod
-    def convert_MQQMethod2Feature(MQQMethod_I):
+    def convert_MQQMethod2Feature(self,MQQMethod_I):
         """Convert MultiQuant QMethod.csv file to feature.csv file
         
         Args
@@ -50,13 +49,13 @@ class smartPeak():
         FeatureXML_O = []
         #create header map:
         header_map = {
-            'Group Name':'ProteinName',
-            'Group Name':'transition_group_id',
-            'Name':'transition_name',
-            'Expected RT':'Tr_recalibrated',
-            'Expected RT':'RetentionTime',
-            'Q1 Mass - 1':'PrecursorMz',
-            'Q3 Mass - 1':'ProductMz'
+            'ProteinName':'Group Name',
+            'transition_group_id':'Group Name',
+            'transition_name':'Name',
+            'Tr_recalibrated':'Expected RT',
+            'RetentionTime':'Expected RT',
+            'PrecursorMz':'Q1 Mass - 1',
+            'ProductMz':'Q3 Mass - 1'
         }
         #create defaults:
         feature_defaults = {
@@ -78,7 +77,7 @@ class smartPeak():
         for row in MQQMethod_I:
             tmp = {}
             for h1,h2 in header_map.items():
-                tmp[h2]=row[h1]
+                tmp[h1]=row[h2]
             component_group_name,quantifier,label_type = self.parse_MQTransitionName(row['Name'])
             tmp['FragmentSeriesNumber']=quantifier
             tmp['LabelType']=label_type
@@ -101,7 +100,7 @@ class smartPeak():
         """
         name_lst = name_I.split('.')
         component_group_name_O = name_lst[0]
-        quantifier_O = int(name_lst[1].split('_')[1])
+        quantifier_O = int(name_lst[1].split('_')[-1])
         label_type_O = name_lst[2]
 
         return component_group_name_O,quantifier_O,label_type_O
