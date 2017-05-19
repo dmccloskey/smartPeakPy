@@ -80,6 +80,9 @@
             "environment": [],
             "externalConsole": true,
             "miDebuggerServerAddress": "systemsbiochemistry.ucsd.edu:3000",
+            // "sourceFileMap": {
+            //     "<source-path>": "<target-path>"
+            // },
             "linux": {
                 "MIMode": "gdb",
                 "program": "${workspaceRoot}/a.out",
@@ -98,7 +101,19 @@
                 ]
             },
             "osx": {
-                "MIMode": "lldb"
+                "MIMode": "lldb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    },
+                    {
+                        "description": "Auto load symbols when loading an .so file",
+                        "text": "set auto-solib-add",
+                        "ignoreFailures": false
+                    }
+                ]
             },
             "windows": {
                 "MIMode": "gdb",
@@ -109,6 +124,237 @@
                         "description": "Enable pretty-printing for gdb",
                         "text": "-enable-pretty-printing",
                         "ignoreFailures": true
+                    },
+                    {
+                        "description": "Auto load symbols when loading an .so file",
+                        "text": "set auto-solib-add",
+                        "ignoreFailures": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "C++ Launch (SSH)",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask":"g++",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "pipeTransport": {
+                "pipeCwd": "${workspaceRoot}",
+                "pipeProgram": "/usr/bin/ssh",
+                "pipeArgs": [
+                    "-pw",
+                    "toor",
+                    "-p",
+                    "3000",
+                    "root@systemsbiochemistry.ucsd.edu"
+                ],
+                "debuggerPath": "/usr/bin/gdb"
+            },
+            // "sourceFileMap": {
+            //     "<source-path>": "<target-path>"
+            // },
+            "linux": {
+                "MIMode": "gdb",
+                "program": "${workspaceRoot}/a.out",
+                "miDebuggerPath": "/usr/bin/gdb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    },
+                    {
+                        "description": "Auto load symbols when loading an .so file",
+                        "text": "set auto-solib-add",
+                        "ignoreFailures": false
+                    }
+                ]
+            },
+            "osx": {
+                "MIMode": "lldb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    },
+                    {
+                        "description": "Auto load symbols when loading an .so file",
+                        "text": "set auto-solib-add",
+                        "ignoreFailures": false
+                    }
+                ]
+            },
+            "windows": {
+                "MIMode": "gdb",
+                "miDebuggerPath": "c:\\users\\domccl\\cygwin64\\bin\\gdb.exe",
+                "program": "${workspaceRoot}/a.exe",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    },
+                    {
+                        "description": "Auto load symbols when loading an .so file",
+                        "text": "set auto-solib-add",
+                        "ignoreFailures": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "C++ Launch (Docker)",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask":"g++",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "pipeTransport": {
+                "pipeCwd": "${workspaceRoot}",
+                "pipeProgram": "docker",
+                "pipeArgs": [
+                    "exec", 
+                    "-i", 
+                    "vscode", //running container name
+                    "sh",
+                    "-c"
+                ],
+                "debuggerPath": "/usr/bin/gdb"
+            },
+            // "sourceFileMap": {
+            //     "<source-path>": "<target-path>"
+            // },
+            "linux": {
+                "MIMode": "gdb",
+                "program": "${workspaceRoot}/a.out",
+                "miDebuggerPath": "/usr/bin/gdb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    },
+                    {
+                        "description": "Auto load symbols when loading an .so file",
+                        "text": "set auto-solib-add",
+                        "ignoreFailures": false
+                    }
+                ]
+            },
+            "osx": {
+                "MIMode": "lldb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    },
+                    {
+                        "description": "Auto load symbols when loading an .so file",
+                        "text": "set auto-solib-add",
+                        "ignoreFailures": false
+                    }
+                ]
+            },
+            "windows": {
+                "MIMode": "gdb",
+                "miDebuggerPath": "c:\\users\\domccl\\cygwin64\\bin\\gdb.exe",
+                "program": "${workspaceRoot}/a.exe",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    },
+                    {
+                        "description": "Auto load symbols when loading an .so file",
+                        "text": "set auto-solib-add",
+                        "ignoreFailures": false
+                    }
+                ]
+            }
+        },
+        {
+            "name": "C++ Attach (Docker)",
+            "type": "cppdbg",
+            "request": "attach",
+            "preLaunchTask":"g++",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "environment": [],
+            "externalConsole": true,
+            "processId": "${command:pickRemoteProcess}",
+            "pipeTransport": {
+                "pipeCwd": "${workspaceRoot}",
+                "pipeProgram": "docker",
+                "pipeArgs": [
+                    "exec", 
+                    "-i", 
+                    "vscode", //running container name
+                    "sh",
+                    "-c"
+                ],
+                "debuggerPath": "/usr/bin/gdb"
+            },
+            // "sourceFileMap": {
+            //     "<source-path>": "<target-path>"
+            // },
+            "linux": {
+                "MIMode": "gdb",
+                "program": "${workspaceRoot}/a.out",
+                "miDebuggerPath": "/usr/bin/gdb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    },
+                    {
+                        "description": "Auto load symbols when loading an .so file",
+                        "text": "set auto-solib-add",
+                        "ignoreFailures": false
+                    }
+                ]
+            },
+            "osx": {
+                "MIMode": "lldb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    },
+                    {
+                        "description": "Auto load symbols when loading an .so file",
+                        "text": "set auto-solib-add",
+                        "ignoreFailures": false
+                    }
+                ]
+            },
+            "windows": {
+                "MIMode": "gdb",
+                "miDebuggerPath": "c:\\users\\domccl\\cygwin64\\bin\\gdb.exe",
+                "program": "${workspaceRoot}/a.exe",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    },
+                    {
+                        "description": "Auto load symbols when loading an .so file",
+                        "text": "set auto-solib-add",
+                        "ignoreFailures": false
                     }
                 ]
             }

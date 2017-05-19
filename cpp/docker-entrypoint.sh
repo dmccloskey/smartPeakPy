@@ -2,6 +2,9 @@
 cd /home/user/code
 g++ -g main.cpp
 # gdb --interpreter=mi a.out
-# /usr/sbin/sshd -D
+##launch the ssh server
+/usr/sbin/sshd -D
+##manually keep the container running
 # sleep infinity
-gdbserver :3000 a.out
+##launch the gbdserver
+# gdbserver :3000 a.out
