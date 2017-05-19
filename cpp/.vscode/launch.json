@@ -145,10 +145,8 @@
             "externalConsole": true,
             "pipeTransport": {
                 "pipeCwd": "${workspaceRoot}",
-                "pipeProgram": "/usr/bin/ssh",
+                "pipeProgram": "ssh",
                 "pipeArgs": [
-                    "-pw",
-                    "toor",
                     "-p",
                     "3000",
                     "root@systemsbiochemistry.ucsd.edu"
