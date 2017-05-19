@@ -7,4 +7,4 @@ g++ -g main.cpp
 ##manually keep the container running
 # sleep infinity
 ##launch the gbdserver
-# gdbserver :3000 a.out
+# gdbserver :22 a.out

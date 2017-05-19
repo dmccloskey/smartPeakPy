@@ -2,7 +2,7 @@
 #https://hub.docker.com/r/ducatel/visual-studio-linux-build-box/
 
 FROM dmccloskey/docker-openms:latest
-EXPOSE 3000
+EXPOSE 22
 USER root
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN apt-get update && \
