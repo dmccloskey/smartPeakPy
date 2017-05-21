@@ -274,7 +274,8 @@
             "preLaunchTask":"g++",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceRoot}",
+            // "cwd": "${workspaceRoot}",
+            "cwd": "/home/user/code",
             "environment": [],
             "externalConsole": true,
             "pipeTransport": {
@@ -289,9 +290,9 @@
                 ],
                 "debuggerPath": "/usr/bin/gdb"
             },
-            // "sourceFileMap": {
-            //     "<source-path>": "<target-path>"
-            // },
+            "sourceFileMap": {
+                "/home/user/code": "C:/Users/domccl/GitHub/smartPeak/cpp"
+            },
             "linux": {
                 "MIMode": "gdb",
                 "program": "${workspaceRoot}/a.out",
@@ -360,9 +361,9 @@
                 ],
                 "debuggerPath": "/usr/bin/gdb"
             },
-            // "sourceFileMap": {
-            //     "<source-path>": "<target-path>"
-            // },
+            "sourceFileMap": {
+                "/home/user/code": "C:/Users/domccl/GitHub/smartPeak/cpp"
+            },
             "linux": {
                 "MIMode": "gdb",
                 "program": "${workspaceRoot}/a.out",
