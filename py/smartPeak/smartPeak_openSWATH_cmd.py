@@ -18,7 +18,7 @@ class smartPeak_openSWATH_cmd():
         """openSWATH command line workflow
         
         FUNCTION ORDER:
-        ConvertTSVToTraML: convert csv list of target compounds to traML
+        TargetedFileConverter : convert csv list of target compounds to traML
         MRMMapper: annotate raw .mzML
         OpenSwathDecoyGenerator: make the decoys
         OpenSwathChromatogramExtractor: extraction out ms2 data
@@ -39,8 +39,8 @@ class smartPeak_openSWATH_cmd():
 
         Args
             data_I (list): e.g. [
-                {'function': 'ConvertTSVToTraML', 'name': '-in', 'delim': ' ', 'value': 'IsolateA1.csv'},
-                {'function': 'ConvertTSVToTraML', 'name': '-out', 'delim': ' ', 'value': 'IsolateA1.traML'},
+                {'function': 'TargetedFileConverter ', 'name': '-in', 'delim': ' ', 'value': 'IsolateA1.csv'},
+                {'function': 'TargetedFileConverter ', 'name': '-out', 'delim': ' ', 'value': 'IsolateA1.traML'},
                 {'function': 'MRMMapper', 'name': '-in', 'delim': ' ', 'value': 'IsolateA1.mzML'},
                 {'function': 'MRMMapper', 'name': '-tr', 'delim': ' ', 'value': 'IsolateA1.traML'},
                 {'function': 'MRMMapper', 'name': '-out', 'delim': ' ', 'value': 'IsolateA1.csv'},
