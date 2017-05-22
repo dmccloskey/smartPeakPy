@@ -56,6 +56,12 @@ class smartPeak_openSWATH_py():
         fh = pyopenms.FileHandler()
         fh.loadExperiment(mzML_feature_i.encode('utf-8'), chromatograms)
 
+        # # apply a filter
+        # filter = pyopenms.SavitzkyGolayFilter()
+        # filter.filterExperiment(chromatograms)
+        # file = pyopenms.MzMLFile()
+        # file.store('/home/user/openMS_MRMworkflow/QC1_p.mzML',chromatograms)
+
         # # load and make the transition file
         # targeted = pyopenms.TargetedExperiment();
         # tramlfile = pyopenms.TransitionTSVReader()
@@ -72,11 +78,25 @@ class smartPeak_openSWATH_py():
 
         # load in the DIA data
         empty_swath = pyopenms.MSExperiment()
-        #ChromatogramExtractor
+        # extractor = pyopenms.ChromatogramExtractor()
+        # extractor.extractChromatograms(MSExperiment[Peak1D, ChromatogramPeak] & input,
+        #     MSExperiment[Peak1D, ChromatogramPeak] & output,
+        #     TargetedExperiment & transition_exp,
+        #     double extract_window,
+        #     bool ppm,
+        #     TransformationDescription trafo,
+        #     double rt_extraction_window,
+        #     String filter)
         #Does this work for any ms2 data?
 
         # normalize the RTs
         trafo = pyopenms.TransformationDescription()
+        # model = trafo.getModelType()
+        # parameters = trafo.getModelParameters()
+        # #...
+        # trafo.setParameters(parameters)
+        # trafo.fitModel(String model_type, Param params)
+
         #MRMRTNormalizer
         #What is required to generate this?
 
