@@ -9,7 +9,7 @@ services:
       - /home/systemsbiochemistry/Documents/openMS_MRMworkflow/:/home/user/openMS_MRMworkflow/
       - /home/systemsbiochemistry/Documents/GitHub/smartPeak/py/:/home/user/code/
     ports:
-      - "3000:3000"
+      - "3001:3001"
     command: python /home/user/code/debug_remote.py
     restart: always
     networks:

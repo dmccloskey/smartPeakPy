@@ -1,5 +1,5 @@
 FROM dmccloskey/docker-openms:latest
-EXPOSE 3000
+EXPOSE 3001
 USER root
 RUN pip3 install --no-cache-dir \
 		ptvsd \
