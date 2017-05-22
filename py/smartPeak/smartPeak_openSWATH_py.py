@@ -57,10 +57,10 @@ class smartPeak_openSWATH_py():
         fh.loadExperiment(mzML_feature_i.encode('utf-8'), chromatograms)
 
         # # load and make the transition file
-        # # appears to not be working?
         # targeted = pyopenms.TargetedExperiment();
-        # tramlfile=TransitionTSVReader()
+        # tramlfile = pyopenms.TransitionTSVReader()
         # tramlfile.convertTSVToTargetedExperiment(traML_csv_i.encode('utf-8'),'mrm',targeted)
+        # #can not handle type of (b'/home/user/openMS_MRMworkflow/QC1.csv', 'mrm', <pyopenms.pyopenms.TargetedExperiment object at 0x7f07c479bc50>)
         # load transitions file
         targeted = pyopenms.TargetedExperiment()
         tramlfile = pyopenms.TraMLFile()
