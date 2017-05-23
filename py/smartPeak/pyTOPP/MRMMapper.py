@@ -44,6 +44,9 @@ class MRMMapper():
                 #Note: this change means that the peptideSequence must be specified
                 this_peptide = targeted.getPeptideByRef(transition.getPeptideRef() ).sequence
                 other_peptide = chrom.getPrecursor().getMetaValue("peptide_sequence")
+                #testing:
+                if not other_peptide is None:
+                    print("check")
                 if (abs(chrom.getPrecursor().getMZ() - transition.getPrecursorMZ()) < precursor_tolerance and
                     abs(chrom.getProduct().getMZ()  -  transition.getProductMZ()) < product_tolerance and
                     this_peptide==other_peptide):
