@@ -41,11 +41,15 @@ class MRMMapper():
         for chrom in chromatogram_map.getChromatograms():
             mapped_already = False
             for transition in targeted.getTransitions():
+                #Note: this change means that the peptideSequence must be specified
+                this_peptide = targeted.getPeptideByRef(transition.getPeptideRef() ).sequence
+                other_peptide = chrom.getPrecursor().getMetaValue("peptide_sequence")
                 if (abs(chrom.getPrecursor().getMZ() - transition.getPrecursorMZ()) < precursor_tolerance and
-                    abs(chrom.getProduct().getMZ()  -  transition.getProductMZ()) < product_tolerance):
+                    abs(chrom.getProduct().getMZ()  -  transition.getProductMZ()) < product_tolerance and
+                    this_peptide==other_peptide):
                     if mapped_already:
-                        this_peptide = targeted.getPeptideByRef(transition.getPeptideRef() ).sequence
-                        other_peptide = chrom.getPrecursor().getMetaValue("peptide_sequence")
+                        # this_peptide = targeted.getPeptideByRef(transition.getPeptideRef() ).sequence
+                        # other_peptide = chrom.getPrecursor().getMetaValue("peptide_sequence")
                         print("Found mapping of " + str(chrom.getPrecursor().getMZ()) + "/" + str(chrom.getProduct().getMZ()) + " to " + str(transition.getPrecursorMZ()) + "/" + str(transition.getProductMZ()))
                         print("Of peptide " + this_peptide.decode("utf-8"))
                         print("But the chromatogram is already mapped to " + other_peptide.decode("utf-8"))
