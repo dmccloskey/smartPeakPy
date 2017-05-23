@@ -124,7 +124,7 @@ class smartPeak_openSWATH_py():
         #MRMTransitionGroupPicker
         #OpenSwathScoring #scores added to features generated MRMTransitionGroupPicker
         #OpenSwath_Scores #Holds the scores computed by OpenSwathScoring
-        featurefinder.pickChromatograms(chromatograms, output)
+        featurefinder.pickChromatogram(chromatograms, output)
         # featurefinder.pickExperiment(chromatograms, output, targeted,
         #                                 trafo, empty_swath)
 
