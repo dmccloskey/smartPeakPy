@@ -1,7 +1,7 @@
 # coding: utf-8
 #modules
 from .smartPeak import smartPeak
-from .smartPeak.pyTOPP import MRMMapper
+from .pyTOPP import MRMMapper
 #3rd part libraries
 try:
     import pyopenms
