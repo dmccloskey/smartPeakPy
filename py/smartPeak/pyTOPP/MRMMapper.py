@@ -45,11 +45,27 @@ class MRMMapper():
                 this_peptide = targeted.getPeptideByRef(transition.getPeptideRef() ).sequence
                 other_peptide = chrom.getPrecursor().getMetaValue("peptide_sequence")
                 #testing:
-                if not other_peptide is None:
-                    print("check")
-                if (abs(chrom.getPrecursor().getMZ() - transition.getPrecursorMZ()) < precursor_tolerance and
-                    abs(chrom.getProduct().getMZ()  -  transition.getProductMZ()) < product_tolerance and
-                    this_peptide==other_peptide):
+                if (not other_peptide is None  and
+                    this_peptide==other_peptide and 
+                    abs(chrom.getPrecursor().getMZ() - transition.getPrecursorMZ()) < precursor_tolerance and
+                    abs(chrom.getProduct().getMZ()  -  transition.getProductMZ()) < product_tolerance):
+                    if mapped_already:
+                        # this_peptide = targeted.getPeptideByRef(transition.getPeptideRef() ).sequence
+                        # other_peptide = chrom.getPrecursor().getMetaValue("peptide_sequence")
+                        print("Found mapping of " + str(chrom.getPrecursor().getMZ()) + "/" + str(chrom.getProduct().getMZ()) + " to " + str(transition.getPrecursorMZ()) + "/" + str(transition.getProductMZ()))
+                        print("Of peptide " + this_peptide.decode("utf-8"))
+                        print("But the chromatogram is already mapped to " + other_peptide.decode("utf-8"))
+                        if not allow_double_mappings:
+                            continue
+                            # raise Exception("Cannot map twice")
+                    mapped_already = True
+                    precursor = chrom.getPrecursor()
+                    peptide = targeted.getPeptideByRef(transition.getPeptideRef() )
+                    precursor.setMetaValue("peptide_sequence", peptide.sequence)
+                    chrom.setPrecursor(precursor)
+                    chrom.setNativeID(transition.getNativeID())
+                elif (abs(chrom.getPrecursor().getMZ() - transition.getPrecursorMZ()) < precursor_tolerance and
+                    abs(chrom.getProduct().getMZ()  -  transition.getProductMZ()) < product_tolerance):
                     if mapped_already:
                         # this_peptide = targeted.getPeptideByRef(transition.getPeptideRef() ).sequence
                         # other_peptide = chrom.getPrecursor().getMetaValue("peptide_sequence")
