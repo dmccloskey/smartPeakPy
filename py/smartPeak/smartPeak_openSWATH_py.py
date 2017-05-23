@@ -102,8 +102,7 @@ class smartPeak_openSWATH_py():
         #What is required to generate this?
 
         # Create empty output
-        output = pyopenms.MSExperiment()
-        # output = pyopenms.FeatureMap()
+        output = pyopenms.FeatureMap()
         
         # set up MRMFeatureFinderScoring (featurefinder) and
         # parse the MRMFeatureFinderScoring params
@@ -124,7 +123,11 @@ class smartPeak_openSWATH_py():
         #MRMTransitionGroupPicker
         #OpenSwathScoring #scores added to features generated MRMTransitionGroupPicker
         #OpenSwath_Scores #Holds the scores computed by OpenSwathScoring
-        featurefinder.pickChromatogram(chromatograms, output)
+        chromatograms_picked = pyopenms.MSExperiment()
+        for chromatogram in chromatograms:
+            chromatogram_picked = pyopenms.MSChromatogram()
+            featurefinder.pickChromatogram(chromatograms, chromatogram_picked)
+            chromatograms_picked.addChromatogram(chromatogram_picked);
         # featurefinder.pickExperiment(chromatograms, output, targeted,
         #                                 trafo, empty_swath)
 
