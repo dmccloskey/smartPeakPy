@@ -41,16 +41,6 @@ class smartPeak_openSWATH_py():
         feature_csv_o = filenames_I['feature_csv_o']
         MRMFeatureFinderScoring_params = MRMFeatureFinderScoring_params_I
 
-        # set up MRMFeatureFinderScoring (featurefinder) and
-        # parse the MRMFeatureFinderScoring params
-        featurefinder = pyopenms.MRMFeatureFinderScoring()
-        parameters = featurefinder.getParameters()
-        parameters = self.updateParameters(
-            parameters,
-            MRMFeatureFinderScoring_params,
-            )
-        featurefinder.setParameters(parameters)
-
         # load chromatograms
         chromatograms = pyopenms.MSExperiment()
         fh = pyopenms.FileHandler()
@@ -63,13 +53,24 @@ class smartPeak_openSWATH_py():
         # file.store('/home/user/openMS_MRMworkflow/QC1_p.mzML',chromatograms)
 
         # load and make the transition file
-        targeted = pyopenms.TargetedExperiment();
+        targeted = pyopenms.TargetedExperiment()
         tramlfile = pyopenms.TransitionTSVReader()
         tramlfile.convertTSVToTargetedExperiment(traML_csv_i.encode('utf-8'),21,targeted)
         # #load transitions file
         # targeted = pyopenms.TargetedExperiment()
         # tramlfile = pyopenms.TraMLFile()
         # tramlfile.load(traML_i.encode('utf-8'), targeted)
+
+        # map transitions to the chromatograms
+        mrmmapper = MRMMapper()
+        chromatograms_mapped = mrmampper.algorithm(
+            chromatogram_map=chromatograms,
+            targeted=targeted, 
+            precursor_tolerance=0.1,
+            product_tolerance=0.1, 
+            allow_unmapped=True,
+            allow_double_mappings=False
+        )
 
         #make the decoys
         #MRMDecoy
@@ -101,8 +102,20 @@ class smartPeak_openSWATH_py():
 
         # Create empty output
         output = pyopenms.FeatureMap()
+        
+        # set up MRMFeatureFinderScoring (featurefinder) and
+        # parse the MRMFeatureFinderScoring params
+        featurefinder = pyopenms.MRMFeatureFinderScoring()
+        parameters = featurefinder.getParameters()
+        parameters = self.updateParameters(
+            parameters,
+            MRMFeatureFinderScoring_params,
+            )
+        featurefinder.setParameters(parameters)
 
-        # set up MRMFeatureFinderScoring (featurefinder) and run
+        
+        # set up MRMFeatureFinderScoring (featurefinder) and 
+        # run
         #TODO: need to break into individual functions to create the GUI
         #mapExperimentToTransitionList
         #MRMTransitionGroupPicker
@@ -111,9 +124,12 @@ class smartPeak_openSWATH_py():
         featurefinder.pickExperiment(chromatograms, output, targeted,
                                         trafo, empty_swath)
 
-        # Store outfile
+        # Store outfile as featureXML
         featurexml = pyopenms.FeatureXMLFile()
         featurexml.store(featureXML_o.encode('utf-8'), output)
+
+        # Store the outfile as csv
+
 
         # write out for mProphet
 
