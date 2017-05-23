@@ -49,9 +49,7 @@ class MRMMapper():
                         print("Found mapping of " + str(chrom.getPrecursor().getMZ()) + "/" + str(chrom.getProduct().getMZ()) + " to " + str(transition.getPrecursorMZ()) + "/" + str(transition.getProductMZ()))
                         print("Of peptide " + this_peptide.decode("utf-8"))
                         print("But the chromatogram is already mapped to " + other_peptide.decode("utf-8"))
-                        if not allow_double_mappings:
-                            continue
-                            # raise Exception("Cannot map twice")
+                        if not allow_double_mappings: raise Exception("Cannot map twice")
                     mapped_already = True
                     precursor = chrom.getPrecursor()
                     peptide = targeted.getPeptideByRef(transition.getPeptideRef() )
