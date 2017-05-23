@@ -124,7 +124,7 @@ class smartPeak_openSWATH_py():
         #OpenSwathScoring #scores added to features generated MRMTransitionGroupPicker
         #OpenSwath_Scores #Holds the scores computed by OpenSwathScoring
         chromatograms_picked = pyopenms.MSExperiment()
-        for chromatogram in chromatograms:
+        for chromatogram in chromatograms.getChromatograms():
             chromatogram_picked = pyopenms.MSChromatogram()
             featurefinder.pickChromatogram(chromatograms, chromatogram_picked)
             chromatograms_picked.addChromatogram(chromatogram_picked);
