@@ -106,8 +106,8 @@ class smartPeak_openSWATH_py():
         
         # set up MRMFeatureFinderScoring (featurefinder) and
         # parse the MRMFeatureFinderScoring params
-        # featurefinder = pyopenms.PeakPickerMRM()
-        featurefinder = pyopenms.MRMFeatureFinderScoring()
+        featurefinder = pyopenms.PeakPickerMRM()
+        # featurefinder = pyopenms.MRMFeatureFinderScoring()
         parameters = featurefinder.getParameters()
         parameters = self.updateParameters(
             parameters,
@@ -123,9 +123,9 @@ class smartPeak_openSWATH_py():
         #MRMTransitionGroupPicker
         #OpenSwathScoring #scores added to features generated MRMTransitionGroupPicker
         #OpenSwath_Scores #Holds the scores computed by OpenSwathScoring
-        # featurefinder.pickChromatograms(chromatograms, output)
-        featurefinder.pickExperiment(chromatograms, output, targeted,
-                                        trafo, empty_swath)
+        featurefinder.pickChromatograms(chromatograms, output)
+        # featurefinder.pickExperiment(chromatograms, output, targeted,
+        #                                 trafo, empty_swath)
 
         # Store outfile as featureXML
         featurexml = pyopenms.FeatureXMLFile()
