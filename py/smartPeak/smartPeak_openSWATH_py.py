@@ -64,7 +64,7 @@ class smartPeak_openSWATH_py():
 
         # map transitions to the chromatograms
         mrmmapper = MRMMapper()
-        chromatograms_mapped = mrmampper.algorithm(
+        chromatograms_mapped = mrmmapper.algorithm(
             chromatogram_map=chromatograms,
             targeted=targeted, 
             precursor_tolerance=0.1,
