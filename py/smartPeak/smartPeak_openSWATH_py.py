@@ -1,6 +1,7 @@
 # coding: utf-8
 #modules
 from .smartPeak import smartPeak
+from .smartPeak.pyTOPP import MRMMapper
 #3rd part libraries
 try:
     import pyopenms
@@ -19,7 +20,7 @@ class smartPeak_openSWATH_py():
         Returns
 
         """
-        pass;
+        pass
 
     def openSWATH_py(self,
         filenames_I,

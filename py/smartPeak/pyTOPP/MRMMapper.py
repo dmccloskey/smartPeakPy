@@ -1,5 +1,8 @@
 import copy, sys
-import pyopenms
+try:
+    import pyopenms
+except ImportError as e:
+    print(e)
 
 """
 python pyTOPP/MRMMapper.py --in ../source/TEST/TOPP/MRMMapping_input.chrom.mzML  \
@@ -103,14 +106,3 @@ class MRMMapper():
         
         output = self.algorithm(chromatogram_map, targeted, precursor_tolerance, product_tolerance)
         return output
-
-    def store(self, out, output):
-        """
-        Store as mzML File
-
-        Args:
-            out (str): out filename
-            output (): chromatogram object
-        """
-
-        pyopenms.MzMLFile().store(out, output);
