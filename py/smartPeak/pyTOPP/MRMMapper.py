@@ -58,13 +58,13 @@ class MRMMapper():
                     chrom.setNativeID(transition.getNativeID())
             if not mapped_already:
                 notmapped += 1
-                print("Did not find a mapping for chromatogram" + chrom.getNativeID())
+                print("Did not find a mapping for chromatogram" + chrom.getNativeID().decode("utf-8"))
                 if not allow_unmapped: raise Exception("No mapping")
             else:
                 output.addChromatogram(chrom)
 
         if notmapped > 0:
-            print("Could not find mapping for" + notmapped + "chromatogram(s)")
+            print("Could not find mapping for" + str(notmapped) + "chromatogram(s)")
 
 
         dp = pyopenms.DataProcessing()
