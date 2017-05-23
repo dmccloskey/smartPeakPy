@@ -102,7 +102,8 @@ class smartPeak_openSWATH_py():
         #What is required to generate this?
 
         # Create empty output
-        output = pyopenms.FeatureMap()
+        output = pyopenms.MSExperiment()
+        # output = pyopenms.FeatureMap()
         
         # set up MRMFeatureFinderScoring (featurefinder) and
         # parse the MRMFeatureFinderScoring params
