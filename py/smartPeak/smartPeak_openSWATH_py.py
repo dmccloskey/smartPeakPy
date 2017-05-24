@@ -2,6 +2,7 @@
 #modules
 from .smartPeak import smartPeak
 from .pyTOPP.MRMMapper import MRMMapper
+from .pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor
 #3rd part libraries
 try:
     import pyopenms
@@ -40,6 +41,7 @@ class smartPeak_openSWATH_py():
         traML_i = filenames_I['traML_i']
         featureXML_o = filenames_I['featureXML_o']
         feature_csv_o = filenames_I['feature_csv_o']
+        dia_csv_i = filenames_I['dia_csv_i']
         MRMFeatureFinderScoring_params = MRMFeatureFinderScoring_params_I
 
         # load chromatograms
@@ -63,6 +65,8 @@ class smartPeak_openSWATH_py():
         # tramlfile.load(traML_i.encode('utf-8'), targeted)
 
         # map transitions to the chromatograms
+        # BUG: loss of precision of transition
+        # BUG: does not map transitions correctly
         mrmmapper = MRMMapper()
         chromatograms_mapped = mrmmapper.algorithm(
             chromatogram_map=chromatograms,
@@ -77,18 +81,19 @@ class smartPeak_openSWATH_py():
         #MRMDecoy
         #How are the decoys added into the experiment?
 
-        # load in the DIA data
-        empty_swath = pyopenms.MSExperiment()
-        # extractor = pyopenms.ChromatogramExtractor()
-        # extractor.extractChromatograms(MSExperiment[Peak1D, ChromatogramPeak] & input,
-        #     MSExperiment[Peak1D, ChromatogramPeak] & output,
-        #     TargetedExperiment & transition_exp,
-        #     double extract_window,
-        #     bool ppm,
-        #     TransformationDescription trafo,
-        #     double rt_extraction_window,
-        #     String filter)
-        #Does this work for any ms2 data?
+        # # load in the DIA data
+        # empty_swath = pyopenms.MSExperiment()
+        # chromatogramExtractor = OpenSwathChromatogramExtractor()
+        # empty_swath=chromatogramExtractor.main(
+        #     infiles=dia_csv_i,
+        #     targeted=targeted,
+        #     extraction_window=0.05,
+        #     min_upper_edge_dist=0.0,
+        #     ppm=False,
+        #     is_swath=False,
+        #     rt_extraction_window=-1,
+        #     extraction_function="tophat"
+        # )
 
         # normalize the RTs
         trafo = pyopenms.TransformationDescription()
@@ -106,15 +111,21 @@ class smartPeak_openSWATH_py():
         
         # set up MRMFeatureFinderScoring (featurefinder) and
         # parse the MRMFeatureFinderScoring params
-        featurefinder = pyopenms.MRMTransitionGroupPicker()
         picker = pyopenms.PeakPickerMRM()
-        # featurefinder = pyopenms.MRMFeatureFinderScoring()
-        parameters = featurefinder.getParameters()
+        parameters = picker.getParameters()
         parameters = self.updateParameters(
             parameters,
             MRMFeatureFinderScoring_params,
             )
-        featurefinder.setParameters(parameters)
+        picker.setParameters(parameters)
+        # featurefinder = pyopenms.MRMFeatureFinderScoring()
+        # featurefinder = pyopenms.MRMTransitionGroupPicker()
+        # parameters = featurefinder.getParameters()
+        # parameters = self.updateParameters(
+        #     parameters,
+        #     MRMFeatureFinderScoring_params,
+        #     )
+        # featurefinder.setParameters(parameters)
 
         
         # set up MRMFeatureFinderScoring (featurefinder) and 
@@ -126,8 +137,8 @@ class smartPeak_openSWATH_py():
         OpenSwathScoring #scores added to features generated MRMTransitionGroupPicker
         OpenSwath_Scores #Holds the scores computed by OpenSwathScoring
         """
-        # testing MRMTransitionGroupPicker
-        featurefinder.pickTransitionGroup(chromatograms, output, targeted)
+        # # testing MRMTransitionGroupPicker
+        # featurefinder.pickTransitionGroup(chromatograms, output, targeted)
         # testing PeakPickerMRM
         chromatograms_picked = pyopenms.MSExperiment()
         for cnt,chromatogram in enumerate(chromatograms.getChromatograms()):

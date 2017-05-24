@@ -4,13 +4,6 @@ try:
 except ImportError as e:
     print(e)
 
-"""
-python pyTOPP/MRMMapper.py --in ../source/TEST/TOPP/MRMMapping_input.chrom.mzML  \
-        --tr ../source/TEST/TOPP/MRMMapping_input.TraML --out MRMMapper.tmp.out \
-        && diff MRMMapper.tmp.out ../source/TEST/TOPP/MRMMapping_output.chrom.mzML 
-
-"""
-
 class MRMMapper():
     """MRMMapper maps measured chromatograms (mzML) and the transitions used (TraML)
 
