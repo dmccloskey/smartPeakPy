@@ -107,7 +107,7 @@ class smartPeak_openSWATH_py():
         # set up MRMFeatureFinderScoring (featurefinder) and
         # parse the MRMFeatureFinderScoring params
         featurefinder = pyopenms.MRMTransitionGroupPicker()
-        # featurefinder = pyopenms.PeakPickerMRM()
+        picker = pyopenms.PeakPickerMRM()
         # featurefinder = pyopenms.MRMFeatureFinderScoring()
         parameters = featurefinder.getParameters()
         parameters = self.updateParameters(
@@ -126,16 +126,16 @@ class smartPeak_openSWATH_py():
         OpenSwathScoring #scores added to features generated MRMTransitionGroupPicker
         OpenSwath_Scores #Holds the scores computed by OpenSwathScoring
         """
-        ## testing MRMTransitionGroupPicker
+        # testing MRMTransitionGroupPicker
         featurefinder.pickTransitionGroup(chromatograms, output, targeted)
-        ## testing PeakPickerMRM
-        # chromatograms_picked = pyopenms.MSExperiment()
-        # for cnt,chromatogram in enumerate(chromatograms.getChromatograms()):
-        #     if cnt==0:
-        #         continue
-        #     chromatogram_picked = pyopenms.MSChromatogram()
-        #     featurefinder.pickChromatogram(chromatogram, chromatogram_picked)
-        #     chromatograms_picked.addChromatogram(chromatogram_picked)
+        # testing PeakPickerMRM
+        chromatograms_picked = pyopenms.MSExperiment()
+        for cnt,chromatogram in enumerate(chromatograms.getChromatograms()):
+            if cnt==0:
+                continue
+            chromatogram_picked = pyopenms.MSChromatogram()
+            picker.pickChromatogram(chromatogram, chromatogram_picked)
+            chromatograms_picked.addChromatogram(chromatogram_picked)
         ## MRMFeatureFinderScoring
         # featurefinder.pickExperiment(chromatograms, output, targeted,
         #                                 trafo, empty_swath)
