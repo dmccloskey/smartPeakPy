@@ -135,9 +135,6 @@ class smartPeak_PeakPickerMRM_py():
         # trafo.setParameters(parameters)
         # trafo.fitModel(String model_type, Param params)
 
-        #MRMRTNormalizer
-        #What is required to generate this?
-
         # Create empty output
         output = pyopenms.FeatureMap()
         
@@ -157,7 +154,6 @@ class smartPeak_PeakPickerMRM_py():
         #     PeakPickerMRM_params,
         #     )
         # featurefinder.setParameters(parameters)
-
         
         # set up PeakPickerMRM (featurefinder) and 
         # run
@@ -171,6 +167,10 @@ class smartPeak_PeakPickerMRM_py():
             chromatogram_picked = pyopenms.MSChromatogram()
             picker.pickChromatogram(chromatogram, chromatogram_picked)
             chromatograms_picked.addChromatogram(chromatogram_picked)
+
+        # find features
+        #http://ftp.mi.fu-berlin.de/pub/OpenMS/release-documentation/html/classOpenMS_1_1FeatureFinderAlgorithmMRM.html#details
+        #FeatureFinderAlgorithmMRM
 
         # Store outfile as featureXML
         featurexml = pyopenms.FeatureXMLFile()
