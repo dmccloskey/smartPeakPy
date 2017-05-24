@@ -8,6 +8,9 @@ services:
       # - //C/Users//domccl/GitHub/smartPeak/py/:/home/user/code/
       - /home/systemsbiochemistry/Documents/openMS_MRMworkflow/:/home/user/openMS_MRMworkflow/
       - /home/systemsbiochemistry/Documents/GitHub/smartPeak/py/:/home/user/code/
+      # #TOPP hot fixes
+      - /home/systemsbiochemistry/Documents/GitHub/smartPeak/py/MRMMapper.cpp:/usr/local/openms-build/bin/MRMMapper.cpp
+      - /home/systemsbiochemistry/Documents/GitHub/smartPeak/py/MRMTransitionGroupPicker.cpp:/usr/local/openms-build/bin/MRMTransitionGroupPicker.cpp
     ports:
       - "3000:3000"
     command: python /home/user/code/debug_remote.py
