@@ -1,6 +1,7 @@
 # coding: utf-8
 from .smartPeak_openSWATH_cmd import smartPeak_openSWATH_cmd
 from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
+from .smartPeak_PeakPickerMRM_py import smartPeak_PeakPickerMRM_py
 from .smartPeak import smartPeak
 from .smartPeak_i import smartPeak_i
 from .smartPeak_o import smartPeak_o
