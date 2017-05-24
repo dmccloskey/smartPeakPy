@@ -106,7 +106,8 @@ class smartPeak_openSWATH_py():
         
         # set up MRMFeatureFinderScoring (featurefinder) and
         # parse the MRMFeatureFinderScoring params
-        featurefinder = pyopenms.PeakPickerMRM()
+        featurefinder = pyopenms.MRMTransitionGroupPicker()
+        # featurefinder = pyopenms.PeakPickerMRM()
         # featurefinder = pyopenms.MRMFeatureFinderScoring()
         parameters = featurefinder.getParameters()
         parameters = self.updateParameters(
@@ -118,18 +119,24 @@ class smartPeak_openSWATH_py():
         
         # set up MRMFeatureFinderScoring (featurefinder) and 
         # run
-        #TODO: need to break into individual functions to create the GUI
-        #mapExperimentToTransitionList
-        #MRMTransitionGroupPicker
-        #OpenSwathScoring #scores added to features generated MRMTransitionGroupPicker
-        #OpenSwath_Scores #Holds the scores computed by OpenSwathScoring
-        chromatograms_picked = pyopenms.MSExperiment()
-        for cnt,chromatogram in enumerate(chromatograms.getChromatograms()):
-            if cnt==0:
-                continue
-            chromatogram_picked = pyopenms.MSChromatogram()
-            featurefinder.pickChromatogram(chromatogram, chromatogram_picked)
-            chromatograms_picked.addChromatogram(chromatogram_picked)
+        """TODO: 
+        need to break into individual functions to create the GUI
+        mapExperimentToTransitionList
+        MRMTransitionGroupPicker
+        OpenSwathScoring #scores added to features generated MRMTransitionGroupPicker
+        OpenSwath_Scores #Holds the scores computed by OpenSwathScoring
+        """
+        ## testing MRMTransitionGroupPicker
+        featurefinder.pickTransitionGroup(chromatograms, output, targeted)
+        ## testing PeakPickerMRM
+        # chromatograms_picked = pyopenms.MSExperiment()
+        # for cnt,chromatogram in enumerate(chromatograms.getChromatograms()):
+        #     if cnt==0:
+        #         continue
+        #     chromatogram_picked = pyopenms.MSChromatogram()
+        #     featurefinder.pickChromatogram(chromatogram, chromatogram_picked)
+        #     chromatograms_picked.addChromatogram(chromatogram_picked)
+        ## MRMFeatureFinderScoring
         # featurefinder.pickExperiment(chromatograms, output, targeted,
         #                                 trafo, empty_swath)
 
