@@ -41,7 +41,7 @@ class smartPeak_openSWATH_py():
         traML_i = filenames_I['traML_i']
         featureXML_o = filenames_I['featureXML_o']
         feature_csv_o = filenames_I['feature_csv_o']
-        dia_csv_i = filenames_I['dia_csv_i']
+        diaXML_i = filenames_I['diaXML_i']
         MRMFeatureFinderScoring_params = MRMFeatureFinderScoring_params_I
 
         # load chromatograms
@@ -81,19 +81,19 @@ class smartPeak_openSWATH_py():
         #MRMDecoy
         #How are the decoys added into the experiment?
 
-        # # load in the DIA data
-        # empty_swath = pyopenms.MSExperiment()
-        # chromatogramExtractor = OpenSwathChromatogramExtractor()
-        # empty_swath=chromatogramExtractor.main(
-        #     infiles=dia_csv_i,
-        #     targeted=targeted,
-        #     extraction_window=0.05,
-        #     min_upper_edge_dist=0.0,
-        #     ppm=False,
-        #     is_swath=False,
-        #     rt_extraction_window=-1,
-        #     extraction_function="tophat"
-        # )
+        # load in the DIA data
+        empty_swath = pyopenms.MSExperiment()
+        chromatogramExtractor = OpenSwathChromatogramExtractor()
+        empty_swath=chromatogramExtractor.main(
+            infiles=diaXML_i,
+            targeted=targeted,
+            extraction_window=0.05,
+            min_upper_edge_dist=0.0,
+            ppm=False,
+            is_swath=False,
+            rt_extraction_window=-1,
+            extraction_function="tophat"
+        )
 
         # normalize the RTs
         trafo = pyopenms.TransformationDescription()
