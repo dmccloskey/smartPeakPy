@@ -28,6 +28,34 @@ class __main__():
         openSWATH_cmd.read_openSWATH_cmd_params(filename)
         openSWATH_cmd.openSWATH_cmd(verbose_I=verbose)
 
+    def run_PeakPickerMRM_py(
+            self,
+            filename_filenames,
+            filename_params,
+            delimiter = ','
+            ):
+        """Run the PeakPickerMRM python pipeline
+        
+        Args:
+            filename (str): name of the workflow parameter filename
+            verbose (bool): print command line statements to stdout
+            
+        Eamples:
+            
+        """
+        PeakPickerMRM_py = smartPeak_PeakPickerMRM_py()
+        smartpeak_i = smartPeak_i()
+        smartpeak_i.read_pythonParams(filename_filenames,delimiter)
+        filenames = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        smartpeak_i.read_openMSParams(filename_params,delimiter)
+        params = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        for filename in filenames:
+            for sample,v in filename.items():
+                print("processing sample "+ sample)
+                PeakPickerMRM_py.PeakPickerMRM_py(v,params['PeakPickerMRM'])
+
     def run_openSWATH_py(
             self,
             filename_filenames,
@@ -54,8 +82,7 @@ class __main__():
         for filename in filenames:
             for sample,v in filename.items():
                 print("processing sample "+ sample)
-                openSWATH_py.openSWATH_py(v,params['PeakPickerMRM'])
-                #openSWATH_py.openSWATH_py(v,params['MRMFeatureFinderScoring'])
+                openSWATH_py.openSWATH_py(v,params['MRMFeatureFinderScoring'])
 
     def run_testSmartPeak(self):
         from .test_smartPeak import test_smartPeak
