@@ -85,7 +85,7 @@ class smartPeak_openSWATH_py():
         empty_swath = pyopenms.MSExperiment()
         chromatogramExtractor = OpenSwathChromatogramExtractor()
         empty_swath=chromatogramExtractor.main(
-            infiles=diaXML_i,
+            infiles=[diaXML_i.encode('utf-8')],
             targeted=targeted,
             extraction_window=0.05,
             min_upper_edge_dist=0.0,
