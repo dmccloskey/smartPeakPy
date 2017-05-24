@@ -16,7 +16,8 @@ m = __main__()
 # Test openSWATH_py
 m.run_openSWATH_py(
     filename_filenames='/home/user/openMS_MRMworkflow/filenames.csv',
-    filename_params='/home/user/openMS_MRMworkflow/MRMFeatureFinderScoring_params.csv',
+    filename_params='/home/user/openMS_MRMworkflow/PeakPickerMRM_params.csv',
+    # filename_params='/home/user/openMS_MRMworkflow/MRMFeatureFinderScoring_params.csv',
     delimiter=';'
     )
 

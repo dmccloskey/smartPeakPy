@@ -178,7 +178,7 @@ class smartPeak_openSWATH_py():
             #check if the param exists
             if not Param_IO.exists(name):
                 print("parameter not found: " + param['name'])
-                continue;
+                continue
             #check supplied user parameters
             if 'value' in param.keys() and param['value']:
                 if 'type' in param.keys() and param['type']:
