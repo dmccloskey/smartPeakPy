@@ -54,7 +54,8 @@ class __main__():
         for filename in filenames:
             for sample,v in filename.items():
                 print("processing sample "+ sample)
-                openSWATH_py.openSWATH_py(v,params['MRMFeatureFinderScoring'])
+                openSWATH_py.openSWATH_py(v,params['PeakPickerMRM'])
+                #openSWATH_py.openSWATH_py(v,params['MRMFeatureFinderScoring'])
 
     def run_testSmartPeak(self):
         from .test_smartPeak import test_smartPeak
