@@ -40,7 +40,7 @@ class __main__():
             filename (str): name of the workflow parameter filename
             verbose (bool): print command line statements to stdout
             
-        Eamples:
+        Examples:
             
         """
         PeakPickerMRM_py = smartPeak_PeakPickerMRM_py()
