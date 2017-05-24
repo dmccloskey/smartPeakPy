@@ -129,7 +129,7 @@ class smartPeak_openSWATH_py():
                 continue
             chromatogram_picked = pyopenms.MSChromatogram()
             featurefinder.pickChromatogram(chromatogram, chromatogram_picked)
-            chromatograms_picked.addChromatogram(chromatogram_picked);
+            chromatograms_picked.addChromatogram(chromatogram_picked)
         # featurefinder.pickExperiment(chromatograms, output, targeted,
         #                                 trafo, empty_swath)
 
