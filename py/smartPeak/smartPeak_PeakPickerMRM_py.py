@@ -171,6 +171,7 @@ class smartPeak_PeakPickerMRM_py():
         # find features
         #http://ftp.mi.fu-berlin.de/pub/OpenMS/release-documentation/html/classOpenMS_1_1FeatureFinderAlgorithmMRM.html#details
         #FeatureFinderAlgorithmMRM
+        #SignalToNoiseEstimatorMedian
 
         # Store outfile as featureXML
         featurexml = pyopenms.FeatureXMLFile()
