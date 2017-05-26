@@ -20,11 +20,14 @@ class MRMGroupMapper():
             targeted (TraML): TraML input file containt the transitions
 
         Returns:
-            output (dict): dictionary of chromatograms where the key=nativeID
+            chromatogram_mapped_dict (dict): dictionary of chromatograms where the key=nativeID
+            targeted_mapped_dict (dict): dictionary of transitions where the key=nativeID
         """
-        pass
+        chromatogram_mapped_dict = {{d.getNativeID():d for d in chromatogram_mapped}}
+        targeted_mapped_dict = {{d.getNativeID():d for d in targeted}}
+        return chromatogram_mapped_dict,targeted_mapped_dict
 
-    def getTransitionGroup(self, chromatogram_mapped, targeted):
+    def getTransitionGroup(self, chromatogram_mapped_dict, targeted_dict):
         """Create a dictionary map between the nativeID for the mapped chromatogram (mzML) and transitions (TraML)
         
         Args:
@@ -32,18 +35,39 @@ class MRMGroupMapper():
             targeted (TraML): TraML input file containt the transitions
 
         Returns:
-            output (dict): dictionary of chromatograms where the key=nativeID
+            output (MRMTransitionGroup): 
+        """
+        output = pyopenms.MRMTransitionGroup()
+        if len(targeted_dict.keys())<len(chromatogram_mapped_dict.keys()):
+            trans_iter = targeted_dict
+        else:
+            trans_iter = chromatogram_mapped_dict
+        for trans in list(trans_iter.keys()):
+            output.addChromatogram(chromatogram_mapped_dict[trans.getNativeID()],trans.getNativeID())
+            output.addTransition(targeted_dict[trans.getNativeID()],trans.getNativeID())
+        return output
+
+    def allAssaysHaveChromatograms(self):
+        """
+        
+        Args:
+
+        Returns:
+            output (bool): True if 
         """
         pass
 
-    def allAssaysHaveChromatograms(self, chromatogram_mapped, targeted):
-        """Create a dictionary map between the nativeID for the mapped chromatogram (mzML) and transitions (TraML)
+    def main(self,chromatogram_mapped, targeted):
+        """
         
         Args:
             chromatogram_map (MSExperiment): chromatograms
             targeted (TraML): TraML input file containt the transitions
 
         Returns:
-            output (dict): dictionary of chromatograms where the key=nativeID
+            chromatogram_mapped_dict (dict): dictionary of chromatograms where the key=nativeID
+            targeted_mapped_dict (dict): dictionary of transitions where the key=nativeID
         """
-        pass
+        chromatogram_mapped_dict, targeted_dict = self.doMap(chromatogram_mapped, targeted)
+        output = self.getTransitionGroup(chromatogram_mapped_dict, targeted_dict)
+        return output

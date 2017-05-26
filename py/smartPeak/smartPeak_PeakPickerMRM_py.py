@@ -3,6 +3,7 @@
 from .smartPeak import smartPeak
 from .pyTOPP.MRMMapper import MRMMapper
 from .pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor
+from .pyTOPP.MRMGroupMapper import MRMGroupMapper
 #3rd part libraries
 try:
     import pyopenms
@@ -147,18 +148,20 @@ class smartPeak_PeakPickerMRM_py():
             PeakPickerMRM_params,
             )
         picker.setParameters(parameters)
-        # featurefinder = pyopenms.MRMTransitionGroupPicker()
-        # parameters = featurefinder.getParameters()
-        # parameters = smartpeak.updateParameters(
-        #     parameters,
-        #     PeakPickerMRM_params,
-        #     )
-        # featurefinder.setParameters(parameters)
+        featurefinder = pyopenms.MRMTransitionGroupPicker()
+        parameters = featurefinder.getParameters()
+        parameters = smartpeak.updateParameters(
+            parameters,
+            PeakPickerMRM_params,
+            )
+        featurefinder.setParameters(parameters)
         
         # set up PeakPickerMRM (featurefinder) and 
         # run
-        # # testing MRMTransitionGroupPicker
-        # featurefinder.pickTransitionGroup(chromatograms, output, targeted)
+        # testing MRMTransitionGroupPicker
+        tgMapper = MRMGroupMapper()
+        tg = tgMapper.main(chromatograms_mapped,targeted)
+        featurefinder.pickTransitionGroup(chromatograms, output, targeted)
         # testing PeakPickerMRM
         chromatograms_picked = pyopenms.MSExperiment()
         for cnt,chromatogram in enumerate(chromatograms.getChromatograms()):
