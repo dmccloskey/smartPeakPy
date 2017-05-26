@@ -43,11 +43,11 @@ class MRMGroupMapper():
         else:
             trans_iter = chromatogram_mapped_dict
         for id in list(trans_iter.keys()):
-            # output.addChromatogram(chromatogram_mapped_dict[id],id)
-            spectrum = pyopenms.MSSpectrum()
-            for peak in chromatogram_mapped_dict[id]:
-                spectrum.push_back(peak)
-            output.addChromatogram(spectrum,id)
+            output.addChromatogram(chromatogram_mapped_dict[id],id)
+            # spectrum = pyopenms.MSSpectrum()
+            # for peak in chromatogram_mapped_dict[id]:
+            #     spectrum.push_back(peak)
+            # output.addChromatogram(spectrum,id)
             output.addTransition(targeted_dict[id],id)
         return output
 
