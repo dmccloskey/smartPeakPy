@@ -45,9 +45,11 @@ csv	../../smartPeak/smartPeak_o.py	/^import csv, sys, json, io$/;"	kind:namespac
 csv	../../smartPeak/smartPeak_openSWATH_cmd.py	/^import csv, sys$/;"	kind:namespace	line:3
 debug_local.py	../../debug_local.py	1;"	kind:file	line:1
 debug_remote.py	../../debug_remote.py	1;"	kind:file	line:1
-filename	../../debug_remote.py	/^filename='\/home\/user\/openMS_MRMworkflow\/openSWATH_cmd_params_QC1.csv'$/;"	kind:variable	line:13
+delimiter	../../debug_remote.py	/^    delimiter=';'$/;"	kind:variable	line:27
 filename_I	../../debug_local.py	/^    filename_I='C:\/Users\/domccl\/Dropbox (UCSD SBRG)\/Project_FastPeak\/openMS_MRMworkflow\/qmethod.csv',$/;"	kind:variable	line:8
 filename_O	../../debug_local.py	/^    filename_O='C:\/Users\/domccl\/Dropbox (UCSD SBRG)\/Project_FastPeak\/openMS_MRMworkflow\/feature.csv'$/;"	kind:variable	line:9
+filename_filenames	../../debug_remote.py	/^    filename_filenames='\/home\/user\/openMS_MRMworkflow\/filenames.csv',$/;"	kind:variable	line:25
+filename_params	../../debug_remote.py	/^    filename_params='\/home\/user\/openMS_MRMworkflow\/PeakPickerMRM_params.csv',$/;"	kind:variable	line:26
 getData	../../smartPeak/smartPeak_i.py	/^    def getData(self):$/;"	kind:member	line:15
 io	../../smartPeak/smartPeak_o.py	/^import csv, sys, json, io$/;"	kind:namespace	line:1
 isfloat	../../smartPeak/smartPeak.py	/^        def isfloat(str_i):$/;"	kind:function	line:233
