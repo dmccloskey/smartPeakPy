@@ -53,7 +53,7 @@ class MRMGroupMapper():
         Args:
 
         Returns:
-            output (bool): True if 
+            output (bool): True if...
         """
         pass
 
@@ -62,7 +62,7 @@ class MRMGroupMapper():
         
         Args:
             chromatogram_map (MSExperiment): chromatograms
-            targeted (TraML): TraML input file containt the transitions
+            targeted (TraML): TraML input file containing the transitions
 
         Returns:
             chromatogram_mapped_dict (dict): dictionary of chromatograms where the key=nativeID

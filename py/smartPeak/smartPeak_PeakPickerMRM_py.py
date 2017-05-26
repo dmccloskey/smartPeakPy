@@ -160,8 +160,10 @@ class smartPeak_PeakPickerMRM_py():
         # run
         # testing MRMTransitionGroupPicker
         tgMapper = MRMGroupMapper()
-        tg = tgMapper.main(chromatograms_mapped,targeted)
-        featurefinder.pickTransitionGroup(chromatograms, output, targeted)
+        transitionGroup = tgMapper.main(chromatograms_mapped,targeted)
+        featurefinder.pickTransitionGroup(transitionGroup)
+        for feature in transitionGroup.getFeatures():
+            output.push_back(feature)
         # testing PeakPickerMRM
         chromatograms_picked = pyopenms.MSExperiment()
         for cnt,chromatogram in enumerate(chromatograms.getChromatograms()):
