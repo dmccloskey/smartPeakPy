@@ -1,4 +1,3 @@
-
 try:
     import pyopenms
 except ImportError as e:

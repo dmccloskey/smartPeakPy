@@ -117,7 +117,6 @@ class smartPeak_PeakPickerMRM_py():
 
         # map transitions to the chromatograms
         # BUG: loss of precision of transition
-        # BUG: does not map transitions correctly
         mrmmapper = MRMMapper()
         chromatograms_mapped = mrmmapper.algorithm(
             chromatogram_map=chromatograms,
