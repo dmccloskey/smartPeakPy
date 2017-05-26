@@ -42,9 +42,9 @@ class MRMGroupMapper():
             trans_iter = targeted_dict
         else:
             trans_iter = chromatogram_mapped_dict
-        for trans in list(trans_iter.keys()):
-            output.addChromatogram(chromatogram_mapped_dict[trans.getNativeID()],trans.getNativeID())
-            output.addTransition(targeted_dict[trans.getNativeID()],trans.getNativeID())
+        for id in list(trans_iter.keys()):
+            output.addChromatogram(chromatogram_mapped_dict[id],id)
+            output.addTransition(targeted_dict[id],id)
         return output
 
     def allAssaysHaveChromatograms(self):
