@@ -23,8 +23,8 @@ class MRMGroupMapper():
             chromatogram_mapped_dict (dict): dictionary of chromatograms where the key=nativeID
             targeted_mapped_dict (dict): dictionary of transitions where the key=nativeID
         """
-        chromatogram_mapped_dict = {{d.getNativeID():d for d in chromatogram_mapped}}
-        targeted_mapped_dict = {{d.getNativeID():d for d in targeted}}
+        chromatogram_mapped_dict = {{d.getNativeID():d} for d in chromatogram_mapped}
+        targeted_mapped_dict = {{d.getNativeID():d} for d in targeted}
         return chromatogram_mapped_dict,targeted_mapped_dict
 
     def getTransitionGroup(self, chromatogram_mapped_dict, targeted_dict):
