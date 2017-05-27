@@ -102,6 +102,7 @@ class smartPeak_openSWATH_py():
         # set up MRMFeatureFinderScoring (featurefinder) and 
         # run
         featurefinder.pickExperiment(chromatograms, output, targeted, trafo, empty_swath)
+        #RuntimeError: Error: Transition arg-L.arg-L_1.Heavy from group arg-L does not have a corresponding chromatogram
 
         # Store outfile as featureXML
         featurexml = pyopenms.FeatureXMLFile()
