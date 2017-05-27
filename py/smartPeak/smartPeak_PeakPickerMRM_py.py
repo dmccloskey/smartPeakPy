@@ -34,6 +34,7 @@ class smartPeak_PeakPickerMRM_py():
         featureXML_o = filenames_I['featureXML_o']
         feature_csv_o = filenames_I['feature_csv_o']
         diaXML_i = filenames_I['diaXML_i']
+        trafo_csv_i = filenames_I['trafo_csv_i']
         DIASpectrumExtractor_params = DIASpectrumExtractor_params_I
 
         #helper classes
@@ -135,9 +136,11 @@ class smartPeak_PeakPickerMRM_py():
         #     parameters,
         #     RTNormalizer_params,
         #     )
+        targeted_rt_norm = pyopenms.TargetedExperiment()
+        tramlfile.convertTSVToTargetedExperiment(trafo_csv_i.encode('utf-8'),21,targeted_rt_norm)
         trafo = RTNormalizer.main(
-            chromatograms,
-            targeted,
+            chromatograms_mapped,
+            targeted_rt_norm,
             model_params=None,
             # model_params=parameters,
             model_type="lowess",
