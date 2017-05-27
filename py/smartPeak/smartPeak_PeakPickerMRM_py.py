@@ -4,6 +4,7 @@ from .smartPeak import smartPeak
 from .pyTOPP.MRMMapper import MRMMapper
 from .pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor
 from .pyTOPP.MRMGroupMapper import MRMGroupMapper
+from .pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
 #3rd part libraries
 try:
     import pyopenms
@@ -128,12 +129,23 @@ class smartPeak_PeakPickerMRM_py():
         )
 
         # normalize the RTs
+        RTNormalizer = OpenSwathRTNormalizer()
+        # parameters = pyopenms.TransformationDescription().getModelParameters()
+        # parameters = smartpeak.updateParameters(
+        #     parameters,
+        #     RTNormalizer_params,
+        #     )
+        trafo = RTNormalizer.main(
+            chromatograms,
+            targeted,
+            model_params=None,
+            # model_params=parameters,
+            model_type="lowess",
+            min_rsq=0.95,
+            min_coverage=0.6,
+            estimateBestPeptides=True
+            )
         trafo = pyopenms.TransformationDescription()
-        # model = trafo.getModelType()
-        # parameters = trafo.getModelParameters()
-        # #...
-        # trafo.setParameters(parameters)
-        # trafo.fitModel(String model_type, Param params)
 
         # Create empty output
         output = pyopenms.FeatureMap()
