@@ -159,22 +159,25 @@ class smartPeak_PeakPickerMRM_py():
             PeakPickerMRM_params,
             )
         picker.setParameters(parameters)
-        featurefinder = pyopenms.MRMTransitionGroupPicker()
-        parameters = featurefinder.getParameters()
+        trgroup_picker = pyopenms.MRMTransitionGroupPicker()
+        parameters = trgroup_picker.getParameters()
         parameters = smartpeak.updateParameters(
             parameters,
             PeakPickerMRM_params,
             )
-        featurefinder.setParameters(parameters)
+        trgroup_picker.setParameters(parameters)
         
         # set up PeakPickerMRM (featurefinder) and 
         # run
         # testing MRMTransitionGroupPicker
         tgMapper = MRMGroupMapper()
-        transitionGroup = tgMapper.main(chromatograms_mapped,targeted)
-        featurefinder.pickTransitionGroup(transitionGroup)
-        for feature in transitionGroup.getFeatures():
-            output.push_back(feature)
+        transition_group = tgMapper.main(chromatograms_mapped,targeted)
+        trgroup_picker.pickTransitionGroup(transition_group)
+        # for feature in transitionGroup.getFeatures():
+        #     output.push_back(feature)        
+        empty_swath = pyopenms.MSExperiment()
+        featureFinder = pyopenms.MRMFeatureFinderScoring()
+        featureFinder.scorePeakgroups(transition_group, trafo, empty_swath, output, ms1only);
         # testing PeakPickerMRM
         chromatograms_picked = pyopenms.MSExperiment()
         for cnt,chromatogram in enumerate(chromatograms.getChromatograms()):

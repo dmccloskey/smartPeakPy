@@ -42,12 +42,6 @@ class smartPeak_openSWATH_py():
         fh = pyopenms.FileHandler()
         fh.loadExperiment(mzML_feature_i.encode('utf-8'), chromatograms)
 
-        # # apply a filter
-        # filter = pyopenms.SavitzkyGolayFilter()
-        # filter.filterExperiment(chromatograms)
-        # file = pyopenms.MzMLFile()
-        # file.store('/home/user/openMS_MRMworkflow/QC1_p.mzML',chromatograms)
-
         # load and make the transition file
         targeted = pyopenms.TargetedExperiment()
         tramlfile = pyopenms.TransitionTSVReader()
@@ -59,7 +53,6 @@ class smartPeak_openSWATH_py():
 
         # map transitions to the chromatograms
         # BUG: loss of precision of transition
-        # BUG: does not map transitions correctly
         mrmmapper = MRMMapper()
         chromatograms_mapped = mrmmapper.algorithm(
             chromatogram_map=chromatograms,
@@ -76,23 +69,21 @@ class smartPeak_openSWATH_py():
 
         # load in the DIA data
         empty_swath = pyopenms.MSExperiment()
-        chromatogramExtractor = OpenSwathChromatogramExtractor()
-        #read in the DIA data files:
-        #dia_files_i = ...(dia_csv_i)
-        empty_swath=chromatogramExtractor.main(
-            infiles=[],
-            targeted=targeted,
-            extraction_window=0.05,
-            min_upper_edge_dist=0.0,
-            ppm=False,
-            is_swath=False,
-            rt_extraction_window=-1,
-            extraction_function="tophat"
-        )
+        # chromatogramExtractor = OpenSwathChromatogramExtractor()
+        # #read in the DIA data files:
+        # #dia_files_i = ...(dia_csv_i)
+        # empty_swath=chromatogramExtractor.main(
+        #     infiles=[],
+        #     targeted=targeted,
+        #     extraction_window=0.05,
+        #     min_upper_edge_dist=0.0,
+        #     ppm=False,
+        #     is_swath=False,
+        #     rt_extraction_window=-1,
+        #     extraction_function="tophat"
+        # )
 
         # Normalize the RTs
-        # MRMRTNormalizer
-        #todo: https://github.com/sneumann/OpenMS/blob/master/pyOpenMS/pyTOPP/OpenSwathRTNormalizer.py
         trafo = pyopenms.TransformationDescription()
 
         # Create empty output
@@ -107,17 +98,9 @@ class smartPeak_openSWATH_py():
             MRMFeatureFinderScoring_params,
             )
         featurefinder.setParameters(parameters)
-
         
         # set up MRMFeatureFinderScoring (featurefinder) and 
         # run
-        """TODO: 
-        need to break into individual functions to create the GUI
-        mapExperimentToTransitionList
-        MRMTransitionGroupPicker
-        OpenSwathScoring #scores added to features generated MRMTransitionGroupPicker
-        OpenSwath_Scores #Holds the scores computed by OpenSwathScoring
-        """
         featurefinder.pickExperiment(chromatograms, output, targeted, trafo, empty_swath)
 
         # Store outfile as featureXML
@@ -126,3 +109,5 @@ class smartPeak_openSWATH_py():
 
         # Store the outfile as csv
         #todo: https://github.com/sneumann/OpenMS/blob/master/pyOpenMS/pyTOPP/OpenSwathFeatureXMLToTSV.py
+
+        # select features
