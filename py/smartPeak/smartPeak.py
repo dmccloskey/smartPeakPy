@@ -116,7 +116,7 @@ class smartPeak():
         
         """
         for param in parameters_I:
-            name = param['name'].encode('utf-8');
+            name = param['name'].encode('utf-8')
             # #test:
             # if name == 'rt_extraction_window'.encode('utf-8'):
             #     print('check')

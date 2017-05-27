@@ -87,7 +87,7 @@ class OpenSwathRTNormalizer():
         pairs=[]
         if estimateBestPeptides:
             self.simple_find_best_feature(output, pairs, targeted)
-            pairs_corrected = pyopenms.MRMRTNormalizer().rm_outliers( pairs, min_rsq, min_coverage) 
+            pairs_corrected = pyopenms.MRMRTNormalizer().removeOutliersIterative( pairs, min_rsq, min_coverage) 
             pairs = [ list(p) for p in pairs_corrected] 
         else:
             self.extract_features(output, pairs, targeted)

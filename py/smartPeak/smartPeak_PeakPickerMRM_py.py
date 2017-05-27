@@ -146,7 +146,8 @@ class smartPeak_PeakPickerMRM_py():
             model_type="lowess",
             min_rsq=0.95,
             min_coverage=0.6,
-            estimateBestPeptides=True
+            # estimateBestPeptides=True
+            estimateBestPeptides=False
             )
 
         # Create empty output
