@@ -78,6 +78,7 @@ class OpenSwathRTNormalizer():
         # set up featurefinder and run
         featurefinder = pyopenms.MRMFeatureFinderScoring()
         # set the correct rt use values
+        # TODO: update parameters (no peaks are found!)
         scoring_params = pyopenms.MRMFeatureFinderScoring().getDefaults()
         scoring_params.setValue("Scores:use_rt_score".encode("utf-8"),'false'.encode("utf-8"),''.encode("utf-8"))
         featurefinder.setParameters(scoring_params)
