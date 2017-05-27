@@ -148,7 +148,6 @@ class smartPeak_PeakPickerMRM_py():
             min_coverage=0.6,
             estimateBestPeptides=True
             )
-        trafo = pyopenms.TransformationDescription()
 
         # Create empty output
         output = pyopenms.FeatureMap()
