@@ -34,7 +34,6 @@ class smartPeak_PeakPickerMRM_py():
         featureXML_o = filenames_I['featureXML_o']
         feature_csv_o = filenames_I['feature_csv_o']
         diaXML_i = filenames_I['diaXML_i']
-        trafo_csv_i = filenames_I['trafo_csv_i']
         DIASpectrumExtractor_params = DIASpectrumExtractor_params_I
 
         #helper classes
@@ -92,6 +91,7 @@ class smartPeak_PeakPickerMRM_py():
         traML_i = filenames_I['traML_i']
         featureXML_o = filenames_I['featureXML_o']
         feature_csv_o = filenames_I['feature_csv_o']
+        trafo_csv_i = filenames_I['trafo_csv_i']
         PeakPickerMRM_params = PeakPickerMRM_params_I
 
         #helper classes
