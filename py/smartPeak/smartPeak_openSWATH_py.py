@@ -31,7 +31,7 @@ class smartPeak_openSWATH_py():
         traML_i = filenames_I['traML_i']
         featureXML_o = filenames_I['featureXML_o']
         feature_csv_o = filenames_I['feature_csv_o']
-        dia_csv_i = filenames_I['dia_csv_i']
+        # dia_csv_i = filenames_I['dia_csv_i']
         MRMFeatureFinderScoring_params = MRMFeatureFinderScoring_params_I
 
         #helper classes
