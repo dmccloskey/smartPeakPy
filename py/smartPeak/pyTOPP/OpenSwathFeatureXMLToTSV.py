@@ -67,7 +67,7 @@ class OpenSwathFeatureXMLToTSV():
             "Intensity",
             "ProteinName",
             "decoy"]
-        header.extend(keys)
+        header.extend([k.decode('utf-8') for k in keys])
         return header
 
     def convert_FeatureXMLToTSV(self, features, targ, run_id = 'run0', filename = 'run0.FeatureXML'):
