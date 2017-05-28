@@ -13,7 +13,7 @@ class OpenSwathFeatureXMLToTSV():
 
     def convert_to_row(self,feature, targ, run_id, filename):
         keys = []
-        keys = feature.getKeys(keys)
+        feature.getKeys(keys)
         peptide_ref = feature.getMetaValue("PeptideRef")
         pep = targ.getPeptideByRef(peptide_ref)
         full_peptide_name = "NA"
