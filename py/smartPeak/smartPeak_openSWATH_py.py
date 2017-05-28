@@ -3,6 +3,8 @@
 from .smartPeak import smartPeak
 from .pyTOPP.MRMMapper import MRMMapper
 from .pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor
+from .pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
+from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
 #3rd part libraries
 try:
     import pyopenms
@@ -26,12 +28,13 @@ class smartPeak_openSWATH_py():
                 
         """
         # variables
-        mzML_feature_i = filenames_I['mzML_feature_i']
-        traML_csv_i = filenames_I['traML_csv_i']
-        traML_i = filenames_I['traML_i']
-        featureXML_o = filenames_I['featureXML_o']
-        feature_csv_o = filenames_I['feature_csv_o']
-        # dia_csv_i = filenames_I['dia_csv_i']
+        mzML_feature_i,traML_csv_i,traML_i,featureXML_o,feature_csv_o,dia_csv_i = None,None,None,None,None,None
+        if 'mzML_feature_i'in filenames_I.keys(): mzML_feature_i = filenames_I['mzML_feature_i']
+        if 'traML_csv_i'in filenames_I.keys(): traML_csv_i = filenames_I['traML_csv_i']
+        if 'traML_i'in filenames_I.keys(): traML_i = filenames_I['traML_i']
+        if 'featureXML_o'in filenames_I.keys(): featureXML_o = filenames_I['featureXML_o']
+        if 'feature_csv_o'in filenames_I.keys(): feature_csv_o = filenames_I['feature_csv_o']
+        if 'dia_csv_i'in filenames_I.keys(): dia_csv_i = filenames_I['dia_csv_i']
         MRMFeatureFinderScoring_params = MRMFeatureFinderScoring_params_I
 
         #helper classes
@@ -52,7 +55,6 @@ class smartPeak_openSWATH_py():
         # tramlfile.load(traML_i.encode('utf-8'), targeted)
 
         # map transitions to the chromatograms
-        # BUG: loss of precision of transition
         mrmmapper = MRMMapper()
         chromatograms_mapped = mrmmapper.algorithm(
             chromatogram_map=chromatograms,
@@ -102,13 +104,13 @@ class smartPeak_openSWATH_py():
         # set up MRMFeatureFinderScoring (featurefinder) and 
         # run
         featurefinder.pickExperiment(chromatograms_mapped, output, targeted, trafo, empty_swath)
-        #RuntimeError: Error: Transition arg-L.arg-L_1.Heavy from group arg-L does not have a corresponding chromatogram
 
         # Store outfile as featureXML
         featurexml = pyopenms.FeatureXMLFile()
         featurexml.store(featureXML_o.encode('utf-8'), output)
 
         # Store the outfile as csv
-        #todo: https://github.com/sneumann/OpenMS/blob/master/pyOpenMS/pyTOPP/OpenSwathFeatureXMLToTSV.py
+        featurescsv = OpenSwathFeatureXMLToTSV()
+        featurescsv.convert_FeatureXMLToTSV(output, targeted, run_id = 'run0', filename = featureXML_o)
 
         # select features

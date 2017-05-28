@@ -5,6 +5,7 @@ from .pyTOPP.MRMMapper import MRMMapper
 from .pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor
 from .pyTOPP.MRMGroupMapper import MRMGroupMapper
 from .pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
+from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
 #3rd part libraries
 try:
     import pyopenms
