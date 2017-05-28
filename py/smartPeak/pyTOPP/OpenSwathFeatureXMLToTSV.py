@@ -11,9 +11,7 @@ class OpenSwathFeatureXMLToTSV():
         https://github.com/sneumann/OpenMS/blob/master/pyOpenMS/pyTOPP/OpenSwathFeatureXMLToTSV.py
      """
 
-    def convert_to_row(self,feature, targ, run_id, filename):
-        keys = []
-        feature.getKeys(keys)
+    def convert_to_row(self,feature, targ, run_id, keys, filename):
         peptide_ref = feature.getMetaValue("PeptideRef")
         pep = targ.getPeptideByRef(peptide_ref)
         full_peptide_name = "NA"
@@ -88,7 +86,7 @@ class OpenSwathFeatureXMLToTSV():
         rows = []
         header = self.get_header(features)
         for feature in features:
-            row = self.convert_to_row(feature, targ, run_id, filename)
+            row = self.convert_to_row(feature, targ, run_id, header, filename)
             rows.append(dict(zip(header,row)))
         return header,rows
 
