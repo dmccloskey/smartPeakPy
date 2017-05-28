@@ -111,6 +111,6 @@ class smartPeak_openSWATH_py():
 
         # Store the outfile as csv
         featurescsv = OpenSwathFeatureXMLToTSV()
-        featurescsv.convert_FeatureXMLToTSV(output, targeted, run_id = 'run0', filename = featureXML_o)
+        featurescsv.store(feature_csv_o, output, targeted, run_id = 'run0', filename = featureXML_o)
 
         # select features
