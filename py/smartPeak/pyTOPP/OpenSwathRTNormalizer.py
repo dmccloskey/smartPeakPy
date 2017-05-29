@@ -199,7 +199,7 @@ class OpenSwathRTNormalizer():
         Source:
         """
 
-        rt_pairs = self.make_retentionTimePairs(
+        pairs = self.make_retentionTimePairs(
             chromatograms=chromatograms,
             targeted=targeted,
             MRMFeatureFinderScoring_params=MRMFeatureFinderScoring_params,
