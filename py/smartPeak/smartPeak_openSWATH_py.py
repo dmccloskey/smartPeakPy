@@ -134,7 +134,6 @@ class smartPeak_openSWATH_py():
             model_type="lowess",
             min_rsq=0.95,
             min_coverage=0.6,
-            removeOutlierPeptides=True,
             estimateBestPeptides=True,
             MRMFeatureFinderScoring_params=parameters
             )

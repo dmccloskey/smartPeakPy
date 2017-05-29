@@ -188,7 +188,6 @@ class OpenSwathRTNormalizer():
         estimateBestPeptides=True,
         min_rsq=0.95,
         min_coverage=0.6,
-        removeOutlierPeptides=True,
         MRMFeatureFinderScoring_params=None
         ):
         """generalized RTNormalization
@@ -206,8 +205,7 @@ class OpenSwathRTNormalizer():
             MRMFeatureFinderScoring_params=MRMFeatureFinderScoring_params,
             min_rsq=min_rsq,
             min_coverage=min_coverage,
-            estimateBestPeptides=estimateBestPeptides,
-            removeOutlierPeptides=removeOutlierPeptides
+            estimateBestPeptides=estimateBestPeptides
         )
         trafo_out = make_transformation( 
             pairs,
