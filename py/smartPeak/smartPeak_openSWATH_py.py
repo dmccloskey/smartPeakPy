@@ -105,6 +105,7 @@ class smartPeak_openSWATH_py():
 
         # Normalize the RTs
         # NOTE: same MRMFeatureFinderScoring params will be used to pickPeaks
+        #trafo_out = pyopenms.TransformationDescription()
         RTNormalizer = OpenSwathRTNormalizer()
         # parameters = pyopenms.TransformationDescription().getModelParameters()
         # parameters = smartpeak.updateParameters(
@@ -112,7 +113,9 @@ class smartPeak_openSWATH_py():
         #     RTNormalizer_params,
         #     )
         targeted_rt_norm = pyopenms.TargetedExperiment()
-        tramlfile.convertTSVToTargetedExperiment(trafo_csv_i.encode('utf-8'),21,targeted_rt_norm)
+        tramlfile.convertTSVToTargetedExperiment(
+            trafo_csv_i.encode('utf-8'),21,targeted_rt_norm
+            )
         trafo = RTNormalizer.main(
             chromatograms_mapped,
             targeted_rt_norm,
