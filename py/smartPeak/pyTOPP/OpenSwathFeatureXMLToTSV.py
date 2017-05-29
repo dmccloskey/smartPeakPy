@@ -98,7 +98,7 @@ class OpenSwathFeatureXMLToTSV():
         header,rows = self.convert_FeatureXMLToTSV(output, targeted, run_id = run_id, filename = filename)
 
         # write dict to csv
-        with open(filename, 'w',newline='') as f:
+        with open(filename_O, 'w',newline='') as f:
             writer = csv.DictWriter(f, fieldnames = header)
             try:
                 writer.writeheader()

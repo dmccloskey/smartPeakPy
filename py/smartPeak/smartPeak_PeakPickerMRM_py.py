@@ -29,12 +29,13 @@ class smartPeak_PeakPickerMRM_py():
                 
         """
         # variables
-        mzML_feature_i = filenames_I['mzML_feature_i']
-        traML_csv_i = filenames_I['traML_csv_i']
-        traML_i = filenames_I['traML_i']
-        featureXML_o = filenames_I['featureXML_o']
-        feature_csv_o = filenames_I['feature_csv_o']
-        diaXML_i = filenames_I['diaXML_i']
+        mzML_feature_i,traML_csv_i,traML_i,featureXML_o,feature_csv_o,dia_csv_i = None,None,None,None,None,None
+        if 'mzML_feature_i'in filenames_I.keys(): mzML_feature_i = filenames_I['mzML_feature_i']
+        if 'traML_csv_i'in filenames_I.keys(): traML_csv_i = filenames_I['traML_csv_i']
+        if 'traML_i'in filenames_I.keys(): traML_i = filenames_I['traML_i']
+        if 'featureXML_o'in filenames_I.keys(): featureXML_o = filenames_I['featureXML_o']
+        if 'feature_csv_o'in filenames_I.keys(): feature_csv_o = filenames_I['feature_csv_o']
+        if 'dia_csv_i'in filenames_I.keys(): dia_csv_i = filenames_I['dia_csv_i']
         DIASpectrumExtractor_params = DIASpectrumExtractor_params_I
 
         #helper classes
@@ -87,12 +88,13 @@ class smartPeak_PeakPickerMRM_py():
                 
         """
         # variables
-        mzML_feature_i = filenames_I['mzML_feature_i']
-        traML_csv_i = filenames_I['traML_csv_i']
-        traML_i = filenames_I['traML_i']
-        featureXML_o = filenames_I['featureXML_o']
-        feature_csv_o = filenames_I['feature_csv_o']
-        trafo_csv_i = filenames_I['trafo_csv_i']
+        mzML_feature_i,traML_csv_i,traML_i,featureXML_o,feature_csv_o,dia_csv_i = None,None,None,None,None,None
+        if 'mzML_feature_i'in filenames_I.keys(): mzML_feature_i = filenames_I['mzML_feature_i']
+        if 'traML_csv_i'in filenames_I.keys(): traML_csv_i = filenames_I['traML_csv_i']
+        if 'traML_i'in filenames_I.keys(): traML_i = filenames_I['traML_i']
+        if 'featureXML_o'in filenames_I.keys(): featureXML_o = filenames_I['featureXML_o']
+        if 'feature_csv_o'in filenames_I.keys(): feature_csv_o = filenames_I['feature_csv_o']
+        if 'dia_csv_i'in filenames_I.keys(): dia_csv_i = filenames_I['dia_csv_i']
         PeakPickerMRM_params = PeakPickerMRM_params_I
 
         #helper classes
