@@ -172,10 +172,11 @@ class OpenSwathRTNormalizer():
         trafo_out = pyopenms.TransformationDescription()
         trafo_out.setDataPoints(pairs)
         if not model_params or model_params is None:
-            model_params = pyopenms.Param()
-            model_params.setValue("symmetric_regression", 'false', '')
+            model_params = trafo_out.getModelParameters()
         if not model_type or model_type is None:
             model_type = "linear"
+            model_params = pyopenms.Param()
+            model_params.setValue("symmetric_regression", 'false', '')
         trafo_out.fitModel(model_type, model_params)
         return trafo_out
 
