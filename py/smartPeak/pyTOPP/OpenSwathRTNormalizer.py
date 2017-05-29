@@ -114,7 +114,7 @@ class OpenSwathRTNormalizer():
         else:
             self.extract_features(output, pairs, targeted)
         if outlier_method == "iter_jackknife" or outlier_method == "iter_residual":
-            pairs_corrected = pyopenms.MRMRTNormalizer().removeOutliersIterative( pairs, min_rsq, min_coverage, use_chauvenet, outlier_method) 
+            pairs_corrected = pyopenms.MRMRTNormalizer().removeOutliersIterative( pairs, min_rsq, min_coverage, use_chauvenet, outlier_method.encode("utf-8")) 
             pairs = [ list(p) for p in pairs_corrected] 
         elif outlier_method == "ransac":
             #TODO: estimate defaults for parameters
@@ -212,6 +212,7 @@ class OpenSwathRTNormalizer():
             model_params=model_params,
             model_type=model_type
         )
+        return trafo_out
 
     def store_TransformationXMLFile(self,outfile,trafo_out):
 
