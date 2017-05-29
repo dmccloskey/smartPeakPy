@@ -116,18 +116,18 @@ class smartPeak_openSWATH_py():
         tramlfile.convertTSVToTargetedExperiment(
             trafo_csv_i.encode('utf-8'),21,targeted_rt_norm
             )
-        # map transitions to the chromatograms
-        mrmmapper = MRMMapper()
-        chromatograms_mapped_rt_norm = mrmmapper.algorithm(
-            chromatogram_map=chromatograms,
-            targeted=targeted_rt_norm, 
-            precursor_tolerance=0.0005,
-            product_tolerance=0.0005, 
-            allow_unmapped=True,
-            allow_double_mappings=True
-        )
+        # # map transitions to the chromatograms
+        # mrmmapper = MRMMapper()
+        # chromatograms_mapped_rt_norm = mrmmapper.algorithm(
+        #     chromatogram_map=chromatograms,
+        #     targeted=targeted_rt_norm, 
+        #     precursor_tolerance=0.0005,
+        #     product_tolerance=0.0005, 
+        #     allow_unmapped=True,
+        #     allow_double_mappings=True
+        # )
         trafo = RTNormalizer.main(
-            chromatograms_mapped_rt_norm,
+            chromatograms_mapped,
             targeted_rt_norm,
             model_params=None,
             # model_params=parameters,

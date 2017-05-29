@@ -48,9 +48,11 @@ class OpenSwathRTNormalizer():
         estimateBestPeptides=True,
         min_rsq=0.95,
         min_coverage=0.6,
-        removeOutlierPeptides=True,
         use_chauvenet=True,
         outlier_method="iter_residual",
+        max_iterations=1,
+        max_rt_threshold=1,
+        sampling_size=1,
         MRMFeatureFinderScoring_params=None
         ):
         """make the retention time pairs required for the transformation model
@@ -61,18 +63,24 @@ class OpenSwathRTNormalizer():
 
         Args:
             chromatograms (MSExperiment): chromatograms
-            targeted (TraML): TraML input file containt the transitions
+            targeted (TraML): TraML input file containing the transitions
+            #targeted_norm (TraML): TraML input file containing the normalized transitions
             estimateBestPeptides (bool): Whether the algorithms should try to choose the best peptides based on their peak 
                             shape for normalization. Use this option you do not expect all your peptides to be
                             detected in a sample and too many 'bad' peptides enter the outlier removal step
                             (e.g. due to them being endogenous peptides or using a less curated list of peptide
                             s).
-            min_rsq (float): Minimum r-squared of RT peptides regression (default: '0.95')
-            min_coverage (float): Minimum relative amount of RT peptides to keep (default: '0.6')
-            removeOutlierPeptides (bool): Remove outlier peptides using a linear regression with parameters
-                            min_rsq and min_coverage
-            use_chauvenet (bool): Whether to only remove outliers that fulfill Chauvenet's criterion for outliers (otherwise it will remove any outlier candidate regardless of the criterion)
-            outlier_method (string): Outlier detection method ("iter_jackknife" or "iter_residual")
+            outlier_method (string): Outlier detection method ("iter_jackknife", "iter_residual", "ransac")
+                "iter_jackknife" or "iter_residual" Args:
+                    min_rsq (float): Minimum r-squared of RT peptides regression (default: '0.95')
+                    min_coverage (float): Minimum relative amount of RT peptides to keep (default: '0.6')
+                    use_chauvenet (bool): Whether to only remove outliers that fulfill Chauvenet's criterion for outliers 
+                        (otherwise it will remove any outlier candidate regardless of the criterion)
+                "ransac" Args:
+                    max_iterations (int): Maximum iterations for the RANSAC algorithm
+                    max_rt_threshold (float): Maximum deviation from fit for the retention time.
+                        This must be in the unit of the second dimension (e.g. theoretical_rt).
+                    sampling_size (float): The number of data points to sample for the RANSAC algorithm.
             MRMFeatureFinderScoring_params (Param): Param object for MRMFeatureFinderScoring 
 
         Returns:
@@ -90,10 +98,12 @@ class OpenSwathRTNormalizer():
         # TODO: update parameters (no peaks are found!)
         if MRMFeatureFinderScoring_params and not MRMFeatureFinderScoring_params is None:
             MRMFeatureFinderScoring_params.setValue("Scores:use_rt_score".encode("utf-8"),'false'.encode("utf-8"),''.encode("utf-8"))
+            MRMFeatureFinderScoring_params.setValue("Scores:use_elution_model_score".encode("utf-8"),'false'.encode("utf-8"),''.encode("utf-8"))
             featurefinder.setParameters(MRMFeatureFinderScoring_params)
         else:
             scoring_params = pyopenms.MRMFeatureFinderScoring().getDefaults()
             scoring_params.setValue("Scores:use_rt_score".encode("utf-8"),'false'.encode("utf-8"),''.encode("utf-8"))
+            scoring_params.setValue("Scores:use_elution_model_score".encode("utf-8"),'false'.encode("utf-8"),''.encode("utf-8"))
             featurefinder.setParameters(scoring_params)
         featurefinder.pickExperiment(chromatograms, output, targeted, trafo, empty_swath)
 
@@ -103,8 +113,16 @@ class OpenSwathRTNormalizer():
             self.simple_find_best_feature(output, pairs, targeted)
         else:
             self.extract_features(output, pairs, targeted)
-        if removeOutlierPeptides:
+        if outlier_method == "iter_jackknife" or outlier_method == "iter_residual":
             pairs_corrected = pyopenms.MRMRTNormalizer().removeOutliersIterative( pairs, min_rsq, min_coverage, use_chauvenet, outlier_method) 
+            pairs = [ list(p) for p in pairs_corrected] 
+        elif outlier_method == "ransac":
+            #TODO: estimate defaults for parameters
+            #https://github.com/OpenMS/OpenMS/blob/cfcf9ff09613191aa3502dbf5c6df9a613379376/src/topp/OpenSwathRTNormalizer.cpp
+            pairs_corrected = pyopenms.MRMRTNormalizer().removeOutliersIterremoveOutliersRANSACative( pairs, min_rsq, min_coverage, 
+                max_iterations,
+                max_rt_threshold,
+                sampling_size) 
             pairs = [ list(p) for p in pairs_corrected] 
 
         return pairs
@@ -164,6 +182,7 @@ class OpenSwathRTNormalizer():
     def main(self,
         chromatograms,
         targeted,
+        #targeted_norm,
         model_params=None,
         model_type="lowess",
         estimateBestPeptides=True,
