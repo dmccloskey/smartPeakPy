@@ -49,6 +49,8 @@ class OpenSwathRTNormalizer():
         min_rsq=0.95,
         min_coverage=0.6,
         removeOutlierPeptides=True,
+        use_chauvenet=True,
+        outlier_method="iter_residual"
         MRMFeatureFinderScoring_params=None
         ):
         """make the retention time pairs required for the transformation model
@@ -69,6 +71,8 @@ class OpenSwathRTNormalizer():
             min_coverage (float): Minimum relative amount of RT peptides to keep (default: '0.6')
             removeOutlierPeptides (bool): Remove outlier peptides using a linear regression with parameters
                             min_rsq and min_coverage
+            use_chauvenet (bool): Whether to only remove outliers that fulfill Chauvenet's criterion for outliers (otherwise it will remove any outlier candidate regardless of the criterion)
+            outlier_method (string): Outlier detection method ("iter_jackknife" or "iter_residual")
             MRMFeatureFinderScoring_params (Param): Param object for MRMFeatureFinderScoring 
 
         Returns:
@@ -100,7 +104,7 @@ class OpenSwathRTNormalizer():
         else:
             self.extract_features(output, pairs, targeted)
         if removeOutlierPeptides:
-            pairs_corrected = pyopenms.MRMRTNormalizer().removeOutliersIterative( pairs, min_rsq, min_coverage) 
+            pairs_corrected = pyopenms.MRMRTNormalizer().removeOutliersIterative( pairs, min_rsq, min_coverage, use_chauvenet, outlier_method) 
             pairs = [ list(p) for p in pairs_corrected] 
 
         return pairs
