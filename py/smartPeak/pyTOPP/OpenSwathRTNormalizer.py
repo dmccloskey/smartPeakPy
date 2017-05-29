@@ -48,11 +48,11 @@ class OpenSwathRTNormalizer():
         estimateBestPeptides=True,
         min_rsq=0.95,
         min_coverage=0.6,
-        use_chauvenet=True,
+        use_chauvenet=False,
         outlier_method="iter_residual",
-        max_iterations=1,
-        max_rt_threshold=1,
-        sampling_size=1,
+        max_iterations=1000,
+        max_rt_threshold=3,
+        sampling_size=10,
         MRMFeatureFinderScoring_params=None
         ):
         """make the retention time pairs required for the transformation model
