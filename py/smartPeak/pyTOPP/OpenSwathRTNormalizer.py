@@ -50,7 +50,7 @@ class OpenSwathRTNormalizer():
         min_coverage=0.6,
         removeOutlierPeptides=True,
         use_chauvenet=True,
-        outlier_method="iter_residual"
+        outlier_method="iter_residual",
         MRMFeatureFinderScoring_params=None
         ):
         """make the retention time pairs required for the transformation model
