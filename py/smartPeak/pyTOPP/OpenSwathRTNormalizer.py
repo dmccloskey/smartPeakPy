@@ -207,7 +207,7 @@ class OpenSwathRTNormalizer():
             min_coverage=min_coverage,
             estimateBestPeptides=estimateBestPeptides
         )
-        trafo_out = make_transformation( 
+        trafo_out = self.make_transformation( 
             pairs,
             model_params=model_params,
             model_type=model_type
