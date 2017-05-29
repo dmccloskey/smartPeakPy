@@ -45,9 +45,11 @@ class OpenSwathRTNormalizer():
 
     def make_retentionTimePairs(
         self, chromatograms, targeted,
+        estimateBestPeptides=True,
         min_rsq=0.95,
         min_coverage=0.6,
-        estimateBestPeptides=True
+        removeOutlierPeptides=True,
+        MRMFeatureFinderScoring_params=None
         ):
         """make the retention time pairs required for the transformation model
         from the MSExperiment actual retention times
@@ -58,13 +60,16 @@ class OpenSwathRTNormalizer():
         Args:
             chromatograms (MSExperiment): chromatograms
             targeted (TraML): TraML input file containt the transitions
-            min_rsq (float): Minimum r-squared of RT peptides regression (default: '0.95')
-            min_coverage (float): Minimum relative amount of RT peptides to keep (default: '0.6')
             estimateBestPeptides (bool): Whether the algorithms should try to choose the best peptides based on their peak 
                             shape for normalization. Use this option you do not expect all your peptides to be
                             detected in a sample and too many 'bad' peptides enter the outlier removal step
                             (e.g. due to them being endogenous peptides or using a less curated list of peptide
                             s).
+            min_rsq (float): Minimum r-squared of RT peptides regression (default: '0.95')
+            min_coverage (float): Minimum relative amount of RT peptides to keep (default: '0.6')
+            removeOutlierPeptides (bool): Remove outlier peptides using a linear regression with parameters
+                            min_rsq and min_coverage
+            MRMFeatureFinderScoring_params (Param): Param object for MRMFeatureFinderScoring 
 
         Returns:
             pairs_corrected (list([,])): list of ["rt","rt_norm"]
@@ -81,6 +86,8 @@ class OpenSwathRTNormalizer():
         # TODO: update parameters (no peaks are found!)
         scoring_params = pyopenms.MRMFeatureFinderScoring().getDefaults()
         scoring_params.setValue("Scores:use_rt_score".encode("utf-8"),'false'.encode("utf-8"),''.encode("utf-8"))
+        if MRMFeatureFinderScoring_params and not MRMFeatureFinderScoring_params is None:
+            featurefinder.setParameters(MRMFeatureFinderScoring_params)
         featurefinder.setParameters(scoring_params)
         featurefinder.pickExperiment(chromatograms, output, targeted, trafo, empty_swath)
 
@@ -88,10 +95,11 @@ class OpenSwathRTNormalizer():
         pairs=[]
         if estimateBestPeptides:
             self.simple_find_best_feature(output, pairs, targeted)
-            pairs_corrected = pyopenms.MRMRTNormalizer().removeOutliersIterative( pairs, min_rsq, min_coverage) 
-            pairs = [ list(p) for p in pairs_corrected] 
         else:
             self.extract_features(output, pairs, targeted)
+        if removeOutlierPeptides:
+            pairs_corrected = pyopenms.MRMRTNormalizer().removeOutliersIterative( pairs, min_rsq, min_coverage) 
+            pairs = [ list(p) for p in pairs_corrected] 
 
         return pairs
 
@@ -152,9 +160,11 @@ class OpenSwathRTNormalizer():
         targeted,
         model_params=None,
         model_type="lowess",
+        estimateBestPeptides=True,
         min_rsq=0.95,
         min_coverage=0.6,
-        estimateBestPeptides=True
+        removeOutlierPeptides=True,
+        MRMFeatureFinderScoring_params=None
         ):
         """generalized RTNormalization
 
@@ -167,15 +177,17 @@ class OpenSwathRTNormalizer():
 
         rt_pairs = self.make_retentionTimePairs(
             chromatograms=chromatograms,
-            targeted=targeted
+            targeted=targeted,
+            MRMFeatureFinderScoring_params=MRMFeatureFinderScoring_params,
+            min_rsq=min_rsq,
+            min_coverage=min_coverage,
+            estimateBestPeptides=estimateBestPeptides,
+            removeOutlierPeptides=removeOutlierPeptides
         )
         trafo_out = make_transformation( 
             pairs,
             model_params=model_params,
-            model_type=model_type,
-            min_rsq=min_rsq,
-            min_coverage=min_coverage,
-            estimateBestPeptides=estimateBestPeptides
+            model_type=model_type
         )
 
     def store_TransformationXMLFile(self,outfile,trafo_out):
