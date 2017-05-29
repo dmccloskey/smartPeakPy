@@ -84,11 +84,13 @@ class OpenSwathRTNormalizer():
         featurefinder = pyopenms.MRMFeatureFinderScoring()
         # set the correct rt use values
         # TODO: update parameters (no peaks are found!)
-        scoring_params = pyopenms.MRMFeatureFinderScoring().getDefaults()
-        scoring_params.setValue("Scores:use_rt_score".encode("utf-8"),'false'.encode("utf-8"),''.encode("utf-8"))
         if MRMFeatureFinderScoring_params and not MRMFeatureFinderScoring_params is None:
+            MRMFeatureFinderScoring_params.setValue("Scores:use_rt_score".encode("utf-8"),'false'.encode("utf-8"),''.encode("utf-8"))
             featurefinder.setParameters(MRMFeatureFinderScoring_params)
-        featurefinder.setParameters(scoring_params)
+        else:
+            scoring_params = pyopenms.MRMFeatureFinderScoring().getDefaults()
+            scoring_params.setValue("Scores:use_rt_score".encode("utf-8"),'false'.encode("utf-8"),''.encode("utf-8"))
+            featurefinder.setParameters(scoring_params)
         featurefinder.pickExperiment(chromatograms, output, targeted, trafo, empty_swath)
 
         # get the pairs
