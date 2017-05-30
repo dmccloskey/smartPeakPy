@@ -161,10 +161,11 @@ class smartPeak_PeakPickerMRM_py():
             picker.pickChromatogram(chromatogram, chromatogram_picked)
             chromatograms_picked.addChromatogram(chromatogram_picked)
             if chromatogram_picked.size() > 0:
+                transition_group_id = [t.getPeptideRef() for t in targeted.getTransitions() if t.getNativeID()==chromatogram_picked.getNativeID()]
                 print("Peaks found for " + str(chromatogram_picked.getNativeID()))
-                mrmFeature = pyopenms.MRMFeature()
+                # mrmFeature = pyopenms.MRMFeature()
                 for i in range(chromatogram_picked.size()):
-                    #f = pyopenms.Feature()
+                    f = pyopenms.Feature()
                     floatDataArrays = '''Peak: %s, Intensity: %s, Left: %s, Right %s, RT %s'''%(
                         i,chromatogram_picked.getFloatDataArrays()[0][i],
                         chromatogram_picked.getFloatDataArrays()[1][i],
@@ -173,9 +174,24 @@ class smartPeak_PeakPickerMRM_py():
                     )
                     print(floatDataArrays)
                     # extract features
-                    #...
-                    mrmFeature.addFeature(f, chromatogram_picked.getNativeID()); #map index and feature
-            output.push_back(mrmFeature)
+                    f.setRT(chromatogram_picked[i].getRT())
+                    f.setMZ(chromatogram_picked.getProduct().getMZ())
+                    f.setIntensity(chromatogram_picked.getFloatDataArrays()[0][i])
+                    f.setWidth(chromatogram_picked.getFloatDataArrays()[2][i] - chromatogram_picked.getFloatDataArrays()[1][i])
+                    f.setCharge(chromatogram_picked.getPrecursor().getCharge())
+                    # ConvexHull2D hull;
+                    # hull.setHullPoints(hull_points);
+                    # f.getConvexHulls().push_back(hull);
+                    f.setMetaValue("product_mz", chromatogram_picked.getProduct().getMZ())
+                    f.setMetaValue("precursor_mz", chromatogram_picked.getPrecursor().getMZ())
+                    f.setMetaValue("native_id", chromatogram_picked.getNativeID())
+                    f.setMetaValue("leftWidth", chromatogram_picked.getFloatDataArrays()[1][i])
+                    f.setMetaValue("rightWidth", chromatogram_picked.getFloatDataArrays()[2][i])
+                    # f.setMetaValue("peak_apex_int", peak_apex_int);
+                    f.setMetaValue("transition_group_id", transition_group_id)
+                    # mrmFeature.addFeature(f, chromatogram_picked.getNativeID()); #map index and feature
+                    output.push_back(f)
+            # output.push_back(mrmFeature)
 
         # find features
         #http://ftp.mi.fu-berlin.de/pub/OpenMS/release-documentation/html/classOpenMS_1_1FeatureFinderAlgorithmMRM.html#details
@@ -185,6 +201,10 @@ class smartPeak_PeakPickerMRM_py():
         # Store outfile as featureXML
         featurexml = pyopenms.FeatureXMLFile()
         featurexml.store(featureXML_o.encode('utf-8'), output)
+
+        # Store the outfile as csv
+        featurescsv = OpenSwathFeatureXMLToTSV()
+        featurescsv.store(feature_csv_o, output, targeted, run_id = 'run0', filename = featureXML_o)
 
         # Store the outfile as csv
 
