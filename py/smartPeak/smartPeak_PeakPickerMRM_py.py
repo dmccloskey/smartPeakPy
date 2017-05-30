@@ -162,13 +162,20 @@ class smartPeak_PeakPickerMRM_py():
             chromatograms_picked.addChromatogram(chromatogram_picked)
             if chromatogram_picked.size() > 0:
                 print("Peaks found for " + str(chromatogram_picked.getNativeID()))
+                mrmFeature = pyopenms.MRMFeature()
                 for i in range(chromatogram_picked.size()):
-                    floatDataArrays = '''Peak: %s, Intensity: %s, Left: %s, Right %s'''%(
+                    #f = pyopenms.Feature()
+                    floatDataArrays = '''Peak: %s, Intensity: %s, Left: %s, Right %s, RT %s'''%(
                         i,chromatogram_picked.getFloatDataArrays()[0][i],
                         chromatogram_picked.getFloatDataArrays()[1][i],
-                        chromatogram_picked.getFloatDataArrays()[2][i]
+                        chromatogram_picked.getFloatDataArrays()[2][i],
+                        chromatogram_picked[i].getRT()
                     )
                     print(floatDataArrays)
+                    # extract features
+                    #...
+                    mrmFeature.addFeature(f, chromatogram_picked.getNativeID()); #map index and feature
+            output.push_back(mrmFeature)
 
         # find features
         #http://ftp.mi.fu-berlin.de/pub/OpenMS/release-documentation/html/classOpenMS_1_1FeatureFinderAlgorithmMRM.html#details
