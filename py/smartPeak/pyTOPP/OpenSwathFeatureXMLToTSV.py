@@ -58,7 +58,7 @@ class OpenSwathFeatureXMLToTSV():
         ]
 
         for k in keys:
-            row.append(feature.getMetaValue(k))
+            row.append(feature.getMetaValue(k).decode('utf-8'))
 
         return row
 
@@ -87,7 +87,7 @@ class OpenSwathFeatureXMLToTSV():
             "ProteinName",
             "decoy"]
         keys1 = [k.decode('utf-8') for k in keys]
-        header.extend(keys)
+        header.extend(keys1)
         return header,keys
 
     def convert_FeatureXMLToTSV(self, features, targ, run_id = 'run0', filename = 'run0.FeatureXML'):
