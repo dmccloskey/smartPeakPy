@@ -16,9 +16,10 @@ m = __main__()
 #     delimiter=';'
 #     )
 
-# # Test openSWATH_cmd
+# Test openSWATH_cmd
 # filename='/home/user/openMS_MRMworkflow/openSWATH_cmd_params_QC1.csv'
-# m.run_openSWATH_cmd(filename)
+filename='/home/user/openMS_MRMworkflow/openSWATH_cmd_params_QC1_FeatureXML2TSV.csv'
+m.run_openSWATH_cmd(filename)
 
 # # Test MRMTransitionGroupPicker_py
 # m.run_MRMTransitionGroupPicker_py(
@@ -27,12 +28,12 @@ m = __main__()
 #     delimiter=';'
 #     )
 
-# Test PeakPickerMRM_py
-m.run_PeakPickerMRM_py(
-    filename_filenames='/home/user/openMS_MRMworkflow/filenames.csv',
-    filename_params='/home/user/openMS_MRMworkflow/PeakPickerMRM_params.csv',
-    delimiter=';'
-    )
+# # Test PeakPickerMRM_py
+# m.run_PeakPickerMRM_py(
+#     filename_filenames='/home/user/openMS_MRMworkflow/filenames.csv',
+#     filename_params='/home/user/openMS_MRMworkflow/PeakPickerMRM_params.csv',
+#     delimiter=';'
+#     )
 
 # # Test file conversions
 # m.convert_MQQMethod2Feature(
