@@ -198,10 +198,6 @@ class smartPeak():
         """
         for param in parameters_I:
             name = param['name'].encode('utf-8')
-            #check if the param exists
-            if not Param_IO.exists(name):
-                print("parameter not found: " + param['name'])
-                continue
             #check supplied user parameters
             if 'value' in param.keys() and param['value']:
                 if 'type' in param.keys() and param['type']:
