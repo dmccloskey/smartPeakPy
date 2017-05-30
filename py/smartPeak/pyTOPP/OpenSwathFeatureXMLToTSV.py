@@ -80,9 +80,9 @@ class OpenSwathFeatureXMLToTSV():
         for subordinate in feature.getSubordinates():
             key_subordinate_row = []
             for k in keys_subordinates:
-                value = feature.getMetaValue(k)
+                value = subordinate.getMetaValue(k)
                 if type(value)==type(''.encode('utf-8')):
-                    value = feature.getMetaValue(k).decode('utf-8')
+                    value = subordinate.getMetaValue(k).decode('utf-8')
                 key_subordinate_row.append(value)
             rows_O.append(header_row + key_row + key_subordinate_row)
 
@@ -141,7 +141,7 @@ class OpenSwathFeatureXMLToTSV():
         for feature in features:
             rows = self.convert_to_row(feature, targ, run_id, keys, keys_subordinates, filename)
             for row in rows:
-                rows.append(dict(zip(header,row)))
+                rows_O.append(dict(zip(header,row)))
         return header,rows_O
 
     def store(self, filename_O, output, targeted, run_id = 'run0', filename = 'run0.FeatureXML'):
