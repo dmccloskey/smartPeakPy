@@ -217,8 +217,8 @@ class smartPeak():
             #update the params
             Param_O.setValue(name,
                 value,
-                description,
-                tags)
+                description)
+                # tags) #setValue does not accept "tag"
         return Param_O
 
     @staticmethod

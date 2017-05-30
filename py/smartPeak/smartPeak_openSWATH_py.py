@@ -107,8 +107,8 @@ class smartPeak_openSWATH_py():
         # NOTE: same MRMFeatureFinderScoring params will be used to pickPeaks
         #trafo_out = pyopenms.TransformationDescription()
         RTNormalizer = OpenSwathRTNormalizer()
-        model_params_list = [{'name':'interpolation_type','value':'linear'},
-            {'name':'extrapolation_type','value':'two-point-linear'},
+        model_params_list = [{'name':'interpolation_type','value':'linear','type':'string'},
+            {'name':'extrapolation_type','value':'two-point-linear','type':'string'},
         ]
         model_params = pyopenms.Param()
         model_params = smartpeak.setParameters(model_params_list,model_params)
