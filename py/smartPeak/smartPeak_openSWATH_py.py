@@ -107,11 +107,11 @@ class smartPeak_openSWATH_py():
         # NOTE: same MRMFeatureFinderScoring params will be used to pickPeaks
         #trafo_out = pyopenms.TransformationDescription()
         RTNormalizer = OpenSwathRTNormalizer()
-        # parameters = pyopenms.TransformationDescription().getModelParameters()
-        # parameters = smartpeak.updateParameters(
-        #     parameters,
-        #     RTNormalizer_params,
-        #     )
+        model_params_list = [{'name':'interpolation_type','value':'linear'},
+            {'name':'extrapolation_type','value':'two-point-linear'},
+        ]
+        model_params = smartpeak.setParameters(model_params_list)
+
         targeted_rt_norm = pyopenms.TargetedExperiment()
         tramlfile.convertTSVToTargetedExperiment(
             trafo_csv_i.encode('utf-8'),21,targeted_rt_norm
@@ -129,8 +129,8 @@ class smartPeak_openSWATH_py():
         trafo = RTNormalizer.main(
             chromatograms_mapped,
             targeted_rt_norm,
-            model_params=None,
-            # model_params=parameters,
+            # model_params=None,
+            model_params=model_params,
             model_type="lowess",
             min_rsq=0.95,
             min_coverage=0.6,

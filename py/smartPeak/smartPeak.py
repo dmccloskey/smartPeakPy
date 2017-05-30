@@ -187,6 +187,45 @@ class smartPeak():
                 tags)
         return Param_IO
 
+    def setParameters(self,parameters_I):
+        """set a Param object
+        Args
+            parameters_I (list): list of parameters to update
+            
+        Output
+            Param_O (pyopenms.Param()): Param object
+        
+        """
+        Param_O = pyopenms.Param()
+        for param in parameters_I:
+            name = param['name'].encode('utf-8')
+            #check if the param exists
+            if not Param_IO.exists(name):
+                print("parameter not found: " + param['name'])
+                continue
+            #check supplied user parameters
+            if 'value' in param.keys() and param['value']:
+                if 'type' in param.keys() and param['type']:
+                    value = self.castString(param['value'], param['type'])
+                else:
+                    value = self.parseString(param['value'])
+            else:
+                value = ''.encode('utf-8')
+            if 'description' in param.keys() and param['description']:
+                description = param['description'].encode('utf-8')
+            else:
+                description = ''.encode('utf-8')
+            if 'tags' in param.keys() and param['tags']:
+                tags = param['tags'].encode('utf-8')
+            else:
+                tags = ''.encode('utf-8')
+            #update the params
+            Param_O.setValue(name,
+                value,
+                description,
+                tags)
+        return Param_O
+
     @staticmethod
     def checkParameterValue(value_I):
         """Check for a valid openMS parameter

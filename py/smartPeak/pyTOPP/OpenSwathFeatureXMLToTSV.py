@@ -58,7 +58,10 @@ class OpenSwathFeatureXMLToTSV():
         ]
 
         for k in keys:
-            row.append(feature.getMetaValue(k).decode('utf-8'))
+            value = feature.getMetaValue(k)
+            if type(value)==type(''.encode('utf-8')):
+                value = feature.getMetaValue(k).decode('utf-8')
+            row.append(value)
 
         return row
 

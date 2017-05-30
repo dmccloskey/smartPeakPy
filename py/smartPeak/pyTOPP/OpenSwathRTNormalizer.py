@@ -176,7 +176,11 @@ class OpenSwathRTNormalizer():
         if not model_type or model_type is None:
             model_type = "linear"
             model_params = pyopenms.Param()
-            model_params.setValue("symmetric_regression", 'false', '')
+            model_params.setValue("symmetric_regression".encode('utf-8'), 'false'.encode('utf-8'), ''.encode('utf-8'))
+        # elif model_type == "interpolated":
+        #     model_params = pyopenms.Param()
+        #     model_params.setValue("interpolation_type".encode('utf-8'), 'linear'.encode('utf-8'), ''.encode('utf-8'))
+        #     model_params.setValue("extrapolation_type".encode('utf-8'), 'two-point-linear'.encode('utf-8'), ''.encode('utf-8'))
         trafo_out.fitModel(model_type, model_params)
         return trafo_out
 
