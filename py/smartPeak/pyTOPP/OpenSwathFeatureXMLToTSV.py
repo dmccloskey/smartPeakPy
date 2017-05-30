@@ -44,9 +44,11 @@ class OpenSwathFeatureXMLToTSV():
             protein_name = pep.protein_refs[0]
 
         fragment_annotation = "NA"
-        fragment = [t for t in peptidetransitions if t.getPrecursorMZ()==feature.getMetaValue("PrecursorMZ") and t.getProductMZ()==feature.getMetaValue("ProductMZ")]
-        if len(fragment) == 1:
-            fragment_annotation = fragment[0].getName()
+        # fragment = [t for t in peptidetransitions if t.getPrecursorMZ()==feature.getMetaValue("PrecursorMZ") and t.getProductMZ()==feature.getMetaValue("ProductMZ")]
+        # if len(fragment) == 1:
+        #     fragment_annotation = fragment[0].getName()
+        if (pep.metaValueExists("native_id")):
+            fragment_annotation = feature.getMetaValue("native_id")
 
         row = [
             feature.getMetaValue("PeptideRef"),

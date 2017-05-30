@@ -161,34 +161,38 @@ class smartPeak_PeakPickerMRM_py():
             picker.pickChromatogram(chromatogram, chromatogram_picked)
             chromatograms_picked.addChromatogram(chromatogram_picked)
             if chromatogram_picked.size() > 0:
-                transition_group_id = [t.getPeptideRef() for t in targeted.getTransitions() if t.getNativeID()==chromatogram_picked.getNativeID()]
-                print("Peaks found for " + str(chromatogram_picked.getNativeID()))
+                transition_group_id = [t.getPeptideRef() for t in targeted.getTransitions() if t.getNativeID()==chromatogram_picked.getNativeID()][0]
+                # print("Peaks found for " + str(chromatogram_picked.getNativeID()))
                 # mrmFeature = pyopenms.MRMFeature()
                 for i in range(chromatogram_picked.size()):
                     f = pyopenms.Feature()
-                    floatDataArrays = '''Peak: %s, Intensity: %s, Left: %s, Right %s, RT %s'''%(
-                        i,chromatogram_picked.getFloatDataArrays()[0][i],
-                        chromatogram_picked.getFloatDataArrays()[1][i],
-                        chromatogram_picked.getFloatDataArrays()[2][i],
-                        chromatogram_picked[i].getRT()
-                    )
-                    print(floatDataArrays)
+                    # floatDataArrays = '''Peak: %s, Intensity: %s, Left: %s, Right %s, RT %s'''%(
+                    #     i,chromatogram_picked.getFloatDataArrays()[0][i],
+                    #     chromatogram_picked.getFloatDataArrays()[1][i],
+                    #     chromatogram_picked.getFloatDataArrays()[2][i],
+                    #     chromatogram_picked[i].getRT()
+                    # )
+                    # print(floatDataArrays)
                     # extract features
                     f.setRT(chromatogram_picked[i].getRT())
                     f.setMZ(chromatogram_picked.getProduct().getMZ())
                     f.setIntensity(chromatogram_picked.getFloatDataArrays()[0][i])
-                    f.setWidth(chromatogram_picked.getFloatDataArrays()[2][i] - chromatogram_picked.getFloatDataArrays()[1][i])
+                    #f.setWidth(chromatogram_picked.getFloatDataArrays()[2][i] - chromatogram_picked.getFloatDataArrays()[1][i]) #FWHM not area!
                     f.setCharge(chromatogram_picked.getPrecursor().getCharge())
+                    # f.setUniqueId(cnt*i+i) #RuntimeError: Duplicate valid unique ids detected! 
                     # ConvexHull2D hull;
                     # hull.setHullPoints(hull_points);
                     # f.getConvexHulls().push_back(hull);
                     f.setMetaValue("product_mz", chromatogram_picked.getProduct().getMZ())
                     f.setMetaValue("precursor_mz", chromatogram_picked.getPrecursor().getMZ())
+                    f.setMetaValue("ProductMZ", chromatogram_picked.getProduct().getMZ())
+                    f.setMetaValue("PrecursorMZ", chromatogram_picked.getPrecursor().getMZ())
                     f.setMetaValue("native_id", chromatogram_picked.getNativeID())
                     f.setMetaValue("leftWidth", chromatogram_picked.getFloatDataArrays()[1][i])
                     f.setMetaValue("rightWidth", chromatogram_picked.getFloatDataArrays()[2][i])
                     # f.setMetaValue("peak_apex_int", peak_apex_int);
                     f.setMetaValue("transition_group_id", transition_group_id)
+                    f.setMetaValue("PeptideRef", transition_group_id)
                     # mrmFeature.addFeature(f, chromatogram_picked.getNativeID()); #map index and feature
                     output.push_back(f)
             # output.push_back(mrmFeature)
