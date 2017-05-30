@@ -249,7 +249,8 @@ class smartPeak_PeakPickerMRM_py():
         # file.store('/home/user/openMS_MRMworkflow/QC1_p.mzML',chromatograms)
 
         # load and make the transition file
-        targeted = pyopenms.TargetedExperiment()
+        # targeted = pyopenms.TargetedExperiment()
+        targeted = pyopenms.LightTargetedExperiment()
         tramlfile = pyopenms.TransitionTSVReader()
         tramlfile.convertTSVToTargetedExperiment(traML_csv_i.encode('utf-8'),21,targeted)
         # #load transitions file

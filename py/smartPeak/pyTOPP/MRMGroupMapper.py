@@ -38,8 +38,8 @@ class MRMGroupMapper():
             output (MRMTransitionGroup): 
         """
         # output = pyopenms.MRMTransitionGroup()
-        # output = pyopenms.LightMRMTransitionGroupCP()
-        output = pyopenms.MRMTransitionGroupCP()
+        output = pyopenms.LightMRMTransitionGroupCP()
+        # output = pyopenms.MRMTransitionGroupCP()
         if len(targeted_dict.keys())<len(chromatogram_mapped_dict.keys()):
             trans_iter = targeted_dict
         else:

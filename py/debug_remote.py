@@ -9,17 +9,17 @@ ptvsd.wait_for_attach()
 from smartPeak.__main__ import __main__
 m = __main__()
 
-# # Test openSWATH_py
-# m.run_openSWATH_py(
-#     filename_filenames='/home/user/openMS_MRMworkflow/filenames.csv',
-#     filename_params='/home/user/openMS_MRMworkflow/MRMFeatureFinderScoring_params.csv',
-#     delimiter=';'
-#     )
+# Test openSWATH_py
+m.run_openSWATH_py(
+    filename_filenames='/home/user/openMS_MRMworkflow/filenames.csv',
+    filename_params='/home/user/openMS_MRMworkflow/MRMFeatureFinderScoring_params.csv',
+    delimiter=';'
+    )
 
-# Test openSWATH_cmd
-# filename='/home/user/openMS_MRMworkflow/openSWATH_cmd_params_QC1.csv'
-filename='/home/user/openMS_MRMworkflow/openSWATH_cmd_params_QC1_FeatureXML2TSV.csv'
-m.run_openSWATH_cmd(filename)
+# # Test openSWATH_cmd
+# # filename='/home/user/openMS_MRMworkflow/openSWATH_cmd_params_QC1.csv'
+# filename='/home/user/openMS_MRMworkflow/openSWATH_cmd_params_QC1_FeatureXML2TSV.csv'
+# m.run_openSWATH_cmd(filename)
 
 # # Test MRMTransitionGroupPicker_py
 # m.run_MRMTransitionGroupPicker_py(
