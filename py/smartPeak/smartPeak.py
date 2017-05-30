@@ -36,6 +36,44 @@ class smartPeak():
         if verbose_I: print(cmd_I)
         os.system("%s" % (cmd_I))
 
+    @staticmethod
+    def convert_byte2String(byte_I, encoding_I='utf-8'):
+        """Convert a byte to a string
+        
+        Args
+            byte_I (byte): byte representation of a string
+            encoding_I (str): byte encoding, default = 'utf-8'
+
+        Returns
+            string_O (str):            
+        
+        """
+        string_O = None
+        if type(byte_I)==type(''.encode(encoding_I)): 
+            string_O = byte_I.decode(encoding_I)
+        else:
+            print("input is not of type byte.")
+        return string_O
+
+    @staticmethod
+    def convert_string2Byte(string_I, encoding_I='utf-8'):
+        """Convert a string to a byte
+        
+        Args
+            string_I (str): 
+            encoding_I (str): byte encoding, default = 'utf-8'
+
+        Returns
+            byte_O (byte): byte representation of a string            
+        
+        """
+        byte_O = None
+        if type(string_I)==type(''): 
+            byte_O = string_I.encode(encoding_I)
+        else:
+            print("input is not of type str.")
+        return byte_O
+
     def convert_MQQMethod2Feature(self,MQQMethod_I):
         """Convert MultiQuant QMethod.csv file to feature.csv file
         

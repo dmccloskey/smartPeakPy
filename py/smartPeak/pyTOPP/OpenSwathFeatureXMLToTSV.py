@@ -12,6 +12,18 @@ class OpenSwathFeatureXMLToTSV():
      """
 
     def convert_to_row(self,feature, targ, run_id, keys, filename):
+        """Convert Feature into a row for csv outpout
+
+        Args
+            feature (Feature): 
+            targ (TraML): transition experiment
+            run_id (str): id for the run
+            keys ([byte]): list of Feature keys to extract
+            filename (str): name of the FeatureXML file
+
+        Returns
+            rows ([]): list of row values based on the header and keys
+        """
         peptide_ref = feature.getMetaValue("PeptideRef")
         pep = targ.getPeptideByRef(peptide_ref)
         full_peptide_name = "NA"
@@ -35,7 +47,6 @@ class OpenSwathFeatureXMLToTSV():
             run_id,
             filename,
             feature.getRT(),
-            feature.getMetaValue("PrecursorMZ"),
             feature.getUniqueId(),
             pep.sequence,
             full_peptide_name,
@@ -52,6 +63,14 @@ class OpenSwathFeatureXMLToTSV():
         return row
 
     def get_header(self, features):
+        """Get header columns from feature
+        Args
+            features (FeatureMap): FeatureMap object
+
+        Returns
+            header ([str]): List of header ids
+            keys ([byte]): list of FeatureMap keys
+        """
         keys = []
         features[0].getKeys(keys)
         header = [
@@ -60,7 +79,7 @@ class OpenSwathFeatureXMLToTSV():
             "filename",
             "RT",
             "id",
-            "Sequence" ,
+            "Sequence",
             "FullPeptideName",
             "Charge",
             "m/z",
