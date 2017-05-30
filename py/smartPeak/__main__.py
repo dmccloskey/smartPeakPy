@@ -57,6 +57,34 @@ class __main__():
                 print("processing sample "+ sample)
                 PeakPickerMRM_py.PeakPickerMRM_py(v,params['PeakPickerMRM'])
 
+    def run_MRMTransitionGroupPicker_py(
+            self,
+            filename_filenames,
+            filename_params,
+            delimiter = ','
+            ):
+        """Run the MRMTransitionGroupPicker python pipeline
+        
+        Args:
+            filename (str): name of the workflow parameter filename
+            verbose (bool): print command line statements to stdout
+            
+        Examples:
+            
+        """
+        PeakPickerMRM_py = smartPeak_PeakPickerMRM_py()
+        smartpeak_i = smartPeak_i()
+        smartpeak_i.read_pythonParams(filename_filenames,delimiter)
+        filenames = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        smartpeak_i.read_openMSParams(filename_params,delimiter)
+        params = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        for filename in filenames:
+            for sample,v in filename.items():
+                print("processing sample "+ sample)
+                PeakPickerMRM_py.MRMTransitionGroupPicker_py(v,params['MRMTransitionGroupPicker'])
+
     def run_openSWATH_py(
             self,
             filename_filenames,
