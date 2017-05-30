@@ -26,6 +26,7 @@ class OpenSwathFeatureXMLToTSV():
         """
         peptide_ref = feature.getMetaValue("PeptideRef")
         pep = targ.getPeptideByRef(peptide_ref)
+
         full_peptide_name = "NA"
         if (pep.metaValueExists("full_peptide_name")):
             full_peptide_name = pep.getMetaValue("full_peptide_name")
@@ -42,6 +43,11 @@ class OpenSwathFeatureXMLToTSV():
         if len(pep.protein_refs) > 0:
             protein_name = pep.protein_refs[0]
 
+        fragment_annotation = "NA"
+        fragment = [t for t in peptidetransitions if t.getPrecursorMZ()==feature.getMetaValue("PrecursorMZ") and t.getProductMZ()==feature.getMetaValue("ProductMZ")]
+        if len(fragment) == 1:
+            fragment_annotation = fragment[0].getName()
+
         row = [
             feature.getMetaValue("PeptideRef"),
             run_id,
@@ -54,7 +60,9 @@ class OpenSwathFeatureXMLToTSV():
             feature.getMetaValue("PrecursorMZ"),
             feature.getIntensity(),
             protein_name,
-            decoy
+            decoy,
+            fragment_annotation,
+            feature.getMetaValue("ProductMZ")
         ]
 
         for k in keys:
@@ -88,7 +96,10 @@ class OpenSwathFeatureXMLToTSV():
             "m/z",
             "Intensity",
             "ProteinName",
-            "decoy"]
+            "decoy",
+            "Fragment_Annotation",
+            "ProductMZ"
+        ]
         keys1 = [k.decode('utf-8') for k in keys]
         header.extend(keys1)
         return header,keys
