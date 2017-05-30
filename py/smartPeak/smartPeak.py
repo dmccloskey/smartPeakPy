@@ -187,7 +187,7 @@ class smartPeak():
                 tags)
         return Param_IO
 
-    def setParameters(self,parameters_I):
+    def setParameters(self,parameters_I,Param_O):
         """set a Param object
         Args
             parameters_I (list): list of parameters to update
@@ -196,7 +196,6 @@ class smartPeak():
             Param_O (pyopenms.Param()): Param object
         
         """
-        Param_O = pyopenms.Param()
         for param in parameters_I:
             name = param['name'].encode('utf-8')
             #check if the param exists

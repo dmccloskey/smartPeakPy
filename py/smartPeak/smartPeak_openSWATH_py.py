@@ -110,7 +110,8 @@ class smartPeak_openSWATH_py():
         model_params_list = [{'name':'interpolation_type','value':'linear'},
             {'name':'extrapolation_type','value':'two-point-linear'},
         ]
-        model_params = smartpeak.setParameters(model_params_list)
+        model_params = pyopenms.Param()
+        model_params = smartpeak.setParameters(model_params_list,model_params)
 
         targeted_rt_norm = pyopenms.TargetedExperiment()
         tramlfile.convertTSVToTargetedExperiment(
