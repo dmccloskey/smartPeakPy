@@ -62,7 +62,7 @@ class OpenSwathFeatureXMLToTSV():
             pep.sequence,
             full_peptide_name,
             pep.getChargeState(),
-            feature.getMetaValue("PrecursorMZ"),
+            # feature.getMetaValue("PrecursorMZ"),
             feature.getIntensity(),
             protein_name,
             decoy,
@@ -78,12 +78,14 @@ class OpenSwathFeatureXMLToTSV():
             key_row.append(value)
 
         for subordinate in feature.getSubordinates():
-            key_subordinate_row = []
+            key_subordinate_row = [] # precursor_mz = [t for t in peptidetransitions if t.getNativeID()==subordinate.getMetaValue("native_id")][0]
             for k in keys_subordinates:
                 value = subordinate.getMetaValue(k)
                 if type(value)==type(''.encode('utf-8')):
                     value = subordinate.getMetaValue(k).decode('utf-8')
                 key_subordinate_row.append(value)
+            transition = [t for t in peptidetransitions if t.getNativeID()==subordinate.getMetaValue("native_id")][0]
+            key_subordinate_row.append(transition.getPrecursorMZ())
             rows_O.append(header_row + key_row + key_subordinate_row)
 
         return rows_O
@@ -97,10 +99,14 @@ class OpenSwathFeatureXMLToTSV():
             header ([str]): List of header ids
             keys ([byte]): list of FeatureMap keys
         """
+        # get feature keys
         keys = []
         features[0].getKeys(keys)
+        keys.remove("PrecursorMZ".encode('utf-8')) #transition group precursorMZ is not the same for all transitions!
+        # get subordinate keys
         keys_subordinates = []
         features[0].getSubordinates()[0].getKeys(keys_subordinates)
+        # define the header
         header = [
             "transition_group_id",
             "run_id",
@@ -110,7 +116,7 @@ class OpenSwathFeatureXMLToTSV():
             "Sequence",
             "FullPeptideName",
             "Charge",
-            "PrecursorMZ",
+            # "PrecursorMZ",
             "Intensity",
             "ProteinName",
             "decoy",
@@ -121,6 +127,7 @@ class OpenSwathFeatureXMLToTSV():
         header.extend(keys1)
         keys_subordinates1 = [k.decode('utf-8') for k in keys_subordinates]
         header.extend(keys_subordinates1)
+        header.append("PrecursorMZ") #different percursorMZ for each transition
         return header,keys,keys_subordinates
 
     def convert_FeatureXMLToTSV(self, features, targ, run_id = 'run0', filename = 'run0.FeatureXML'):
