@@ -3,9 +3,10 @@
 from .smartPeak import smartPeak
 from .pyTOPP.MRMMapper import MRMMapper
 from .pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor
-from .pyTOPP.MRMGroupMapper import MRMGroupMapper
 from .pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
 from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
+# from .pyTOPP.MRMGroupMapper import MRMGroupMapper
+from .pyTOPP.MRMTransitionGroupPicker import MRMTransitionGroupPicker
 #3rd part libraries
 try:
     import pyopenms
@@ -249,8 +250,8 @@ class smartPeak_PeakPickerMRM_py():
         # file.store('/home/user/openMS_MRMworkflow/QC1_p.mzML',chromatograms)
 
         # load and make the transition file
-        # targeted = pyopenms.TargetedExperiment()
-        targeted = pyopenms.LightTargetedExperiment()
+        targeted = pyopenms.TargetedExperiment()
+        # targeted = pyopenms.LightTargetedExperiment()
         tramlfile = pyopenms.TransitionTSVReader()
         tramlfile.convertTSVToTargetedExperiment(traML_csv_i.encode('utf-8'),21,targeted)
         # #load transitions file
@@ -290,15 +291,14 @@ class smartPeak_PeakPickerMRM_py():
         # set up MRMTransitionGroupPicker (featurefinder) and 
         # run
         # testing MRMTransitionGroupPicker
-        tgMapper = MRMGroupMapper()
-        transition_group = tgMapper.main(chromatograms_mapped,targeted)
-        trgroup_picker.pickTransitionGroup(transition_group)
-        # File "pyopenms/pyopenms.pyx", line 29535, in pyopenms.pyopenms.MRMTransitionGroupPicker.pickTransitionGroup (pyopenms/pyopenms.cpp:601870)
-        # File "pyopenms/pyopenms.pyx", line 29529, in pyopenms.pyopenms.MRMTransitionGroupPicker._pickTransitionGroup_1 (pyopenms/pyopenms.cpp:601728)
-        # RuntimeError: Could not convert DataValue::EMPTY to double
-        for feature in transitionGroup.getFeatures():
-            output.push_back(feature)        
-        empty_swath = pyopenms.MSExperiment()
+        mrmtrgroup_picker = MRMTransitionGroupPicker()
+        output = mrmtrgroup_picker.algorithm(chromatograms_mapped,targeted,tgroup_picker)
+        # tgMapper = MRMGroupMapper()
+        # transition_group = tgMapper.main(chromatograms_mapped,targeted)
+        # trgroup_picker.pickTransitionGroup(transition_group)
+        # for feature in transitionGroup.getFeatures():
+        #     output.push_back(feature)        
+        # empty_swath = pyopenms.MSExperiment()
 
         # set up MRMFeatureFinderScoring and score for ms1
         featureFinder = pyopenms.MRMFeatureFinderScoring()

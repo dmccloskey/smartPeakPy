@@ -38,18 +38,17 @@ class MRMGroupMapper():
             output (MRMTransitionGroup): 
         """
         # output = pyopenms.MRMTransitionGroup()
-        output = pyopenms.LightMRMTransitionGroupCP()
-        # output = pyopenms.MRMTransitionGroupCP()
+        # output = pyopenms.LightMRMTransitionGroupCP()
+        output = pyopenms.MRMTransitionGroupCP()
         if len(targeted_dict.keys())<len(chromatogram_mapped_dict.keys()):
             trans_iter = targeted_dict
         else:
             trans_iter = chromatogram_mapped_dict
         for id in list(trans_iter.keys()):
-            output.addChromatogram(chromatogram_mapped_dict[id],id)
-            # spectrum = pyopenms.MSSpectrum()
-            # for peak in chromatogram_mapped_dict[id]:
-            #     spectrum.push_back(peak)
-            # output.addChromatogram(spectrum,id)
+            chrom = chromatogram_mapped_dict[id]
+            chrom.setMetaValue("product_mz", targeted_dict[id].getProductMZ() )
+            chrom.setMetaValue("precursor_mz", targeted_dict[id].getPrecursorMZ() )
+            output.addChromatogram(chrom,id)
             output.addTransition(targeted_dict[id],id)
         return output
 
