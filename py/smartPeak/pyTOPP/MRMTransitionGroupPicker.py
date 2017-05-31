@@ -21,18 +21,19 @@ class MRMTransitionGroupPicker():
             chrom_map 
 
         Returns:
-            r (MRMTransitionGroupCP): 
+            transition_group (MRMTransitionGroupCP): 
         """
-        r = pyopenms.MRMTransitionGroupCP()
+        # transition_group = pyopenms.MRMTransitionGroupCP()
+        transition_group = pyopenms.LightMRMTransitionGroupCP()
         for tr in trgr_ids:
             transition = targeted.getTransitions()[tr]
             chrom_idx = chrom_map[ transition.getNativeID() ]
             chrom = exp.getChromatograms()[ chrom_idx ]
             chrom.setMetaValue("product_mz", transition.getProductMZ() )
             chrom.setMetaValue("precursor_mz", transition.getPrecursorMZ() )
-            r.addTransition( transition, transition.getNativeID() )
-            r.addChromatogram( chrom, chrom.getNativeID() )
-        return r
+            transition_group.addTransition( transition, transition.getNativeID() )
+            transition_group.addChromatogram( chrom, chrom.getNativeID() )
+        return transition_group
 
     def doMap(self,exp, targeted):
         """Create a dictionary map between the nativeID for the mapped chromatogram (mzML) and transitions (TraML)
@@ -52,8 +53,9 @@ class MRMTransitionGroupPicker():
         trmap = {}
         for i, chrom in enumerate(exp.getChromatograms()):
             chrom_map[ chrom.getNativeID() ] = i
-        for i, pep in enumerate(targeted.getPeptides() ):
-            pepmap[ pep.id ] = i
+        # for i, pep in enumerate(targeted.getPeptides() ):
+        #     pepmap[ pep.id ] = i
+        #AttributeError: 'pyopenms.pyopenms.LightTargetedExperiment' object has no attribute 'getPeptides'
         for i, tr in enumerate(targeted.getTransitions() ):
             tmp = trmap.get( tr.getPeptideRef() , [])
             tmp.append( i )
@@ -62,7 +64,7 @@ class MRMTransitionGroupPicker():
         return chrom_map,trmap,pepmap
 
 
-    def algorithm(self, exp, targeted, picker):
+    def pickTransitionGroups(self, exp, targeted, picker):
         """
 
         Args
@@ -93,6 +95,33 @@ class MRMTransitionGroupPicker():
                 # TODO 
                 # mrmfeature.setSubordinates(features) # add all the subfeatures as subordinates
                 output.append(mrmfeature)
+
+        return output
+
+    def pickExperiment(self, exp, targeted, picker, feature_finder,
+        trafo, swath_maps, output, ms1only = False):
+        """
+
+        Args
+            exp (MSExperiment): chromatograms
+            targeted (TraML): TraML input file containt the transitions
+            picker (MRMTransitionGroupPicker): transition group picker
+            feature_finder (MRMFeatureFinderScoring): feature finder and scorer
+
+        Returns
+            output (FeatureMap): map of MRMFeatures and subordinate features
+            
+        """
+        #output = pyopenms.FeatureMap()
+
+        chrom_map,trmap,pepmap = self.doMap(exp, targeted)
+
+        for key, value in trmap.items():
+            print(key, value)
+            transition_group = self.getTransitionGroup(exp, targeted, key, value, chrom_map)
+            picker.pickTransitionGroup(transition_group)
+            feature_finder.scorePeakgroups(transition_group,trafo,swath_maps,output,ms1only)
+            #TypeError: Argument 'swath_maps' has incorrect type (expected list, got pyopenms.pyopenms.MSExperiment)
 
         return output
 

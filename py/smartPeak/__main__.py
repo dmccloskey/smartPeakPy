@@ -83,7 +83,10 @@ class __main__():
         for filename in filenames:
             for sample,v in filename.items():
                 print("processing sample "+ sample)
-                PeakPickerMRM_py.MRMTransitionGroupPicker_py(v,params['MRMTransitionGroupPicker'])
+                PeakPickerMRM_py.MRMTransitionGroupPicker_py(
+                    v,params['MRMTransitionGroupPicker'],
+                    params['MRMFeatureFinderScoring']
+                    )
 
     def run_openSWATH_py(
             self,

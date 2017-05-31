@@ -216,6 +216,7 @@ class smartPeak_PeakPickerMRM_py():
     def MRMTransitionGroupPicker_py(self,
         filenames_I,
         MRMTransitionGroupPicker_params_I={},
+        MRMFeatureFinderScoring_params_I={},
         ):
         """Isotope labeled quantification workflow for a single sample
         
@@ -233,7 +234,6 @@ class smartPeak_PeakPickerMRM_py():
         if 'featureXML_o'in filenames_I.keys(): featureXML_o = filenames_I['featureXML_o']
         if 'feature_csv_o'in filenames_I.keys(): feature_csv_o = filenames_I['feature_csv_o']
         if 'dia_csv_i'in filenames_I.keys(): dia_csv_i = filenames_I['dia_csv_i']
-        MRMTransitionGroupPicker_params_I = MRMTransitionGroupPicker_params_I
 
         #helper classes
         smartpeak = smartPeak()
@@ -250,8 +250,8 @@ class smartPeak_PeakPickerMRM_py():
         # file.store('/home/user/openMS_MRMworkflow/QC1_p.mzML',chromatograms)
 
         # load and make the transition file
-        targeted = pyopenms.TargetedExperiment()
-        # targeted = pyopenms.LightTargetedExperiment()
+        # targeted = pyopenms.TargetedExperiment()
+        targeted = pyopenms.LightTargetedExperiment()
         tramlfile = pyopenms.TransitionTSVReader()
         tramlfile.convertTSVToTargetedExperiment(traML_csv_i.encode('utf-8'),21,targeted)
         # #load transitions file
@@ -273,12 +273,9 @@ class smartPeak_PeakPickerMRM_py():
         # normalize the RTs
         #TODO: modify for just using MRMTransitionGroupPicker
         RTNormalizer = OpenSwathRTNormalizer()
-        trafo_out = pyopenms.TransformationDescription()
-
-        # Create empty output
-        output = pyopenms.FeatureMap()
+        trafo = pyopenms.TransformationDescription()
         
-        # set up MRMTransitionGroupPicker (featurefinder) and
+        # set up MRMTransitionGroupPicker (picker) and
         # parse the MRMTransitionGroupPicker params
         trgroup_picker = pyopenms.MRMTransitionGroupPicker()
         parameters = trgroup_picker.getParameters()
@@ -287,30 +284,36 @@ class smartPeak_PeakPickerMRM_py():
             MRMTransitionGroupPicker_params_I,
             )
         trgroup_picker.setParameters(parameters)
-        
-        # set up MRMTransitionGroupPicker (featurefinder) and 
-        # run
-        # testing MRMTransitionGroupPicker
+
+        # set up the MRMFeatureFinderScoring (feature finder) and
+        # parse the MRMFeatureFinderScoring params
+        featurefinder = pyopenms.MRMFeatureFinderScoring()
+        parameters = featurefinder.getParameters()
+        parameters = smartpeak.updateParameters(
+            parameters,
+            MRMFeatureFinderScoring_params_I,
+            )
+        featurefinder.setParameters(parameters) 
+
+        # Create empty Swath
+        empty_swath = pyopenms.MSExperiment()   
+
+        # Create empty output
+        output = pyopenms.FeatureMap()
+
+        # set up MRMFeatureFinderScoring and MRMTransitionGroupPicker 
+        # and pick/score for ms1
         mrmtrgroup_picker = MRMTransitionGroupPicker()
-        output = mrmtrgroup_picker.algorithm(chromatograms_mapped,targeted,tgroup_picker)
-        # tgMapper = MRMGroupMapper()
-        # transition_group = tgMapper.main(chromatograms_mapped,targeted)
-        # trgroup_picker.pickTransitionGroup(transition_group)
-        # for feature in transitionGroup.getFeatures():
-        #     output.push_back(feature)        
-        # empty_swath = pyopenms.MSExperiment()
-
-        # set up MRMFeatureFinderScoring and score for ms1
-        featureFinder = pyopenms.MRMFeatureFinderScoring()
-        featureFinder.scorePeakgroups(transition_group, trafo, empty_swath, output, True)
-
-        # find features
-        #http://ftp.mi.fu-berlin.de/pub/OpenMS/release-documentation/html/classOpenMS_1_1FeatureFinderAlgorithmMRM.html#details
-        #FeatureFinderAlgorithmMRM
-        #SignalToNoiseEstimatorMedian
+        mrmtrgroup_picker.pickExperiment(
+            chromatograms_mapped,targeted,
+            trgroup_picker,featurefinder,
+            trafo, [empty_swath], output, True
+            )
 
         # Store outfile as featureXML
         featurexml = pyopenms.FeatureXMLFile()
         featurexml.store(featureXML_o.encode('utf-8'), output)
 
         # Store the outfile as csv
+        featurescsv = OpenSwathFeatureXMLToTSV()
+        featurescsv.store(feature_csv_o, output, targeted, run_id = 'run0', filename = featureXML_o)
