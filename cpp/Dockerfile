@@ -10,7 +10,10 @@ USER root
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN apt-get update && \
 	DEBIAN_FRONTEND=noninteractive && \
-	apt-get install -y openssh-server g++ gdb gdbserver sudo build-essential git && \
+	apt-get install -y gawk openssh-server g++ gdb gdbserver sudo build-essential git && \
+	## openssh-server is required for sshd connection
+	## gdbserver is required for debug (attach)
+	## gawk is a requirement for GLIB_2.18 workaround (below)
 	mkdir /var/run/sshd && \
     ##sets the user/password to root/toor
 	##needed for connection using sh
@@ -28,16 +31,22 @@ RUN apt-get update && \
 #GLIB_2.18 workaround for vscode
 #https://github.com/Microsoft/vscode-cpptools/issues/19
 # COPY Microsoft.VSCode.CPP.Extension.linux.sh ~/.vscode/extension/ms-vscode.cpptools-0.9.3/bin
-RUN wget http://ftp.gnu.org/gnu/glibc/glibc-2.18.tar.xz && \
+RUN unset LD_LIBRARY_PATH && \
+	mkdir /home/user/tmp && \
+	cd /home/user/tmp && \
+	wget http://ftp.gnu.org/gnu/glibc/glibc-2.18.tar.xz && \
 	tar xvf glibc-2.18.tar.xz && \
 	cd glibc-2.18 && \
 	mkdir build && \
 	cd build && \
 	../configure --prefix=/opt/glibc-2.18 && \
-	sudo make install 
+	sudo make install && \ 
+	rm -rf glibc-2.18.tar.xz
 	# && \
 	# chmod a+x Microsoft.VSCode.CPP.Extension.linux.sh && \
 	# Modify "~/.vscode/extensions/ms-vscode.cpptools-0.9.3/out/src/LanguageServer/C_Cpp.js"
 	# Change the following line from " extensionsProcessName += '.linux'; " to " extensionProcessName += '.linux.sh'; "
+ENV LD_LIBRARY_PATH /usr/local/openms-build/lib/:$LD_LIBRARY_PATH
+
 # USER user
 CMD ["docker-entrypoint.sh"]
