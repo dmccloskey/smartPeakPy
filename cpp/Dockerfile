@@ -25,5 +25,19 @@ RUN apt-get update && \
 	ln -s /usr/local/bin/docker-entrypoint.sh / && \
 	chmod +x /usr/local/bin/docker-entrypoint.sh
 	# chmod +x /usr/bin/gdbserver
+#GLIB_2.18 workaround for vscode
+#https://github.com/Microsoft/vscode-cpptools/issues/19
+# COPY Microsoft.VSCode.CPP.Extension.linux.sh ~/.vscode/extension/ms-vscode.cpptools-0.9.3/bin
+RUN wget http://ftp.gnu.org/gnu/glibc/glibc-2.18.tar.xz && \
+	tar xvf glibc-2.18.tar.xz && \
+	cd glibc-2.18 && \
+	mkdir build && \
+	cd build && \
+	../configure --prefix=/opt/glibc-2.18 && \
+	sudo make install 
+	# && \
+	# chmod a+x Microsoft.VSCode.CPP.Extension.linux.sh && \
+	# Modify "~/.vscode/extensions/ms-vscode.cpptools-0.9.3/out/src/LanguageServer/C_Cpp.js"
+	# Change the following line from " extensionsProcessName += '.linux'; " to " extensionProcessName += '.linux.sh'; "
 # USER user
 CMD ["docker-entrypoint.sh"]

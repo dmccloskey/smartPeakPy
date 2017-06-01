@@ -178,7 +178,7 @@
             "windows": {
                 "MIMode": "gdb",
                 "miDebuggerPath": "c:\\users\\domccl\\cygwin64\\bin\\gdb.exe",
-                "program": "${workspaceRoot}/a.exe",
+                "program": "${workspaceRoot}/a.out",
                 "setupCommands": [
                     {
                         "description": "Enable pretty-printing for gdb",
@@ -252,7 +252,7 @@
             "windows": {
                 "MIMode": "gdb",
                 "miDebuggerPath": "c:\\users\\domccl\\cygwin64\\bin\\gdb.exe",
-                "program": "${workspaceRoot}/a.exe",
+                "program": "${workspaceRoot}/a.out",
                 "setupCommands": [
                     {
                         "description": "Enable pretty-printing for gdb",
@@ -276,6 +276,7 @@
             "stopAtEntry": false,
             // "cwd": "${workspaceRoot}",
             "cwd": "/home/user/code",
+            "program":"/home/user/code/a.out",
             "environment": [],
             "externalConsole": true,
             "pipeTransport": {
@@ -284,7 +285,7 @@
                 "pipeArgs": [
                     "exec", 
                     "-i", 
-                    "vscode", //running container name
+                    "cpp_openms_1", //running container name
                     "sh",
                     "-c"
                 ],
@@ -295,8 +296,6 @@
             },
             "linux": {
                 "MIMode": "gdb",
-                "program": "${workspaceRoot}/a.out",
-                "miDebuggerPath": "/usr/bin/gdb",
                 "setupCommands": [
                     {
                         "description": "Enable pretty-printing for gdb",
@@ -327,8 +326,6 @@
             },
             "windows": {
                 "MIMode": "gdb",
-                "miDebuggerPath": "c:\\users\\domccl\\cygwin64\\bin\\gdb.exe",
-                "program": "${workspaceRoot}/a.exe",
                 "setupCommands": [
                     {
                         "description": "Enable pretty-printing for gdb",
@@ -347,6 +344,7 @@
             "name": "C++ Attach (Docker)",
             "type": "cppdbg",
             "request": "attach",
+            "program":"/home/user/code/a.out",
             "preLaunchTask":"g++",
             "processId": "${command:pickRemoteProcess}",
             "pipeTransport": {
@@ -355,7 +353,7 @@
                 "pipeArgs": [
                     "exec", 
                     "-i", 
-                    "vscode", //running container name
+                    "cpp_openms_1", //running container name
                     "sh",
                     "-c"
                 ],
@@ -366,7 +364,7 @@
             },
             "linux": {
                 "MIMode": "gdb",
-                "program": "${workspaceRoot}/a.out",
+                // "program": "${workspaceRoot}/a.out",
                 "miDebuggerPath": "/usr/bin/gdb",
                 "setupCommands": [
                     {
@@ -399,7 +397,7 @@
             "windows": {
                 "MIMode": "gdb",
                 "miDebuggerPath": "c:\\users\\domccl\\cygwin64\\bin\\gdb.exe",
-                "program": "${workspaceRoot}/a.exe",
+                // "program": "${workspaceRoot}/a.out",
                 "setupCommands": [
                     {
                         "description": "Enable pretty-printing for gdb",

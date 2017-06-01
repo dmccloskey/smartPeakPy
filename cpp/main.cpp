@@ -1,7 +1,9 @@
-#include <cstdio>
+// #include <cstdio>
+#include <iostream>
 
 int main()
 {
-    printf("hello");
+    // printf("hello");
+    std::cout << "hello";
     return 0;
 }
