@@ -130,9 +130,10 @@ class smartPeak_openSWATH_py():
         trafo = RTNormalizer.main(
             chromatograms_mapped,
             targeted_rt_norm,
-            # model_params=None,
-            model_params=model_params,
-            model_type="interpolated",
+            model_params=None,
+            # model_params=model_params,
+            model_type="linear",
+            # model_type="interpolated",
             min_rsq=0.95,
             min_coverage=0.6,
             estimateBestPeptides=True,
