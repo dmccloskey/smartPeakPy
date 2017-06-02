@@ -114,6 +114,8 @@ class MRMTransitionGroupPicker():
         """
         #output = pyopenms.FeatureMap()
 
+        feature_finder.prepareProteinPeptideMaps_(targeted)
+
         chrom_map,trmap,pepmap = self.doMap(exp, targeted)
 
         for key, value in trmap.items():
@@ -124,19 +126,3 @@ class MRMTransitionGroupPicker():
             #TypeError: Argument 'swath_maps' has incorrect type (expected list, got pyopenms.pyopenms.MSExperiment)
 
         return output
-
-    def main(self,options):
-        out = options.outfile
-        chromat_in = options.infile
-        traml_in = options.traml_in
-
-        pp = pyopenms.MRMTransitionGroupPicker()
-        chromatograms = pyopenms.MSExperiment()
-        fh = pyopenms.FileHandler()
-        fh.loadExperiment(chromat_in, chromatograms)
-        targeted = pyopenms.TargetedExperiment();
-        tramlfile = pyopenms.TraMLFile();
-        tramlfile.load(traml_in, targeted);
-        
-        output = algorithm(chromatograms, targeted, pp)
-

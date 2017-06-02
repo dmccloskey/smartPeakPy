@@ -285,15 +285,15 @@ class smartPeak_PeakPickerMRM_py():
             )
         trgroup_picker.setParameters(parameters)
 
-        # # set up the MRMFeatureFinderScoring (feature finder) and
-        # # parse the MRMFeatureFinderScoring params
-        # featurefinder = pyopenms.MRMFeatureFinderScoring()
-        # parameters = featurefinder.getParameters()
-        # parameters = smartpeak.updateParameters(
-        #     parameters,
-        #     MRMFeatureFinderScoring_params_I,
-        #     )
-        # featurefinder.setParameters(parameters) 
+        # set up the MRMFeatureFinderScoring (feature finder) and
+        # parse the MRMFeatureFinderScoring params
+        featurefinder = pyopenms.MRMFeatureFinderScoring()
+        parameters = featurefinder.getParameters()
+        parameters = smartpeak.updateParameters(
+            parameters,
+            MRMFeatureFinderScoring_params_I,
+            )
+        featurefinder.setParameters(parameters) 
 
         # Create empty Swath
         empty_swath = pyopenms.MSExperiment()   
@@ -304,11 +304,12 @@ class smartPeak_PeakPickerMRM_py():
         # set up MRMFeatureFinderScoring and MRMTransitionGroupPicker 
         # and pick/score for ms1
         mrmtrgroup_picker = MRMTransitionGroupPicker()
-        mrmtrgroup_picker.pickTransitionGroups(
+        # mrmtrgroup_picker.pickTransitionGroups(
+        mrmtrgroup_picker.pickExperiment(
             chromatograms_mapped,targeted,
             trgroup_picker,
-            # featurefinder,
-            # trafo, [], output, True
+            featurefinder,
+            trafo, [], output, True
             )
 
         # Store outfile as featureXML

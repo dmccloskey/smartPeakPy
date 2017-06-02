@@ -103,21 +103,20 @@ class smartPeak_openSWATH_py():
             )
         featurefinder.setParameters(parameters)        
 
-        # Normalize the RTs
-        # NOTE: same MRMFeatureFinderScoring params will be used to pickPeaks
-        #trafo_out = pyopenms.TransformationDescription()
-        RTNormalizer = OpenSwathRTNormalizer()
-        model_params_list = [{'name':'interpolation_type','value':'linear','type':'string'},
-            {'name':'extrapolation_type','value':'two-point-linear','type':'string'},
-        ]
-        model_params = pyopenms.Param()
-        model_params = smartpeak.setParameters(model_params_list,model_params)
+        # # prepare the model parameters for RTNormalization (interpolation)
+        # model_params_list = [{'name':'interpolation_type','value':'linear','type':'string'},
+        #     {'name':'extrapolation_type','value':'two-point-linear','type':'string'},
+        # ]
+        # model_params = pyopenms.Param()
+        # model_params = smartpeak.setParameters(model_params_list,model_params)
 
+        # load and make the transition file for RTNormalization 
         targeted_rt_norm = pyopenms.TargetedExperiment()
         tramlfile.convertTSVToTargetedExperiment(
             trafo_csv_i.encode('utf-8'),21,targeted_rt_norm
             )
-        # # map transitions to the chromatograms
+
+        # # map transitions to the chromatograms for RTNormalization
         # mrmmapper = MRMMapper()
         # chromatograms_mapped_rt_norm = mrmmapper.algorithm(
         #     chromatogram_map=chromatograms,
@@ -127,6 +126,11 @@ class smartPeak_openSWATH_py():
         #     allow_unmapped=True,
         #     allow_double_mappings=True
         # )
+
+        # Normalize the RTs
+        # NOTE: same MRMFeatureFinderScoring params will be used to pickPeaks
+        RTNormalizer = OpenSwathRTNormalizer()
+        #trafo_out = pyopenms.TransformationDescription()
         trafo = RTNormalizer.main(
             chromatograms_mapped,
             targeted_rt_norm,
