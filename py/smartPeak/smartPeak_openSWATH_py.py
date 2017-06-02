@@ -143,6 +143,9 @@ class smartPeak_openSWATH_py():
             estimateBestPeptides=True,
             MRMFeatureFinderScoring_params=parameters
             )
+
+        # Apply the normalization the transitions
+        RTNormalizer.transform_targetedExperiment(trafo,targeted)
         
         # set up MRMFeatureFinderScoring (featurefinder) and 
         # run

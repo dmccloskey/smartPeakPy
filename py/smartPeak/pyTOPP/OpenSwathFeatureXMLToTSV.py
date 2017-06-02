@@ -31,16 +31,18 @@ class OpenSwathFeatureXMLToTSV():
         pep = targ.getPeptideByRef(peptide_ref)
 
         full_peptide_name = "NA"
-        if (pep.metaValueExists("full_peptide_name")):
-            full_peptide_name = pep.getMetaValue("full_peptide_name")
+        # if (pep.metaValueExists("full_peptide_name")):
+        #     full_peptide_name = pep.getMetaValue("full_peptide_name")
+        # # AttributeError: 'pyopenms.pyopenms.LightCompound' object has no attribute 'metaValueExists'
 
         decoy = "0"
         peptidetransitions = [t for t in targ.getTransitions() if t.getPeptideRef() == peptide_ref]
-        if len(peptidetransitions) > 0:
-            if peptidetransitions[0].getDecoyTransitionType() == pyopenms.DecoyTransitionType().DECOY:
-                decoy = "1"
-            elif peptidetransitions[0].getDecoyTransitionType() == pyopenms.DecoyTransitionType().TARGET:
-                decoy = "0"
+        # if len(peptidetransitions) > 0:
+        #     if peptidetransitions[0].getDecoyTransitionType() == pyopenms.DecoyTransitionType().DECOY:
+        #         decoy = "1"
+        #     elif peptidetransitions[0].getDecoyTransitionType() == pyopenms.DecoyTransitionType().TARGET:
+        #         decoy = "0"
+        # # AttributeError: 'pyopenms.pyopenms.LightTransition' object has no attribute 'getDecoyTransitionType'
 
         protein_name = "NA"
         if len(pep.protein_refs) > 0:
@@ -78,7 +80,7 @@ class OpenSwathFeatureXMLToTSV():
             key_row.append(value)
 
         for subordinate in feature.getSubordinates():
-            key_subordinate_row = [] # precursor_mz = [t for t in peptidetransitions if t.getNativeID()==subordinate.getMetaValue("native_id")][0]
+            key_subordinate_row = []
             for k in keys_subordinates:
                 value = subordinate.getMetaValue(k)
                 if type(value)==type(''.encode('utf-8')):

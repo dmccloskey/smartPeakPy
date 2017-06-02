@@ -25,6 +25,7 @@ class MRMTransitionGroupPicker():
         """
         # transition_group = pyopenms.MRMTransitionGroupCP()
         transition_group = pyopenms.LightMRMTransitionGroupCP()
+        transition_group.setTransitionGroupID(key)
         for tr in trgr_ids:
             transition = targeted.getTransitions()[tr]
             chrom_idx = chrom_map[ transition.getNativeID() ]

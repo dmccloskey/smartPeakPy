@@ -222,3 +222,18 @@ class OpenSwathRTNormalizer():
     def store_TransformationXMLFile(self,outfile,trafo_out):
 
         pyopenms.TransformationXMLFile().store(outfile, trafo_out)
+
+    def transform_targetedExperiment(self,trafo,targeted):
+        """Transform the RTs of a targeted experiment
+        Args
+            targeted (TraML): TraML input file containing the transitions
+            trafo_out (TransformationDescription): 
+
+        Returns
+
+        """
+        for transition in targeted.getTransitions():
+            pepref = transition.getPeptideRef()
+            pep = targeted.getPeptideByRef(pepref)
+            rt = trafo.apply(pep.getRetentionTime())
+            pep.setRetentionTime(rt)
