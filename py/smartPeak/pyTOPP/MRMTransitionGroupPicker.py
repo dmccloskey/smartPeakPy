@@ -83,7 +83,6 @@ class MRMTransitionGroupPicker():
         chrom_map,trmap,pepmap = self.doMap(exp, targeted)
 
         for key, value in trmap.items():
-            print(key, value)
             transition_group = self.getTransitionGroup(exp, targeted, key, value, chrom_map)
             picker.pickTransitionGroup(transition_group)
             for mrmfeature in transition_group.getFeatures():
@@ -120,10 +119,8 @@ class MRMTransitionGroupPicker():
         chrom_map,trmap,pepmap = self.doMap(exp, targeted)
 
         for key, value in trmap.items():
-            print(key, value)
             transition_group = self.getTransitionGroup(exp, targeted, key, value, chrom_map)
             picker.pickTransitionGroup(transition_group)
             feature_finder.scorePeakgroups(transition_group,trafo,swath_maps,output,ms1only)
-            #TypeError: Argument 'swath_maps' has incorrect type (expected list, got pyopenms.pyopenms.MSExperiment)
 
         return output

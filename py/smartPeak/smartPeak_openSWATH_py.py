@@ -51,7 +51,7 @@ class smartPeak_openSWATH_py():
         fh.loadExperiment(mzML_feature_i.encode('utf-8'), chromatograms)
 
         # load and make the transition file
-        targeted = pyopenms.TargetedExperiment()
+        targeted = pyopenms.TargetedExperiment() #must use "PeptideSequence"
         tramlfile = pyopenms.TransitionTSVReader()
         tramlfile.convertTSVToTargetedExperiment(traML_csv_i.encode('utf-8'),21,targeted)
         # #load transitions file
@@ -143,9 +143,6 @@ class smartPeak_openSWATH_py():
             estimateBestPeptides=True,
             MRMFeatureFinderScoring_params=parameters
             )
-
-        # Apply the normalization the transitions
-        RTNormalizer.transform_targetedExperiment(trafo,targeted)
         
         # set up MRMFeatureFinderScoring (featurefinder) and 
         # run

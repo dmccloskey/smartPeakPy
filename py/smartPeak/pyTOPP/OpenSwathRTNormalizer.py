@@ -236,4 +236,21 @@ class OpenSwathRTNormalizer():
             pepref = transition.getPeptideRef()
             pep = targeted.getPeptideByRef(pepref)
             rt = trafo.apply(pep.getRetentionTime())
-            pep.setRetentionTime(rt)
+            pep.setRetentionTime(rt) #how to update the retention time?
+
+    def transform_targetedExperimentCSV(self,trafo,targeted):
+        """Transform the RTs of a targeted experiment
+        Args
+            targeted (list(dict())): TraML input file containing the transitions
+                with assay RTs in csv format
+            trafo_out (TransformationDescription): 
+
+        Returns
+            targeted_O (list(dict())): TraML output file containing the transitions
+                with normalized RTs in csv format
+
+        """
+        for transition in targeted:
+            assay_rt = transition['retentionTime']
+            normalized_rt = trafo.apply(assay_rt)
+            pep.setRetentionTime(rt) #how to update the retention time?

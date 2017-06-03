@@ -72,7 +72,7 @@ class __main__():
         Examples:
             
         """
-        PeakPickerMRM_py = smartPeak_PeakPickerMRM_py()
+        MRMTransitionGroupPicker_py = smartPeak_MRMTransitionGroupPicker_py()
         smartpeak_i = smartPeak_i()
         smartpeak_i.read_pythonParams(filename_filenames,delimiter)
         filenames = smartpeak_i.getData()
@@ -83,7 +83,7 @@ class __main__():
         for filename in filenames:
             for sample,v in filename.items():
                 print("processing sample "+ sample)
-                PeakPickerMRM_py.MRMTransitionGroupPicker_py(
+                PeakPickeMRMTransitionGroupPicker_pyrMRM_py.MRMTransitionGroupPicker_py(
                     v,params['MRMTransitionGroupPicker'],
                     params['MRMFeatureFinderScoring']
                     )
