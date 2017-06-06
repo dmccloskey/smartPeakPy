@@ -246,11 +246,11 @@ class OpenSwathRTNormalizer():
             trafo_out (TransformationDescription): 
 
         Returns
-            targeted_O (list(dict())): TraML output file containing the transitions
-                with normalized RTs in csv format
+            targeted (list(dict())): TraML output file containing the transitions
+                with normalized RTs in csv format (modified in place)
 
         """
         for transition in targeted:
             assay_rt = transition['retentionTime']
             normalized_rt = trafo.apply(assay_rt)
-            pep.setRetentionTime(rt) #how to update the retention time?
+            transition['Tr_recalibrated'] = normalized_rt

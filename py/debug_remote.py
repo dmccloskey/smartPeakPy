@@ -2,7 +2,7 @@
 ######
 import ptvsd
 ptvsd.enable_attach("my_secret", address = ('0.0.0.0', 3000))
-#enable the below line of code only if you want the application to wait untill the debugger has attached to it
+#enable the below line of code only if you want the application to wait until the debugger has attached to it
 ptvsd.wait_for_attach()
 ######
 
@@ -11,9 +11,9 @@ m = __main__()
 
 # Test openSWATH_py
 m.run_openSWATH_py(
-    filename_filenames='/home/user/openMS_MRMworkflow/filenames.csv',
+    filename_filenames='/home/user/openMS_MRMworkflow/filenames_SWATH.csv',
     filename_params='/home/user/openMS_MRMworkflow/MRMFeatureFinderScoring_params.csv',
-    delimiter=';'
+    delimiter=','
     )
 
 # # Test openSWATH_cmd
@@ -25,14 +25,14 @@ m.run_openSWATH_py(
 # m.run_MRMTransitionGroupPicker_py(
 #     filename_filenames='/home/user/openMS_MRMworkflow/filenames.csv',
 #     filename_params='/home/user/openMS_MRMworkflow/MRMTransitionGroupPicker_params.csv',
-#     delimiter=';'
+#     delimiter=','
 #     )
 
 # # Test PeakPickerMRM_py
 # m.run_PeakPickerMRM_py(
 #     filename_filenames='/home/user/openMS_MRMworkflow/filenames.csv',
 #     filename_params='/home/user/openMS_MRMworkflow/PeakPickerMRM_params.csv',
-#     delimiter=';'
+#     delimiter=','
 #     )
 
 # Test file conversions
