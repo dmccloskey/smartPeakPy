@@ -2,6 +2,7 @@
 from .smartPeak_openSWATH_cmd import smartPeak_openSWATH_cmd
 from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
 from .smartPeak_PeakPickerMRM_py import smartPeak_PeakPickerMRM_py
+from .smartPeak_MRMTransitionGroupPicker_py import smartPeak_MRMTransitionGroupPicker_py
 from .smartPeak import smartPeak
 from .smartPeak_i import smartPeak_i
 from .smartPeak_o import smartPeak_o
@@ -83,7 +84,7 @@ class __main__():
         for filename in filenames:
             for sample,v in filename.items():
                 print("processing sample "+ sample)
-                PeakPickeMRMTransitionGroupPicker_pyrMRM_py.MRMTransitionGroupPicker_py(
+                MRMTransitionGroupPicker_py.MRMTransitionGroupPicker_py(
                     v,params['MRMTransitionGroupPicker'],
                     params['MRMFeatureFinderScoring']
                     )
