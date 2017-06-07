@@ -330,13 +330,13 @@ class smartPeak():
             elif str_I[0]=='(' and str_I[-1]==')':
                 str_O = tuple(str_I[1:-1])
             else:
-                str_O = str_I.encode('utf-8');
+                str_O = str_I.encode('utf-8')
         except Exception as e:
-            print(e);
-        return str_O;
+            print(e)
+        return str_O
 
     @staticmethod
-    def compareValues(self,value_1_I,value_2_I,comparator_I):
+    def compareValues(value_1_I,value_2_I,comparator_I):
         """Compare two values
         Args
             value_1_I (float)

@@ -18,6 +18,7 @@ class smartPeak_openSWATH_py():
     def openSWATH_py(self,
         filenames_I,
         MRMFeatureFinderScoring_params_I={},
+        MRMFeatureSelect_params_I={},
         ):
         """Run the openSWATH workflow for a single sample
         
@@ -40,7 +41,6 @@ class smartPeak_openSWATH_py():
         if 'feature_csv_o'in filenames_I.keys(): feature_csv_o = filenames_I['feature_csv_o']
         if 'dia_csv_i'in filenames_I.keys(): dia_csv_i = filenames_I['dia_csv_i']
         if 'trafo_csv_i'in filenames_I.keys(): trafo_csv_i = filenames_I['trafo_csv_i']
-        if 'featureSelect_csv_i'in filenames_I.keys(): featureSelect_csv_i = filenames_I['featureSelect_csv_i']
         MRMFeatureFinderScoring_params = MRMFeatureFinderScoring_params_I
 
         #helper classes
@@ -138,22 +138,27 @@ class smartPeak_openSWATH_py():
         # run
         featurefinder.pickExperiment(chromatograms_mapped, output, targeted, trafo, empty_swath)
 
-        # Store outfile as featureXML
-        featurexml = pyopenms.FeatureXMLFile()
-        featurexml.store(featureXML_o.encode('utf-8'), output)
+        # # Store outfile as featureXML
+        # featurexml = pyopenms.FeatureXMLFile()
+        # featurexml.store(featureXML_o.encode('utf-8'), output)
 
-        # Store the outfile as csv
-        featurescsv = OpenSwathFeatureXMLToTSV()
-        featurescsv.store(feature_csv_o, output, targeted, run_id = 'run0', filename = featureXML_o)
+        # # Store the outfile as csv
+        # featurescsv = OpenSwathFeatureXMLToTSV()
+        # featurescsv.store(feature_csv_o, output, targeted, run_id = 'run0', filename = featureXML_o)
 
         # select features
-        self.select_features(output,featureSelect_csv_i,1)
+        output_filtered = self.MRMFeatureSelect(
+            output,
+            MRMFeatureSelect_params_I,
+            {"name":'sn_ratio',"value":'ASC'},
+            1)
 
         # calculate peak intensity and area
 
-    def select_features(
+    def MRMFeatureSelect(
         self,features,
         filter_criteria={},
+        selection_criteria={},
         n_peaks_max=1
         ):
         """Select features from a FeatureMap that satisfy filter criteria
@@ -171,23 +176,30 @@ class smartPeak_openSWATH_py():
         smartpeak = smartPeak()
         output_filtered = pyopenms.FeatureMap()
         #1 filter features
-        for feature in features:
-            feature_tmp = pyopenms.Feature()
+        for feature in features[:]:
+            subordinates_tmp = []
             for subordinate in feature.getSubordinates():
                 fc_pass = True
                 for fc in filter_criteria:
-                    if not fc['used_'] or fc['used_']=='TRUE':
-                        continue
-                    f = feature.getMetaValue(smartpeak.castString(fc['name'])).decode('utf-8')
+                    fc_value,fc_comparator = fc['value'].split('|')[0],fc['value'].split('|')[1]
+                    f = feature.getMetaValue(fc['name'].encode('utf-8'))
                     if f and not f is None:
-                        fc_pass = smartpeak.compareValues(fc['value'],f,fc['comparator'])
-                    s = subordinate.getMetaValue(fc['name'])).decode('utf-8')
+                        fc_pass = smartpeak.compareValues(smartpeak.parseString(fc_value),f,fc_comparator)
+                    s = subordinate.getMetaValue(fc['name'].encode('utf-8'))
                     if s and not s is None:
-                        fc_pass = smartpeak.compareValues(fc['value'],s,fc['comparator'])
+                        fc_pass = smartpeak.compareValues(smartpeak.parseString(fc_value),s,fc_comparator)
                 if not fc_pass:
                     break
                 else:
-                    feature_tmp.addSubbordinate(subordinate)
+                    # subordinates_tmp.addFeature(subordinate,subordinate.getMetaValue("native_id"))
+                    subordinates_tmp.append(subordinate)
             #check that subordinates were found
+            if not subordinates_tmp:
+                continue
             #copy out all feature values
-            #output_filtered.push_back(feature)
+            feature.setSubordinates(subordinates_tmp)
+            output_filtered.push_back(feature)
+        #2 rank order features
+        output_ordered = pyopenms.FeatureMap()        
+        #3 select top feature
+
