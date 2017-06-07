@@ -348,13 +348,17 @@ class smartPeak():
             
         """
         #check comparator support
-        supported_comparators = ["<", ">"]
+        supported_comparators = ["<", ">", "<=", ">="]
         if not comparator_I in supported_comparators:
             print('comparator ' + comparator_I + ' is not recognized.')
         #compare values
         pass_O = True
-        if comparator_I == '<' and value_1_I >= value_2_I:
+        if comparator_I == '<' and not value_1_I < value_2_I:
             pass_O = False
-        elif comparator_I == '>' and value_1_I <= value_2_I:
+        elif comparator_I == '>' and not value_1_I > value_2_I:
+            pass_O = False
+        elif comparator_I == '<=' and not value_1_I <= value_2_I:
+            pass_O = False
+        elif comparator_I == '>=' and not value_1_I >= value_2_I:
             pass_O = False
         return pass_O

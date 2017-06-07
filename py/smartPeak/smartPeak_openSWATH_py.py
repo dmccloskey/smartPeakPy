@@ -1,4 +1,6 @@
 # coding: utf-8
+#utilities
+import copy
 #modules
 from .smartPeak import smartPeak
 from .pyTOPP.MRMMapper import MRMMapper
@@ -152,6 +154,10 @@ class smartPeak_openSWATH_py():
             MRMFeatureSelect_params_I,
             {"name":'sn_ratio',"value":'ASC'},
             1)
+        
+        # Store the outfile as csv
+        featurescsv = OpenSwathFeatureXMLToTSV()
+        featurescsv.store(feature_csv_o, output_filtered, targeted, run_id = 'run0', filename = featureXML_o)
 
         # calculate peak intensity and area
 
@@ -179,27 +185,32 @@ class smartPeak_openSWATH_py():
         for feature in features:
             subordinates_tmp = []
             for subordinate in feature.getSubordinates():
+                # print(subordinate.getMetaValue("native_id"))
+                # if subordinate.getMetaValue("native_id")==b'35cgmp.35cgmp_2.Light':
+                #     print('check')
                 fc_pass = True
                 for fc in filter_criteria:
                     fc_value,fc_comparator = fc['value'].split('|')[0],fc['value'].split('|')[1]
                     f = feature.getMetaValue(fc['name'].encode('utf-8'))
-                    if f and not f is None:
-                        fc_pass = smartpeak.compareValues(smartpeak.parseString(fc_value),f,fc_comparator)
+                    if not f is None:
+                        fc_pass = smartpeak.compareValues(f,smartpeak.parseString(fc_value),fc_comparator)
                     s = subordinate.getMetaValue(fc['name'].encode('utf-8'))
-                    if s and not s is None:
-                        fc_pass = smartpeak.compareValues(smartpeak.parseString(fc_value),s,fc_comparator)
-                if not fc_pass:
-                    break
-                else:
+                    if not s is None:
+                        fc_pass = smartpeak.compareValues(s,smartpeak.parseString(fc_value),fc_comparator)
+                    if not fc_pass:
+                        break
+                if fc_pass:
                     # subordinates_tmp.addFeature(subordinate,subordinate.getMetaValue("native_id"))
                     subordinates_tmp.append(subordinate)
             #check that subordinates were found
             if not subordinates_tmp:
                 continue
             #copy out all feature values
-            feature.setSubordinates(subordinates_tmp)
-            output_filtered.push_back(feature)
-        #2 rank order features with the same transition_group_id
-        output_ordered = pyopenms.FeatureMap()        
-        #3 select top feature
+            feature_tmp = copy.copy(feature)
+            feature_tmp.setSubordinates(subordinates_tmp)
+            output_filtered.push_back(feature_tmp)
+        # #2 rank order features with the same transition_group_id
+        # output_ordered = pyopenms.FeatureMap()        
+        # #3 select top feature
+        return output_filtered
 
