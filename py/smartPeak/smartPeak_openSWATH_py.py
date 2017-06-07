@@ -199,7 +199,7 @@ class smartPeak_openSWATH_py():
             #copy out all feature values
             feature.setSubordinates(subordinates_tmp)
             output_filtered.push_back(feature)
-        #2 rank order features
+        #2 rank order features with the same transition_group_id
         output_ordered = pyopenms.FeatureMap()        
         #3 select top feature
 
