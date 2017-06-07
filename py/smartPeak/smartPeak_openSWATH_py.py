@@ -176,7 +176,7 @@ class smartPeak_openSWATH_py():
         smartpeak = smartPeak()
         output_filtered = pyopenms.FeatureMap()
         #1 filter features
-        for feature in features[:]:
+        for feature in features:
             subordinates_tmp = []
             for subordinate in feature.getSubordinates():
                 fc_pass = True
