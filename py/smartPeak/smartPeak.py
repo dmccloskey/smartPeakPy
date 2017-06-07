@@ -334,3 +334,27 @@ class smartPeak():
         except Exception as e:
             print(e);
         return str_O;
+
+    @staticmethod
+    def compareValues(self,value_1_I,value_2_I,comparator_I):
+        """Compare two values
+        Args
+            value_1_I (float)
+            value_2_I (float)
+            comparator_I (str): comparison operator 
+                      comparator = "<", ">"
+        Returns
+            pass_O (boolean)
+            
+        """
+        #check comparator support
+        supported_comparators = ["<", ">"]
+        if not comparator_I in supported_comparators:
+            print('comparator ' + comparator_I + ' is not recognized.')
+        #compare values
+        pass_O = True
+        if comparator_I == '<' and value_1_I >= value_2_I:
+            pass_O = False
+        elif comparator_I == '>' and value_1_I <= value_2_I:
+            pass_O = False
+        return pass_O

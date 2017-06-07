@@ -75,14 +75,14 @@ csv	../../smartPeak/smartPeak_o.py	/^import csv, sys, json, io$/;"	kind:namespac
 csv	../../smartPeak/smartPeak_openSWATH_cmd.py	/^import csv, sys$/;"	kind:namespace	line:3
 debug_local.py	../../debug_local.py	1;"	kind:file	line:1
 debug_remote.py	../../debug_remote.py	1;"	kind:file	line:1
-delimiter	../../debug_remote.py	/^    delimiter=','$/;"	kind:variable	line:28
+delimiter	../../debug_remote.py	/^    delimiter=','$/;"	kind:variable	line:16
 doMap	../../smartPeak/pyTOPP/MRMGroupMapper.py	/^    def doMap(self, chromatogram_mapped, targeted):$/;"	kind:member	line:15
 doMap	../../smartPeak/pyTOPP/MRMTransitionGroupPicker.py	/^    def doMap(self,exp, targeted):$/;"	kind:member	line:39
 extract_features	../../smartPeak/pyTOPP/OpenSwathRTNormalizer.py	/^    def extract_features(self, output, pairs, targeted):$/;"	kind:member	line:40
 filename_I	../../debug_local.py	/^    filename_I='C:\/Users\/domccl\/Dropbox (UCSD SBRG)\/Project_FastPeak\/openMS_MRMworkflow\/qmethod.csv',$/;"	kind:variable	line:8
 filename_O	../../debug_local.py	/^    filename_O='C:\/Users\/domccl\/Dropbox (UCSD SBRG)\/Project_FastPeak\/openMS_MRMworkflow\/feature.csv'$/;"	kind:variable	line:9
-filename_filenames	../../debug_remote.py	/^    filename_filenames='\/home\/user\/openMS_MRMworkflow\/filenames.csv',$/;"	kind:variable	line:26
-filename_params	../../debug_remote.py	/^    filename_params='\/home\/user\/openMS_MRMworkflow\/MRMTransitionGroupPicker_params.csv',$/;"	kind:variable	line:27
+filename_filenames	../../debug_remote.py	/^    filename_filenames='\/home\/user\/openMS_MRMworkflow\/filenames_SWATH.csv',$/;"	kind:variable	line:14
+filename_params	../../debug_remote.py	/^    filename_params='\/home\/user\/openMS_MRMworkflow\/MRMFeatureFinderScoring_params.csv',$/;"	kind:variable	line:15
 getData	../../smartPeak/smartPeak_i.py	/^    def getData(self):$/;"	kind:member	line:15
 getTransitionGroup	../../smartPeak/pyTOPP/MRMGroupMapper.py	/^    def getTransitionGroup(self, chromatogram_mapped_dict, targeted_dict):$/;"	kind:member	line:30
 getTransitionGroup	../../smartPeak/pyTOPP/MRMTransitionGroupPicker.py	/^    def getTransitionGroup(self, exp, targeted, key, trgr_ids, chrom_map):$/;"	kind:member	line:13

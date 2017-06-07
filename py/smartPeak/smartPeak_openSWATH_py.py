@@ -40,6 +40,7 @@ class smartPeak_openSWATH_py():
         if 'feature_csv_o'in filenames_I.keys(): feature_csv_o = filenames_I['feature_csv_o']
         if 'dia_csv_i'in filenames_I.keys(): dia_csv_i = filenames_I['dia_csv_i']
         if 'trafo_csv_i'in filenames_I.keys(): trafo_csv_i = filenames_I['trafo_csv_i']
+        if 'featureSelect_csv_i'in filenames_I.keys(): featureSelect_csv_i = filenames_I['featureSelect_csv_i']
         MRMFeatureFinderScoring_params = MRMFeatureFinderScoring_params_I
 
         #helper classes
@@ -116,21 +117,9 @@ class smartPeak_openSWATH_py():
             trafo_csv_i.encode('utf-8'),21,targeted_rt_norm
             )
 
-        # # map transitions to the chromatograms for RTNormalization
-        # mrmmapper = MRMMapper()
-        # chromatograms_mapped_rt_norm = mrmmapper.algorithm(
-        #     chromatogram_map=chromatograms,
-        #     targeted=targeted_rt_norm, 
-        #     precursor_tolerance=0.0005,
-        #     product_tolerance=0.0005, 
-        #     allow_unmapped=True,
-        #     allow_double_mappings=True
-        # )
-
         # Normalize the RTs
         # NOTE: same MRMFeatureFinderScoring params will be used to pickPeaks
         RTNormalizer = OpenSwathRTNormalizer()
-        #trafo_out = pyopenms.TransformationDescription()
         trafo = RTNormalizer.main(
             chromatograms_mapped,
             targeted_rt_norm,
@@ -143,6 +132,7 @@ class smartPeak_openSWATH_py():
             estimateBestPeptides=True,
             MRMFeatureFinderScoring_params=parameters
             )
+        # trafo = pyopenms.TransformationDescription()
         
         # set up MRMFeatureFinderScoring (featurefinder) and 
         # run
@@ -157,3 +147,47 @@ class smartPeak_openSWATH_py():
         featurescsv.store(feature_csv_o, output, targeted, run_id = 'run0', filename = featureXML_o)
 
         # select features
+        self.select_features(output,featureSelect_csv_i,1)
+
+        # calculate peak intensity and area
+
+    def select_features(
+        self,features,
+        filter_criteria={},
+        n_peaks_max=1
+        ):
+        """Select features from a FeatureMap that satisfy filter criteria
+        
+        Args
+            features (FeatureMap):
+            filter_criteria (dict): e.g., {"name":, "value":, "order_by":, "comparator":}
+                where order_by = "ASC" or "DESC"
+                      comparator = "<", ">"
+            n_peaks_max (int): maximum number of features per transition to extract
+
+        Returns
+            output_O (FeatureMap): filtered features
+        """
+        smartpeak = smartPeak()
+        output_filtered = pyopenms.FeatureMap()
+        #1 filter features
+        for feature in features:
+            feature_tmp = pyopenms.Feature()
+            for subordinate in feature.getSubordinates():
+                fc_pass = True
+                for fc in filter_criteria:
+                    if not fc['used_'] or fc['used_']=='TRUE':
+                        continue
+                    f = feature.getMetaValue(smartpeak.castString(fc['name'])).decode('utf-8')
+                    if f and not f is None:
+                        fc_pass = smartpeak.compareValues(fc['value'],f,fc['comparator'])
+                    s = subordinate.getMetaValue(fc['name'])).decode('utf-8')
+                    if s and not s is None:
+                        fc_pass = smartpeak.compareValues(fc['value'],s,fc['comparator'])
+                if not fc_pass:
+                    break
+                else:
+                    feature_tmp.addSubbordinate(subordinate)
+            #check that subordinates were found
+            #copy out all feature values
+            #output_filtered.push_back(feature)
