@@ -1,6 +1,7 @@
+from SBaaS_base.sbaas_base import sbaas_base
+from SBaaS_base.sbaas_base_query_select import sbaas_base_query_select
 
-
-class data_referenceData():
+class data_referenceData(sbaas_base):
     """
     Select reference data
     """
@@ -21,7 +22,7 @@ class data_referenceData():
             reference_data (list(dict()))
 
         """
-        reference_data = []
+        data_O = []
         subquery1 = '''SELECT COUNT("experiment"."wid"),
                 "experiment"."id",
                 "experiment"."sample_name" FROM "experiment" 
@@ -37,17 +38,19 @@ class data_referenceData():
         subquery1 = '''LIMIT 10000;
             '''
         subquery2 = ''' '''
+        query_cmd = ''' '''
         try:
-            pass
+            query_select = sbaas_base_query_select(self.session,self.engine,self.settings)
+            data_O = [dict(d) for d in query_select.execute_select(query_cmd)]
         except Exception as e:
             print(e)
-        return reference_data
+        return data_O
     
     def map_referenceData2Features(
         self,
         reference_data,
         features,
-        Tr_window = 30
+        Tr_window = 1.0
         ):
         """Map reference data to FeatureMap
         

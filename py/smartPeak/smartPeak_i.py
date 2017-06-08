@@ -4,47 +4,7 @@ import copy
 from io_utilities.base_importData import base_importData
 
 class smartPeak_i(base_importData):
-    """a class to import data"""
-
-    # def __init__(self):
-    #     self.data = [];
-
-    # def clear_data(self):
-    #     """clear existing data"""
-    #     #del self.data[:];
-    #     self.data = [];
-
-    # def getData(self):
-    #     """get data
-        
-    #     Returns
-    #         data (list,dict)
-            
-    #     """
-    #     return copy.copy(self.data);
-
-    # def setData(self,data_I):
-    #     """set data
-    #     Args
-    #         data_I (list,dict)
-            
-    #     """
-    #     self.data = data_I;
-                   
-    # def read_csv(self, filename, delimiter=','):
-    #     """read table data from csv file"""
-    #     try:
-    #         with open(filename, 'r') as csvfile:
-    #             reader = csv.DictReader(csvfile, delimiter=delimiter);
-    #             try:
-    #                 keys = reader.fieldnames;
-    #                 for row in reader:
-    #                     self.data.append(row);
-    #             except csv.Error as e:
-    #                 sys.exit('file %s, line %d: %s' % (filename, reader.line_num, e));
-    #     except IOError as e:
-    #         sys.exit('%s does not exist' % e);
-            
+    """a class to import data"""            
 
     def parse_openMSParams(self):
         """parse parameters from csv file
