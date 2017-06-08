@@ -78,3 +78,18 @@ class data_retentionComponents():
         rt_max = max(rts)
         for row in retention_components:
             row['Tr_recalibrated'] = (row['avg']-rt_min)/(rt_max-rt_min)*100.0
+
+    def map_retentionComponents2Trafo(
+        self,
+        retention_components
+        ):
+        """Map retentionComponents to trafo (i.e., TraML) .csv file standard
+        
+        Args
+            retention_components (list(dict())): list of dictionaries with values
+            
+        Return
+            trafo_csv (list(dict())): trafo .csv file format
+        """
+
+        pass
