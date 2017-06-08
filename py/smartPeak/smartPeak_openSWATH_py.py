@@ -7,6 +7,7 @@ from .pyTOPP.MRMMapper import MRMMapper
 from .pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor
 from .pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
 from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
+from .pyTOPP.MRMFeatureFilter import MRMFeatureFilter
 #3rd part libraries
 try:
     import pyopenms
@@ -148,69 +149,30 @@ class smartPeak_openSWATH_py():
         # featurescsv = OpenSwathFeatureXMLToTSV()
         # featurescsv.store(feature_csv_o, output, targeted, run_id = 'run0', filename = featureXML_o)
 
-        # select features
-        output_filtered = self.MRMFeatureSelect(
+        # filter and select features
+        featureFilter = MRMFeatureFilter()
+        output_filtered = featureFilter.filter_MRMFeatures(
             output,
-            MRMFeatureSelect_params_I,
-            {"name":'sn_ratio',"value":'ASC'},
-            1)
+            MRMFeatureSelect_params_I)
+            # {"name":'sn_ratio',"value":'ASC'},
+            # 1)
         
         # Store the outfile as csv
         featurescsv = OpenSwathFeatureXMLToTSV()
-        featurescsv.store(feature_csv_o, output_filtered, targeted, run_id = 'run0', filename = featureXML_o)
+        filename = chromatograms_mapped.getLoadedFilePath().decode('utf-8').replace('file://','')
+        samplename_list = chromatograms_mapped.getMetaValue(b'mzml_id').decode('utf-8').split('-')
+        samplename = '-'.join(samplename_list[1:])
+        featurescsv.store(feature_csv_o, output_filtered, targeted,
+            run_id = samplename,
+            filename = filename
+            )
 
         # calculate peak intensity and area
 
-    def MRMFeatureSelect(
-        self,features,
-        filter_criteria={},
-        selection_criteria={},
-        n_peaks_max=1
-        ):
-        """Select features from a FeatureMap that satisfy filter criteria
-        
-        Args
-            features (FeatureMap):
-            filter_criteria (dict): e.g., {"name":, "value":, "order_by":, "comparator":}
-                where order_by = "ASC" or "DESC"
-                      comparator = "<", ">"
-            n_peaks_max (int): maximum number of features per transition to extract
-
-        Returns
-            output_O (FeatureMap): filtered features
-        """
-        smartpeak = smartPeak()
-        output_filtered = pyopenms.FeatureMap()
-        #1 filter features
-        for feature in features:
-            subordinates_tmp = []
-            for subordinate in feature.getSubordinates():
-                # print(subordinate.getMetaValue("native_id"))
-                # if subordinate.getMetaValue("native_id")==b'35cgmp.35cgmp_2.Light':
-                #     print('check')
-                fc_pass = True
-                for fc in filter_criteria:
-                    fc_value,fc_comparator = fc['value'].split('|')[0],fc['value'].split('|')[1]
-                    f = feature.getMetaValue(fc['name'].encode('utf-8'))
-                    if not f is None:
-                        fc_pass = smartpeak.compareValues(f,smartpeak.parseString(fc_value),fc_comparator)
-                    s = subordinate.getMetaValue(fc['name'].encode('utf-8'))
-                    if not s is None:
-                        fc_pass = smartpeak.compareValues(s,smartpeak.parseString(fc_value),fc_comparator)
-                    if not fc_pass:
-                        break
-                if fc_pass:
-                    # subordinates_tmp.addFeature(subordinate,subordinate.getMetaValue("native_id"))
-                    subordinates_tmp.append(subordinate)
-            #check that subordinates were found
-            if not subordinates_tmp:
-                continue
-            #copy out all feature values
-            feature_tmp = copy.copy(feature)
-            feature_tmp.setSubordinates(subordinates_tmp)
-            output_filtered.push_back(feature_tmp)
-        # #2 rank order features with the same transition_group_id
-        # output_ordered = pyopenms.FeatureMap()        
-        # #3 select top feature
-        return output_filtered
+        # # other metadata
+        # chromatograms_mapped.getInstrument().getName()
+        # chromatograms_mapped.getInstrument().getSoftware().getName()
+        # filename = '''%s/%s''' %(
+        #     chromatograms_mapped.getSourceFiles()[0].getPathToFile().decode('utf-8').replace('file://',''),
+        #     chromatograms_mapped.getSourceFiles()[0].getNameOfFile().decode('utf-8'))
 

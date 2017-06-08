@@ -4,6 +4,10 @@ try:
 except ImportError as e:
     print(e)
 
+"""
+DEPRECATED: see MRMTransitionGroupPicker 
+"""
+
 class MRMGroupMapper():
     """MRMGroupMapper maps measured chromatograms (mzML) and the transitions used (TraML)
     and stores them in a MRMTransitionGroup structure
