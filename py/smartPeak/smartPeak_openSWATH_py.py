@@ -155,9 +155,9 @@ class smartPeak_openSWATH_py():
         output_filtered = featureFilter.filter_MRMFeatures(
             output,
             MRMFeatureFilter_filter_params_I)
-        output_filtered = featureFilter.select_MRMFeatures(
-            output_filtered,
-            MRMFeatureFilter_select_params_I)
+        # output_filtered = featureFilter.select_MRMFeatures(
+        #     output_filtered,
+        #     MRMFeatureFilter_select_params_I)
 
         # Store outfile as featureXML
         featurexml = pyopenms.FeatureXMLFile()
