@@ -87,8 +87,8 @@ class OpenSwathFeatureXMLToTSV():
                     value = subordinate.getMetaValue(k).decode('utf-8')
                 key_subordinate_row.append(value)
             transition = [t for t in peptidetransitions if t.getNativeID()==subordinate.getMetaValue("native_id")][0]
-            key_subordinate_row.append(transition.getPrecursorMZ())
-            key_subordinate_row.append(transition.getIntensity())
+            key_subordinate_row.append(transition.getPrecursorMZ()) #include quant, qual, detecting, identifying, etc.,
+            key_subordinate_row.append(subordinate.getIntensity())
             rows_O.append(header_row + key_row + key_subordinate_row)
 
         return rows_O
@@ -130,7 +130,7 @@ class OpenSwathFeatureXMLToTSV():
         header.extend(keys1)
         keys_subordinates1 = [k.decode('utf-8') for k in keys_subordinates]
         header.extend(keys_subordinates1)
-        header.extend(["PrecursorMZ","peak_height"]) #different percursorMZ for each transition
+        header.extend(["PrecursorMZ","peak_area"]) #different percursorMZ for each transition
         return header,keys,keys_subordinates
 
     def convert_FeatureXMLToTSV(self, features, targ, run_id = 'run0', filename = 'run0.FeatureXML'):
