@@ -192,6 +192,7 @@ class __main__():
         st = time.time()
         from .data.ReferenceData import ReferenceData
         referenceData = ReferenceData(session,engine,pg_settings.datadir_settings)
+        print("query the reference data")
         data_ref = referenceData.get_referenceData(
             experiment_ids_I = experiment_ids_I,
             sample_names_I = sample_names_I,
@@ -204,7 +205,7 @@ class __main__():
         print("Elapsed time: %.2fs" % elapsed_time)
         session.close()
         # process the reference data
+        print("process the reference data")
         data_ref_processed = referenceData.process_referenceData(data_ref)
-        elapsed_time = time.time() - st
+        elapsed_time = time.time() - st - elapsed_time
         print("Elapsed time: %.2fs" % elapsed_time)
-

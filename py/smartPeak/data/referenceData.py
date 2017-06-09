@@ -198,10 +198,14 @@ class ReferenceData(sbaas_base):
         Returns
             data_O (list, dict):
         """
-        is_names = [d['is_name'] for d in data_I if not d['is_name'] is None]
+        # list out all referenced IS
+        is_names = list(set([(d['experiment_id'],d['sample_name'],d['is_name']) for d in data_I if not d['is_name'] is None]))
         data_O = []
         for row in data_I:
-            if row['component_name'] in is_names and row['is_']:
+            # trim the filename
+            row['original_filename'] = row['original_filename'].split(' (sample ')[0]
+            # pull out referenced IS
+            if (row['experiment_id'],row['sample_name'],row['component_name']) in is_names and row['is_']:
                 data_O.append(row)
             elif not row['is_']:
                 data_O.append(row)
