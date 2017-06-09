@@ -9,12 +9,12 @@ ptvsd.wait_for_attach()
 from smartPeak.__main__ import __main__
 m = __main__()
 
-# Test openSWATH_py
-m.run_openSWATH_py(
-    filename_filenames='/home/user/openMS_MRMworkflow/filenames_BloodProject01_SWATH.csv',
-    filename_params='/home/user/openMS_MRMworkflow/MRMFeatureFinderScoring_params.csv',
-    delimiter=','
-    )
+# # Test openSWATH_py
+# m.run_openSWATH_py(
+#     filename_filenames='/home/user/openMS_MRMworkflow/filenames_BloodProject01_SWATH.csv',
+#     filename_params='/home/user/openMS_MRMworkflow/MRMFeatureFinderScoring_params.csv',
+#     delimiter=','
+#     )
 
 # # Test openSWATH_cmd
 # # filename='/home/user/openMS_MRMworkflow/openSWATH_cmd_params_QC1.csv'
@@ -40,3 +40,13 @@ m.run_openSWATH_py(
 #     filename_I='/home/user/openMS_MRMworkflow/qmethod.csv',
 #     filename_O='/home/user/openMS_MRMworkflow/feature.csv'
 #     )
+
+# Test ReferenceData
+m.run_get_referenceData(
+    experiment_ids_I = ['BloodProject01'],
+    sample_names_I = ['150601_0_BloodProject01_PLT_QC_Broth-1'],
+    acquisition_methods_I = ['140718_McCloskey2013'],
+    component_names_I = [],
+    where_clause_I = '',
+    used__I = True,
+    settings_filename_I = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini')

@@ -5,7 +5,7 @@ from SBaaS_base.sbaas_base_query_select import sbaas_base_query_select
 
 """
 
-class data_referenceData(sbaas_base):
+class ReferenceData(sbaas_base):
     """
     Select reference data
     """
@@ -16,8 +16,11 @@ class data_referenceData(sbaas_base):
         sample_names_I = [],
         acquisition_methods_I = [],
         component_names_I = [],
+        component_group_names_I = [],
         where_clause_I = '',
-        used__I = True):
+        used__I = True,
+        experiment_limit_I = 10000,
+        mqresultstable_limit_I = 1000000):
         """Select reference data
 
         Args
@@ -31,28 +34,35 @@ class data_referenceData(sbaas_base):
         """
         data_O = []
         #subquery 1: experiment
-        subquery1 = '''"experiment"."id",
-                "experiment"."sample_name" FROM "experiment" , 
-                "experiment"."acquisition_method_id
+        subquery1 = '''SELECT "experiment"."id" AS experiment_id,
+                "experiment"."sample_name", 
+                "experiment"."acquisition_method_id"
             '''
-        subquery1 = '''WHERE exp_type_id = 4 
+        subquery1 += '''FROM "experiment" 
+            '''
+        subquery1 += '''WHERE exp_type_id = 4 
             '''
         if experiment_ids_I:
-            cmd_q = '''AND "experiment"."experiment_id" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(experiment_ids_I))
-            subquery1+=cmd_q
+            cmd_q = '''AND "experiment"."id" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(experiment_ids_I))
+            subquery1 += cmd_q
         if sample_names_I:
             cmd_q = '''AND "experiment"."sample_name" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(sample_names_I))
-            subquery1+=cmd_q
-        subquery1 = '''GROUP BY "experiment"."id",
-                "experiment"."sample_name" 
+            subquery1 += cmd_q
+        if acquisition_methods_I:
+            cmd_q = '''AND "experiment"."acquisition_method_id" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(acquisition_methods_I))
+            subquery1 += cmd_q
+        subquery1 += '''GROUP BY "experiment"."id",
+                "experiment"."sample_name", 
+                "experiment"."acquisition_method_id"
             '''
-        subquery1 = '''ORDER BY "experiment"."id" ASC,
-                "experiment"."sample_name" ASC 
+        subquery1 += '''ORDER BY "experiment"."id" ASC,
+                "experiment"."sample_name" ASC, 
+                "experiment"."acquisition_method_id" ASC
             '''
-        subquery1 = '''LIMIT 10000;
-            '''
+        subquery1 += '''LIMIT %s
+            ''' % experiment_limit_I
         #subquery 2: mqresultstable
-        subquery2 = '''"data_stage01_quantification_mqresultstable"."id",
+        subquery2 = '''SELECT "data_stage01_quantification_mqresultstable"."id",
             "data_stage01_quantification_mqresultstable"."index_",
             "data_stage01_quantification_mqresultstable"."sample_index",
             "data_stage01_quantification_mqresultstable"."original_filename",
@@ -140,19 +150,61 @@ class data_referenceData(sbaas_base):
             "data_stage01_quantification_mqresultstable"."ion_ratio",
             "data_stage01_quantification_mqresultstable"."expected_ion_ratio",
             "data_stage01_quantification_mqresultstable"."points_across_baseline",
-            "data_stage01_quantification_mqresultstable"."points_across_half_height"
+            "data_stage01_quantification_mqresultstable"."points_across_half_height",
+            "subquery1"."experiment_id",
+            "subquery1"."acquisition_method_id"
         '''
-        subquery2 = '''FROM "data_stage01_quantification_mqresultstable"
+        subquery2 += '''FROM "data_stage01_quantification_mqresultstable",
+            (%s) AS subquery1 
+        ''' %subquery1
+        subquery2 += '''WHERE "data_stage01_quantification_mqresultstable"."sample_name" = "subquery1"."sample_name" 
         '''
-        subquery2 = '''WHERE used_
-        '''
+        if component_names_I:
+            cmd_q = '''AND "data_stage01_quantification_mqresultstable"."component_name" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(component_names_I))
+            subquery2 += cmd_q
+        if component_group_names_I:
+            cmd_q = '''AND "data_stage01_quantification_mqresultstable"."component_group_name" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(component_group_names_I))
+            subquery2 += cmd_q
+        if used__I:
+            subquery2 += '''AND used_ '''
+        elif not used__I:
+            subquery2 += '''AND NOT used_ '''
+
+        subquery2 += '''ORDER BY "subquery1"."experiment_id" ASC,
+                "subquery1"."acquisition_method_id" ASC,
+                "data_stage01_quantification_mqresultstable"."sample_name" ASC,
+                "data_stage01_quantification_mqresultstable"."component_name" ASC
+            '''
+        subquery2 += '''LIMIT %s
+            ''' % mqresultstable_limit_I
         #final query
-        query_cmd = ''' '''
+        query_cmd = '''%s; ''' %subquery2
         try:
             query_select = sbaas_base_query_select(self.session,self.engine,self.settings)
             data_O = [dict(d) for d in query_select.execute_select(query_cmd)]
         except Exception as e:
             print(e)
+        return data_O
+
+    def process_referenceData(self,
+        data_I):
+        """Process the reference data
+        1. remove all internal standards that are not referenced by an analyte
+        2. integrity check of pertinent data
+
+        Args
+            data_I (list, dict)
+
+        Returns
+            data_O (list, dict):
+        """
+        is_names = [d['is_name'] for d in data_I if not d['is_name'] is None]
+        data_O = []
+        for row in data_I:
+            if row['component_name'] in is_names and row['is_']:
+                data_O.append(row)
+            elif not row['is_']:
+                data_O.append(row)
         return data_O
     
     def map_referenceData2Features(

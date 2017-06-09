@@ -7,7 +7,7 @@ TODO:
 4. test
 """
 
-class data_retentionComponents():
+class RetentionComponents():
     """
     Select and normalize retention components
     """
