@@ -15,15 +15,13 @@ class MRMFeatureFilter():
 
     def filter_MRMFeatures(
         self,features,
-        filter_criteria={}
+        filter_criteria=[]
         ):
         """Filter features from a FeatureMap that satisfy filter criteria
         
         Args
             features (FeatureMap):
-            filter_criteria (dict): e.g., {"name":, "value":, "order_by":, "comparator":}
-                where order_by = "ASC" or "DESC"
-                      comparator = "<", ">"
+            filter_criteria (list,dict): e.g., [{"name":, "value":, }]
             n_peaks_max (int): maximum number of features per transition to extract
 
         Returns
@@ -63,18 +61,17 @@ class MRMFeatureFilter():
 
     def select_MRMFeatures(
         self,features,
-        score_weights={},
-        n_peaks_max=1):
-        """Selects features from a FeatureMap that satisfy filter criteria
+        score_weights=[]):
+        """Selects the best feature from a FeatureMap based on a scoring criteria
         
         Args
             features (FeatureMap):
-            score_weights (dict): e.g., {"name":, "value":, }
+            score_weights (list,dict): e.g., [{"name":, "value":, }]
             n_peaks_max (int): maximum number of features per transition to extract
                 in ascending order
 
         Returns
-            output_O (FeatureMap): filtered features
+            output_O (FeatureMap): selected features
         """
         smartpeak = smartPeak()
         score_tmp = 0
@@ -82,9 +79,17 @@ class MRMFeatureFilter():
         #compute a pooled score for each transition and transition group
         for feature in features:
             subordinates_tmp = []
-            for subordinate in feature.getSubordinates():
-                pass
-    
+            transition_group_id = feature.getMetaValue("PeptideRef").decode('utf-8')
+            best_transition_group = None
+            best_transition_group_score = 0
+            for score_weight in score_weights:
+                score = float(feature.getMetaValue(score_weight['name']))*float(score_weight['value'])
+                if best_transition_group_score < score:
+                    best_transition_group_score = score
+                    best_transition_group = feature
+            output_ranked.push_back(best_transition_group)
+        return output_ranked
+
     def validate_MRMFeatures(
         self,
         reference_data,
@@ -110,10 +115,7 @@ class MRMFeatureFilter():
         n_dataReference = len(reference_data)
         n_transitions = 0
         n_transitions_mapped = 0
-        n_transitions_validated = 0   
-        n_features_mapped = 0
-        n_features_validated = 0     
-        validated_data = []
+        n_transitions_validated = 0  
         output_filtered = pyopenms.FeatureMap()
         for feature in features:
             subordinates_tmp = []
@@ -144,7 +146,7 @@ class MRMFeatureFilter():
                     n_transitions_validated += 1
                 #TESTING:
                 else:
-                    print('check')
+                    print('Tr for transition ' + subordinate.getMetaValue('native_id').decode('utf-8') + ' does not match the reference.')
                 n_transitions_mapped += 1
                 
             #check that subordinates were found
@@ -154,5 +156,4 @@ class MRMFeatureFilter():
             feature_tmp = copy.copy(feature)
             feature_tmp.setSubordinates(subordinates_tmp)
             output_filtered.push_back(feature_tmp)
-            n_features_validated += 1
         return output_filtered

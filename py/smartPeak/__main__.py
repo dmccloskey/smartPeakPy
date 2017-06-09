@@ -118,7 +118,8 @@ class __main__():
                 openSWATH_py.openSWATH_py(
                     v,
                     params['MRMFeatureFinderScoring'],
-                    params['MRMFeatureSelect'])
+                    params['MRMFeatureFilter.filter_MRMFeatures'],
+                    params['MRMFeatureFilter.select_MRMFeatures'])
 
     def run_testSmartPeak(self):
         from .test_smartPeak import test_smartPeak

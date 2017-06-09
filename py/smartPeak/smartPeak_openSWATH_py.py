@@ -21,7 +21,8 @@ class smartPeak_openSWATH_py():
     def openSWATH_py(self,
         filenames_I,
         MRMFeatureFinderScoring_params_I={},
-        MRMFeatureSelect_params_I={},
+        MRMFeatureFilter_filter_params_I={},
+        MRMFeatureFilter_select_params_I={},
         ):
         """Run the openSWATH workflow for a single sample
         
@@ -153,13 +154,14 @@ class smartPeak_openSWATH_py():
         featureFilter = MRMFeatureFilter()
         output_filtered = featureFilter.filter_MRMFeatures(
             output,
-            MRMFeatureSelect_params_I)
-            # {"name":'sn_ratio',"value":'ASC'},
-            # 1)
+            MRMFeatureFilter_filter_params_I)
+        output_filtered = featureFilter.select_MRMFeatures(
+            output_filtered,
+            MRMFeatureFilter_select_params_I)
 
         # Store outfile as featureXML
         featurexml = pyopenms.FeatureXMLFile()
-        featurexml.store(featureXML_o.encode('utf-8'), output)
+        featurexml.store(featureXML_o.encode('utf-8'), output_filtered)
         
         # Store the outfile as csv
         featurescsv = OpenSwathFeatureXMLToTSV()
