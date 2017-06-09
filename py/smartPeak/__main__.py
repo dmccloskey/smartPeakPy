@@ -262,4 +262,5 @@ class __main__():
                 features_mapped = featureFilter.validate_MRMFeatures(
                     reference_data = data_ref,
                     features = features,
-                    Tr_window = params['validate_MRMFeatures']['Tr_window'])
+                    Tr_window = float(params['validate_MRMFeatures'][0]['value'])
+                    )

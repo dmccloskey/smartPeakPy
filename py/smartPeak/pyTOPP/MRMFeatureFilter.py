@@ -104,10 +104,13 @@ class MRMFeatureFilter():
         #reformat reference_data into a dict by unique key
         # TODO: need to add in the experiment_id and acquisition_method_id to feature or as a parameter
         # reference_data_dict = {(d['experiment_id'],d['acquisition_method_id'],d['sample_name'],d['component_name']):d for d in reference_data}
-        reference_data_dict = {(d['sample_name'],d['component_name']):d for d in reference_data}
+        reference_data_dict = {(d['component_name']):d for d in reference_data}
         #intialize counters
         n_features = features.size()
         n_dataReference = len(reference_data)
+        n_transitions = 0
+        n_transitions_mapped = 0
+        n_transitions_validated = 0   
         n_features_mapped = 0
         n_features_validated = 0     
         validated_data = []
@@ -115,24 +118,22 @@ class MRMFeatureFilter():
         for feature in features:
             subordinates_tmp = []
             for subordinate in feature.getSubordinates():
+                n_transitions += 1
                 fc_pass = False
                 #make the reference_data_dict key
-                reference_data_key = (subordinate.getRunID(),subordinate.getMetaValue('native_id'))
+                reference_data_key = (subordinate.getMetaValue('native_id').decode('utf-8'))
+                if not reference_data_key in reference_data_dict.keys():
+                    continue
                 #extract and format rt information
+                reference_rt = float(reference_data_dict[reference_data_key]['retention_time'])
                 feature_rt = feature.getRT()
-                if type(feature_rt)==type(''.encode('utf-8')):
-                    feature_rt = feature_rt.decode('utf-8')
                 feature_leftWidth = feature.getMetaValue('leftWidth')
-                if type(value)==type(''.encode('utf-8')):
-                    feature_leftWidth = feature_leftWidth.decode('utf-8')
-                feature_reftWidth = feature.getMetaValue('reftWidth')
-                if type(feature_reftWidth)==type(''.encode('utf-8')):
-                    feature_reftWidth = feature_reftWidth.decode('utf-8')
+                feature_rightWidth = feature.getMetaValue('rightWidth')
                 #validate the retention time
-                if abs(reference_data_dict[reference_data_key]['retention_time'] - feature_rt) < Tr_window:
+                if abs(reference_rt - feature_rt) < Tr_window:
                     fc_pass = True
-                if reference_data_dict[reference_data_key]['retention_time'] > feature_leftWidth \
-                    and reference_data_dict[reference_data_key]['retention_time'] < feature_rightWidth:
+                if reference_rt > feature_leftWidth \
+                    and reference_rt < feature_rightWidth:
                     fc_pass = True
                 #other validation parameters
                 #NOTE: if there are no other validation parameters that are
@@ -140,8 +141,12 @@ class MRMFeatureFilter():
                 #      through each transition
                 if fc_pass:
                     subordinates_tmp.append(subordinate)
-                # 1. check Tr_gs +/- Tr < threshold
-                # 2. check Tr_gs < rightWidth and Tr_gs > leftWidth
+                    n_transitions_validated += 1
+                #TESTING:
+                else:
+                    print('check')
+                n_transitions_mapped += 1
+                
             #check that subordinates were found
             if not subordinates_tmp:
                 continue
@@ -149,4 +154,5 @@ class MRMFeatureFilter():
             feature_tmp = copy.copy(feature)
             feature_tmp.setSubordinates(subordinates_tmp)
             output_filtered.push_back(feature_tmp)
+            n_features_validated += 1
         return output_filtered
