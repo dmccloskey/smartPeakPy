@@ -168,8 +168,11 @@ class __main__():
         sample_names_I = [],
         acquisition_methods_I = [],
         component_names_I = [],
+        component_group_names_I = [],
         where_clause_I = '',
         used__I = True,
+        experiment_limit_I = 10000,
+        mqresultstable_limit_I = 1000000,
         settings_filename_I = 'settings.ini'):
         """
         Args
@@ -198,8 +201,11 @@ class __main__():
             sample_names_I = sample_names_I,
             acquisition_methods_I = acquisition_methods_I,
             component_names_I = component_names_I,
+            component_group_names_I = [],
             where_clause_I = where_clause_I,
             used__I = used__I,
+            experiment_limit_I = experiment_limit_I,
+            mqresultstable_limit_I = mqresultstable_limit_I,
         )
         elapsed_time = time.time() - st
         print("Elapsed time: %.2fs" % elapsed_time)
@@ -209,3 +215,41 @@ class __main__():
         data_ref_processed = referenceData.process_referenceData(data_ref)
         elapsed_time = time.time() - st - elapsed_time
         print("Elapsed time: %.2fs" % elapsed_time)
+        return data_ref_processed
+        
+    def run_validate_openSWATH(self,
+        experiment_ids_I = [],
+        sample_names_I = [],
+        acquisition_methods_I = [],
+        component_names_I = [],
+        component_group_names_I = [],
+        where_clause_I = '',
+        used__I = True,
+        experiment_limit_I = 10000,
+        mqresultstable_limit_I = 1000000,
+        settings_filename_I = 'settings.ini'):
+        """
+        Args
+
+        Returns
+
+        Example
+
+        """
+        from .data.ReferenceData import ReferenceData
+        from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
+        openSWATH_py = smartPeak_openSWATH_py()
+        smartpeak_i = smartPeak_i()
+        smartpeak_i.read_pythonParams(filename_filenames,delimiter)
+        filenames = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        smartpeak_i.read_openMSParams(filename_params,delimiter)
+        params = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        for filename in filenames:
+            for sample,v in filename.items():
+                print("processing sample "+ sample)
+                openSWATH_py.openSWATH_py(
+                    v,
+                    params['MRMFeatureFinderScoring'],
+                    params['MRMFeatureSelect'])

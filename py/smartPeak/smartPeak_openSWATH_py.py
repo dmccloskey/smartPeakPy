@@ -156,6 +156,10 @@ class smartPeak_openSWATH_py():
             MRMFeatureSelect_params_I)
             # {"name":'sn_ratio',"value":'ASC'},
             # 1)
+
+        # Store outfile as featureXML
+        featurexml = pyopenms.FeatureXMLFile()
+        featurexml.store(featureXML_o.encode('utf-8'), output)
         
         # Store the outfile as csv
         featurescsv = OpenSwathFeatureXMLToTSV()
