@@ -76,18 +76,28 @@ class MRMFeatureFilter():
         smartpeak = smartPeak()
         score_tmp = 0
         output_ranked = pyopenms.FeatureMap()
-        #compute a pooled score for each transition and transition group
+        #compute a pooled score for each transition group
+        transition_group_id_current = ''
+        best_transition_group = None
+        best_transition_group_score = 0
         for feature in features:
             subordinates_tmp = []
             transition_group_id = feature.getMetaValue("PeptideRef").decode('utf-8')
-            best_transition_group = None
-            best_transition_group_score = 0
+            # add the best transition
+            if transition_group_id != transition_group_id_current and not best_transition_group is None:
+                output_ranked.push_back(best_transition_group)
+            # initialize the best transition
+            if transition_group_id != transition_group_id_current:
+                transition_group_id_current = transition_group_id
+                best_transition_group = None
+                best_transition_group_score = 0
             for score_weight in score_weights:
                 score = float(feature.getMetaValue(score_weight['name']))*float(score_weight['value'])
                 if best_transition_group_score < score:
                     best_transition_group_score = score
                     best_transition_group = feature
-            output_ranked.push_back(best_transition_group)
+        #add in the last best transition
+        output_ranked.push_back(best_transition_group)
         return output_ranked
 
     def validate_MRMFeatures(
