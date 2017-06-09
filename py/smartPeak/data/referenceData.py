@@ -222,6 +222,7 @@ class ReferenceData(sbaas_base):
         Args
             reference_data (list(dict()): reference data
             features (FeatureMap): features
+            Tr_window (float): retention time difference threshold
             
         Returns
             features_mapped (FeatureMap): mapped features

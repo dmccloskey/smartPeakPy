@@ -173,7 +173,8 @@ class __main__():
         used__I = True,
         experiment_limit_I = 10000,
         mqresultstable_limit_I = 1000000,
-        settings_filename_I = 'settings.ini'):
+        settings_filename_I = 'settings.ini',
+        data_filename_O = ''):
         """
         Args
 
@@ -215,19 +216,14 @@ class __main__():
         data_ref_processed = referenceData.process_referenceData(data_ref)
         elapsed_time = time.time() - st - elapsed_time
         print("Elapsed time: %.2fs" % elapsed_time)
-        return data_ref_processed
+        if data_filename_O:
+            smartpeak_o = smartPeak_o(data_ref_processed)
+            smartpeak_o.write_dict2csv(filename = data_filename_O)
         
     def run_validate_openSWATH(self,
-        experiment_ids_I = [],
-        sample_names_I = [],
-        acquisition_methods_I = [],
-        component_names_I = [],
-        component_group_names_I = [],
-        where_clause_I = '',
-        used__I = True,
-        experiment_limit_I = 10000,
-        mqresultstable_limit_I = 1000000,
-        settings_filename_I = 'settings.ini'):
+        filename_filenames='',
+        filename_params='',
+        delimiter=','):
         """
         Args
 
@@ -237,8 +233,13 @@ class __main__():
 
         """
         from .data.ReferenceData import ReferenceData
+        referenceData = ReferenceData()
         from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
-        openSWATH_py = smartPeak_openSWATH_py()
+        try:
+            import pyopenms
+        except ImportError as e:
+            print(e)
+        # openSWATH_py = smartPeak_openSWATH_py()
         smartpeak_i = smartPeak_i()
         smartpeak_i.read_pythonParams(filename_filenames,delimiter)
         filenames = smartpeak_i.getData()
@@ -249,7 +250,16 @@ class __main__():
         for filename in filenames:
             for sample,v in filename.items():
                 print("processing sample "+ sample)
-                openSWATH_py.openSWATH_py(
-                    v,
-                    params['MRMFeatureFinderScoring'],
-                    params['MRMFeatureSelect'])
+                # read in the FeatureMap
+                features = pyopenms.FeatureMap()
+                featurexml = pyopenms.FeatureXMLFile()
+                featurexml.load(v['featureXML_i'].encode('utf-8'), features)
+                # read in the reference data
+                smartpeak_i.read_csv(v['referenceData_csv_i'],delimiter)
+                data_ref = smartpeak_i.getData()
+                smartpeak_i.clear_data()
+                # map the reference data
+                features_mapped = referenceData.map_referenceData2Features(
+                    reference_data = data_ref,
+                    features = features,
+                    Tr_window = params['Tr_window'])
