@@ -232,8 +232,8 @@ class __main__():
         Example
 
         """
-        from .data.ReferenceData import ReferenceData
-        referenceData = ReferenceData()
+        from .pyTOPP.MRMFeatureFilter import MRMFeatureFilter
+        featureFilter = MRMFeatureFilter()
         from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
         try:
             import pyopenms
@@ -259,7 +259,7 @@ class __main__():
                 data_ref = smartpeak_i.getData()
                 smartpeak_i.clear_data()
                 # map the reference data
-                features_mapped = referenceData.map_referenceData2Features(
+                features_mapped = featureFilter.validate_MRMFeatures(
                     reference_data = data_ref,
                     features = features,
-                    Tr_window = params['Tr_window'])
+                    Tr_window = params['validate_MRMFeatures']['Tr_window'])

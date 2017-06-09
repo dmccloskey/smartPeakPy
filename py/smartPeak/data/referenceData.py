@@ -210,23 +210,3 @@ class ReferenceData(sbaas_base):
             elif not row['is_']:
                 data_O.append(row)
         return data_O
-    
-    def map_referenceData2Features(
-        self,
-        reference_data,
-        features,
-        Tr_window = 1.0
-        ):
-        """Map reference data to FeatureMap
-        
-        Args
-            reference_data (list(dict()): reference data
-            features (FeatureMap): features
-            Tr_window (float): retention time difference threshold
-            
-        Returns
-            features_mapped (FeatureMap): mapped features
-        """
-
-        # 1. check Tr_gs +/- Tr < threshold
-        # 2. check Tr_gs < rightWidth and Tr_gs > leftWidth
