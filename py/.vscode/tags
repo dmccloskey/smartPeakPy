@@ -64,7 +64,7 @@ calculateConcentrations	../../smartPeak/smartPeak_isotopeLabeledQuantitation_py.
 castString	../../smartPeak/smartPeak.py	/^    def castString(str_I,type_I):$/;"	kind:member	line:241
 checkParameterValue	../../smartPeak/smartPeak.py	/^    def checkParameterValue(value_I):$/;"	kind:member	line:225
 compareValues	../../smartPeak/smartPeak.py	/^    def compareValues(value_1_I,value_2_I,comparator_I):$/;"	kind:member	line:339
-convert_FeatureXMLToTSV	../../smartPeak/pyTOPP/OpenSwathFeatureXMLToTSV.py	/^    def convert_FeatureXMLToTSV(self, features, targ, run_id = 'run0', filename = 'run0.FeatureXML'):$/;"	kind:member	line:135
+convert_FeatureXMLToTSV	../../smartPeak/pyTOPP/OpenSwathFeatureXMLToTSV.py	/^    def convert_FeatureXMLToTSV(self, features, targ, run_id = 'run0', filename = 'run0.FeatureXML'):$/;"	kind:member	line:136
 convert_MQQMethod2Feature	../../smartPeak/__main__.py	/^    def convert_MQQMethod2Feature(self,filename_I,filename_O):$/;"	kind:member	line:129
 convert_MQQMethod2Feature	../../smartPeak/smartPeak.py	/^    def convert_MQQMethod2Feature(self,MQQMethod_I):$/;"	kind:member	line:77
 convert_byte2String	../../smartPeak/smartPeak.py	/^    def convert_byte2String(byte_I, encoding_I='utf-8'):$/;"	kind:member	line:40
@@ -97,7 +97,7 @@ filename_params	../../debug_remote.py	/^    filename_params='\/home\/user\/openM
 filter_MRMFeatures	../../smartPeak/pyTOPP/MRMFeatureFilter.py	/^    def filter_MRMFeatures($/;"	kind:member	line:16
 getTransitionGroup	../../smartPeak/pyTOPP/MRMGroupMapper.py	/^    def getTransitionGroup(self, chromatogram_mapped_dict, targeted_dict):$/;"	kind:member	line:34
 getTransitionGroup	../../smartPeak/pyTOPP/MRMTransitionGroupPicker.py	/^    def getTransitionGroup(self, exp, targeted, key, trgr_ids, chrom_map):$/;"	kind:member	line:13
-get_header	../../smartPeak/pyTOPP/OpenSwathFeatureXMLToTSV.py	/^    def get_header(self, features):$/;"	kind:member	line:95
+get_header	../../smartPeak/pyTOPP/OpenSwathFeatureXMLToTSV.py	/^    def get_header(self, features):$/;"	kind:member	line:96
 get_referenceData	../../smartPeak/data/ReferenceData.py	/^    def get_referenceData($/;"	kind:member	line:13
 get_retentionComponents	../../smartPeak/data/RetentionComponents.py	/^    def get_retentionComponents($/;"	kind:member	line:15
 io	../../smartPeak/smartPeak_o.py	/^import csv, sys, json, io$/;"	kind:namespace	line:2
@@ -194,7 +194,7 @@ smartPeak_openSWATH_py	../../smartPeak/__main__.py	/^        from .smartPeak_ope
 smartPeak_openSWATH_py	../../smartPeak/smartPeak_openSWATH_py.py	/^class smartPeak_openSWATH_py():$/;"	kind:class	line:17
 smartPeak_openSWATH_py	../../smartPeak/test_smartPeak.py	/^from .smartPeak_openSWATH_py import smartPeak_openSWATH_py$/;"	kind:namespace	line:3
 smartPeak_openSWATH_py.py	../../smartPeak/smartPeak_openSWATH_py.py	1;"	kind:file	line:1
-store	../../smartPeak/pyTOPP/OpenSwathFeatureXMLToTSV.py	/^    def store(self, filename_O, output, targeted, run_id = 'run0', filename = 'run0.FeatureXML'):$/;"	kind:member	line:156
+store	../../smartPeak/pyTOPP/OpenSwathFeatureXMLToTSV.py	/^    def store(self, filename_O, output, targeted, run_id = 'run0', filename = 'run0.FeatureXML'):$/;"	kind:member	line:157
 store_TransformationXMLFile	../../smartPeak/pyTOPP/OpenSwathRTNormalizer.py	/^    def store_TransformationXMLFile(self,outfile,trafo_out):$/;"	kind:member	line:222
 store_mzML	../../smartPeak/smartPeak_o.py	/^    def store_mzML(self, out, output):$/;"	kind:member	line:14
 sys	../../smartPeak/pyTOPP/MRMGroupMapper.py	/^import copy, sys$/;"	kind:namespace	line:1
@@ -217,4 +217,4 @@ transform_targetedExperiment	../../smartPeak/pyTOPP/OpenSwathRTNormalizer.py	/^ 
 transform_targetedExperimentCSV	../../smartPeak/pyTOPP/OpenSwathRTNormalizer.py	/^    def transform_targetedExperimentCSV(self,trafo,targeted):$/;"	kind:member	line:241
 unittest	../../smartPeak/pyTOPP/OpenSwathChromatogramExtractor.py	/^import unittest$/;"	kind:namespace	line:1
 updateParameters	../../smartPeak/smartPeak.py	/^    def updateParameters(self,Param_IO,parameters_I):$/;"	kind:member	line:146
-validate_MRMFeatures	../../smartPeak/pyTOPP/MRMFeatureFilter.py	/^    def validate_MRMFeatures($/;"	kind:member	line:93
+validate_MRMFeatures	../../smartPeak/pyTOPP/MRMFeatureFilter.py	/^    def validate_MRMFeatures($/;"	kind:member	line:103
