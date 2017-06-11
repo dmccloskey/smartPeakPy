@@ -28,6 +28,9 @@ RUN apt-get update && \
 	ln -s /usr/local/bin/docker-entrypoint.sh / && \
 	chmod +x /usr/local/bin/docker-entrypoint.sh
 	# chmod +x /usr/bin/gdbserver
+	# ##create a soft link to the OpenMS include path
+	# mkdir /home/user/code && \
+	# ln -s /usr/local/OpenMS/src/openms/include/OpenMS /home/user/code/OpenMS
 
 # USER user
 CMD ["docker-entrypoint.sh"]

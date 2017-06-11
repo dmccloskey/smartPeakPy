@@ -271,10 +271,9 @@
             "name": "C++ Launch (Docker)",
             "type": "cppdbg",
             "request": "launch",
-            "preLaunchTask":"g++",
+            // "preLaunchTask":"g++", #NO preLaunchTask!!!
             "args": [],
             "stopAtEntry": false,
-            // "cwd": "${workspaceRoot}",
             "cwd": "/home/user/code",
             "program":"/home/user/code/a.out",
             "environment": [],

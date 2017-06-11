@@ -1,6 +1,6 @@
 #!/bin/bash
 cd /home/user/code
-g++ -g main.cpp
+gcc -I /usr/local/OpenMS/src/openms/include -g main.cpp #g++ -g main.cpp #
 # gdb --interpreter=mi a.out
 ##launch the ssh server
 # /usr/sbin/sshd -D
