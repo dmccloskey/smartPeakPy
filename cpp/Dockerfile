@@ -10,7 +10,25 @@ USER root
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN apt-get update && \
 	DEBIAN_FRONTEND=noninteractive && \
-	apt-get install -y gawk openssh-server gdb gdbserver sudo build-essential git && \
+	apt-get install -y \
+	gawk \
+	openssh-server \
+	gdb \
+	gdbserver \
+	sudo \
+	build-essential \
+	git \
+	# Qt dev packages
+	# qtconnectivity5-dev \
+	# qtmobility-dev \
+	# qtmultimedia5-dev \
+	# libqt5opengl5-dev \
+	# qtpositioning5-dev \
+	# qtdeclarative5-dev \
+	# qtscript5-dev \
+	# libqt5svg5-dev \
+	qtbase5-dev \
+	qttools5-dev && \
 	## openssh-server is required for sshd connection
 	## gdbserver is required for debug (attach)
 	## gawk is a requirement for GLIB_2.18 workaround (below)
@@ -26,11 +44,11 @@ RUN apt-get update && \
     rm -r /var/lib/apt/lists/* && \
 	##change permissions
 	ln -s /usr/local/bin/docker-entrypoint.sh / && \
-	chmod +x /usr/local/bin/docker-entrypoint.sh && \
+	chmod +x /usr/local/bin/docker-entrypoint.sh
 	# chmod +x /usr/bin/gdbserver
-	##create a soft link to the OpenMS include path
-	mkdir /home/user/code && \
-	ln -s /usr/local/OpenMS/src/openms/include/OpenMS /home/user/code/OpenMS
+	# ##create a soft link to the OpenMS include path
+	# mkdir /home/user/code && \
+	# ln -s /usr/local/OpenMS/src/openms/include/OpenMS /home/user/code/OpenMS
 
 # USER user
 CMD ["docker-entrypoint.sh"]

@@ -1,6 +1,8 @@
 #!/bin/bash
 cd /home/user/code
-gcc -I /usr/local/OpenMS/src/openms/include -g main.cpp #g++ -g main.cpp #
+gcc -I/usr/local/OpenMS/src/openms/include -I/usr/local/openms-build/src/openms/include -I/usr/local/contrib-build/include -I/usr/include/qt5 -fPIC -g main.cpp 
+g++ -I/usr/local/OpenMS/src/openms/include -I/usr/local/openms-build/src/openms/include -I/usr/local/contrib-build/include -I/usr/include/qt5 -fPIC -g main.cpp 
+#g++ -g main.cpp
 # gdb --interpreter=mi a.out
 ##launch the ssh server
 # /usr/sbin/sshd -D
