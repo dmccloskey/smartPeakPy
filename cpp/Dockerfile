@@ -19,14 +19,6 @@ RUN apt-get update && \
 	build-essential \
 	git \
 	# Qt dev packages
-	# qtconnectivity5-dev \
-	# qtmobility-dev \
-	# qtmultimedia5-dev \
-	# libqt5opengl5-dev \
-	# qtpositioning5-dev \
-	# qtdeclarative5-dev \
-	# qtscript5-dev \
-	# libqt5svg5-dev \
 	qtbase5-dev \
 	qttools5-dev && \
 	## openssh-server is required for sshd connection
