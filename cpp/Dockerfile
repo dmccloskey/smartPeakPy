@@ -18,9 +18,9 @@ RUN apt-get update && \
 	sudo \
 	build-essential \
 	git \
-	# Qt dev packages
-	qtbase5-dev \
-	qttools5-dev && \
+	# # Qt dev packages
+	# qtbase5-dev \
+	# qttools5-dev && \
 	## openssh-server is required for sshd connection
 	## gdbserver is required for debug (attach)
 	## gawk is a requirement for GLIB_2.18 workaround (below)
