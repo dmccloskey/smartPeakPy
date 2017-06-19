@@ -32,45 +32,37 @@
 // $Authors: Hendrik Weisser $
 // --------------------------------------------------------------------------
 
-#include <OpenMS/ANALYSIS/MAPMATCHING/TransformationModel.h>
+// #include <OpenMS/ANALYSIS/MAPMATCHING/_Test.h>
+#include "_Test.h"
 
 namespace OpenMS
 {
 
-  TransformationModel::TransformationModel(const TransformationModel::DataPoints&, const Param&) :
+  _Test::_Test(const _Test::DataPoints&, const Param&) :
     params_()
   {
   }
 
-  TransformationModel::~TransformationModel()
+  _Test::~_Test()
   {
   }
 
-  double TransformationModel::evaluate(double value) const
+  double _Test::evaluate(double value) const
   {
     return value;
   }
 
-  const Param& TransformationModel::getParameters() const
+  const Param& _Test::getParameters() const
   {
     return params_;
   }
 
-  void TransformationModel::getDefaultParameters(Param& params)
+  void _Test::getDefaultParameters(Param& params)
   {
     params.clear();
   }
   
-  /// TransformationModel::weightData
-  /// Weighting type	Weight (w)
-  /// Always 1.0.
-  /// 1 / x	If |x| < 10-5 then w = 10e5; otherwise w = 1 / |x|.
-  /// 1 / x2	If |x| < 10-5 then w = 10e10; otherwise w = 1 / x2.
-  /// 1 / y	If |y| < 10-8 then w = 10e8; otherwise w = 1 / |y|.
-  /// 1 / y2	If |y| < 10-8 then w = 10e16; otherwise w = 1 / y2.
-  /// ln x	If x < 0 an error is generated; otherwise if x < 10-5 then w = ln 105,
-	/// otherwise w = |ln x|.
-  void TransformationModel::weightData(TransformationModel::DataPoints& data) const
+  void _Test::weightData(_Test::DataPoints& data, const Param&) const
   {
     // weight x values 
     if (params.exists("x_weight") && \
@@ -100,7 +92,7 @@ namespace OpenMS
     }
   }
 
-  bool TransformationModel::checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights) const
+  bool _Test::checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights) const
   {    
     int it=find(valid_weights.begin(), valid_weights.end(), weight);
     bool valid=false;
@@ -115,62 +107,85 @@ namespace OpenMS
     return valid;
   }
   
-  vector<std::string> TransformationModel::getValidXWeights()
+  std::vector<std::string> _Test::getValidXWeights()
   {
     std::vector<std::string> valid_weights{"1/x","1/x2","ln(x)",""};
     return valid_weights;
   }
   
-  std::vector<std::string> TransformationModel::getValidYWeights()
+  std::vector<std::string> _Test::getValidYWeights()
   {
     std::vector<std::string> valid_weights{"1/y","1/y2","ln(y)",""};
     return valid_weights;
   }
 
-  double TransformationModel::weightDatum(double& datum, const std::string& weight)
+  double _Test::weightDatum(double& datum, const std::string& weight)
   { 
     double datum_weighted = datum;   
     if (weight == "ln(x)")
     {
-      if datum < 10e-5:
+      if (datum < 10e-5)
+      {
         datum = log(10e5);
-      else:
+      }
+      else
+      {
         datum_weighted = abs(log(datum));
+      }
     }
     if (weight == "ln(y)")
     {
-      if datum < 10e-5:
+      if (datum < 10e-5)
+      {
         datum_weighted = log(10e5);
-      else:
+      }
+      else
+      {
         datum_weighted = abs(log(datum));
+      }
     }
     else if (weight == "1/x")
     {
-      if datum < 10e-5:
+      if (datum < 10e-5)
+      {
         datum_weighted = 1/10e5;
-      else:
+      }
+      else
+      {
         datum_weighted = 1/abs(datum);
     }
     else if (weight == "1/y")
     {
-      if datum < 10e-8:
+      if (datum < 10e-8)
+      {
         datum_weighted = 1/10e8;
-      else:
+      }
+      else
+      {
         datum_weighted = 1/abs(datum);
+      }
     }
     else if (weight == "1/x2")
     {
-      if datum < 10e-5:
+      if (datum < 10e-5)
+      {
         datum_weighted = 1/10e5;
-      else:
+      }
+      else
+      {
         datum_weighted = 1/abs(pow(datum,2);
+      }
     }
     else if (weight == "1/y2")
     {
-      if datum < 10e-8:
+      if (datum < 10e-8)
+      {
         datum_weighted = 1/10e8;
-      else:
+      }
+      else
+      {
         datum_weighted = 1/abs(pow(datum,2);
+      }
     }
     else if (weight == "")
     {

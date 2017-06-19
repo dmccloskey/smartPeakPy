@@ -32,8 +32,8 @@
 // $Authors: Hendrik Weisser $
 // --------------------------------------------------------------------------
 
-#ifndef OPENMS_ANALYSIS_MAPMATCHING_TRANSFORMATIONMODEL_H
-#define OPENMS_ANALYSIS_MAPMATCHING_TRANSFORMATIONMODEL_H
+#ifndef OPENMS_ANALYSIS_MAPMATCHING__Test_H
+#define OPENMS_ANALYSIS_MAPMATCHING__Test_H
 
 #include <OpenMS/DATASTRUCTURES/Param.h>
 
@@ -48,7 +48,7 @@ namespace OpenMS
 
     @ingroup MapAlignment
   */
-  class OPENMS_DLLAPI TransformationModel
+  class OPENMS_DLLAPI _Test
   {
   public:
     /// Coordinate pair
@@ -57,32 +57,41 @@ namespace OpenMS
     typedef std::vector<DataPoint> DataPoints;
 
     /// Constructor
-    TransformationModel() {}
+    _Test() {}
 
     /// Alternative constructor (derived classes should implement this one!)
     /// Both data and params must be provided, since some derived classes require both to create a model!
-    TransformationModel(const TransformationModel::DataPoints&, const Param&);
+    _Test(const _Test::DataPoints&, const Param&);
 
     /// Destructor
-    virtual ~TransformationModel();
+    virtual ~_Test();
 
     /// Evaluates the model at the given value
     virtual double evaluate(double value) const;
     
-    /// Weight the data by the given weight function
-    virtual void weightData(DataPoints& data) const;
+    /**
+    @brief Weight the data by the given weight function
+
+    1 / x	If |x| < 10-5 then w = 10e5; otherwise w = 1 / |x|.
+    1 / x2	If |x| < 10-5 then w = 10e10; otherwise w = 1 / x2.
+    1 / y	If |y| < 10-8 then w = 10e8; otherwise w = 1 / |y|.
+    1 / y2	If |y| < 10-8 then w = 10e16; otherwise w = 1 / y2.
+    ln x	If x < 0 an error is generated; otherwise if x < 10-5 then w = ln 105,
+    otherwise w = |ln x|.
+    */
+    virtual void weightData(DataPoints& data, const Param&) const;
     
     /// Unweight the data by the given weight function
     virtual void unWeightData(DataPoints& data) const;
     
     /// 
     bool checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights);
-    
-    /// 
-    bool checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights);
+
+    ///
+    double weightDatum(double& datum, const std::string& weight);
 
     /// Gets the (actual) parameters
-    double weightDatum(double& datum, const std::string& weight);
+    const Param& getParameters() const;
 
     ///
     std::vector<std::string> getValidXWeights() const;
@@ -99,9 +108,9 @@ namespace OpenMS
 
   private:
     /// do not allow copy
-    TransformationModel( const TransformationModel& );
+    _Test( const _Test& );
     /// do not allow assignment
-    const TransformationModel& operator=( const TransformationModel& );
+    const _Test& operator=( const _Test& );
     /// x weighting
     std::string x_weight_;
     /// y weighting
@@ -111,4 +120,4 @@ namespace OpenMS
 
 } // end of namespace OpenMS
 
-#endif // OPENMS_ANALYSIS_MAPMATCHING_TRANSFORMATIONMODEL_H
+#endif // OPENMS_ANALYSIS_MAPMATCHING__Test_H

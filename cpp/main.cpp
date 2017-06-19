@@ -15,9 +15,8 @@
 #include <OpenMS/KERNEL/StandardTypes.h>
 #include <iostream>
 #include <string>
-#include "OpenMS/TransformationModel.h"
-// #include "OpenMS/TransformationModel.cpp"
-// #include "OpenMS/TransformationModelDataWeights.h"
+#include "OpenMS/_Test.h"
+#include <OpenMS/DATASTRUCTURES/Param.h>
 
 using namespace OpenMS;
 using namespace std;
@@ -45,6 +44,23 @@ int main(int argc, const char** argv)
 //   param_sg.setValue("polynomial_order", 3);
 //   sg.setParameters(param_sg);
 //   sg.filter(spectrum);
+
+  _Test::DataPoints data, empty;
+  data.push_back(make_pair(0.0, 1.0));
+  data.push_back(make_pair(1.0, 2.0));
+  data.push_back(make_pair(1.0, 4.0));
+
+  Param param;
+  _Test dw(data, param);
+  string test("ln(x)");
+  cout << test << ":" << dw.checkValidWeight(test,dw.getValidXWeights()) << endl;
+  // TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), true);
+  // TEST_EQUAL(dw.checkValidWeight("1/y",dw.getValidYWeights)), true);
+  // TEST_EQUAL(dw.checkValidWeight("1/x2",dw.getValidXWeights)), true);
+  // TEST_EQUAL(dw.checkValidWeight("",dw.getValidXWeights)), true);
+  // TEST_EQUAL(dw.checkValidWeight("none",dw.getValidXWeights)), false);
+  // TEST_EQUAL(dw.checkValidWeight("x2",dw.getValidXWeights)), false);
+  // TEST_EQUAL(dw.checkValidWeight("ln(y)",dw.getValidXWeights)), false);
 
   return 0;
 } //end of main
