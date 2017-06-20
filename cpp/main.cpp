@@ -15,8 +15,7 @@
 #include <OpenMS/KERNEL/StandardTypes.h>
 #include <iostream>
 #include <string>
-#include "OpenMS/_Test.h"
-#include <OpenMS/DATASTRUCTURES/Param.h>
+#include "/home/user/code/OpenMS/include/_Test.h"
 
 using namespace OpenMS;
 using namespace std;
@@ -45,15 +44,15 @@ int main(int argc, const char** argv)
 //   sg.setParameters(param_sg);
 //   sg.filter(spectrum);
 
-  _Test::DataPoints data, empty;
-  data.push_back(make_pair(0.0, 1.0));
-  data.push_back(make_pair(1.0, 2.0));
-  data.push_back(make_pair(1.0, 4.0));
+  // _Test::DataPoints data, empty;
+  // data.push_back(make_pair(0.0, 1.0));
+  // data.push_back(make_pair(1.0, 2.0));
+  // data.push_back(make_pair(1.0, 4.0));
 
   Param param;
-  _Test dw(data, param);
-  string test("ln(x)");
-  cout << test << ":" << dw.checkValidWeight(test,dw.getValidXWeights()) << endl;
+  // _Test dw(data, param);
+  // string test("ln(x)");
+  // cout << test << ":" << dw.checkValidWeight(test,dw.getValidXWeights()) << endl;
   // TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), true);
   // TEST_EQUAL(dw.checkValidWeight("1/y",dw.getValidYWeights)), true);
   // TEST_EQUAL(dw.checkValidWeight("1/x2",dw.getValidXWeights)), true);

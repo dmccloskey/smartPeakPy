@@ -33,7 +33,7 @@
 // --------------------------------------------------------------------------
 
 // #include <OpenMS/ANALYSIS/MAPMATCHING/_Test.h>
-#include "_Test.h"
+#include "/home/user/code/OpenMS/include/_Test.h"
 
 namespace OpenMS
 {
@@ -62,11 +62,10 @@ namespace OpenMS
     params.clear();
   }
   
-  void _Test::weightData(_Test::DataPoints& data, const Param&) const
+  void _Test::weightData(_Test::DataPoints& data, const Param& params) const
   {
     // weight x values 
-    if (params.exists("x_weight") && \
-      (checkValidWeight(params.getValue("x_weight")), getValidXWeights())
+    if (params.exists("x_weight") && (checkValidWeight(params.getValue("x_weight")), getValidXWeights())
     {
       x_weight_ = params.getValue("x_weight");
       for (size_t i = 0; i < size; ++i)
@@ -78,8 +77,7 @@ namespace OpenMS
       x_weight_ = "";
     }
     // weight y values
-    if (params.exists("y_weight") && \
-      (checkValidYWeight(params.getValue("y_weight")), getValidYWeights())
+    if (params.exists("y_weight") && (checkValidYWeight(params.getValue("y_weight")), getValidYWeights())
     {
       y_weight_ = params.getValue("y_weight");
       for (size_t i = 0; i < size; ++i)
@@ -153,6 +151,7 @@ namespace OpenMS
       else
       {
         datum_weighted = 1/abs(datum);
+      }
     }
     else if (weight == "1/y")
     {
@@ -173,7 +172,7 @@ namespace OpenMS
       }
       else
       {
-        datum_weighted = 1/abs(pow(datum,2);
+        datum_weighted = 1/abs(pow(datum,2));
       }
     }
     else if (weight == "1/y2")
@@ -184,17 +183,17 @@ namespace OpenMS
       }
       else
       {
-        datum_weighted = 1/abs(pow(datum,2);
+        datum_weighted = 1/abs(pow(datum,2));
       }
     }
     else if (weight == "")
     {
       // do nothing
     }
-    else:
+    else
     {
-      cout << "wight " + wieght _ "not supported." << endl;
-      cout << "no weighting will be applied." << endl;
+      std::cout << "wight " + weight + "not supported." << std::endl;
+      std::cout << "no weighting will be applied." << std::endl;
     }
     return datum_weighted;
   }
