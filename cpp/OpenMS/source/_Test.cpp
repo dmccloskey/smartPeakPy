@@ -33,7 +33,6 @@
 // --------------------------------------------------------------------------
 
 // #include <OpenMS/ANALYSIS/MAPMATCHING/_Test.h>
-// #include <cstdio>
 #include <iostream>     // std::cout
 #include <algorithm>    // std::find
 #include "/home/user/code/OpenMS/include/_Test.h"
@@ -103,10 +102,11 @@ namespace OpenMS
 
   bool _Test::checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights) const
   {    
-    std::vector<int>::iterator it;
-    it = std::find(valid_weights.begin(), valid_weights.end(), weight);
+    // std::vector<int>::iterator it;
+    // it = std::find(valid_weights.begin(), valid_weights.end(), weight);
     bool valid = false;
-    if (it != valid_weights.end())
+    // if (it != valid_weights.end())
+    if (std::find(valid_weights.begin(), valid_weights.end(), weight) != valid_weights.end())
     {
       valid=true;
     }
@@ -130,7 +130,7 @@ namespace OpenMS
   
   std::vector<std::string> _Test::getValidYWeights() const
   {
-    // std::vector<std::string> valid_weights{"1/y","1/y2","ln(y)",""};
+    // std::vector<std::string> valid_weights{"1/y","1/y2","ln(y)",""}; C++ 11
     std::vector<std::string> valid_weights;
     valid_weights.push_back("1/y");
     valid_weights.push_back("1/y2");
