@@ -62,13 +62,19 @@ namespace OpenMS
     params.clear();
   }
   
-  void _Test::weightData(_Test::DataPoints& data, const Param& params) const
+  void _Test::weightData(_Test::DataPoints& data, const Param& params)
   {
     // weight x values 
-    if (params.exists("x_weight") && (checkValidWeight(params.getValue("x_weight")), getValidXWeights())
+    std::vector<std::string> valid_weights;
+    valid_weights = getValidXWeights();
+    bool valid_weight;
+    valid_weight = checkValidWeight(params.getValue("x_weight"), valid_weights);
+    // std::vector<std::string> valid_weights = getValidXWeights();
+    // bool valid_weight = checkValidWeight(params.getValue("x_weight"), valid_weights);
+    if (params.exists("x_weight") && valid_weight)
     {
       x_weight_ = params.getValue("x_weight");
-      for (size_t i = 0; i < size; ++i)
+      for (size_t i = 0; i < data.size(); ++i)
       {
       data[i].first = weightDatum(data[i].first,x_weight_);
       }
@@ -77,10 +83,12 @@ namespace OpenMS
       x_weight_ = "";
     }
     // weight y values
-    if (params.exists("y_weight") && (checkValidYWeight(params.getValue("y_weight")), getValidYWeights())
+    valid_weights = getValidYWeights();
+    valid_weight = checkValidWeight(params.getValue("y_weight"), valid_weights);
+    if (params.exists("y_weight") && valid_weight)
     {
       y_weight_ = params.getValue("y_weight");
-      for (size_t i = 0; i < size; ++i)
+      for (size_t i = 0; i < data.size(); ++i)
       {
       data[i].second = weightDatum(data[i].second,y_weight_);
       }
@@ -92,28 +100,39 @@ namespace OpenMS
 
   bool _Test::checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights) const
   {    
-    int it=find(valid_weights.begin(), valid_weights.end(), weight);
-    bool valid=false;
+    const int it;
+    it = std::find(valid_weights.begin(), valid_weights.end(), weight);
+    bool valid = false;
     if (it != valid_weights.end())
     {
       valid=true;
     }
     else
     {
-      cout << "weight " + " is not supported" << endl;
+      std::cout << "weight " + weight + " is not supported" << std::endl;
     }
     return valid;
   }
   
-  std::vector<std::string> _Test::getValidXWeights()
+  std::vector<std::string> _Test::getValidXWeights() const
   {
-    std::vector<std::string> valid_weights{"1/x","1/x2","ln(x)",""};
+    //std::vector<std::string> valid_weights{"1/x","1/x2","ln(x)",""}; C++ 11
+    std::vector<std::string> valid_weights;
+    valid_weights.push_back("1/x");
+    valid_weights.push_back("1/x2");
+    valid_weights.push_back("ln(x)");
+    valid_weights.push_back("");
     return valid_weights;
   }
   
-  std::vector<std::string> _Test::getValidYWeights()
+  std::vector<std::string> _Test::getValidYWeights() const
   {
-    std::vector<std::string> valid_weights{"1/y","1/y2","ln(y)",""};
+    // std::vector<std::string> valid_weights{"1/y","1/y2","ln(y)",""};
+    std::vector<std::string> valid_weights;
+    valid_weights.push_back("1/y");
+    valid_weights.push_back("1/y2");
+    valid_weights.push_back("ln(y)");
+    valid_weights.push_back("");
     return valid_weights;
   }
 

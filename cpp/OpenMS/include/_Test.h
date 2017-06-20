@@ -79,13 +79,13 @@ namespace OpenMS
     ln x	If x < 0 an error is generated; otherwise if x < 10-5 then w = ln 105,
     otherwise w = |ln x|.
     */
-    virtual void weightData(DataPoints& data, const Param&) const;
+    virtual void weightData(DataPoints& data, const Param&);
     
     /// Unweight the data by the given weight function
     virtual void unWeightData(DataPoints& data) const;
     
     /// 
-    bool checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights);
+    bool checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights) const;
 
     ///
     double weightDatum(double& datum, const std::string& weight);
@@ -112,9 +112,9 @@ namespace OpenMS
     /// do not allow assignment
     const _Test& operator=( const _Test& );
     /// x weighting
-    std::string x_weight_;
+    const std::basic_string<char> x_weight_;
     /// y weighting
-    std::string y_weight_;
+    const std::basic_string<char> y_weight_;
 
   };
 
