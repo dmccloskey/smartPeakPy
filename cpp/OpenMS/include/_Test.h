@@ -112,9 +112,9 @@ namespace OpenMS
     /// do not allow assignment
     const _Test& operator=( const _Test& );
     /// x weighting
-    const std::basic_string<char> x_weight_;
+    const std::string x_weight_;
     /// y weighting
-    const std::basic_string<char> y_weight_;
+    const std::string y_weight_;
 
   };
 

@@ -33,6 +33,9 @@
 // --------------------------------------------------------------------------
 
 // #include <OpenMS/ANALYSIS/MAPMATCHING/_Test.h>
+// #include <cstdio>
+#include <iostream>     // std::cout
+#include <algorithm>    // std::find
 #include "/home/user/code/OpenMS/include/_Test.h"
 
 namespace OpenMS
@@ -73,34 +76,34 @@ namespace OpenMS
     // bool valid_weight = checkValidWeight(params.getValue("x_weight"), valid_weights);
     if (params.exists("x_weight") && valid_weight)
     {
-      x_weight_ = params.getValue("x_weight");
+      std::string x_weight_ = params.getValue("x_weight");
       for (size_t i = 0; i < data.size(); ++i)
       {
       data[i].first = weightDatum(data[i].first,x_weight_);
       }
     }
     else{
-      x_weight_ = "";
+      std::string x_weight_ = "";
     }
     // weight y values
     valid_weights = getValidYWeights();
     valid_weight = checkValidWeight(params.getValue("y_weight"), valid_weights);
     if (params.exists("y_weight") && valid_weight)
     {
-      y_weight_ = params.getValue("y_weight");
+      std::string y_weight_ = params.getValue("y_weight");
       for (size_t i = 0; i < data.size(); ++i)
       {
       data[i].second = weightDatum(data[i].second,y_weight_);
       }
     }
     else{
-      y_weight_ = "";
+      std::string y_weight_ = "";
     }
   }
 
   bool _Test::checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights) const
   {    
-    const int it;
+    std::vector<int>::iterator it;
     it = std::find(valid_weights.begin(), valid_weights.end(), weight);
     bool valid = false;
     if (it != valid_weights.end())
