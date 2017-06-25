@@ -99,6 +99,11 @@ namespace OpenMS
       std::string y_weight_ = "";
     }
   }
+  
+  void _Test::unWeightData(_Test::DataPoints& data)
+  {
+    //TODO
+  }
 
   bool _Test::checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights) const
   {    

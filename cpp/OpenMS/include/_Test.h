@@ -82,7 +82,7 @@ namespace OpenMS
     virtual void weightData(DataPoints& data, const Param&);
     
     /// Unweight the data by the given weight function
-    virtual void unWeightData(DataPoints& data) const;
+    virtual void unWeightData(DataPoints& data);
     
     /// 
     bool checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights) const;
