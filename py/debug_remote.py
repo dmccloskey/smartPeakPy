@@ -24,7 +24,7 @@ m.run_openSWATH_py(
 # # Test MRMTransitionGroupPicker_py
 # m.run_MRMTransitionGroupPicker_py(
 #     filename_filenames='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_SWATH_filenames.csv',
-#     filename_params='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_MRMTransitionGroupPicker_params.csv',
+#     filename_params='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_MRMFeatureFinderScoring_params.csv',
 #     delimiter=','
 #     )
 
