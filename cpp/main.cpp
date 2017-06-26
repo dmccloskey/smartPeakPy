@@ -17,14 +17,16 @@
 #include <string>
 #include "/home/user/code/OpenMS/include/_Test.h"
 
+#include <OpenMS/CONCEPT/ClassTest.h>
+
 using namespace OpenMS;
 using namespace std;
 
 int main(int argc, const char** argv)
 {
-  if (argc < 2) return 1;
-  // the path to the data should be given on the command line
-  string tutorial_data_path(argv[1]);
+  // if (argc < 2) return 1;
+  // // the path to the data should be given on the command line
+  // string tutorial_data_path(argv[1]);
   
 //   PeakSpectrum spectrum;
 
@@ -44,22 +46,26 @@ int main(int argc, const char** argv)
 //   sg.setParameters(param_sg);
 //   sg.filter(spectrum);
 
-  // _Test::DataPoints data, empty;
-  // data.push_back(make_pair(0.0, 1.0));
-  // data.push_back(make_pair(1.0, 2.0));
-  // data.push_back(make_pair(1.0, 4.0));
+  _Test::DataPoints data, empty;
+  data.push_back(make_pair(0.0, 1.0));
+  data.push_back(make_pair(1.0, 2.0));
+  data.push_back(make_pair(1.0, 4.0));
 
   Param param;
-  // _Test dw(data, param);
-  // string test("ln(x)");
-  // cout << test << ":" << dw.checkValidWeight(test,dw.getValidXWeights()) << endl;
-  // TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), true);
-  // TEST_EQUAL(dw.checkValidWeight("1/y",dw.getValidYWeights)), true);
-  // TEST_EQUAL(dw.checkValidWeight("1/x2",dw.getValidXWeights)), true);
-  // TEST_EQUAL(dw.checkValidWeight("",dw.getValidXWeights)), true);
-  // TEST_EQUAL(dw.checkValidWeight("none",dw.getValidXWeights)), false);
-  // TEST_EQUAL(dw.checkValidWeight("x2",dw.getValidXWeights)), false);
-  // TEST_EQUAL(dw.checkValidWeight("ln(y)",dw.getValidXWeights)), false);
+  _Test dw(data, param);
+  string test;
+  test = "ln(x)";
+  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), true);
+  test = "1/y";
+  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidYWeights()), true);
+  test = "1/x2";
+  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), true);
+  test = "";
+  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), true);
+  test = "none";
+  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), false);
+  test = "x2";
+  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), false);
 
   return 0;
 } //end of main

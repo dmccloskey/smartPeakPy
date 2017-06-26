@@ -90,6 +90,9 @@ namespace OpenMS
     ///
     double weightDatum(double& datum, const std::string& weight);
 
+    ///
+    double unWeightDatum(double& datum, const std::string& weight);
+
     /// Gets the (actual) parameters
     const Param& getParameters() const;
 

@@ -225,4 +225,87 @@ namespace OpenMS
     return datum_weighted;
   }
 
+  
+
+  double _Test::unWeightDatum(double& datum, const std::string& weight)
+  { 
+    double datum_weighted = datum;   
+    if (weight == "ln(x)")
+    {
+      if (datum < 10e-5)
+      {
+        datum = 10e-5;
+      }
+      else
+      {
+        datum_weighted = abs(exp(datum));
+      }
+    }
+    if (weight == "ln(y)")
+    {
+      if (datum < 10e-5)
+      {
+        datum_weighted = 10e-5;
+      }
+      else
+      {
+        datum_weighted = abs(exp(datum));
+      }
+    }
+    else if (weight == "1/x")
+    {
+      if (datum < 10e-5)
+      {
+        datum_weighted = 10e-5;
+      }
+      else
+      {
+        datum_weighted = 1/abs(datum);
+      }
+    }
+    else if (weight == "1/y")
+    {
+      if (datum < 10e-8)
+      {
+        datum_weighted = 10e-8;
+      }
+      else
+      {
+        datum_weighted = 1/abs(datum);
+      }
+    }
+    else if (weight == "1/x2")
+    {
+      if (datum < 10e-5)
+      {
+        datum_weighted = 10e-5;
+      }
+      else
+      {
+        datum_weighted = 1/sqrt(datum);
+      }
+    }
+    else if (weight == "1/y2")
+    {
+      if (datum < 10e-8)
+      {
+        datum_weighted = 10e-8;
+      }
+      else
+      {
+        datum_weighted = 1/sqrt(datum);
+      }
+    }
+    else if (weight == "")
+    {
+      // do nothing
+    }
+    else
+    {
+      std::cout << "wight " + weight + "not supported." << std::endl;
+      std::cout << "no weighting will be applied." << std::endl;
+    }
+    return datum_weighted;
+  }
+
 }
