@@ -158,7 +158,7 @@ namespace OpenMS
         datum_weighted = abs(log(datum));
       }
     }
-    if (weight == "ln(y)")
+    else if (weight == "ln(y)")
     {
       if (datum < 10e-5)
       {

@@ -54,18 +54,28 @@ int main(int argc, const char** argv)
   Param param;
   _Test dw(data, param);
   string test;
+  double datum;
   test = "ln(x)";
-  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), true);
-  test = "1/y";
-  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidYWeights()), true);
+  datum = 0.0;
+  dw.weightDatum(datum,test);
+  TEST_REAL_SIMILAR(datum, log(10e5));
+  datum = 2.0;
+  dw.weightDatum(datum,test);
+  TEST_REAL_SIMILAR(datum, abs(log(2.0)));
+  test = "1/x";
+  datum = 0.0;
+  dw.weightDatum(datum,test);
+  TEST_REAL_SIMILAR(datum, 1/10e5);
+  datum = 2.0;
+  dw.weightDatum(datum,test);
+  TEST_REAL_SIMILAR(datum, 1/abs(2.0));
   test = "1/x2";
-  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), true);
-  test = "";
-  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), true);
-  test = "none";
-  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), false);
-  test = "x2";
-  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), false);
+  datum = 0.0;
+  dw.weightDatum(datum,test);
+  TEST_REAL_SIMILAR(datum, 1/10e5);
+  datum = 2.0;
+  dw.weightDatum(datum,test);
+  TEST_REAL_SIMILAR(datum, 1/abs(pow(2.0,2)));
 
   return 0;
 } //end of main

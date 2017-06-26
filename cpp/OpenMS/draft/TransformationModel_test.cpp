@@ -106,14 +106,21 @@ END_SECTION
 
 START_SECTION((bool checkValidWeight(const string& weight, const vector<string>& valid_weights) const))
 {
-  TransformationModelDataWeights dw(Param());
-  dw.setParameters(Param());
-  TEST_EQUAL(dw.checkValidWeight("ln(x)"), true);
-  TEST_EQUAL(dw.checkValidWeight("1/x"), true);
-  TEST_EQUAL(dw.checkValidWeight("1/x2"), true);
-  TEST_EQUAL(dw.checkValidWeight(""), true);
-  TEST_EQUAL(dw.checkValidWeight("none"), false);
-  TEST_EQUAL(dw.checkValidWeight("x2"), false);
+  Param param;
+  _Test dw(data, param);
+  string test;
+  test = "ln(x)";
+  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), true);
+  test = "1/y";
+  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidYWeights()), true);
+  test = "1/x2";
+  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), true);
+  test = "";
+  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), true);
+  test = "none";
+  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), false);
+  test = "x2";
+  TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), false);
 }
 END_SECTION
 
