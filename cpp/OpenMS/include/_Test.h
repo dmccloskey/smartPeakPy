@@ -76,7 +76,7 @@ namespace OpenMS
     1 / x2	If |x| < 10-5 then w = 10e10; otherwise w = 1 / x2.
     1 / y	If |y| < 10-8 then w = 10e8; otherwise w = 1 / |y|.
     1 / y2	If |y| < 10-8 then w = 10e16; otherwise w = 1 / y2.
-    ln x	If x < 0 an error is generated; otherwise if x < 10-5 then w = ln 105,
+    ln x	If x < 0 an error is generated; otherwise if x < 10-5 then w = ln 10e-5,
     otherwise w = |ln x|.
     */
     virtual void weightData(DataPoints& data, const Param&);

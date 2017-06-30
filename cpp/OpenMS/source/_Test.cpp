@@ -222,77 +222,75 @@ namespace OpenMS
       std::cout << "no weighting will be applied." << std::endl;
     }
     return datum_weighted;
-  }
-
-  
+  } 
 
   double _Test::unWeightDatum(const double& datum, const std::string& weight) const
   { 
     double datum_weighted = 0;   
     if (weight == "ln(x)")
     {
-      if (datum < 10e-5)
+      if (datum < std::abs(std::exp(10e-5)))
       {
         datum_weighted = 10e-5;
       }
       else
       {
-        datum_weighted = abs(exp(datum));
+        datum_weighted = std::abs(std::exp(datum));
       }
     }
     if (weight == "ln(y)")
     {
-      if (datum < 10e-5)
+      if (datum < std::abs(std::exp(10e-5)))
       {
         datum_weighted = 10e-5;
       }
       else
       {
-        datum_weighted = abs(exp(datum));
+        datum_weighted = std::abs(std::exp(datum));
       }
     }
     else if (weight == "1/x")
     {
-      if (datum < 10e-5)
+      if (datum < 1/std::abs(10e-5))
       {
         datum_weighted = 10e-5;
       }
       else
       {
-        datum_weighted = 1/abs(datum);
+        datum_weighted = 1/std::abs(datum);
       }
     }
     else if (weight == "1/y")
     {
-      if (datum < 10e-8)
+      if (datum < 1/std::abs(10e-8))
       {
         datum_weighted = 10e-8;
       }
       else
       {
-        datum_weighted = 1/abs(datum);
+        datum_weighted = 1/std::abs(datum);
       }
     }
     else if (weight == "1/x2")
     {
-      if (datum < 10e-5)
+      if (datum < std::sqrt(1/10e-5))
       {
         datum_weighted = 10e-5;
       }
       else
       {
-        datum_weighted = 1/sqrt(datum);
+        datum_weighted = std::sqrt(1/datum);
       }
     }
     else if (weight == "1/y2")
     {
-      if (datum < 10e-8)
+      if (datum < std::sqrt(1/10e-8))
       {
         datum_weighted = 10e-8;
       }
       else
       {
-        datum_weighted = 1/sqrt(datum);
+        datum_weighted = std::sqrt(1/datum);
       }
     }
     else if (weight == "")
