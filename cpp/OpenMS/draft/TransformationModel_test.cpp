@@ -141,6 +141,23 @@ START_SECTION((double weightDatum(double& datum, const string& weight) const))
 }
 END_SECTION
 
+START_SECTION((virtual void weightData(DataPoints& data, const Param&)))
+{
+  Param param;
+  _Test dw(data, param);
+  dw.weightData(data,param);
+  test = "ln(x)";
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), log(10e5));
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), abs(log(2.0)));
+  test = "1/x";
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e5);
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/abs(2.0));
+  test = "1/x2";
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e5);
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/abs(pow(2.0,2)));
+}
+END_SECTION
+
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 END_TEST
