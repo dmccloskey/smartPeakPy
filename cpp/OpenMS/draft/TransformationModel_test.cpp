@@ -143,18 +143,45 @@ END_SECTION
 
 START_SECTION((virtual void weightData(DataPoints& data, const Param&)))
 {
+  _Test::DataPoints data1;
+  _Test::DataPoints test1;
   Param param;
+  _Test::getDefaultParameters(param);
   _Test dw(data, param);
-  dw.weightData(data,param);
-  test = "ln(x)";
-  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), log(10e5));
-  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), abs(log(2.0)));
-  test = "1/x";
-  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e5);
-  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/abs(2.0));
-  test = "1/x2";
-  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e5);
-  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/abs(pow(2.0,2)));
+
+  param.setValue("x_weight", "ln(x)");
+  param.setValue("y_weight", "");
+  test1.clear();
+  test1.push_back(make_pair(std::log(0.0), 1.0));
+  test1.push_back(make_pair(std::abs(std::log(1.0)), 2.0));
+  test1.push_back(make_pair(std::abs(std::log(2.0)), 4.0));  
+  data1.clear();
+  data1.push_back(make_pair(0.0, 1.0));
+  data1.push_back(make_pair(1.0, 2.0));
+  data1.push_back(make_pair(2.0, 4.0));
+  dw.weightData(data1,param);
+  for (size_t i = 0; i < data1.size(); ++i)
+  {
+    TEST_REAL_SIMILAR(data1[i].first,test1[i].first);
+    TEST_REAL_SIMILAR(data1[i].second,test1[i].second);
+  }
+
+  param.setValue("x_weight", "");
+  param.setValue("y_weight", "ln(y)");
+  test1.clear();
+  test1.push_back(make_pair(0.0, std::abs(std::log(1.0))));
+  test1.push_back(make_pair(1.0, std::abs(std::log(2.0))));
+  test1.push_back(make_pair(2.0, std::abs(std::log(4.0))));  
+  data1.clear();
+  data1.push_back(make_pair(0.0, 1.0));
+  data1.push_back(make_pair(1.0, 2.0));
+  data1.push_back(make_pair(2.0, 4.0));
+  dw.weightData(data1,param);
+  for (size_t i = 0; i < data1.size(); ++i)
+  {
+    TEST_REAL_SIMILAR(data1[i].first,test1[i].first);
+    TEST_REAL_SIMILAR(data1[i].second,test1[i].second);
+  }
 }
 END_SECTION
 

@@ -213,10 +213,11 @@ namespace OpenMS
     }
     else if (weight == "")
     {
-      // do nothing
+      datum_weighted = datum;
     }
     else
     {
+      datum_weighted = datum;
       std::cout << "wight " + weight + "not supported." << std::endl;
       std::cout << "no weighting will be applied." << std::endl;
     }
@@ -227,7 +228,7 @@ namespace OpenMS
 
   double _Test::unWeightDatum(const double& datum, const std::string& weight) const
   { 
-    double datum_weighted = datum;   
+    double datum_weighted = 0;   
     if (weight == "ln(x)")
     {
       if (datum < 10e-5)
@@ -296,10 +297,11 @@ namespace OpenMS
     }
     else if (weight == "")
     {
-      // do nothing
+      datum_weighted = datum;
     }
     else
     {
+      datum_weighted = datum;
       std::cout << "wight " + weight + "not supported." << std::endl;
       std::cout << "no weighting will be applied." << std::endl;
     }
