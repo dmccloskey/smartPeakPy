@@ -35,6 +35,7 @@
 // #include <OpenMS/ANALYSIS/MAPMATCHING/_Test.h>
 #include <iostream>     // std::cout
 #include <algorithm>    // std::find
+#include <math.h>    // std::log
 #include "/home/user/code/OpenMS/include/_Test.h"
 
 namespace OpenMS
@@ -107,10 +108,7 @@ namespace OpenMS
 
   bool _Test::checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights) const
   {    
-    // std::vector<int>::iterator it;
-    // it = std::find(valid_weights.begin(), valid_weights.end(), weight);
     bool valid = false;
-    // if (it != valid_weights.end())
     if (std::find(valid_weights.begin(), valid_weights.end(), weight) != valid_weights.end())
     {
       valid=true;
@@ -144,29 +142,29 @@ namespace OpenMS
     return valid_weights;
   }
 
-  double _Test::weightDatum(double& datum, const std::string& weight)
+  double _Test::weightDatum(const double& datum, const std::string& weight) const
   { 
-    double datum_weighted = datum;   
+    double datum_weighted = 0;   
     if (weight == "ln(x)")
     {
       if (datum < 10e-5)
       {
-        datum = log(10e5);
+        datum_weighted = std::log(10e5);
       }
       else
       {
-        datum_weighted = abs(log(datum));
+        datum_weighted = std::abs(log(datum));
       }
     }
     else if (weight == "ln(y)")
     {
       if (datum < 10e-5)
       {
-        datum_weighted = log(10e5);
+        datum_weighted = std::log(10e5);
       }
       else
       {
-        datum_weighted = abs(log(datum));
+        datum_weighted = std::abs(log(datum));
       }
     }
     else if (weight == "1/x")
@@ -177,7 +175,7 @@ namespace OpenMS
       }
       else
       {
-        datum_weighted = 1/abs(datum);
+        datum_weighted = 1/std::abs(datum);
       }
     }
     else if (weight == "1/y")
@@ -188,7 +186,7 @@ namespace OpenMS
       }
       else
       {
-        datum_weighted = 1/abs(datum);
+        datum_weighted = 1/std::abs(datum);
       }
     }
     else if (weight == "1/x2")
@@ -199,7 +197,7 @@ namespace OpenMS
       }
       else
       {
-        datum_weighted = 1/abs(pow(datum,2));
+        datum_weighted = 1/std::abs(std::pow(datum,2));
       }
     }
     else if (weight == "1/y2")
@@ -210,7 +208,7 @@ namespace OpenMS
       }
       else
       {
-        datum_weighted = 1/abs(pow(datum,2));
+        datum_weighted = 1/std::abs(std::pow(datum,2));
       }
     }
     else if (weight == "")
@@ -227,14 +225,14 @@ namespace OpenMS
 
   
 
-  double _Test::unWeightDatum(double& datum, const std::string& weight)
+  double _Test::unWeightDatum(const double& datum, const std::string& weight) const
   { 
     double datum_weighted = datum;   
     if (weight == "ln(x)")
     {
       if (datum < 10e-5)
       {
-        datum = 10e-5;
+        datum_weighted = 10e-5;
       }
       else
       {

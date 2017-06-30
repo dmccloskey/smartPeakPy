@@ -126,14 +126,18 @@ END_SECTION
 
 START_SECTION((double weightDatum(double& datum, const string& weight) const))
 {
-  TransformationModelDataWeights dw(Param());
-  dw.setParameters(Param());
-  TEST_REAL_SIMILAR(dw.weightDatum(0),"ln(x)"), log(10e5));
-  TEST_REAL_SIMILAR(dw.weightDatum(0),"1/x"), 1/10e5);
-  TEST_REAL_SIMILAR(dw.weightDatum(0),"1/x2"), 1/10e5);
-  TEST_REAL_SIMILAR(dw.weightDatum(2),"ln(x)"), abs(log(2)));
-  TEST_REAL_SIMILAR(dw.weightDatum(2),"1/x"), 1/abs(2));
-  TEST_REAL_SIMILAR(dw.weightDatum(2),"1/x2"), 1/abs(pow(2,2));
+  Param param;
+  _Test dw(data, param);
+  string test;
+  test = "ln(x)";
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), log(10e5));
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), abs(log(2.0)));
+  test = "1/x";
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e5);
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/abs(2.0));
+  test = "1/x2";
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e5);
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/abs(pow(2.0,2)));
 }
 END_SECTION
 

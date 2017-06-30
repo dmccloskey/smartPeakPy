@@ -54,28 +54,15 @@ int main(int argc, const char** argv)
   Param param;
   _Test dw(data, param);
   string test;
-  double datum;
   test = "ln(x)";
-  datum = 0.0;
-  dw.weightDatum(datum,test);
-  TEST_REAL_SIMILAR(datum, log(10e5));
-  datum = 2.0;
-  dw.weightDatum(datum,test);
-  TEST_REAL_SIMILAR(datum, abs(log(2.0)));
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), log(10e5));
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), abs(log(2.0)));
   test = "1/x";
-  datum = 0.0;
-  dw.weightDatum(datum,test);
-  TEST_REAL_SIMILAR(datum, 1/10e5);
-  datum = 2.0;
-  dw.weightDatum(datum,test);
-  TEST_REAL_SIMILAR(datum, 1/abs(2.0));
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e5);
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/abs(2.0));
   test = "1/x2";
-  datum = 0.0;
-  dw.weightDatum(datum,test);
-  TEST_REAL_SIMILAR(datum, 1/10e5);
-  datum = 2.0;
-  dw.weightDatum(datum,test);
-  TEST_REAL_SIMILAR(datum, 1/abs(pow(2.0,2)));
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e5);
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/abs(pow(2.0,2)));
 
   return 0;
 } //end of main

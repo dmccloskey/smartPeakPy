@@ -88,10 +88,10 @@ namespace OpenMS
     bool checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights) const;
 
     ///
-    double weightDatum(double& datum, const std::string& weight);
+    double weightDatum(const double& datum, const std::string& weight) const;
 
     ///
-    double unWeightDatum(double& datum, const std::string& weight);
+    double unWeightDatum(const double& datum, const std::string& weight) const;
 
     /// Gets the (actual) parameters
     const Param& getParameters() const;
