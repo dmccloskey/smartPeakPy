@@ -149,7 +149,7 @@ namespace OpenMS
     {
       if (datum < 10e-5)
       {
-        datum_weighted = std::log(10e5);
+        datum_weighted = std::log(10e-5);
       }
       else
       {
@@ -158,9 +158,9 @@ namespace OpenMS
     }
     else if (weight == "ln(y)")
     {
-      if (datum < 10e-5)
+      if (datum < 10e-8)
       {
-        datum_weighted = std::log(10e5);
+        datum_weighted = std::log(10e-8);
       }
       else
       {
@@ -171,7 +171,7 @@ namespace OpenMS
     {
       if (datum < 10e-5)
       {
-        datum_weighted = 1/10e5;
+        datum_weighted = 1/10e-5;
       }
       else
       {
@@ -182,7 +182,7 @@ namespace OpenMS
     {
       if (datum < 10e-8)
       {
-        datum_weighted = 1/10e8;
+        datum_weighted = 1/10e-8;
       }
       else
       {
@@ -193,7 +193,7 @@ namespace OpenMS
     {
       if (datum < 10e-5)
       {
-        datum_weighted = 1/10e5;
+        datum_weighted = 1/10e-5;
       }
       else
       {
@@ -204,7 +204,7 @@ namespace OpenMS
     {
       if (datum < 10e-8)
       {
-        datum_weighted = 1/10e8;
+        datum_weighted = 1/10e-8;
       }
       else
       {

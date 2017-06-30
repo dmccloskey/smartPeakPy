@@ -129,20 +129,36 @@ START_SECTION((double weightDatum(double& datum, const string& weight) const))
   Param param;
   _Test dw(data, param);
   string test;
+  test = "";
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 0.0);
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 2.0);
+  test = "none";
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 0.0);
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 2.0);
   test = "ln(x)";
-  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), log(10e5));
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), log(10e-5));
   TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), abs(log(2.0)));
   test = "1/x";
-  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e5);
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e-5);
   TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/abs(2.0));
   test = "1/x2";
-  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e5);
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e-5);
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/abs(pow(2.0,2)));
+  test = "ln(y)";
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), log(10e-8));
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), abs(log(2.0)));
+  test = "1/y";
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e-8);
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/abs(2.0));
+  test = "1/y2";
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e-8);
   TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/abs(pow(2.0,2)));
 }
 END_SECTION
 
 START_SECTION((virtual void weightData(DataPoints& data, const Param&)))
 {
+
   _Test::DataPoints data1;
   _Test::DataPoints test1;
   Param param;
@@ -152,7 +168,7 @@ START_SECTION((virtual void weightData(DataPoints& data, const Param&)))
   param.setValue("x_weight", "ln(x)");
   param.setValue("y_weight", "");
   test1.clear();
-  test1.push_back(make_pair(std::log(0.0), 1.0));
+  test1.push_back(make_pair(std::log(10e-5), 1.0));
   test1.push_back(make_pair(std::abs(std::log(1.0)), 2.0));
   test1.push_back(make_pair(std::abs(std::log(2.0)), 4.0));  
   data1.clear();
