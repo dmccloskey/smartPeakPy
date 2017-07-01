@@ -9,3 +9,13 @@ g++ -L/usr/local/openms-build/lib -I/home/user/code/OpenMS/include -I/usr/local/
 
 #manually keep the container running
 sleep infinity
+
+##Instructions
+#cd ...GitHub/smartPeak/cpp
+#docker-compose up
+#docker exec -it cpp_openms_1 /bin/bash
+#$cd code
+#$"debug external code/debut tests"
+#$...
+#$exit
+#docker-compose down
