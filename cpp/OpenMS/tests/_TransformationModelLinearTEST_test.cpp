@@ -107,7 +107,7 @@ START_SECTION((void getParameters(Param & params) const))
 }
 END_SECTION
 
-START_SECTION(([EXTRA] void getParameters(double&, double&)))
+START_SECTION(([EXTRA] void getParameters(double&, double&, std::string&, std::string&)))
 {
   Param param;
   param.setValue("slope", 12.3);

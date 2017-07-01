@@ -48,5 +48,17 @@ int main(int argc, const char** argv)
 //   sg.setParameters(param_sg);
 //   sg.filter(spectrum);
 
+_TransformationModelLinearTEST* ptr = 0;
+_TransformationModelLinearTEST* nullPointer = 0;
+
+_TransformationModelTEST::DataPoints data, empty;
+data.push_back(make_pair(0.0, 1.0));
+data.push_back(make_pair(1.0, 2.0));
+data.push_back(make_pair(1.0, 4.0));
+
+  TEST_EXCEPTION(Exception::IllegalArgument, _TransformationModelLinearTEST lm(empty, Param())); // need data
+  ptr = new _TransformationModelLinearTEST(data, Param());
+  TEST_NOT_EQUAL(ptr, nullPointer)
+
   return 0;
 } //end of main

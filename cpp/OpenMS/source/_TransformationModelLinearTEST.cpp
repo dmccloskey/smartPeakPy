@@ -46,6 +46,9 @@ namespace OpenMS
     params_ = params;
     data_given_ = !data.empty();
     _TransformationModelTEST::DataPoints data_weighted = data;
+    weightData(data_weighted, params); // weight the data 
+
+
     if (!data_given_ && params.exists("slope") && (params.exists("intercept")))
     {
       // don't estimate parameters, use given values
@@ -75,14 +78,12 @@ namespace OpenMS
                                          "no data points for 'linear' model");
       }
       else if (size == 1) // degenerate case, but we can still do something
-      {        
-        weightData(data_weighted, params); // weight the data        
+      {               
         slope_ = 1.0;
         intercept_ = data_weighted[0].second - data_weighted[0].first;
       }
       else // compute least-squares fit
       {
-        weightData(data_weighted, params); // weight the data   
         for (size_t i = 0; i < size; ++i)
         {
           points.push_back(Wm5::Vector2d(data_weighted[i].first, data_weighted[i].second));
@@ -95,6 +96,8 @@ namespace OpenMS
       // update params
       params_.setValue("slope", slope_);
       params_.setValue("intercept", intercept_);
+      params_.setValue("x_weight", x_weight_);
+      params_.setValue("y_weight", y_weight_);
     }
   }
 
