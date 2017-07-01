@@ -33,7 +33,7 @@
 // --------------------------------------------------------------------------
 
 // #include <OpenMS/ANALYSIS/MAPMATCHING/TransformationModelLinear.h>
-#include "/home/user/code/OpenMS/include/_TransformationModelLinearTEST.h"
+#include "/home/user/code/OpenMS/include/TransformationModelLinear.h"
 
 #include <Wm5Vector2.h>
 #include <Wm5ApprLineFit2.h>
@@ -41,11 +41,11 @@
 namespace OpenMS
 {
 
-  _TransformationModelLinearTEST::_TransformationModelLinearTEST(const _TransformationModelTEST::DataPoints& data, const Param& params)
+  TransformationModelLinear::TransformationModelLinear(const TransformationModel::DataPoints& data, const Param& params)
   {
     params_ = params;
     data_given_ = !data.empty();
-    _TransformationModelTEST::DataPoints data_weighted = data;
+    TransformationModel::DataPoints data_weighted = data;
     weightData(data_weighted, params); // weight the data
 
     if (!data_given_ && params.exists("slope") && (params.exists("intercept")))
@@ -89,7 +89,7 @@ namespace OpenMS
         }
         if (!Wm5::HeightLineFit2<double>(static_cast<int>(size), &points.front(), slope_, intercept_))
         {
-          throw Exception::UnableToFit(__FILE__, __LINE__, OPENMS_PRETTY_FUNCTION, "_TransformationModelLinearTEST", "Unable to fit linear transformation to data points.");
+          throw Exception::UnableToFit(__FILE__, __LINE__, OPENMS_PRETTY_FUNCTION, "TransformationModelLinear", "Unable to fit linear transformation to data points.");
         }
       }
       // update params
@@ -100,11 +100,11 @@ namespace OpenMS
     }
   }
 
-  _TransformationModelLinearTEST::~_TransformationModelLinearTEST()
+  TransformationModelLinear::~TransformationModelLinear()
   {
   }
 
-  double _TransformationModelLinearTEST::evaluate(double value) const
+  double TransformationModelLinear::evaluate(double value) const
   {
     double weighted_value;
     weighted_value = weightDatum(value, x_weight_);
@@ -114,7 +114,7 @@ namespace OpenMS
     // return slope_ * value + intercept_;
   }
 
-  void _TransformationModelLinearTEST::invert()
+  void TransformationModelLinear::invert()
   {
     if (slope_ == 0)
     {
@@ -128,7 +128,7 @@ namespace OpenMS
     params_.setValue("intercept", intercept_);
   }
 
-  void _TransformationModelLinearTEST::getParameters(double& slope, double& intercept, std::string& x_weight, std::string& y_weight) const
+  void TransformationModelLinear::getParameters(double& slope, double& intercept, std::string& x_weight, std::string& y_weight) const
   {
     slope = slope_;
     intercept = intercept_;
@@ -136,7 +136,7 @@ namespace OpenMS
     y_weight = y_weight_;
   }
 
-  void _TransformationModelLinearTEST::getDefaultParameters(Param& params)
+  void TransformationModelLinear::getDefaultParameters(Param& params)
   {
     params.clear();
     params.setValue("symmetric_regression", "false", "Perform linear regression"

@@ -15,8 +15,8 @@
 #include <OpenMS/KERNEL/StandardTypes.h>
 #include <iostream>
 #include <string>
-#include "/home/user/code/OpenMS/include/_TransformationModelTEST.h"
-#include "/home/user/code/OpenMS/include/_TransformationModelLinearTEST.h"
+#include "/home/user/code/OpenMS/include/TransformationModel.h"
+#include "/home/user/code/OpenMS/include/TransformationModelLinear.h"
 
 #include <OpenMS/CONCEPT/ClassTest.h>
 
@@ -47,14 +47,6 @@ int main(int argc, const char** argv)
 //   param_sg.setValue("polynomial_order", 3);
 //   sg.setParameters(param_sg);
 //   sg.filter(spectrum);
-
-_TransformationModelLinearTEST* ptr = 0;
-_TransformationModelLinearTEST* nullPointer = 0;
-
-_TransformationModelTEST::DataPoints data, empty;
-data.push_back(make_pair(0.0, 1.0));
-data.push_back(make_pair(1.0, 2.0));
-data.push_back(make_pair(1.0, 4.0));
 
   return 0;
 } //end of main

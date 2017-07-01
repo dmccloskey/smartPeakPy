@@ -39,12 +39,12 @@
 
 // #include <OpenMS/ANALYSIS/MAPMATCHING/TransformationModel.h>
 // #include <OpenMS/ANALYSIS/MAPMATCHING/TransformationModelLinear.h>
-#include "/home/user/code/OpenMS/include/_TransformationModelTEST.h"
-#include "/home/user/code/OpenMS/include/_TransformationModelLinearTEST.h"
+#include "/home/user/code/OpenMS/include/TransformationModel.h"
+#include "/home/user/code/OpenMS/include/TransformationModelLinear.h"
 
 ///////////////////////////
 
-START_TEST(_TransformationModelLinearTEST, "$Id$")
+START_TEST(TransformationModelLinear, "$Id$")
 
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
@@ -52,23 +52,23 @@ START_TEST(_TransformationModelLinearTEST, "$Id$")
 using namespace OpenMS;
 using namespace std;
 
-_TransformationModelLinearTEST* ptr = 0;
-_TransformationModelLinearTEST* nullPointer = 0;
+TransformationModelLinear* ptr = 0;
+TransformationModelLinear* nullPointer = 0;
 
-_TransformationModelTEST::DataPoints data, empty;
+TransformationModel::DataPoints data, empty;
 data.push_back(make_pair(0.0, 1.0));
 data.push_back(make_pair(1.0, 2.0));
 data.push_back(make_pair(1.0, 4.0));
 
-START_SECTION((_TransformationModelLinearTEST(const DataPoints &, const Param &)))
+START_SECTION((TransformationModelLinear(const DataPoints &, const Param &)))
 {
-  TEST_EXCEPTION(Exception::IllegalArgument, _TransformationModelLinearTEST lm(empty, Param())); // need data
-  ptr = new _TransformationModelLinearTEST(data, Param());
+  TEST_EXCEPTION(Exception::IllegalArgument, TransformationModelLinear lm(empty, Param())); // need data
+  ptr = new TransformationModelLinear(data, Param());
   TEST_NOT_EQUAL(ptr, nullPointer)
 }
 END_SECTION
 
-START_SECTION((~_TransformationModelLinearTEST()))
+START_SECTION((~TransformationModelLinear()))
 {
   delete ptr;
 }
@@ -76,7 +76,7 @@ END_SECTION
 
 START_SECTION((virtual double evaluate(double value) const))
 {
-  ptr = new _TransformationModelLinearTEST(data, Param());
+  ptr = new TransformationModelLinear(data, Param());
 
   TEST_REAL_SIMILAR(ptr->evaluate(-0.5), 0.0);
   TEST_REAL_SIMILAR(ptr->evaluate(0.0), 1.0);
@@ -97,7 +97,7 @@ START_SECTION((void getParameters(Param & params) const))
   p_in.setValue("symmetric_regression", "true");
   p_in.setValue("x_weight", "ln(x)");
   p_in.setValue("y_weight", "ln(y)");
-  _TransformationModelLinearTEST lm0(data, p_in);
+  TransformationModelLinear lm0(data, p_in);
   Param p_out = p_in;
   p_out.setValue("slope", 0.095036911971605034);
   p_out.setValue("intercept", 0.89550911545438994);
@@ -106,7 +106,7 @@ START_SECTION((void getParameters(Param & params) const))
   //add additional data and test without weightings
   p_in.setValue("x_weight", "");
   p_in.setValue("y_weight", "");
-  _TransformationModelLinearTEST lm(data, p_in);
+  TransformationModelLinear lm(data, p_in);
   p_out = p_in;
   p_out.setValue("slope", 0.5);
   p_out.setValue("intercept", 1.75);
@@ -118,7 +118,7 @@ START_SECTION((void getParameters(Param & params) const))
   p_in.setValue("intercept", -45.6);
   p_in.setValue("x_weight", "");
   p_in.setValue("y_weight", "");
-  _TransformationModelLinearTEST lm2(empty, p_in);
+  TransformationModelLinear lm2(empty, p_in);
   TEST_EQUAL(lm2.getParameters(), p_in);
 }
 END_SECTION
@@ -133,7 +133,7 @@ START_SECTION(([EXTRA] void getParameters(double&, double&, std::string&, std::s
   y_weight_test = "ln(y)";
   param.setValue("x_weight", x_weight_test);
   param.setValue("y_weight", y_weight_test);
-  _TransformationModelLinearTEST lm(empty, param);
+  TransformationModelLinear lm(empty, param);
   double slope, intercept;
   std::string x_weight, y_weight;
   lm.getParameters(slope, intercept, x_weight, y_weight);

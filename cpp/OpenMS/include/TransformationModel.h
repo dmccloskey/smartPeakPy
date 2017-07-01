@@ -32,8 +32,8 @@
 // $Authors: Hendrik Weisser $
 // --------------------------------------------------------------------------
 
-#ifndef OPENMS_ANALYSIS_MAPMATCHING__TransformationModelTEST_H
-#define OPENMS_ANALYSIS_MAPMATCHING__TransformationModelTEST_H
+#ifndef OPENMS_ANALYSIS_MAPMATCHING_TRANSFORMATIONMODEL_H_TEST
+#define OPENMS_ANALYSIS_MAPMATCHING_TRANSFORMATIONMODEL_H_TEST
 
 #include <OpenMS/DATASTRUCTURES/Param.h>
 
@@ -48,7 +48,7 @@ namespace OpenMS
 
     @ingroup MapAlignment
   */
-  class OPENMS_DLLAPI _TransformationModelTEST
+  class OPENMS_DLLAPI TransformationModel
   {
   public:
     /// Coordinate pair
@@ -57,14 +57,14 @@ namespace OpenMS
     typedef std::vector<DataPoint> DataPoints;
 
     /// Constructor
-    _TransformationModelTEST() {}
+    TransformationModel() {}
 
     /// Alternative constructor (derived classes should implement this one!)
     /// Both data and params must be provided, since some derived classes require both to create a model!
-    _TransformationModelTEST(const _TransformationModelTEST::DataPoints&, const Param&);
+    TransformationModel(const TransformationModel::DataPoints&, const Param&);
 
     /// Destructor
-    virtual ~_TransformationModelTEST();
+    virtual ~TransformationModel();
 
     /// Evaluates the model at the given value
     virtual double evaluate(double value) const;
@@ -115,12 +115,12 @@ namespace OpenMS
 
   private:
     /// do not allow copy
-    _TransformationModelTEST( const _TransformationModelTEST& );
+    TransformationModel( const TransformationModel& );
     /// do not allow assignment
-    const _TransformationModelTEST& operator=( const _TransformationModelTEST& );
+    const TransformationModel& operator=( const TransformationModel& );
 
   };
 
 } // end of namespace OpenMS
 
-#endif // OPENMS_ANALYSIS_MAPMATCHING__TransformationModelTEST_H
+#endif // OPENMS_ANALYSIS_MAPMATCHING_TRANSFORMATIONMODEL_H
