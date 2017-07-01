@@ -32,12 +32,13 @@
 // $Authors: Stephan Aiche $
 // --------------------------------------------------------------------------
 
-#ifndef OPENMS_ANALYSIS_MAPMATCHING_TRANSFORMATIONMODELLINEAR_H
-#define OPENMS_ANALYSIS_MAPMATCHING_TRANSFORMATIONMODELLINEAR_H
+#ifndef OPENMS_ANALYSIS_MAPMATCHING__TransformationModelLinearTEST_H
+#define OPENMS_ANALYSIS_MAPMATCHING__TransformationModelLinearTEST_H
 
 #include <OpenMS/config.h>
 
-#include <OpenMS/ANALYSIS/MAPMATCHING/TransformationModel.h>
+// #include <OpenMS/ANALYSIS/MAPMATCHING/TransformationModelTEST.h>
+#include "/home/user/code/OpenMS/include/_TransformationModelTEST.h"
 
 namespace OpenMS
 {
@@ -55,8 +56,8 @@ namespace OpenMS
 
     @ingroup MapAlignment
   */
-  class OPENMS_DLLAPI TransformationModelLinear :
-    public TransformationModel
+  class OPENMS_DLLAPI _TransformationModelLinearTEST :
+    public _TransformationModelTEST
   {
 public:
     /**
@@ -64,15 +65,15 @@ public:
 
       @exception IllegalArgument is thrown if neither data points nor explicit parameters (slope/intercept) are given.
     */
-    TransformationModelLinear(const DataPoints& data, const Param& params);
+    _TransformationModelLinearTEST(const DataPoints& data, const Param& params);
 
     /// Destructor
-    ~TransformationModelLinear();
+    ~_TransformationModelLinearTEST();
 
     /// Evaluates the model at the given value
     virtual double evaluate(double value) const;
 
-    using TransformationModel::getParameters;
+    using _TransformationModelTEST::getParameters;
 
     /// Gets the "real" parameters
     void getParameters(double& slope, double& intercept, std::string& x_weight, std::string& y_weight) const;
@@ -97,4 +98,4 @@ protected:
   };
 } // namespace
 
-#endif // OPENMS_ANALYSIS_MAPMATCHING_TRANSFORMATIONMODELLINEAR_H
+#endif // OPENMS_ANALYSIS_MAPMATCHING__TransformationModelLinearTEST_H

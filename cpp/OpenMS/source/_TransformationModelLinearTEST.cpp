@@ -32,7 +32,8 @@
 // $Authors: Hendrik Weisser $
 // --------------------------------------------------------------------------
 
-#include <OpenMS/ANALYSIS/MAPMATCHING/TransformationModelLinear.h>
+// #include <OpenMS/ANALYSIS/MAPMATCHING/TransformationModelLinear.h>
+#include "/home/user/code/OpenMS/include/_TransformationModelLinearTEST.h"
 
 #include <Wm5Vector2.h>
 #include <Wm5ApprLineFit2.h>
@@ -40,7 +41,7 @@
 namespace OpenMS
 {
 
-  TransformationModelLinear::TransformationModelLinear(const TransformationModel::DataPoints& data, const Param& params)
+  _TransformationModelLinearTEST::_TransformationModelLinearTEST(const _TransformationModelTEST::DataPoints& data, const Param& params)
   {
     params_ = params;
     data_given_ = !data.empty();
@@ -56,6 +57,14 @@ namespace OpenMS
       getDefaultParameters(defaults);
       params_.setDefaults(defaults);
       symmetric_ = params_.getValue("symmetric_regression") == "true";
+      if (params.exists("x_weight"))
+      {// set x_weight
+        params_.setValue("x_weight",params.getValue("x_weight"));
+      }
+      else if (params.exists("y_weight"))
+      {// set y_weight
+        params_.setValue("y_weight",params.getValue("y_weight"));
+      }      
 
       size_t size = data.size();
       std::vector<Wm5::Vector2d> points;
@@ -65,19 +74,21 @@ namespace OpenMS
                                          "no data points for 'linear' model");
       }
       else if (size == 1) // degenerate case, but we can still do something
-      {
+      {        
+        weightData(data, params_); // weight the data        
         slope_ = 1.0;
         intercept_ = data[0].second - data[0].first;
       }
       else // compute least-squares fit
       {
+        weightData(data, params_); // weight the data   
         for (size_t i = 0; i < size; ++i)
         {
           points.push_back(Wm5::Vector2d(data[i].first, data[i].second));
         }
         if (!Wm5::HeightLineFit2<double>(static_cast<int>(size), &points.front(), slope_, intercept_))
         {
-          throw Exception::UnableToFit(__FILE__, __LINE__, OPENMS_PRETTY_FUNCTION, "TransformationModelLinear", "Unable to fit linear transformation to data points.");
+          throw Exception::UnableToFit(__FILE__, __LINE__, OPENMS_PRETTY_FUNCTION, "_TransformationModelLinearTEST", "Unable to fit linear transformation to data points.");
         }
       }
       // update params
@@ -86,16 +97,21 @@ namespace OpenMS
     }
   }
 
-  TransformationModelLinear::~TransformationModelLinear()
+  _TransformationModelLinearTEST::~_TransformationModelLinearTEST()
   {
   }
 
-  double TransformationModelLinear::evaluate(double value) const
+  double _TransformationModelLinearTEST::evaluate(double value) const
   {
-    return slope_ * value + intercept_;
+    double weighted_value;
+    weighted_value = weightDatum(value, params_);
+    double eval;
+    eval = unWeightDatum(slope_ * weighted_value + intercept_, params_);
+    return eval;
+    // return slope_ * value + intercept_;
   }
 
-  void TransformationModelLinear::invert()
+  void _TransformationModelLinearTEST::invert()
   {
     if (slope_ == 0)
     {
@@ -109,7 +125,7 @@ namespace OpenMS
     params_.setValue("intercept", intercept_);
   }
 
-  void TransformationModelLinear::getParameters(double& slope, double& intercept, std::string& x_weight, std::string& y_weight) const
+  void _TransformationModelLinearTEST::getParameters(double& slope, double& intercept, std::string& x_weight, std::string& y_weight) const
   {
     slope = slope_;
     intercept = intercept_;
@@ -117,7 +133,7 @@ namespace OpenMS
     y_weight = y_weight_;
   }
 
-  void TransformationModelLinear::getDefaultParameters(Param& params)
+  void _TransformationModelLinearTEST::getDefaultParameters(Param& params)
   {
     params.clear();
     params.setValue("symmetric_regression", "false", "Perform linear regression"
@@ -126,10 +142,10 @@ namespace OpenMS
                            ListUtils::create<String>("true,false"));
     params.setValue("x_weight", "", "Weight x values");
     params.setValidStrings("x_weight",
-                           ListUtils::create<String>('1/x','1/x2','ln(x)',''));
+                           ListUtils::create<String>("1/x","1/x2","ln(x)",""));
     params.setValue("y_weight", "", "Weight y values");
     params.setValidStrings("y_weight",
-                           ListUtils::create<String>('1/y','1/y2','ln(y)',''));
+                           ListUtils::create<String>("1/y","1/y2","ln(y)",""));
   }
 
 } // namespace

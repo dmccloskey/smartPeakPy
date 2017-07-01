@@ -16,6 +16,7 @@
 #include <iostream>
 #include <string>
 #include "/home/user/code/OpenMS/include/_TransformationModelTEST.h"
+#include "/home/user/code/OpenMS/include/_TransformationModelLinearTEST.h"
 
 #include <OpenMS/CONCEPT/ClassTest.h>
 
