@@ -268,7 +268,7 @@ namespace OpenMS
     else
     {
       datum_weighted = datum;
-      std::cout << "weight " + weight + "not supported." << std::endl;
+      std::cout << "weight " + weight + " not supported." << std::endl;
       std::cout << "no weighting will be applied." << std::endl;
     }
     return datum_weighted;
@@ -350,7 +350,7 @@ namespace OpenMS
     else
     {
       datum_weighted = datum;
-      std::cout << "weight " + weight + "not supported." << std::endl;
+      std::cout << "weight " + weight + " not supported." << std::endl;
       std::cout << "no weighting will be applied." << std::endl;
     }
     return datum_weighted;

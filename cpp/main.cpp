@@ -56,22 +56,5 @@ data.push_back(make_pair(0.0, 1.0));
 data.push_back(make_pair(1.0, 2.0));
 data.push_back(make_pair(1.0, 4.0));
 
-  Param param;
-  param.setValue("slope", 12.3);
-  param.setValue("intercept", -45.6);  
-  std::string x_weight_test, y_weight_test;
-  x_weight_test = "";
-  y_weight_test = "ln(y)";
-  param.setValue("x_weight", x_weight_test);
-  param.setValue("y_weight", y_weight_test);
-  _TransformationModelLinearTEST lm(empty, param);
-  double slope, intercept;
-  std::string x_weight, y_weight;
-  lm.getParameters(slope, intercept, x_weight, y_weight);
-  TEST_REAL_SIMILAR(param.getValue("slope"), slope);
-  TEST_REAL_SIMILAR(param.getValue("intercept"), intercept);
-  TEST_EQUAL(param.getValue("x_weight"), x_weight);
-  TEST_EQUAL(param.getValue("y_weight"), y_weight);
-
   return 0;
 } //end of main
