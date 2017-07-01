@@ -15,7 +15,7 @@
 #include <OpenMS/KERNEL/StandardTypes.h>
 #include <iostream>
 #include <string>
-#include "/home/user/code/OpenMS/include/_Test.h"
+#include "/home/user/code/OpenMS/include/_TransformationModelTEST.h"
 
 #include <OpenMS/CONCEPT/ClassTest.h>
 
