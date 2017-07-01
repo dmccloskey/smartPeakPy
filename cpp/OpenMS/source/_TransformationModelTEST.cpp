@@ -191,7 +191,7 @@ namespace OpenMS
       }
       else
       {
-        datum_weighted = std::abs(log(datum));
+        datum_weighted = std::log(datum);
       }
     }
     else if (weight == "ln(y)")
@@ -202,7 +202,7 @@ namespace OpenMS
       }
       else
       {
-        datum_weighted = std::abs(log(datum));
+        datum_weighted = std::log(datum);
       }
     }
     else if (weight == "1/x")
@@ -231,22 +231,22 @@ namespace OpenMS
     {
       if (datum < 10e-5)
       {
-        datum_weighted = 1/10e-5;
+        datum_weighted = 1/std::pow(10e-5,2);
       }
       else
       {
-        datum_weighted = 1/std::abs(std::pow(datum,2));
+        datum_weighted = 1/std::pow(datum,2);
       }
     }
     else if (weight == "1/y2")
     {
       if (datum < 10e-8)
       {
-        datum_weighted = 1/10e-8;
+        datum_weighted = 1/std::pow(10e-8,2);
       }
       else
       {
-        datum_weighted = 1/std::abs(std::pow(datum,2));
+        datum_weighted = 1/std::pow(datum,2);
       }
     }
     else if (weight == "")
@@ -267,9 +267,9 @@ namespace OpenMS
     double datum_weighted = 0;   
     if (weight == "ln(x)")
     {
-      if (datum > std::abs(std::log(10e-5)))
+      if (datum > std::log(10e5))
       {
-        datum_weighted = 10e-5;
+        datum_weighted = 10e5;
       }
       else
       {
@@ -278,13 +278,13 @@ namespace OpenMS
     }
     else if (weight == "ln(y)")
     {
-      if (datum > std::abs(std::log(10e-8)))
+      if (datum > std::log(10e8))
       {
-        datum_weighted = 10e-8;
+        datum_weighted = 10e8;
       }
       else
       {
-        datum_weighted = std::abs(std::exp(datum));
+        datum_weighted = std::exp(datum);
       }
     }
     else if (weight == "1/x")
@@ -317,7 +317,7 @@ namespace OpenMS
       }
       else
       {
-        datum_weighted = std::sqrt(1/datum);
+        datum_weighted = std::sqrt(1/std::abs(datum));
       }
     }
     else if (weight == "1/y2")
@@ -328,7 +328,7 @@ namespace OpenMS
       }
       else
       {
-        datum_weighted = std::sqrt(1/datum);
+        datum_weighted = std::sqrt(1/std::abs(datum));
       }
     }
     else if (weight == "")

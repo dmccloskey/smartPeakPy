@@ -138,21 +138,21 @@ START_SECTION((double weightDatum(double& datum, const string& weight) const))
   TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 2.0);
   test = "ln(x)";
   TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), std::log(10e-5));
-  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), std::abs(std::log(2.0)));
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), std::log(2.0));
   test = "1/x";
   TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e-5);
   TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/std::abs(2.0));
   test = "1/x2";
-  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e-5);
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/std::pow(10e-5,2));
   TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/std::abs(std::pow(2.0,2)));
   test = "ln(y)";
   TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), std::log(10e-8));
-  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), std::abs(std::log(2.0)));
+  TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), std::log(2.0));
   test = "1/y";
   TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e-8);
   TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/std::abs(2.0));
   test = "1/y2";
-  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/10e-8);
+  TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 1/std::pow(10e-8,2));
   TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 1/std::abs(std::pow(2.0,2)));
 }
 END_SECTION
@@ -169,8 +169,8 @@ START_SECTION((virtual void weightData(DataPoints& data, const Param& params)))
   param.setValue("y_weight", "");
   test1.clear();
   test1.push_back(make_pair(std::log(10e-5), 1.0));
-  test1.push_back(make_pair(std::abs(std::log(1.0)), 2.0));
-  test1.push_back(make_pair(std::abs(std::log(2.0)), 4.0));  
+  test1.push_back(make_pair(std::log(1.0), 2.0));
+  test1.push_back(make_pair(std::log(2.0), 4.0));  
   data1.clear();
   data1.push_back(make_pair(0.0, 1.0));
   data1.push_back(make_pair(1.0, 2.0));
@@ -185,9 +185,9 @@ START_SECTION((virtual void weightData(DataPoints& data, const Param& params)))
   param.setValue("x_weight", "");
   param.setValue("y_weight", "ln(y)");
   test1.clear();
-  test1.push_back(make_pair(0.0, std::abs(std::log(1.0))));
-  test1.push_back(make_pair(1.0, std::abs(std::log(2.0))));
-  test1.push_back(make_pair(2.0, std::abs(std::log(4.0))));  
+  test1.push_back(make_pair(0.0, std::log(1.0)));
+  test1.push_back(make_pair(1.0, std::log(2.0)));
+  test1.push_back(make_pair(2.0, std::log(4.0)));  
   data1.clear();
   data1.push_back(make_pair(0.0, 1.0));
   data1.push_back(make_pair(1.0, 2.0));
@@ -213,22 +213,22 @@ START_SECTION((double unWeightDatum(double& datum, const string& weight) const))
   TEST_REAL_SIMILAR(dw.unWeightDatum(0.0,test), 0.0);
   TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), 2.0);
   test = "ln(x)";
-  TEST_REAL_SIMILAR(dw.unWeightDatum(std::abs(std::log(9.0e-5)),test), 10e-5);
-  TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), std::abs(std::exp(2.0)));
+  TEST_REAL_SIMILAR(dw.unWeightDatum(std::log(11.0e5),test), 10e5);
+  TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), std::exp(2.0));
   test = "1/x";
   TEST_REAL_SIMILAR(dw.unWeightDatum(1/std::abs(9.0e-5),test), 10e-5);
   TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), 1/std::abs(2.0));
   test = "1/x2";
-  TEST_REAL_SIMILAR(dw.unWeightDatum(1/std::abs(std::pow(9.0e-5,2)),test), 10e-5);
+  TEST_REAL_SIMILAR(dw.unWeightDatum(1/std::pow(9.0e-5,2),test), 10e-5);
   TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), std::sqrt(1/std::abs(2.0)));
   test = "ln(y)";
-  TEST_REAL_SIMILAR(dw.unWeightDatum(std::abs(std::log(9.0e-8)),test), 10e-8);
+  TEST_REAL_SIMILAR(dw.unWeightDatum(std::log(11.0e8),test), 10e8);
   TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), std::abs(std::exp(2.0)));
   test = "1/y";
   TEST_REAL_SIMILAR(dw.unWeightDatum(1/std::abs(9.0e-8),test), 10e-8);
   TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), 1/std::abs(2.0));
   test = "1/y2";
-  TEST_REAL_SIMILAR(dw.unWeightDatum(1/std::abs(std::pow(9.0e-8,2)),test), 10e-8);
+  TEST_REAL_SIMILAR(dw.unWeightDatum(1/std::pow(9.0e-8,2),test), 10e-8);
   TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), std::sqrt(1/std::abs(2.0)));
 }
 END_SECTION
@@ -245,9 +245,9 @@ START_SECTION((virtual void unWeightData(DataPoints& data, const Param& params))
   param.setValue("x_weight", "ln(x)");
   param.setValue("y_weight", "");
   test1.clear();
-  test1.push_back(make_pair(std::abs(std::exp(0.0)), 1.0));
-  test1.push_back(make_pair(std::abs(std::exp(1.0)), 2.0));
-  test1.push_back(make_pair(std::abs(std::exp(2.0)), 4.0));  
+  test1.push_back(make_pair(std::exp(0.0), 1.0));
+  test1.push_back(make_pair(std::exp(1.0), 2.0));
+  test1.push_back(make_pair(std::exp(2.0), 4.0));  
   data1.clear();
   data1.push_back(make_pair(0.0, 1.0));
   data1.push_back(make_pair(1.0, 2.0));
@@ -262,9 +262,9 @@ START_SECTION((virtual void unWeightData(DataPoints& data, const Param& params))
   param.setValue("x_weight", "");
   param.setValue("y_weight", "ln(y)");
   test1.clear();
-  test1.push_back(make_pair(0.0, std::abs(std::exp(1.0))));
-  test1.push_back(make_pair(1.0, std::abs(std::exp(2.0))));
-  test1.push_back(make_pair(2.0, std::abs(std::exp(4.0))));  
+  test1.push_back(make_pair(0.0, std::exp(1.0)));
+  test1.push_back(make_pair(1.0, std::exp(2.0)));
+  test1.push_back(make_pair(2.0, std::exp(4.0)));  
   data1.clear();
   data1.push_back(make_pair(0.0, 1.0));
   data1.push_back(make_pair(1.0, 2.0));
