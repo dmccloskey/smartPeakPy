@@ -1,10 +1,10 @@
 #!/bin/bash
 cd /home/user/code
 ##debug external code
-g++ -L/usr/local/openms-build/lib -I/home/user/code/OpenMS/include -I/usr/local/OpenMS/src/openms/include -I/usr/local/openms-build/src/openms/include -I/usr/local/contrib-build/include -I/usr/local/contrib-build/include/WildMagic -I/usr/include/qt5 -fPIC -g main.cpp /home/user/code/OpenMS/source/_TransformationModelTEST.cpp /home/user/code/OpenMS/source/_TransformationModelLinearTEST.cpp -lOpenMS
+# g++ -L/usr/local/openms-build/lib -I/home/user/code/OpenMS/include -I/usr/local/OpenMS/src/openms/include -I/usr/local/openms-build/src/openms/include -I/usr/local/contrib-build/include -I/usr/local/contrib-build/include/WildMagic -I/usr/include/qt5 -fPIC -g main.cpp /home/user/code/OpenMS/source/_TransformationModelTEST.cpp /home/user/code/OpenMS/source/_TransformationModelLinearTEST.cpp -lOpenMS
 ##debug tests
 # g++ -L/usr/local/openms-build/lib -I/home/user/code/OpenMS/include -I/usr/local/OpenMS/src/openms/include -I/usr/local/openms-build/src/openms/include -I/usr/local/contrib-build/include -I/usr/include/qt5 -fPIC -g /home/user/code/OpenMS/source/_TransformationModelTEST.cpp /home/user/code/OpenMS/tests/_TransformationModelTEST_test.cpp -lOpenMS
-# g++ -L/usr/local/openms-build/lib -I/home/user/code/OpenMS/include -I/usr/local/OpenMS/src/openms/include -I/usr/local/openms-build/src/openms/include -I/usr/local/contrib-build/include -I/usr/include/qt5 -fPIC -g /home/user/code/OpenMS/source/_TransformationModelTEST.cpp /home/user/code/OpenMS/source/_TransformationModelLinearTEST.cpp /home/user/code/OpenMS/tests/_TransformationModelLinearTEST_test.cpp -lOpenMS
+g++ -L/usr/local/openms-build/lib -I/home/user/code/OpenMS/include -I/usr/local/OpenMS/src/openms/include -I/usr/local/openms-build/src/openms/include -I/usr/local/contrib-build/include -I/usr/local/contrib-build/include/WildMagic -I/usr/include/qt5 -fPIC -g /home/user/code/OpenMS/source/_TransformationModelTEST.cpp /home/user/code/OpenMS/source/_TransformationModelLinearTEST.cpp /home/user/code/OpenMS/tests/_TransformationModelLinearTEST_test.cpp -lOpenMS
 ##debug setup
 # g++ -g main.cpp
 

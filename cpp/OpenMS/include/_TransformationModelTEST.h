@@ -108,16 +108,16 @@ namespace OpenMS
   protected:
     /// Parameters
     Param params_;
+    /// x weighting
+    const std::string x_weight_;
+    /// y weighting
+    const std::string y_weight_;
 
   private:
     /// do not allow copy
     _TransformationModelTEST( const _TransformationModelTEST& );
     /// do not allow assignment
     const _TransformationModelTEST& operator=( const _TransformationModelTEST& );
-    /// x weighting
-    const std::string x_weight_;
-    /// y weighting
-    const std::string y_weight_;
 
   };
 

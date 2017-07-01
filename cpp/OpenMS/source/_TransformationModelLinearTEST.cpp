@@ -45,6 +45,7 @@ namespace OpenMS
   {
     params_ = params;
     data_given_ = !data.empty();
+    _TransformationModelTEST::DataPoints data_weighted = data;
     if (!data_given_ && params.exists("slope") && (params.exists("intercept")))
     {
       // don't estimate parameters, use given values
@@ -75,16 +76,16 @@ namespace OpenMS
       }
       else if (size == 1) // degenerate case, but we can still do something
       {        
-        weightData(data, params_); // weight the data        
+        weightData(data_weighted, params); // weight the data        
         slope_ = 1.0;
-        intercept_ = data[0].second - data[0].first;
+        intercept_ = data_weighted[0].second - data_weighted[0].first;
       }
       else // compute least-squares fit
       {
-        weightData(data, params_); // weight the data   
+        weightData(data_weighted, params); // weight the data   
         for (size_t i = 0; i < size; ++i)
         {
-          points.push_back(Wm5::Vector2d(data[i].first, data[i].second));
+          points.push_back(Wm5::Vector2d(data_weighted[i].first, data_weighted[i].second));
         }
         if (!Wm5::HeightLineFit2<double>(static_cast<int>(size), &points.front(), slope_, intercept_))
         {
@@ -104,9 +105,9 @@ namespace OpenMS
   double _TransformationModelLinearTEST::evaluate(double value) const
   {
     double weighted_value;
-    weighted_value = weightDatum(value, params_);
+    weighted_value = weightDatum(value, x_weight_);
     double eval;
-    eval = unWeightDatum(slope_ * weighted_value + intercept_, params_);
+    eval = unWeightDatum(slope_ * weighted_value + intercept_, y_weight_);
     return eval;
     // return slope_ * value + intercept_;
   }
@@ -142,10 +143,10 @@ namespace OpenMS
                            ListUtils::create<String>("true,false"));
     params.setValue("x_weight", "", "Weight x values");
     params.setValidStrings("x_weight",
-                           ListUtils::create<String>("1/x","1/x2","ln(x)",""));
+                           ListUtils::create<String>("1/x,1/x2,ln(x),"));
     params.setValue("y_weight", "", "Weight y values");
     params.setValidStrings("y_weight",
-                           ListUtils::create<String>("1/y","1/y2","ln(y)",""));
+                           ListUtils::create<String>("1/y,1/y2,ln(y),"));
   }
 
 } // namespace
