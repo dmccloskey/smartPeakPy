@@ -22,31 +22,30 @@
 using namespace OpenMS;
 using namespace std;
 
-// Uncomment for code snippet testing
-// Comment to run unit tests
-// int main(int argc, const char** argv)
-// {
-//   // if (argc < 2) return 1;
-//   // // the path to the data should be given on the command line
-//   // string tutorial_data_path(argv[1]);
+// code snippet testing
+int main(int argc, const char** argv)
+{
+  // if (argc < 2) return 1;
+  // // the path to the data should be given on the command line
+  // string tutorial_data_path(argv[1]);
   
-// //   PeakSpectrum spectrum;
+//   PeakSpectrum spectrum;
 
-// //   DTAFile dta_file;
-// //   dta_file.load(tutorial_data_path + "/data/Tutorial_SavitzkyGolayFilter.dta", spectrum);
+//   DTAFile dta_file;
+//   dta_file.load(tutorial_data_path + "/data/Tutorial_SavitzkyGolayFilter.dta", spectrum);
 
-// //   LinearResampler lr;
-// //   Param param_lr;
-// //   param_lr.setValue("spacing", 0.01);
-// //   lr.setParameters(param_lr);
-// //   lr.raster(spectrum);
+//   LinearResampler lr;
+//   Param param_lr;
+//   param_lr.setValue("spacing", 0.01);
+//   lr.setParameters(param_lr);
+//   lr.raster(spectrum);
 
-// //   SavitzkyGolayFilter sg;
-// //   Param param_sg;
-// //   param_sg.setValue("frame_length", 21);
-// //   param_sg.setValue("polynomial_order", 3);
-// //   sg.setParameters(param_sg);
-// //   sg.filter(spectrum);
+//   SavitzkyGolayFilter sg;
+//   Param param_sg;
+//   param_sg.setValue("frame_length", 21);
+//   param_sg.setValue("polynomial_order", 3);
+//   sg.setParameters(param_sg);
+//   sg.filter(spectrum);
 
-//   return 0;
-// } //end of main
+  return 0;
+} //end of main

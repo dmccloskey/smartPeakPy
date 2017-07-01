@@ -37,12 +37,12 @@
 
 ///////////////////////////
 
-// #include <OpenMS/ANALYSIS/MAPMATCHING/_Test.h>
-#include "/home/user/code/OpenMS/include/_Test.h"
+// #include <OpenMS/ANALYSIS/MAPMATCHING/_TransformationModelTEST.h>
+#include "/home/user/code/OpenMS/include/_TransformationModelTEST.h"
 
 ///////////////////////////
 
-START_TEST(_Test, "$Id$")
+START_TEST(_TransformationModelTEST, "$Id$")
 
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
@@ -50,29 +50,29 @@ START_TEST(_Test, "$Id$")
 using namespace OpenMS;
 using namespace std;
 
-_Test* ptr = 0;
-_Test* nullPointer = 0;
+_TransformationModelTEST* ptr = 0;
+_TransformationModelTEST* nullPointer = 0;
 
-_Test::DataPoints data, empty;
+_TransformationModelTEST::DataPoints data, empty;
 data.push_back(make_pair(0.0, 1.0));
 data.push_back(make_pair(1.0, 2.0));
 data.push_back(make_pair(1.0, 4.0));
 
-START_SECTION((_Test()))
+START_SECTION((_TransformationModelTEST()))
 {
-  ptr = new _Test();
+  ptr = new _TransformationModelTEST();
   TEST_NOT_EQUAL(ptr, nullPointer)
 }
 END_SECTION
 
-START_SECTION((_Test(const DataPoints &, const Param &)))
+START_SECTION((_TransformationModelTEST(const DataPoints &, const Param &)))
 {
-  ptr = new _Test(_Test::DataPoints(), Param());
+  ptr = new _TransformationModelTEST(_TransformationModelTEST::DataPoints(), Param());
   TEST_NOT_EQUAL(ptr, nullPointer)
 }
 END_SECTION
 
-START_SECTION((~_Test()))
+START_SECTION((~_TransformationModelTEST()))
 {
   delete ptr;
 }
@@ -81,7 +81,7 @@ END_SECTION
 START_SECTION((virtual double evaluate(double value) const))
 {
   // null model (identity):
-  _Test tm;
+  _TransformationModelTEST tm;
   TEST_REAL_SIMILAR(tm.evaluate(-3.14159), -3.14159);
   TEST_REAL_SIMILAR(tm.evaluate(0.0), 0.0);
   TEST_REAL_SIMILAR(tm.evaluate(12345678.9), 12345678.9);
@@ -90,7 +90,7 @@ END_SECTION
 
 START_SECTION((void getParameters(Param & params) const))
 {
-  _Test tm;
+  _TransformationModelTEST tm;
   Param p = tm.getParameters();
   TEST_EQUAL(p.empty(), true)
 }
@@ -100,7 +100,7 @@ START_SECTION(([EXTRA] static void getDefaultParameters(Param & params)))
 {
   Param param;
   param.setValue("some-value", 12.3);
-  _Test::getDefaultParameters(param);
+  _TransformationModelTEST::getDefaultParameters(param);
   TEST_EQUAL(param.empty(), true)
 }
 END_SECTION
@@ -108,7 +108,7 @@ END_SECTION
 START_SECTION((bool checkValidWeight(const string& weight, const vector<string>& valid_weights) const))
 {
   Param param;
-  _Test dw(data, param);
+  _TransformationModelTEST dw(data, param);
   string test;
   test = "ln(x)";
   TEST_EQUAL(dw.checkValidWeight(test,dw.getValidXWeights()), true);
@@ -128,7 +128,7 @@ END_SECTION
 START_SECTION((double weightDatum(double& datum, const string& weight) const))
 {
   Param param;
-  _Test dw(data, param);
+  _TransformationModelTEST dw(data, param);
   string test;
   test = "";
   TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 0.0);
@@ -159,11 +159,11 @@ END_SECTION
 
 START_SECTION((virtual void weightData(DataPoints& data, const Param& params)))
 {
-  _Test::DataPoints data1;
-  _Test::DataPoints test1;
+  _TransformationModelTEST::DataPoints data1;
+  _TransformationModelTEST::DataPoints test1;
   Param param;
-  _Test::getDefaultParameters(param);
-  _Test dw(data, param);
+  _TransformationModelTEST::getDefaultParameters(param);
+  _TransformationModelTEST dw(data, param);
 
   param.setValue("x_weight", "ln(x)");
   param.setValue("y_weight", "");
@@ -204,7 +204,7 @@ END_SECTION
 START_SECTION((double unWeightDatum(double& datum, const string& weight) const))
 {
   Param param;
-  _Test dw(data, param);
+  _TransformationModelTEST dw(data, param);
   string test;
   test = "";
   TEST_REAL_SIMILAR(dw.unWeightDatum(0.0,test), 0.0);
@@ -236,11 +236,11 @@ END_SECTION
 START_SECTION((virtual void unWeightData(DataPoints& data, const Param& params)))
 {
 
-  _Test::DataPoints data1;
-  _Test::DataPoints test1;
+  _TransformationModelTEST::DataPoints data1;
+  _TransformationModelTEST::DataPoints test1;
   Param param;
-  _Test::getDefaultParameters(param);
-  _Test dw(data, param);
+  _TransformationModelTEST::getDefaultParameters(param);
+  _TransformationModelTEST dw(data, param);
 
   param.setValue("x_weight", "ln(x)");
   param.setValue("y_weight", "");

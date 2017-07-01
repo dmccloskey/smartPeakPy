@@ -32,40 +32,40 @@
 // $Authors: Hendrik Weisser $
 // --------------------------------------------------------------------------
 
-// #include <OpenMS/ANALYSIS/MAPMATCHING/_Test.h>
+// #include <OpenMS/ANALYSIS/MAPMATCHING/_TransformationModelTEST.h>
 #include <iostream>     // std::cout
 #include <algorithm>    // std::find
 #include <math.h>    // std::log
-#include "/home/user/code/OpenMS/include/_Test.h"
+#include "/home/user/code/OpenMS/include/_TransformationModelTEST.h"
 
 namespace OpenMS
 {
 
-  _Test::_Test(const _Test::DataPoints&, const Param&) :
+  _TransformationModelTEST::_TransformationModelTEST(const _TransformationModelTEST::DataPoints&, const Param&) :
     params_()
   {
   }
 
-  _Test::~_Test()
+  _TransformationModelTEST::~_TransformationModelTEST()
   {
   }
 
-  double _Test::evaluate(double value) const
+  double _TransformationModelTEST::evaluate(double value) const
   {
     return value;
   }
 
-  const Param& _Test::getParameters() const
+  const Param& _TransformationModelTEST::getParameters() const
   {
     return params_;
   }
 
-  void _Test::getDefaultParameters(Param& params)
+  void _TransformationModelTEST::getDefaultParameters(Param& params)
   {
     params.clear();
   }
   
-  void _Test::weightData(_Test::DataPoints& data, const Param& params)
+  void _TransformationModelTEST::weightData(_TransformationModelTEST::DataPoints& data, const Param& params)
   {
     // weight x values 
     std::vector<std::string> valid_weights;
@@ -101,7 +101,7 @@ namespace OpenMS
     }
   }
   
-  void _Test::unWeightData(_Test::DataPoints& data, const Param& params)
+  void _TransformationModelTEST::unWeightData(_TransformationModelTEST::DataPoints& data, const Param& params)
   {
     // unweight x values 
     std::vector<std::string> valid_weights;
@@ -135,7 +135,7 @@ namespace OpenMS
     }
   }
 
-  bool _Test::checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights) const
+  bool _TransformationModelTEST::checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights) const
   {    
     bool valid = false;
     if (std::find(valid_weights.begin(), valid_weights.end(), weight) != valid_weights.end())
@@ -149,7 +149,7 @@ namespace OpenMS
     return valid;
   }
   
-  std::vector<std::string> _Test::getValidXWeights() const
+  std::vector<std::string> _TransformationModelTEST::getValidXWeights() const
   {
     //std::vector<std::string> valid_weights{"1/x","1/x2","ln(x)",""}; C++ 11
     std::vector<std::string> valid_weights;
@@ -160,7 +160,7 @@ namespace OpenMS
     return valid_weights;
   }
   
-  std::vector<std::string> _Test::getValidYWeights() const
+  std::vector<std::string> _TransformationModelTEST::getValidYWeights() const
   {
     // std::vector<std::string> valid_weights{"1/y","1/y2","ln(y)",""}; C++ 11
     std::vector<std::string> valid_weights;
@@ -171,7 +171,7 @@ namespace OpenMS
     return valid_weights;
   }
 
-  double _Test::weightDatum(const double& datum, const std::string& weight) const
+  double _TransformationModelTEST::weightDatum(const double& datum, const std::string& weight) const
   { 
     double datum_weighted = 0;   
     if (weight == "ln(x)")
@@ -253,7 +253,7 @@ namespace OpenMS
     return datum_weighted;
   } 
 
-  double _Test::unWeightDatum(const double& datum, const std::string& weight) const
+  double _TransformationModelTEST::unWeightDatum(const double& datum, const std::string& weight) const
   { 
     double datum_weighted = 0;   
     if (weight == "ln(x)")
