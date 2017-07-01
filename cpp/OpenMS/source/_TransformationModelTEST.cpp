@@ -70,7 +70,6 @@ namespace OpenMS
     // weight x values 
     std::vector<std::string> valid_weights;
     valid_weights = getValidXWeights();
-    bool valid_weight;
     if (params.exists("x_weight") && checkValidWeight(params.getValue("x_weight"), valid_weights) && !data.empty())
     {
       std::string x_weight_ = params.getValue("x_weight");
@@ -111,8 +110,7 @@ namespace OpenMS
     std::vector<std::string> valid_weights;
     valid_weights = getValidXWeights();
     bool valid_weight;
-    valid_weight = checkValidWeight(params.getValue("x_weight"), valid_weights);
-    if (params.exists("x_weight") && valid_weight)
+    if (params.exists("x_weight") && checkValidWeight(params.getValue("x_weight"), valid_weights) && !data.empty())
     {
       std::string x_weight_ = params.getValue("x_weight");
       for (size_t i = 0; i < data.size(); ++i)
@@ -120,19 +118,26 @@ namespace OpenMS
       data[i].first = unWeightDatum(data[i].first,x_weight_);
       }
     }
+    else if (params.exists("x_weight") && checkValidWeight(params.getValue("x_weight"), valid_weights))
+    {
+      std::string x_weight_ = params.getValue("x_weight");
+    }
     else{
       std::string x_weight_ = "";
     }
     // unweight y values
     valid_weights = getValidYWeights();
-    valid_weight = checkValidWeight(params.getValue("y_weight"), valid_weights);
-    if (params.exists("y_weight") && valid_weight)
+    if (params.exists("y_weight") && checkValidWeight(params.getValue("y_weight"), valid_weights) && !data.empty())
     {
       std::string y_weight_ = params.getValue("y_weight");
       for (size_t i = 0; i < data.size(); ++i)
       {
       data[i].second = unWeightDatum(data[i].second,y_weight_);
       }
+    }    
+    else if (params.exists("y_weight") && checkValidWeight(params.getValue("y_weight"), valid_weights))
+    {
+      std::string y_weight_ = params.getValue("y_weight");
     }
     else{
       std::string y_weight_ = "";

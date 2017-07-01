@@ -85,12 +85,12 @@ START_SECTION((virtual double evaluate(double value) const))
   TEST_REAL_SIMILAR(ptr->evaluate(1.5), 4.0);
 
   delete ptr;
-  data.push_back(make_pair(2.0, 2.0));
 }
 END_SECTION
 
 START_SECTION((void getParameters(Param & params) const))
 {
+  data.push_back(make_pair(2.0, 2.0));
   Param p_in;
   p_in.setValue("symmetric_regression", "true");
   _TransformationModelLinearTEST lm(data, p_in);

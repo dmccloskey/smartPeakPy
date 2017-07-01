@@ -56,9 +56,25 @@ data.push_back(make_pair(0.0, 1.0));
 data.push_back(make_pair(1.0, 2.0));
 data.push_back(make_pair(1.0, 4.0));
 
-  TEST_EXCEPTION(Exception::IllegalArgument, _TransformationModelLinearTEST lm(empty, Param())); // need data
-  ptr = new _TransformationModelLinearTEST(data, Param());
-  TEST_NOT_EQUAL(ptr, nullPointer)
+  data.push_back(make_pair(2.0, 2.0));
+  Param p_in;
+
+  p_in.setValue("symmetric_regression", "true");
+  p_in.setValue("x_weight", "");
+  p_in.setValue("y_weight", "");
+  _TransformationModelLinearTEST lm(data, p_in);
+  Param p_out = p_in;
+  p_out.setValue("slope", 0.5);
+  p_out.setValue("intercept", 1.75);
+  TEST_EQUAL(lm.getParameters(), p_out);
+
+  p_in.clear();
+  p_in.setValue("slope", 12.3);
+  p_in.setValue("intercept", -45.6);
+  p_in.setValue("x_weight", "ln(x)");
+  p_in.setValue("y_weight", "");
+  _TransformationModelLinearTEST lm2(empty, p_in);
+  TEST_EQUAL(lm2.getParameters(), p_in);
 
   return 0;
 } //end of main
