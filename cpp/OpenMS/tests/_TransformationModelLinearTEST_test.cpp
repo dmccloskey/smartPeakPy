@@ -90,22 +90,24 @@ END_SECTION
 
 START_SECTION((void getParameters(Param & params) const))
 {  
+
+  data.push_back(make_pair(2.0, 2.0));
   Param p_in;
   //test weightings
   p_in.setValue("symmetric_regression", "true");
   p_in.setValue("x_weight", "ln(x)");
   p_in.setValue("y_weight", "ln(y)");
-  _TransformationModelLinearTEST lm(data, p_in);
+  _TransformationModelLinearTEST lm0(data, p_in);
   Param p_out = p_in;
-  p_out.setValue("slope", 0.5);
-  p_out.setValue("intercept", 1.75);
+  p_out.setValue("slope", 0.095036911971605034);
+  p_out.setValue("intercept", 0.89550911545438994);
+  TEST_EQUAL(lm0.getParameters(), p_out);
 
   //add additional data and test without weightings
   p_in.setValue("x_weight", "");
   p_in.setValue("y_weight", "");
-  data.push_back(make_pair(2.0, 2.0));
   _TransformationModelLinearTEST lm(data, p_in);
-  Param p_out = p_in;
+  p_out = p_in;
   p_out.setValue("slope", 0.5);
   p_out.setValue("intercept", 1.75);
   TEST_EQUAL(lm.getParameters(), p_out);

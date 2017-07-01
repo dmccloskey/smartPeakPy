@@ -56,35 +56,22 @@ data.push_back(make_pair(0.0, 1.0));
 data.push_back(make_pair(1.0, 2.0));
 data.push_back(make_pair(1.0, 4.0));
 
-  data.push_back(make_pair(2.0, 2.0));
-  Param p_in;
-  //test weightings
-  p_in.setValue("symmetric_regression", "true");
-  p_in.setValue("x_weight", "ln(x)");
-  p_in.setValue("y_weight", "ln(y)");
-  _TransformationModelLinearTEST lm0(data, p_in);
-  Param p_out = p_in;
-  p_out.setValue("slope", 0.095036911971605034);
-  p_out.setValue("intercept", 0.89550911545438994);
-  TEST_EQUAL(lm0.getParameters(), p_out);
-
-  //add additional data and test without weightings
-  p_in.setValue("x_weight", "");
-  p_in.setValue("y_weight", "");
-  _TransformationModelLinearTEST lm(data, p_in);
-  p_out = p_in;
-  p_out.setValue("slope", 0.5);
-  p_out.setValue("intercept", 1.75);
-  TEST_EQUAL(lm.getParameters(), p_out);
-
-  //test with empty data
-  p_in.clear();
-  p_in.setValue("slope", 12.3);
-  p_in.setValue("intercept", -45.6);
-  p_in.setValue("x_weight", "");
-  p_in.setValue("y_weight", "");
-  _TransformationModelLinearTEST lm2(empty, p_in);
-  TEST_EQUAL(lm2.getParameters(), p_in);
+  Param param;
+  param.setValue("slope", 12.3);
+  param.setValue("intercept", -45.6);  
+  std::string x_weight_test, y_weight_test;
+  x_weight_test = "";
+  y_weight_test = "ln(y)";
+  param.setValue("x_weight", x_weight_test);
+  param.setValue("y_weight", y_weight_test);
+  _TransformationModelLinearTEST lm(empty, param);
+  double slope, intercept;
+  std::string x_weight, y_weight;
+  lm.getParameters(slope, intercept, x_weight, y_weight);
+  TEST_REAL_SIMILAR(param.getValue("slope"), slope);
+  TEST_REAL_SIMILAR(param.getValue("intercept"), intercept);
+  TEST_EQUAL(param.getValue("x_weight"), x_weight);
+  TEST_EQUAL(param.getValue("y_weight"), y_weight);
 
   return 0;
 } //end of main
