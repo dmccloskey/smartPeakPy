@@ -76,19 +76,22 @@ namespace OpenMS
     1 / x2	If |x| < 10-5 then w = 10e10; otherwise w = 1 / x2.
     1 / y	If |y| < 10-8 then w = 10e8; otherwise w = 1 / |y|.
     1 / y2	If |y| < 10-8 then w = 10e16; otherwise w = 1 / y2.
-    ln x	If x < 0 an error is generated; otherwise if x < 10-5 then w = ln 105,
+    ln x	If x < 0 an error is generated; otherwise if x < 10-5 then w = ln 10e-5,
     otherwise w = |ln x|.
     */
-    virtual void weightData(DataPoints& data, const Param&);
+    virtual void weightData(DataPoints& data, const Param& params);
     
     /// Unweight the data by the given weight function
-    virtual void unWeightData(DataPoints& data);
+    virtual void unWeightData(DataPoints& data, const Param& params);
     
     /// 
     bool checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights) const;
 
     ///
-    double weightDatum(double& datum, const std::string& weight);
+    double weightDatum(const double& datum, const std::string& weight) const;
+
+    ///
+    double unWeightDatum(const double& datum, const std::string& weight) const;
 
     /// Gets the (actual) parameters
     const Param& getParameters() const;

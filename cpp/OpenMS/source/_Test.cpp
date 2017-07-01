@@ -35,6 +35,7 @@
 // #include <OpenMS/ANALYSIS/MAPMATCHING/_Test.h>
 #include <iostream>     // std::cout
 #include <algorithm>    // std::find
+#include <math.h>    // std::log
 #include "/home/user/code/OpenMS/include/_Test.h"
 
 namespace OpenMS
@@ -100,17 +101,43 @@ namespace OpenMS
     }
   }
   
-  void _Test::unWeightData(_Test::DataPoints& data)
+  void _Test::unWeightData(_Test::DataPoints& data, const Param& params)
   {
-    //TODO
+    // unweight x values 
+    std::vector<std::string> valid_weights;
+    valid_weights = getValidXWeights();
+    bool valid_weight;
+    valid_weight = checkValidWeight(params.getValue("x_weight"), valid_weights);
+    if (params.exists("x_weight") && valid_weight)
+    {
+      std::string x_weight_ = params.getValue("x_weight");
+      for (size_t i = 0; i < data.size(); ++i)
+      {
+      data[i].first = unWeightDatum(data[i].first,x_weight_);
+      }
+    }
+    else{
+      std::string x_weight_ = "";
+    }
+    // unweight y values
+    valid_weights = getValidYWeights();
+    valid_weight = checkValidWeight(params.getValue("y_weight"), valid_weights);
+    if (params.exists("y_weight") && valid_weight)
+    {
+      std::string y_weight_ = params.getValue("y_weight");
+      for (size_t i = 0; i < data.size(); ++i)
+      {
+      data[i].second = unWeightDatum(data[i].second,y_weight_);
+      }
+    }
+    else{
+      std::string y_weight_ = "";
+    }
   }
 
   bool _Test::checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights) const
   {    
-    // std::vector<int>::iterator it;
-    // it = std::find(valid_weights.begin(), valid_weights.end(), weight);
     bool valid = false;
-    // if (it != valid_weights.end())
     if (std::find(valid_weights.begin(), valid_weights.end(), weight) != valid_weights.end())
     {
       valid=true;
@@ -144,81 +171,164 @@ namespace OpenMS
     return valid_weights;
   }
 
-  double _Test::weightDatum(double& datum, const std::string& weight)
+  double _Test::weightDatum(const double& datum, const std::string& weight) const
   { 
-    double datum_weighted = datum;   
+    double datum_weighted = 0;   
     if (weight == "ln(x)")
     {
       if (datum < 10e-5)
       {
-        datum = log(10e5);
+        datum_weighted = std::log(10e-5);
       }
       else
       {
-        datum_weighted = abs(log(datum));
+        datum_weighted = std::abs(log(datum));
       }
     }
-    if (weight == "ln(y)")
+    else if (weight == "ln(y)")
     {
-      if (datum < 10e-5)
+      if (datum < 10e-8)
       {
-        datum_weighted = log(10e5);
+        datum_weighted = std::log(10e-8);
       }
       else
       {
-        datum_weighted = abs(log(datum));
+        datum_weighted = std::abs(log(datum));
       }
     }
     else if (weight == "1/x")
     {
       if (datum < 10e-5)
       {
-        datum_weighted = 1/10e5;
+        datum_weighted = 1/10e-5;
       }
       else
       {
-        datum_weighted = 1/abs(datum);
+        datum_weighted = 1/std::abs(datum);
       }
     }
     else if (weight == "1/y")
     {
       if (datum < 10e-8)
       {
-        datum_weighted = 1/10e8;
+        datum_weighted = 1/10e-8;
       }
       else
       {
-        datum_weighted = 1/abs(datum);
+        datum_weighted = 1/std::abs(datum);
       }
     }
     else if (weight == "1/x2")
     {
       if (datum < 10e-5)
       {
-        datum_weighted = 1/10e5;
+        datum_weighted = 1/10e-5;
       }
       else
       {
-        datum_weighted = 1/abs(pow(datum,2));
+        datum_weighted = 1/std::abs(std::pow(datum,2));
       }
     }
     else if (weight == "1/y2")
     {
       if (datum < 10e-8)
       {
-        datum_weighted = 1/10e8;
+        datum_weighted = 1/10e-8;
       }
       else
       {
-        datum_weighted = 1/abs(pow(datum,2));
+        datum_weighted = 1/std::abs(std::pow(datum,2));
       }
     }
     else if (weight == "")
     {
-      // do nothing
+      datum_weighted = datum;
     }
     else
     {
+      datum_weighted = datum;
+      std::cout << "wight " + weight + "not supported." << std::endl;
+      std::cout << "no weighting will be applied." << std::endl;
+    }
+    return datum_weighted;
+  } 
+
+  double _Test::unWeightDatum(const double& datum, const std::string& weight) const
+  { 
+    double datum_weighted = 0;   
+    if (weight == "ln(x)")
+    {
+      if (datum > std::abs(std::log(10e-5)))
+      {
+        datum_weighted = 10e-5;
+      }
+      else
+      {
+        datum_weighted = std::abs(std::exp(datum));
+      }
+    }
+    else if (weight == "ln(y)")
+    {
+      if (datum > std::abs(std::log(10e-8)))
+      {
+        datum_weighted = 10e-8;
+      }
+      else
+      {
+        datum_weighted = std::abs(std::exp(datum));
+      }
+    }
+    else if (weight == "1/x")
+    {
+      if (datum > 1/std::abs(10e-5))
+      {
+        datum_weighted = 10e-5;
+      }
+      else
+      {
+        datum_weighted = 1/std::abs(datum);
+      }
+    }
+    else if (weight == "1/y")
+    {
+      if (datum > 1/std::abs(10e-8))
+      {
+        datum_weighted = 10e-8;
+      }
+      else
+      {
+        datum_weighted = 1/std::abs(datum);
+      }
+    }
+    else if (weight == "1/x2")
+    {
+      if (datum > 1/std::pow(10e-5,2))
+      {
+        datum_weighted = 10e-5;
+      }
+      else
+      {
+        datum_weighted = std::sqrt(1/datum);
+      }
+    }
+    else if (weight == "1/y2")
+    {
+      if (datum >  1/std::pow(10e-8,2))
+      {
+        datum_weighted = 10e-8;
+      }
+      else
+      {
+        datum_weighted = std::sqrt(1/datum);
+      }
+    }
+    else if (weight == "")
+    {
+      datum_weighted = datum;
+    }
+    else
+    {
+      datum_weighted = datum;
       std::cout << "wight " + weight + "not supported." << std::endl;
       std::cout << "no weighting will be applied." << std::endl;
     }
