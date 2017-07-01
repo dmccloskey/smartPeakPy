@@ -33,15 +33,16 @@
 // --------------------------------------------------------------------------
 
 #include <OpenMS/CONCEPT/ClassTest.h>
-#include <OpenMS/test_config.h>
+// #include <OpenMS/test_config.h>
 
 ///////////////////////////
 
-#include <OpenMS/ANALYSIS/MAPMATCHING/TransformationModel.h>
+// #include <OpenMS/ANALYSIS/MAPMATCHING/_Test.h>
+#include "/home/user/code/OpenMS/include/_Test.h"
 
 ///////////////////////////
 
-START_TEST(TransformationModel, "$Id$")
+START_TEST(_Test, "$Id$")
 
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
@@ -49,29 +50,29 @@ START_TEST(TransformationModel, "$Id$")
 using namespace OpenMS;
 using namespace std;
 
-TransformationModel* ptr = 0;
-TransformationModel* nullPointer = 0;
+_Test* ptr = 0;
+_Test* nullPointer = 0;
 
-TransformationModel::DataPoints data, empty;
+_Test::DataPoints data, empty;
 data.push_back(make_pair(0.0, 1.0));
 data.push_back(make_pair(1.0, 2.0));
 data.push_back(make_pair(1.0, 4.0));
 
-START_SECTION((TransformationModel()))
+START_SECTION((_Test()))
 {
-  ptr = new TransformationModel();
+  ptr = new _Test();
   TEST_NOT_EQUAL(ptr, nullPointer)
 }
 END_SECTION
 
-START_SECTION((TransformationModel(const DataPoints &, const Param &)))
+START_SECTION((_Test(const DataPoints &, const Param &)))
 {
-  ptr = new TransformationModel(TransformationModel::DataPoints(), Param());
+  ptr = new _Test(_Test::DataPoints(), Param());
   TEST_NOT_EQUAL(ptr, nullPointer)
 }
 END_SECTION
 
-START_SECTION((~TransformationModel()))
+START_SECTION((~_Test()))
 {
   delete ptr;
 }
@@ -80,7 +81,7 @@ END_SECTION
 START_SECTION((virtual double evaluate(double value) const))
 {
   // null model (identity):
-  TransformationModel tm;
+  _Test tm;
   TEST_REAL_SIMILAR(tm.evaluate(-3.14159), -3.14159);
   TEST_REAL_SIMILAR(tm.evaluate(0.0), 0.0);
   TEST_REAL_SIMILAR(tm.evaluate(12345678.9), 12345678.9);
@@ -89,7 +90,7 @@ END_SECTION
 
 START_SECTION((void getParameters(Param & params) const))
 {
-  TransformationModel tm;
+  _Test tm;
   Param p = tm.getParameters();
   TEST_EQUAL(p.empty(), true)
 }
@@ -99,7 +100,7 @@ START_SECTION(([EXTRA] static void getDefaultParameters(Param & params)))
 {
   Param param;
   param.setValue("some-value", 12.3);
-  TransformationModel::getDefaultParameters(param);
+  _Test::getDefaultParameters(param);
   TEST_EQUAL(param.empty(), true)
 }
 END_SECTION
@@ -156,9 +157,8 @@ START_SECTION((double weightDatum(double& datum, const string& weight) const))
 }
 END_SECTION
 
-START_SECTION((virtual void weightData(DataPoints& data, const Param&)))
+START_SECTION((virtual void weightData(DataPoints& data, const Param& params)))
 {
-
   _Test::DataPoints data1;
   _Test::DataPoints test1;
   Param param;
@@ -193,6 +193,83 @@ START_SECTION((virtual void weightData(DataPoints& data, const Param&)))
   data1.push_back(make_pair(1.0, 2.0));
   data1.push_back(make_pair(2.0, 4.0));
   dw.weightData(data1,param);
+  for (size_t i = 0; i < data1.size(); ++i)
+  {
+    TEST_REAL_SIMILAR(data1[i].first,test1[i].first);
+    TEST_REAL_SIMILAR(data1[i].second,test1[i].second);
+  }
+}
+END_SECTION
+
+START_SECTION((double unWeightDatum(double& datum, const string& weight) const))
+{
+  Param param;
+  _Test dw(data, param);
+  string test;
+  test = "";
+  TEST_REAL_SIMILAR(dw.unWeightDatum(0.0,test), 0.0);
+  TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), 2.0);
+  test = "none";
+  TEST_REAL_SIMILAR(dw.unWeightDatum(0.0,test), 0.0);
+  TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), 2.0);
+  test = "ln(x)";
+  TEST_REAL_SIMILAR(dw.unWeightDatum(std::abs(std::log(9.0e-5)),test), 10e-5);
+  TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), std::abs(std::exp(2.0)));
+  test = "1/x";
+  TEST_REAL_SIMILAR(dw.unWeightDatum(1/std::abs(9.0e-5),test), 10e-5);
+  TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), 1/std::abs(2.0));
+  test = "1/x2";
+  TEST_REAL_SIMILAR(dw.unWeightDatum(1/std::abs(std::pow(9.0e-5,2)),test), 10e-5);
+  TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), std::sqrt(1/std::abs(2.0)));
+  test = "ln(y)";
+  TEST_REAL_SIMILAR(dw.unWeightDatum(std::abs(std::log(9.0e-8)),test), 10e-8);
+  TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), std::abs(std::exp(2.0)));
+  test = "1/y";
+  TEST_REAL_SIMILAR(dw.unWeightDatum(1/std::abs(9.0e-8),test), 10e-8);
+  TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), 1/std::abs(2.0));
+  test = "1/y2";
+  TEST_REAL_SIMILAR(dw.unWeightDatum(1/std::abs(std::pow(9.0e-8,2)),test), 10e-8);
+  TEST_REAL_SIMILAR(dw.unWeightDatum(2.0,test), std::sqrt(1/std::abs(2.0)));
+}
+END_SECTION
+
+START_SECTION((virtual void unWeightData(DataPoints& data, const Param& params)))
+{
+
+  _Test::DataPoints data1;
+  _Test::DataPoints test1;
+  Param param;
+  _Test::getDefaultParameters(param);
+  _Test dw(data, param);
+
+  param.setValue("x_weight", "ln(x)");
+  param.setValue("y_weight", "");
+  test1.clear();
+  test1.push_back(make_pair(std::abs(std::exp(0.0)), 1.0));
+  test1.push_back(make_pair(std::abs(std::exp(1.0)), 2.0));
+  test1.push_back(make_pair(std::abs(std::exp(2.0)), 4.0));  
+  data1.clear();
+  data1.push_back(make_pair(0.0, 1.0));
+  data1.push_back(make_pair(1.0, 2.0));
+  data1.push_back(make_pair(2.0, 4.0));
+  dw.unWeightData(data1,param);
+  for (size_t i = 0; i < data1.size(); ++i)
+  {
+    TEST_REAL_SIMILAR(data1[i].first,test1[i].first);
+    TEST_REAL_SIMILAR(data1[i].second,test1[i].second);
+  }
+
+  param.setValue("x_weight", "");
+  param.setValue("y_weight", "ln(y)");
+  test1.clear();
+  test1.push_back(make_pair(0.0, std::abs(std::exp(1.0))));
+  test1.push_back(make_pair(1.0, std::abs(std::exp(2.0))));
+  test1.push_back(make_pair(2.0, std::abs(std::exp(4.0))));  
+  data1.clear();
+  data1.push_back(make_pair(0.0, 1.0));
+  data1.push_back(make_pair(1.0, 2.0));
+  data1.push_back(make_pair(2.0, 4.0));
+  dw.unWeightData(data1,param);
   for (size_t i = 0; i < data1.size(); ++i)
   {
     TEST_REAL_SIMILAR(data1[i].first,test1[i].first);

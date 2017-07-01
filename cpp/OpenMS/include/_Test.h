@@ -79,10 +79,10 @@ namespace OpenMS
     ln x	If x < 0 an error is generated; otherwise if x < 10-5 then w = ln 10e-5,
     otherwise w = |ln x|.
     */
-    virtual void weightData(DataPoints& data, const Param&);
+    virtual void weightData(DataPoints& data, const Param& params);
     
     /// Unweight the data by the given weight function
-    virtual void unWeightData(DataPoints& data);
+    virtual void unWeightData(DataPoints& data, const Param& params);
     
     /// 
     bool checkValidWeight(const std::string& weight, const std::vector<std::string>& valid_weights) const;
