@@ -72,35 +72,41 @@ namespace OpenMS
     valid_weights = getValidXWeights();
     if (params.exists("x_weight") && checkValidWeight(params.getValue("x_weight"), valid_weights) && !data.empty())
     {
-      std::string x_weight_ = params.getValue("x_weight");
+      std::string x_weight = params.getValue("x_weight");
+      x_weight_ = x_weight;
       for (size_t i = 0; i < data.size(); ++i)
       {
-      data[i].first = weightDatum(data[i].first,x_weight_);
+        data[i].first = weightDatum(data[i].first,x_weight_);
       }
     }
     else if (params.exists("x_weight") && checkValidWeight(params.getValue("x_weight"), valid_weights))
     {
-      std::string x_weight_ = params.getValue("x_weight");
+      std::string x_weight = params.getValue("x_weight");
+      x_weight_ = x_weight;
     }
     else{
-      std::string x_weight_ = "";
+      std::string x_weight = "";
+      x_weight_ = x_weight;
     }
     // weight y values
     valid_weights = getValidYWeights();
     if (params.exists("y_weight") && checkValidWeight(params.getValue("y_weight"), valid_weights) && !data.empty())
     {
-      std::string y_weight_ = params.getValue("y_weight");
+      std::string y_weight = params.getValue("y_weight");
+      y_weight_ = y_weight;
       for (size_t i = 0; i < data.size(); ++i)
       {
-      data[i].second = weightDatum(data[i].second,y_weight_);
+        data[i].second = weightDatum(data[i].second,y_weight_);
       }
     }    
     else if (params.exists("y_weight") && checkValidWeight(params.getValue("y_weight"), valid_weights))
     {
-      std::string y_weight_ = params.getValue("y_weight");
+      std::string y_weight = params.getValue("y_weight");
+      y_weight_ = y_weight;
     }
     else{
-      std::string y_weight_ = "";
+      std::string y_weight = "";
+      y_weight_ = y_weight;
     }
   }
   
@@ -112,35 +118,41 @@ namespace OpenMS
     bool valid_weight;
     if (params.exists("x_weight") && checkValidWeight(params.getValue("x_weight"), valid_weights) && !data.empty())
     {
-      std::string x_weight_ = params.getValue("x_weight");
+      std::string x_weight = params.getValue("x_weight");
+      x_weight_ = x_weight;
       for (size_t i = 0; i < data.size(); ++i)
       {
-      data[i].first = unWeightDatum(data[i].first,x_weight_);
+        data[i].first = unWeightDatum(data[i].first,x_weight_);
       }
     }
     else if (params.exists("x_weight") && checkValidWeight(params.getValue("x_weight"), valid_weights))
     {
-      std::string x_weight_ = params.getValue("x_weight");
+      std::string x_weight = params.getValue("x_weight");
+      x_weight_ = x_weight;
     }
     else{
-      std::string x_weight_ = "";
+      std::string x_weight = "";
+      x_weight_ = x_weight;
     }
     // unweight y values
     valid_weights = getValidYWeights();
     if (params.exists("y_weight") && checkValidWeight(params.getValue("y_weight"), valid_weights) && !data.empty())
     {
-      std::string y_weight_ = params.getValue("y_weight");
+      std::string y_weight = params.getValue("y_weight");
+      y_weight_ = y_weight;
       for (size_t i = 0; i < data.size(); ++i)
       {
-      data[i].second = unWeightDatum(data[i].second,y_weight_);
+        data[i].second = unWeightDatum(data[i].second,y_weight_);
       }
     }    
     else if (params.exists("y_weight") && checkValidWeight(params.getValue("y_weight"), valid_weights))
     {
-      std::string y_weight_ = params.getValue("y_weight");
+      std::string y_weight = params.getValue("y_weight");
+      y_weight_ = y_weight;
     }
     else{
-      std::string y_weight_ = "";
+      std::string y_weight = "";
+      y_weight_ = y_weight;
     }
   }
 

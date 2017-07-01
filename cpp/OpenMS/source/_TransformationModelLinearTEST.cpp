@@ -46,8 +46,7 @@ namespace OpenMS
     params_ = params;
     data_given_ = !data.empty();
     _TransformationModelTEST::DataPoints data_weighted = data;
-    weightData(data_weighted, params); // weight the data 
-
+    weightData(data_weighted, params); // weight the data
 
     if (!data_given_ && params.exists("slope") && (params.exists("intercept")))
     {

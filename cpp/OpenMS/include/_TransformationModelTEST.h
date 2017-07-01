@@ -109,9 +109,9 @@ namespace OpenMS
     /// Parameters
     Param params_;
     /// x weighting
-    const std::string x_weight_;
+    std::string x_weight_;
     /// y weighting
-    const std::string y_weight_;
+    std::string y_weight_;
 
   private:
     /// do not allow copy

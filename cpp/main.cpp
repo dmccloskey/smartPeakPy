@@ -64,8 +64,8 @@ data.push_back(make_pair(1.0, 4.0));
   p_in.setValue("y_weight", "ln(y)");
   _TransformationModelLinearTEST lm0(data, p_in);
   Param p_out = p_in;
-  p_out.setValue("slope", 0.5);
-  p_out.setValue("intercept", 1.75);
+  p_out.setValue("slope", 0.095036911971605034);
+  p_out.setValue("intercept", 0.89550911545438994);
   TEST_EQUAL(lm0.getParameters(), p_out);
 
   //add additional data and test without weightings
