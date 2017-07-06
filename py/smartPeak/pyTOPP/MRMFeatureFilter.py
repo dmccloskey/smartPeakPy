@@ -109,7 +109,7 @@ class MRMFeatureFilter():
         """Map reference data to FeatureMap
         
         Args
-            reference_data (list(dict()): reference data
+            reference_data (list(dict())): reference data
             features (FeatureMap): features
             Tr_window (float): retention time difference threshold
             
@@ -151,7 +151,7 @@ class MRMFeatureFilter():
                     subordinates_tmp.append(subordinate)
                     y_pred.append(1)
                 else:
-                    y_pred.append(-1)
+                    y_pred.append(0)
                 # #TESTING:
                 #     print('Tr for transition ' + subordinate.getMetaValue('native_id').decode('utf-8') + ' does not match the reference.')
                 
@@ -187,7 +187,7 @@ class MRMFeatureFilter():
         auc,accuracy,recall,precision = None, None, None, None
         fpr, tpr, thresholds = metrics.roc_curve(y_true, y_pred)
         auc = metrics.auc(fpr, tpr)
-        #recall = (tp + tn) / (tp + tn + fp + fn)
+        #accuracy = (tp + tn) / (tp + tn + fp + fn)
         accuracy = metrics.accuracy_score(y_true, y_pred, normalize=True)
         #recall = tp / (tp + fn)
         recall = metrics.recall_score(y_true, y_pred, average='macro') 
