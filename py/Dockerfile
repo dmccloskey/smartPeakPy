@@ -1,4 +1,4 @@
-FROM dmccloskey/docker-openms:latest
+FROM dmccloskey/docker-openms:mrm_trgroup
 USER root
 
 # install PTVS

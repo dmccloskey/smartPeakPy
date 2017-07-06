@@ -235,6 +235,8 @@ class __main__():
         """
         from .pyTOPP.MRMFeatureFilter import MRMFeatureFilter
         featureFilter = MRMFeatureFilter()
+        from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
+        featurescsv = OpenSwathFeatureXMLToTSV()
         from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
         try:
             import pyopenms
@@ -264,4 +266,13 @@ class __main__():
                     reference_data = data_ref,
                     features = features,
                     Tr_window = float(params['validate_MRMFeatures'][0]['value'])
+                    )
+                # load and make the transition file
+                targeted = pyopenms.TargetedExperiment() #must use "PeptideSequence"
+                tramlfile = pyopenms.TransitionTSVReader()
+                tramlfile.convertTSVToTargetedExperiment(v['traML_csv_i'].encode('utf-8'),21,targeted)
+                # export the mapped features
+                featurescsv.store(v['referenceData_mapped_csv_o'], features_mapped, targeted,
+                    run_id = "",
+                    filename = ""
                     )

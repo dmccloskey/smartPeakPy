@@ -2,7 +2,7 @@ version: "3"
 
 services:
   pyopenms:
-    image: dmccloskey/docker-pyopenms-vscode
+    image: dmccloskey/docker-pyopenms-vscode:validate_openSWATH
     volumes:
       - //C/Users/domccl/Dropbox (UCSD SBRG)/Project_FastPeak/openMS_MRMworkflow/:/home/user/openMS_MRMworkflow/
       - //C/Users//domccl/GitHub/smartPeak/py/:/home/user/code/
