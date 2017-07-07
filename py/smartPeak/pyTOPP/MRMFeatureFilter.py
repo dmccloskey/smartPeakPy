@@ -75,6 +75,18 @@ class MRMFeatureFilter():
             output_O (FeatureMap): filtered features
 
         """
+        #convert Tr to To
+        #Tr: absolute or normalized retention time
+        #To: retention time order
+        To_dict = {}
+        #1: reorder features by Tr
+        #2: convert Tr to To
+        #3: create index for each compound {compound:{To:,Tr:}}
+
+        #remove achors that have multiple Tr
+
+        #iteratively remove features that violate To starting with
+        #the first achor (right to left and left to right)
 
 
     def select_MRMFeatures(
