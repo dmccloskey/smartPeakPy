@@ -59,6 +59,24 @@ class MRMFeatureFilter():
             output_filtered.push_back(feature_tmp)
         return output_filtered
 
+    def align_MRMFeatures(
+        self,features,targeted,anchors,
+        alignment_criteria=[]
+        ):
+        """Aligns feature Tr (retention time, normalized retention time)
+        and removes features that violate retention time order
+
+        Args
+            features (FeatureMap):
+            targeted (TraML): transition list in targetedExperiment
+            anchors (TraML): transition list in targetedExperiment
+
+        Returns
+            output_O (FeatureMap): filtered features
+
+        """
+
+
     def select_MRMFeatures(
         self,features,
         score_weights=[]):
