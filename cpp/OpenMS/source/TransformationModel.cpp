@@ -189,7 +189,7 @@ namespace OpenMS
     {
       datum_weighted = std::log(datum);
     }
-    else if (weight == "ln(y)")
+    if (weight == "ln(y)")
     {
       datum_weighted = std::log(datum);
     }
@@ -227,7 +227,7 @@ namespace OpenMS
     double datum_weighted = 0;   
     if (weight == "ln(x)")
     {
-      datum_weighted = std::abs(std::exp(datum));
+      datum_weighted = std::exp(datum);
     }
     else if (weight == "ln(y)")
     {
