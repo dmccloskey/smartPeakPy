@@ -184,17 +184,21 @@ START_SECTION((virtual void weightData(DataPoints& data, const Param& params)))
   Param param;
   TransformationModel::getDefaultParameters(param);
   TransformationModel dw(data, param);
+  double xmin = 10e-5;
+  double xmax = 10e12; 
+  double ymin = 10e-8;
+  double ymax = 10e12;
 
   param.setValue("x_weight", "ln(x)");
   param.setValue("y_weight", "");
   test1.clear();
-  test1.push_back(make_pair(std::log(10e-5), 1.0));
+  test1.push_back(make_pair(std::log(xmin), 1.0));
   test1.push_back(make_pair(std::log(1.0), 2.0));
-  test1.push_back(make_pair(std::log(2.0), 4.0));  
+  test1.push_back(make_pair(std::log(2.0), 4.0)); 
   data1.clear();
-  data1.push_back(make_pair(0.0, 1.0));
-  data1.push_back(make_pair(1.0, 2.0));
-  data1.push_back(make_pair(2.0, 4.0));
+  data1.push_back(make_pair(dw.checkDatumRange(0.0, xmin, xmax), dw.checkDatumRange(1.0, ymin, ymax)));
+  data1.push_back(make_pair(dw.checkDatumRange(1.0, xmin, xmax), dw.checkDatumRange(2.0, ymin, ymax)));
+  data1.push_back(make_pair(dw.checkDatumRange(2.0, xmin, xmax), dw.checkDatumRange(4.0, ymin, ymax)));
   dw.weightData(data1,param);
   for (size_t i = 0; i < data1.size(); ++i)
   {
