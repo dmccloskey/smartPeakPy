@@ -125,6 +125,20 @@ START_SECTION((bool checkValidWeight(const string& weight, const vector<string>&
 }
 END_SECTION
 
+START_SECTION((double checkDatumRange(const double& datum, const double& datum_min, const double& datum_max))) //new
+{
+  Param param;
+  TransformationModel dw(data, param);
+  double dmin;
+  dmin = 10e-6;
+  double dmax;
+  dmax = 10e9;
+  TEST_REAL_SIMILAR(dw.checkDatumRange(10e-7, dmin, dmax), dmin);
+  TEST_REAL_SIMILAR(dw.checkDatumRange(10e12, dmin, dmax), dmax);
+  TEST_REAL_SIMILAR(dw.checkDatumRange(100, dmin, dmax), 100);
+}
+END_SECTION
+
 START_SECTION((double weightDatum(double& datum, const string& weight) const))
 {
   Param param;
