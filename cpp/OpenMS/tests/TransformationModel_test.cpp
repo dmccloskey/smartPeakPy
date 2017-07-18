@@ -129,10 +129,8 @@ START_SECTION((double checkDatumRange(const double& datum, const double& datum_m
 {
   Param param;
   TransformationModel dw(data, param);
-  double dmin;
-  dmin = 10e-6;
-  double dmax;
-  dmax = 10e9;
+  double dmin = 10e-6;
+  double dmax = 10e9;
   TEST_REAL_SIMILAR(dw.checkDatumRange(10e-7, dmin, dmax), dmin);
   TEST_REAL_SIMILAR(dw.checkDatumRange(10e12, dmin, dmax), dmax);
   TEST_REAL_SIMILAR(dw.checkDatumRange(100, dmin, dmax), 100);
@@ -145,6 +143,8 @@ START_SECTION((double weightDatum(double& datum, const string& weight) const))
   TransformationModel dw(data, param);
   string test;
   test = "";
+  // double xmin = 10e-5;
+  // double xmax = 10e12;
   TEST_REAL_SIMILAR(dw.weightDatum(0.0,test), 0.0);
   TEST_REAL_SIMILAR(dw.weightDatum(2.0,test), 2.0);
   test = "none";
