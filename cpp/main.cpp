@@ -48,5 +48,55 @@ int main(int argc, const char** argv)
 //   sg.setParameters(param_sg);
 //   sg.filter(spectrum);
 
+TransformationModelLinear* ptr = 0;
+TransformationModelLinear* nullPointer = 0;
+
+TransformationModel::DataPoints data, empty;
+data.push_back(make_pair(0.0, 1.0));
+data.push_back(make_pair(1.0, 2.0));
+data.push_back(make_pair(1.0, 4.0));
+
+  data.push_back(make_pair(2.0, 2.0));
+  Param p_in;
+  //test weightings
+  p_in.setValue("symmetric_regression", "true");
+  p_in.setValue("x_weight", "ln(x)");
+  p_in.setValue("y_weight", "ln(y)");
+  p_in.setValue("x_datum_min", 10e-5);
+  p_in.setValue("x_datum_max", 1e15);
+  p_in.setValue("y_datum_min", 10e-8);
+  p_in.setValue("y_datum_max", 1e15);
+  TransformationModelLinear lm0(data, p_in);
+  Param p_out = p_in;
+  p_out.setValue("slope", 0.095036911971605034);
+  p_out.setValue("intercept", 0.89550911545438994);
+  TEST_EQUAL(lm0.getParameters(), p_out);
+
+  //add additional data and test without weightings
+  p_in.setValue("x_weight", "");
+  p_in.setValue("y_weight", "");
+  p_in.setValue("x_datum_min", 10e-5);
+  p_in.setValue("x_datum_max", 1e15);
+  p_in.setValue("y_datum_min", 10e-8);
+  p_in.setValue("y_datum_max", 1e15);
+  TransformationModelLinear lm(data, p_in);
+  p_out = p_in;
+  p_out.setValue("slope", 0.5);
+  p_out.setValue("intercept", 1.75);
+  TEST_EQUAL(lm.getParameters(), p_out);
+
+  //test with empty data
+  p_in.clear();
+  p_in.setValue("slope", 12.3);
+  p_in.setValue("intercept", -45.6);
+  p_in.setValue("x_weight", "");
+  p_in.setValue("y_weight", "");
+  p_in.setValue("x_datum_min", 10e-5);
+  p_in.setValue("x_datum_max", 1e15);
+  p_in.setValue("y_datum_min", 10e-8);
+  p_in.setValue("y_datum_max", 1e15);
+  TransformationModelLinear lm2(empty, p_in);
+  TEST_EQUAL(lm2.getParameters(), p_in);
+
   return 0;
 } //end of main
