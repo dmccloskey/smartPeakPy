@@ -42,7 +42,7 @@ namespace OpenMS
 {
 
   TransformationModelLinear::TransformationModelLinear(const TransformationModel::DataPoints& data, const Param& params)
-  { //update 1
+  {
     params_ = params;
     data_given_ = !data.empty();
     // set x_weight
