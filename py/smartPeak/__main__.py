@@ -169,6 +169,7 @@ class __main__():
         sample_names_I = [],
         sample_types_I = [],
         acquisition_methods_I = [],
+        quantitation_method_ids_I = [],
         component_names_I = [],
         component_group_names_I = [],
         where_clause_I = '',
@@ -183,6 +184,13 @@ class __main__():
         Returns
 
         Example
+
+        Todo:
+            1. make seperate script
+            2. break into 3 functions
+                get_referenceData
+                get_referenceData_sample
+                get_referenceData_calibrators
 
         """
         import time as time
@@ -204,8 +212,9 @@ class __main__():
             sample_names_I = sample_names_I,
             sample_types_I = sample_types_I,
             acquisition_methods_I = acquisition_methods_I,
+            quantitation_method_ids_I = quantitation_method_ids_I,
             component_names_I = component_names_I,
-            component_group_names_I = [],
+            component_group_names_I = component_group_names_I,
             where_clause_I = where_clause_I,
             used__I = used__I,
             experiment_limit_I = experiment_limit_I,
@@ -225,17 +234,20 @@ class __main__():
         # callapse the reference data to the average retention time
         calibrators_rt_dict = {} #{'component_name':[Tr]}
         for row in data_ref_processed:
-            if not row['component_name'] in calibrators_rt_dict.keys():
-                calibrators_rt_dict[row['component_name']] = []
-            calibrators_rt_dict[row['component_name']].append(row['retention_time'])
+            key = (row['component_name'],row['component_group_name'],row['experiment_id'],row['acquisition_method_id'],row['quantitation_method_id'])
+            if not key in calibrators_rt_dict.keys():
+                calibrators_rt_dict[key] = []
+            calibrators_rt_dict[key].append(row['retention_time'])
         # calculate the descriptive statistics for each component
-        import python_statistics.calculate_statisticsDescriptive as DescStats
-        descStats = DescStats()
+        from python_statistics.calculate_statisticsDescriptive import calculate_statisticsDescriptive
+        descStats = calculate_statisticsDescriptive()
         calibrators_rt_list = []
         for k,v in calibrators_rt_dict.items():
-            tmp = {'component_name':k}
+            tmp = {'component_name':k[0],'component_group_name':k[1],'experiment_id':k[2],'acquisition_method_id':k[3],'quantitation_method_id':k[4],
+                'sample_name':'Calibrators'}
             out = descStats.calculate_descriptiveStats(data_I=v)
             tmp.update(out)
+            tmp['retention_time'] = tmp['mean']
             calibrators_rt_list.append(tmp)
         if data_filename_O:
             smartpeak_o = smartPeak_o(calibrators_rt_list)
@@ -278,7 +290,8 @@ class __main__():
                 featurexml = pyopenms.FeatureXMLFile()
                 featurexml.load(v['featureXML_i'].encode('utf-8'), features)
                 # read in the reference data
-                smartpeak_i.read_csv(v['referenceData_csv_i'],delimiter)
+                # smartpeak_i.read_csv(v['referenceData_csv_i'],delimiter)
+                smartpeak_i.read_csv(v['calibrators_csv_i'],delimiter)
                 data_ref = smartpeak_i.getData()
                 smartpeak_i.clear_data()
                 # map the reference data

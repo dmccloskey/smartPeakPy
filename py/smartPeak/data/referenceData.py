@@ -16,6 +16,7 @@ class ReferenceData(sbaas_base):
         sample_names_I = [],
         sample_types_I = [],
         acquisition_methods_I = [],
+        quantitation_method_ids_I = [],
         component_names_I = [],
         component_group_names_I = [],
         where_clause_I = '',
@@ -37,7 +38,8 @@ class ReferenceData(sbaas_base):
         #subquery 1: experiment
         subquery1 = '''SELECT "experiment"."id" AS experiment_id,
                 "experiment"."sample_name", 
-                "experiment"."acquisition_method_id"
+                "experiment"."acquisition_method_id", 
+                "experiment"."quantitation_method_id"
             '''
         subquery1 += '''FROM "experiment" 
             '''
@@ -52,13 +54,18 @@ class ReferenceData(sbaas_base):
         if acquisition_methods_I:
             cmd_q = '''AND "experiment"."acquisition_method_id" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(acquisition_methods_I))
             subquery1 += cmd_q
+        if quantitation_method_ids_I:
+            cmd_q = '''AND "experiment"."quantitation_method_id" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(quantitation_method_ids_I))
+            subquery1 += cmd_q
         subquery1 += '''GROUP BY "experiment"."id",
                 "experiment"."sample_name", 
-                "experiment"."acquisition_method_id"
+                "experiment"."acquisition_method_id", 
+                "experiment"."quantitation_method_id"
             '''
         subquery1 += '''ORDER BY "experiment"."id" ASC,
                 "experiment"."sample_name" ASC, 
-                "experiment"."acquisition_method_id" ASC
+                "experiment"."acquisition_method_id" ASC, 
+                "experiment"."quantitation_method_id" ASC
             '''
         subquery1 += '''LIMIT %s
             ''' % experiment_limit_I
@@ -153,7 +160,8 @@ class ReferenceData(sbaas_base):
             "data_stage01_quantification_mqresultstable"."points_across_baseline",
             "data_stage01_quantification_mqresultstable"."points_across_half_height",
             "subquery1"."experiment_id",
-            "subquery1"."acquisition_method_id"
+            "subquery1"."acquisition_method_id",
+            "subquery1"."quantitation_method_id"
         '''
         subquery2 += '''FROM "data_stage01_quantification_mqresultstable",
             (%s) AS subquery1 

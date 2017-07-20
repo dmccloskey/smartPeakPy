@@ -62,8 +62,7 @@ class MRMFeatureFilter():
     def align_MRMFeatures(
         self,
         features,
-        targeted,
-        anchors,
+        tr_expected,
         alignment_criteria=[]
         ):
         """Aligns feature Tr (retention time, normalized retention time)
@@ -71,8 +70,7 @@ class MRMFeatureFilter():
 
         Args
             features (FeatureMap):
-            targeted (TraML): transition list in targetedExperiment
-            anchors (TraML): transition list in targetedExperiment
+            tr_expected (list(dict)): expected retention times
 
         Returns
             output_O (FeatureMap): filtered features
@@ -82,6 +80,18 @@ class MRMFeatureFilter():
         #Tr: absolute or normalized retention time
         #To: retention time order
         To_dict = {}
+        #build the retention time matrices
+        Tr_dict = {}
+        for feature in features:
+            component_group_name = feature.getMetaValue("PeptideRef").decode('utf-8')
+            retention_time = feature.getRT()
+            for subordinate in feature.getSubordinates():
+                component_name = subordinate.getMetaValue('native_id').decode('utf-8')
+                tmp = {'component_group_name':component_group_name,'component_name':component_name,
+                    'retention_time':retention_time}
+                Tr_dict[component_name] = tmp
+        Tr_calibrators_dict = {d['component_name']:d for d in tr_expected}
+
         #1: reorder features by Tr
         #2: convert Tr to To
         #3: create index for each compound {compound:{To:,Tr:}}
@@ -151,7 +161,7 @@ class MRMFeatureFilter():
         """
         #reformat reference_data into a dict by unique key
         # TODO: need to add in the experiment_id and acquisition_method_id to feature or as a parameter
-        # reference_data_dict = {(d['experiment_id'],d['acquisition_method_id'],d['sample_name'],d['component_name']):d for d in reference_data}
+        # reference_data_dict = {(d['experiment_id'],d['acquisition_method_id'],d['quantitation_method_id'],d['sample_name'],d['component_name']):d for d in reference_data}
         reference_data_dict = {(d['component_name']):d for d in reference_data}
         #intialize y_true,y_pred
         y_true, y_pred = [], []

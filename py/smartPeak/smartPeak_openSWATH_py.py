@@ -45,6 +45,7 @@ class smartPeak_openSWATH_py():
         if 'feature_csv_o'in filenames_I.keys(): feature_csv_o = filenames_I['feature_csv_o']
         if 'dia_csv_i'in filenames_I.keys(): dia_csv_i = filenames_I['dia_csv_i']
         if 'trafo_csv_i'in filenames_I.keys(): trafo_csv_i = filenames_I['trafo_csv_i']
+        if 'calibrators_csv_i'in filenames_I.keys(): calibrators_csv_i = filenames_I['calibrators_csv_i']
         MRMFeatureFinderScoring_params = MRMFeatureFinderScoring_params_I
 
         #helper classes
@@ -158,6 +159,10 @@ class smartPeak_openSWATH_py():
         # output_filtered = featureFilter.select_MRMFeatures(
         #     output_filtered,
         #     MRMFeatureFilter_select_params_I)
+        output_filtered = featureFilter.align_MRMFeatures(
+            features = output_filtered,
+            tr_expected = calibrators_csv_i,            
+        )
 
         # Store outfile as featureXML
         featurexml = pyopenms.FeatureXMLFile()
