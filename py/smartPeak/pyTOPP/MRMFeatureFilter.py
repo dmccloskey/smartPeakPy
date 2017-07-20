@@ -99,39 +99,59 @@ class MRMFeatureFilter():
         from optlang import Model, Variable, Constraint, Objective
         variables = {}
         constraints = {}
-        objective = {}
-        objective_expected = {}
+        obj_constraints = {}
+        model = Model(name='Retention time alignment')
+        obj = Variable('Dummy', type="continuous")
         for component_name_1,v1 in Tr_dict.items():
             for i_1,row_1 in enumerate(v1):
+                #variable capture 1
                 variable_name_1 = '%s_%s'%(component_name_1,i_1)
                 if not variable_name_1 in variables.keys():
-                    variables['variable_name_1'] = Variable(variable_name_1, lb=0, type="binary")
+                    variables[variable_name_1] = Variable(variable_name_1, lb=0, ub=1, type="integer")
+                #constraint capture 1
+                constraint_name_1 = '%s_constraint'%(component_name_1)
+                if not constraint_name_1 in constraints.keys():
+                    constraints[constraint_name_1] = []
+                constraints[constraint_name_1].append(variables[variable_name_1])
                 for component_name_2,v2 in Tr_dict.items():
                     if component_name_1 == component_name_2:
                         continue
                     for i_2,row_2 in enumerate(v2):
+                        #variable capture 2
                         variable_name_2 = '%s_%s'%(component_name_2,i_2)
                         if not variable_name_2 in variables.keys():
-                            variables['variable_name_2'] = Variable(variable_name_2, lb=0, type="binary")
-                        tr_delta_expected = Tr_expected_dict[component_name_1]['retention_time'] - Tr_expected_dict[component_name_1]['retention_time']                        
-        obj = Objective(sum(),direction='min')
-        # print the objective and constraints
-        print(obj)
-        print("")
-        for const in constraints:
-        print(const)
-        print("")
-        # Put everything together in a Model
-        model = Model()
-        model.add(constraints) # Variables are added implicitly
-        model.objective = obj
+                            variables[variable_name_2] = Variable(variable_name_2, lb=0, ub=1, type="integer")
+                        #record the objective
+                        tr_delta_expected = float(Tr_expected_dict[component_name_1]['retention_time']) - float(Tr_expected_dict[component_name_1]['retention_time'])
+                        tr_delta = row_1['retention_time'] - row_2['retention_time']  
+                        obj_constraint_name = '%s_%s-%s_%s-obj'%(component_name_1,i_1,component_name_2,i_2)
+                        if not obj_constraint_name in obj_constraints.keys():
+                            obj_constraints[obj_constraint_name] = []
+                        obj_constraints[obj_constraint_name].append(Constraint(
+                            variables[variable_name_1]*variables[variable_name_2]*(tr_delta-tr_delta_expected)-obj,
+                            name=obj_constraint_name,
+                            ub=0
+                        ))
+                        obj_constraints[obj_constraint_name].append(Constraint(
+                            -variables[variable_name_1]*variables[variable_name_2]*(tr_delta+tr_delta_expected)-obj,
+                            name=obj_constraint_name,
+                            ub=0
+                        ))
+        #make the constraints
+        for constraint_name, v in constraints.items():
+            model.add(Constraint(sum(v),name=constraint_name, lb=1, ub=1))
+        for constraint_name, v in obj_constraints.items():
+            model.add(v)
+        #make the objective
+        objective = Objective(obj,direction='min')
+        model.objective = objective
         # Optimize and print the solution
         status = model.optimize()
         print("Status:", status)
         print("Objective value:", model.objective.value)
         print("")
         for var in model.variables:
-        print(var.name, ":", var.primal)
+            print(var.name, ":", var.primal)
 
     def select_MRMFeatures(
         self,features,
