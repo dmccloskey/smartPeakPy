@@ -14,6 +14,7 @@ class ReferenceData(sbaas_base):
         self,
         experiment_ids_I = [],
         sample_names_I = [],
+        sample_types_I = [],
         acquisition_methods_I = [],
         component_names_I = [],
         component_group_names_I = [],
@@ -161,6 +162,9 @@ class ReferenceData(sbaas_base):
         '''
         if component_names_I:
             cmd_q = '''AND "data_stage01_quantification_mqresultstable"."component_name" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(component_names_I))
+            subquery2 += cmd_q
+        if sample_types_I:
+            cmd_q = '''AND "data_stage01_quantification_mqresultstable"."sample_type" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(sample_types_I))
             subquery2 += cmd_q
         if component_group_names_I:
             cmd_q = '''AND "data_stage01_quantification_mqresultstable"."component_group_name" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(component_group_names_I))

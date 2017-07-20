@@ -42,6 +42,7 @@ m = __main__()
 #     )
 
 # # Test ReferenceData
+# # reference data for QC
 # m.run_get_referenceData(
 #     experiment_ids_I = ['BloodProject01'],
 #     sample_names_I = ['150601_0_BloodProject01_PLT_QC_Broth-1'],
@@ -49,10 +50,19 @@ m = __main__()
 #     used__I = True,
 #     settings_filename_I = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini',
 #     data_filename_O = '/home/user/openMS_MRMworkflow/BloodProject01/150601_0_BloodProject01_PLT_QC_Broth-1_referenceData.csv')
+# # reference data for calibrators
+m.run_get_referenceData(
+    experiment_ids_I = ['BloodProject01'],
+    sample_names_I = [],
+    sample_types_I = ['Standard'],
+    acquisition_methods_I = ['140718_McCloskey2013'],
+    used__I = True,
+    settings_filename_I = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini',
+    data_filename_O = '/home/user/openMS_MRMworkflow/BloodProject01/150601_BloodProject01_Calibrators_referenceData.csv')
 
-# Test openSWATH validation
-m.run_validate_openSWATH(
-    filename_filenames='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_SWATH_filenames.csv',
-    filename_params='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_validation_params.csv',
-    delimiter=','
-    )
+# # Test openSWATH validation
+# m.run_validate_openSWATH(
+#     filename_filenames='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_SWATH_filenames.csv',
+#     filename_params='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_validation_params.csv',
+#     delimiter=','
+#     )

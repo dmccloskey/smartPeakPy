@@ -60,7 +60,10 @@ class MRMFeatureFilter():
         return output_filtered
 
     def align_MRMFeatures(
-        self,features,targeted,anchors,
+        self,
+        features,
+        targeted,
+        anchors,
         alignment_criteria=[]
         ):
         """Aligns feature Tr (retention time, normalized retention time)
@@ -229,3 +232,11 @@ class MRMFeatureFilter():
             print("recall: " + str(recall))
             print("precision: " + str(precision))
         return auc,accuracy,recall,precision
+
+    def normalize_Tr(self,tr_I):
+        """
+        normalize the retention time
+
+        Args
+            tr_I (list(float))
+        """

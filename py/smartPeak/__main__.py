@@ -167,6 +167,7 @@ class __main__():
     def run_get_referenceData(self,
         experiment_ids_I = [],
         sample_names_I = [],
+        sample_types_I = [],
         acquisition_methods_I = [],
         component_names_I = [],
         component_group_names_I = [],
@@ -201,6 +202,7 @@ class __main__():
         data_ref = referenceData.get_referenceData(
             experiment_ids_I = experiment_ids_I,
             sample_names_I = sample_names_I,
+            sample_types_I = sample_types_I,
             acquisition_methods_I = acquisition_methods_I,
             component_names_I = component_names_I,
             component_group_names_I = [],
@@ -217,8 +219,26 @@ class __main__():
         data_ref_processed = referenceData.process_referenceData(data_ref)
         elapsed_time = time.time() - st - elapsed_time
         print("Elapsed time: %.2fs" % elapsed_time)
+        # if data_filename_O:
+        #     smartpeak_o = smartPeak_o(data_ref_processed)
+        #     smartpeak_o.write_dict2csv(filename = data_filename_O)
+        # callapse the reference data to the average retention time
+        calibrators_rt_dict = {} #{'component_name':[Tr]}
+        for row in data_ref_processed:
+            if not row['component_name'] in calibrators_rt_dict.keys():
+                calibrators_rt_dict[row['component_name']] = []
+            calibrators_rt_dict[row['component_name']].append(row['retention_time'])
+        # calculate the descriptive statistics for each component
+        import python_statistics.calculate_statisticsDescriptive as DescStats
+        descStats = DescStats()
+        calibrators_rt_list = []
+        for k,v in calibrators_rt_dict.items():
+            tmp = {'component_name':k}
+            out = descStats.calculate_descriptiveStats(data_I=v)
+            tmp.update(out)
+            calibrators_rt_list.append(tmp)
         if data_filename_O:
-            smartpeak_o = smartPeak_o(data_ref_processed)
+            smartpeak_o = smartPeak_o(calibrators_rt_list)
             smartpeak_o.write_dict2csv(filename = data_filename_O)
         
     def run_validate_openSWATH(self,
