@@ -124,17 +124,35 @@ class MRMFeatureFilter():
                         #record the objective
                         tr_delta_expected = float(Tr_expected_dict[component_name_1]['retention_time']) - float(Tr_expected_dict[component_name_1]['retention_time'])
                         tr_delta = row_1['retention_time'] - row_2['retention_time']  
-                        obj_constraint_name = '%s_%s-%s_%s-obj'%(component_name_1,i_1,component_name_2,i_2)
+                        obj_constraint_name = '%s_%s-%s_%s'%(component_name_1,i_1,component_name_2,i_2)
                         if not obj_constraint_name in obj_constraints.keys():
                             obj_constraints[obj_constraint_name] = []
+                        #linearized binary variable multiplication
+                        var_qp = Variable(obj_constraint_name, lb=0, ub=1, type="continuous")
                         obj_constraints[obj_constraint_name].append(Constraint(
-                            variables[variable_name_1]*variables[variable_name_2]*(tr_delta-tr_delta_expected)-obj,
-                            name=obj_constraint_name,
+                            var_qp-variables[variable_name_1],
+                            name=obj_constraint_name+'-QP1',
                             ub=0
                         ))
                         obj_constraints[obj_constraint_name].append(Constraint(
-                            -variables[variable_name_1]*variables[variable_name_2]*(tr_delta+tr_delta_expected)-obj,
-                            name=obj_constraint_name,
+                            var_qp-variables[variable_name_2],
+                            name=obj_constraint_name+'-QP2',
+                            ub=0
+                        ))
+                        obj_constraints[obj_constraint_name].append(Constraint(
+                            var_qp-variables[variable_name_1]+variables[variable_name_2]-1,
+                            name=obj_constraint_name+'-QP3',
+                            lb=0
+                        ))
+                        #linearized ABS terms
+                        obj_constraints[obj_constraint_name].append(Constraint(
+                            var_qp*(tr_delta-tr_delta_expected)-obj,
+                            name=obj_constraint_name+'-obj+',
+                            ub=0
+                        ))
+                        obj_constraints[obj_constraint_name].append(Constraint(
+                            -var_qp*(tr_delta+tr_delta_expected)-obj,
+                            name=obj_constraint_name+'-obj-',
                             ub=0
                         ))
         #make the constraints
