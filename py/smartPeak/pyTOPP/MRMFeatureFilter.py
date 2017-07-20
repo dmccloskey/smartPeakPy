@@ -99,7 +99,8 @@ class MRMFeatureFilter():
         from optlang import Model, Variable, Constraint, Objective
         variables = {}
         constraints = {}
-        objective = []
+        objective = {}
+        objective_expected = {}
         for component_name_1,v1 in Tr_dict.items():
             for i_1,row_1 in enumerate(v1):
                 variable_name_1 = '%s_%s'%(component_name_1,i_1)
@@ -112,17 +113,25 @@ class MRMFeatureFilter():
                         variable_name_2 = '%s_%s'%(component_name_2,i_2)
                         if not variable_name_2 in variables.keys():
                             variables['variable_name_2'] = Variable(variable_name_2, lb=0, type="binary")
-                        tr_delta = row_1['retention_time'] - row_2['retention_time']                        
-
-        #1: reorder features by Tr
-        #2: convert Tr to To
-        #3: create index for each compound {compound:{To:,Tr:}}
-
-        #remove achors that have multiple Tr
-
-        #iteratively remove features that violate To starting with
-        #the first achor (right to left and left to right)
-
+                        tr_delta_expected = Tr_expected_dict[component_name_1]['retention_time'] - Tr_expected_dict[component_name_1]['retention_time']                        
+        obj = Objective(sum(),direction='min')
+        # print the objective and constraints
+        print(obj)
+        print("")
+        for const in constraints:
+        print(const)
+        print("")
+        # Put everything together in a Model
+        model = Model()
+        model.add(constraints) # Variables are added implicitly
+        model.objective = obj
+        # Optimize and print the solution
+        status = model.optimize()
+        print("Status:", status)
+        print("Objective value:", model.objective.value)
+        print("")
+        for var in model.variables:
+        print(var.name, ":", var.primal)
 
     def select_MRMFeatures(
         self,features,
