@@ -80,17 +80,39 @@ class MRMFeatureFilter():
         #Tr: absolute or normalized retention time
         #To: retention time order
         To_dict = {}
-        #build the retention time matrices
+        #build the retention time dictionaries
+        Tr_expected_dict = {d['component_name']:d for d in tr_expected}
         Tr_dict = {}
         for feature in features:
             component_group_name = feature.getMetaValue("PeptideRef").decode('utf-8')
             retention_time = feature.getRT()
             for subordinate in feature.getSubordinates():
                 component_name = subordinate.getMetaValue('native_id').decode('utf-8')
+                if not component_name in Tr_expected_dict.keys():
+                    continue
                 tmp = {'component_group_name':component_group_name,'component_name':component_name,
                     'retention_time':retention_time}
-                Tr_dict[component_name] = tmp
-        Tr_calibrators_dict = {d['component_name']:d for d in tr_expected}
+                if not component_name in Tr_dict.keys():
+                    Tr_dict[component_name] = []
+                Tr_dict[component_name].append(tmp)
+        #build the model variables and constraints
+        from optlang import Model, Variable, Constraint, Objective
+        variables = {}
+        constraints = {}
+        objective = []
+        for component_name_1,v1 in Tr_dict.items():
+            for i_1,row_1 in enumerate(v1):
+                variable_name_1 = '%s_%s'%(component_name_1,i_1)
+                if not variable_name_1 in variables.keys():
+                    variables['variable_name_1'] = Variable(variable_name_1, lb=0, type="binary")
+                for component_name_2,v2 in Tr_dict.items():
+                    if component_name_1 == component_name_2:
+                        continue
+                    for i_2,row_2 in enumerate(v2):
+                        variable_name_2 = '%s_%s'%(component_name_2,i_2)
+                        if not variable_name_2 in variables.keys():
+                            variables['variable_name_2'] = Variable(variable_name_2, lb=0, type="binary")
+                        tr_delta = row_1['retention_time'] - row_2['retention_time']                        
 
         #1: reorder features by Tr
         #2: convert Tr to To

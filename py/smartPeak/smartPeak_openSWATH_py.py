@@ -159,9 +159,14 @@ class smartPeak_openSWATH_py():
         # output_filtered = featureFilter.select_MRMFeatures(
         #     output_filtered,
         #     MRMFeatureFilter_select_params_I)
+        from .smartPeak_i import smartPeak_i
+        smartpeak_i = smartPeak_i()
+        smartpeak_i.read_csv(calibrators_csv_i,delimiter=',')
+        calibrators = smartpeak_i.getData()
+        smartpeak_i.clear_data()
         output_filtered = featureFilter.align_MRMFeatures(
             features = output_filtered,
-            tr_expected = calibrators_csv_i,            
+            tr_expected = calibrators,            
         )
 
         # Store outfile as featureXML
