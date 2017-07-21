@@ -122,7 +122,7 @@ class MRMFeatureFilter():
         print("Building and adding model constraints")
         st = time.time()
         for cnt_1,v1 in enumerate(To_list):
-            print("Building and adding variables and constraints for (%s/%s) components"%(cnt_1,len(To_list)))
+            print("Building and adding variables and constraints for (%s/%s) components"%(cnt_1,len(To_list)-1))
             component_name_1 = v1['component_name']
             constraints = []
             constraint_name_1 = '%s_constraint'%(component_name_1)
@@ -160,7 +160,8 @@ class MRMFeatureFilter():
                         tr_delta = row_1['retention_time'] - row_2['retention_time']  
                         obj_constraint_name = '%s_%s-%s_%s'%(component_name_1,i_1,component_name_2,i_2)
                         #linearized binary variable multiplication
-                        var_qp = Variable(obj_constraint_name, lb=0, ub=1, type="continuous")
+                        var_qp_name = '%s_%s-%s_%s'%(component_name_1,i_1,component_name_2,i_2)
+                        var_qp = Variable(var_qp_name, lb=0, ub=1, type="continuous")
                         obj_constraints.append(Constraint(
                             variables[variable_name_1]-var_qp,
                             name=obj_constraint_name+'-QP1',
@@ -197,6 +198,8 @@ class MRMFeatureFilter():
                         n_variables += 2
             model.add(Constraint(sum(constraints),name=constraint_name_1, lb=1, ub=1))  
             n_constraints += 1    
+        print("Model variables:", n_variables)
+        print("Model constraints:", n_constraints)
         # #make the constraints
         # print("Adding model constraints")
         # st = time.time()
@@ -210,9 +213,6 @@ class MRMFeatureFilter():
         model.objective = objective      
         elapsed_time = time.time() - st
         print("Elapsed time: %.2fs" % elapsed_time)
-        # Print model characteristics
-        print("Model variables:", n_variables)
-        print("Model constraints:", n_constraints)
         # Optimize and print the solution
         print("Solving the model")
         st = time.time()
