@@ -63,7 +63,9 @@ class MRMFeatureFilter():
         self,
         features,
         tr_expected,
-        alignment_criteria=[]
+        alignment_criteria=[
+            {"name":"nn_threshold", "value":10, },
+            {"name":"locality_weights", "value":False}]
         ):
         """Aligns feature Tr (retention time, normalized retention time)
         and removes features that violate retention time order
@@ -71,13 +73,29 @@ class MRMFeatureFilter():
         Args
             features (FeatureMap):
             tr_expected (list(dict)): expected retention times
+            alignment_criteria (list,dict): e.g., [{"name":, "value":, }]
+                name: "nn_threshold = 10"
+                "locality_weights = true"
 
         Returns
             output_O (FeatureMap): filtered features
 
         """
+        alignment_criteria_dict = {d['name']:d['value'] for d in alignment_criteria}
+        nn_threshold = 10
+        locality_weights = False
+        if "nn_threshold" in alignment_criteria_dict.keys():
+            nn_threshold = alignment_criteria_dict["nn_threshold"]
+        if "locality_weights" in alignment_criteria_dict.keys():
+            locality_weights = alignment_criteria_dict["locality_weights"]
         #build the retention time dictionaries
-        Tr_expected_dict = {d['component_name']:d for d in tr_expected}
+        from operator import itemgetter
+        Tr_expected_dict = {d['component_name']:{
+            'retention_time':float(d['retention_time']),
+            'component_name':['component_name'],
+            'component_group_name':['component_group_name'],
+            } for d in tr_expected}
+        To_list = sorted(Tr_expected_dict.values(), key=itemgetter('retention_time')) 
         Tr_dict = {}
         for feature in features:
             component_group_name = feature.getMetaValue("PeptideRef").decode('utf-8')
@@ -95,7 +113,7 @@ class MRMFeatureFilter():
         from optlang import Model, Variable, Constraint, Objective
         import time as time
         variables = {}
-        variable_1_names = []
+        component_names_1 = []
         constraints = {}
         obj_variables = {}
         obj_constraints = {}
@@ -104,13 +122,13 @@ class MRMFeatureFilter():
         model = Model(name='Retention time alignment')
         print("Building model constraints")
         st = time.time()
-        for component_name_1,v1 in Tr_dict.items():
-            for i_1,row_1 in enumerate(v1):
+        for cnt_1,component_name_1 in enumerate(To_list):
+            for i_1,row_1 in enumerate(Tr_dict[component_name_1]):
                 #variable capture 1
                 variable_name_1 = '%s_%s'%(component_name_1,i_1)
                 if not variable_name_1 in variables.keys():
                     variables[variable_name_1] = Variable(variable_name_1, lb=0, ub=1, type="integer")
-                    variable_1_names.append(component_name_1)
+                    component_names_1.append(component_name_1)
                     n_variables += 1
                 #constraint capture 1
                 constraint_name_1 = '%s_constraint'%(component_name_1)
@@ -118,18 +136,22 @@ class MRMFeatureFilter():
                     constraints[constraint_name_1] = []
                 constraints[constraint_name_1].append(variables[variable_name_1])
                 n_constraints += 1
-                for component_name_2,v2 in Tr_dict.items():
+                #iterate over nearest neighbors
+                start_iter, stop_iter = 0, 0
+                start_iter = max([cnt_1-nn_threshold,0])
+                stop_iter = min([cnt_1+nn_threshold,len(To_list)])
+                for component_name_2 in To_list[start_iter:stop_iter]:
                     #prevent redundant combinations
-                    if component_name_1 == component_name_2 or component_name_2 in variable_1_names:
+                    if component_name_1 == component_name_2:
                         continue
-                    for i_2,row_2 in enumerate(v2):
+                    for i_2,row_2 in enumerate(Tr_dict[component_name_2]):
                         #variable capture 2
                         variable_name_2 = '%s_%s'%(component_name_2,i_2)
                         if not variable_name_2 in variables.keys():
                             variables[variable_name_2] = Variable(variable_name_2, lb=0, ub=1, type="integer")
                             n_variables += 1
                         #record the objective
-                        tr_delta_expected = float(Tr_expected_dict[component_name_1]['retention_time']) - float(Tr_expected_dict[component_name_1]['retention_time'])
+                        tr_delta_expected = Tr_expected_dict[component_name_1]['retention_time'] - Tr_expected_dict[component_name_1]['retention_time']
                         tr_delta = row_1['retention_time'] - row_2['retention_time']  
                         obj_constraint_name = '%s_%s-%s_%s'%(component_name_1,i_1,component_name_2,i_2)
                         if not obj_constraint_name in obj_constraints.keys():
@@ -152,15 +174,18 @@ class MRMFeatureFilter():
                             ub=0
                         ))
                         #linearized ABS terms
+                        locality_weight = 1.0
+                        if locality_weights:
+                            locality_weight = 1.0/nn_threshold
                         obj_variable_name = '%s_%s-%s_%s-ABS'%(component_name_1,i_1,component_name_2,i_2)
-                        obj_variables[obj_variable_name] = Variable('obj_variable_name', lb=0, ub=0, type="continuous")
+                        obj_variables[obj_variable_name] = Variable(obj_variable_name, type="continuous")
                         obj_constraints[obj_constraint_name].append(Constraint(
-                            var_qp*(tr_delta-tr_delta_expected)-obj_variables[obj_variable_name],
+                            var_qp*locality_weight*(tr_delta-tr_delta_expected)-obj_variables[obj_variable_name],
                             name=obj_constraint_name+'-obj+',
                             ub=0
                         ))
                         obj_constraints[obj_constraint_name].append(Constraint(
-                            -var_qp*(tr_delta-tr_delta_expected)-obj_variables[obj_variable_name],
+                            -var_qp*locality_weight*(tr_delta-tr_delta_expected)-obj_variables[obj_variable_name],
                             name=obj_constraint_name+'-obj-',
                             ub=0
                         ))
