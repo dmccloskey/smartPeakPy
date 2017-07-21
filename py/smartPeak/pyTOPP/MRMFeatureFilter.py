@@ -82,7 +82,7 @@ class MRMFeatureFilter():
 
         """
         alignment_criteria_dict = {d['name']:d['value'] for d in alignment_criteria}
-        nn_threshold = 10
+        nn_threshold = 1
         locality_weights = False
         if "nn_threshold" in alignment_criteria_dict.keys():
             nn_threshold = alignment_criteria_dict["nn_threshold"]
@@ -92,20 +92,21 @@ class MRMFeatureFilter():
         from operator import itemgetter
         Tr_expected_dict = {d['component_name']:{
             'retention_time':float(d['retention_time']),
-            'component_name':['component_name'],
-            'component_group_name':['component_group_name'],
+            'component_name':d['component_name'],
+            'component_group_name':d['component_group_name'],
             } for d in tr_expected}
         To_list = sorted(Tr_expected_dict.values(), key=itemgetter('retention_time')) 
         Tr_dict = {}
         for feature in features:
             component_group_name = feature.getMetaValue("PeptideRef").decode('utf-8')
             retention_time = feature.getRT()
+            transition_id = feature.getUniqueId()
             for subordinate in feature.getSubordinates():
                 component_name = subordinate.getMetaValue('native_id').decode('utf-8')
                 if not component_name in Tr_expected_dict.keys():
                     continue
                 tmp = {'component_group_name':component_group_name,'component_name':component_name,
-                    'retention_time':retention_time}
+                    'retention_time':retention_time,'transition_id':transition_id}
                 if not component_name in Tr_dict.keys():
                     Tr_dict[component_name] = []
                 Tr_dict[component_name].append(tmp)
@@ -122,10 +123,13 @@ class MRMFeatureFilter():
         model = Model(name='Retention time alignment')
         print("Building model constraints")
         st = time.time()
-        for cnt_1,component_name_1 in enumerate(To_list):
+        for cnt_1,v1 in enumerate(To_list):
+            component_name_1 = v1['component_name']
+            if not component_name_1 in Tr_dict.keys():
+                continue
             for i_1,row_1 in enumerate(Tr_dict[component_name_1]):
                 #variable capture 1
-                variable_name_1 = '%s_%s'%(component_name_1,i_1)
+                variable_name_1 = '%s_%s'%(component_name_1,Tr_dict[component_name_1][i_1]['transition_id'])
                 if not variable_name_1 in variables.keys():
                     variables[variable_name_1] = Variable(variable_name_1, lb=0, ub=1, type="integer")
                     component_names_1.append(component_name_1)
@@ -140,13 +144,16 @@ class MRMFeatureFilter():
                 start_iter, stop_iter = 0, 0
                 start_iter = max([cnt_1-nn_threshold,0])
                 stop_iter = min([cnt_1+nn_threshold,len(To_list)])
-                for component_name_2 in To_list[start_iter:stop_iter]:
+                for v2 in To_list[start_iter:stop_iter]:
+                    component_name_2 = v2['component_name']
                     #prevent redundant combinations
                     if component_name_1 == component_name_2:
                         continue
+                    if not component_name_2 in Tr_dict.keys():
+                        continue
                     for i_2,row_2 in enumerate(Tr_dict[component_name_2]):
                         #variable capture 2
-                        variable_name_2 = '%s_%s'%(component_name_2,i_2)
+                        variable_name_2 = '%s_%s'%(component_name_2,Tr_dict[component_name_2][i_2]['transition_id'])
                         if not variable_name_2 in variables.keys():
                             variables[variable_name_2] = Variable(variable_name_2, lb=0, ub=1, type="integer")
                             n_variables += 1
@@ -195,9 +202,10 @@ class MRMFeatureFilter():
         #make the constraints
         print("Adding model constraints")
         st = time.time()
-        for constraint_name, v in constraints.items():
-            model.add(Constraint(sum(v),name=constraint_name, lb=1, ub=1))
-        for constraint_name, v in obj_constraints.items():
+        model.add([Constraint(sum(v),name=constraint_name, lb=1, ub=1) for constraint_name, v in constraints.items()])
+        # for constraint_name, v in constraints.items():
+        #     model.add(Constraint(sum(v),name=constraint_name, lb=1, ub=1))
+        for constraint_name, v in obj_constraints.items(): #model.add([v for constraint_name, v in obj_constraints.items()])
             model.add(v)
         #make the objective
         objective = Objective(sum(obj_variables.values()),direction='min')
@@ -219,6 +227,27 @@ class MRMFeatureFilter():
         #     print(var.name, ":", var.primal)
         elapsed_time = time.time() - st
         print("Elapsed time: %.2fs" % elapsed_time)
+        # Filter the FeatureMap
+        print("Filtering features")
+        st = time.time()
+        output_filtered = pyopenms.FeatureMap()
+        Tr_optimal = [var.name for var in model.variables if var != 0 and var.name in variables.keys()]
+        for feature in features:
+            subordinates_tmp = []
+            for subordinate in feature.getSubordinates():
+                var_name = "%s_%s"%(subordinate.getMetaValue("native_id"),feature.getUniqueId())
+                if var_name in Tr_optimal: 
+                    subordinates_tmp.append(subordinate)
+            #check that subordinates were found
+            if not subordinates_tmp:
+                continue
+            #copy out all feature values
+            feature_tmp = copy.copy(feature)
+            feature_tmp.setSubordinates(subordinates_tmp)
+            output_filtered.push_back(feature_tmp)
+        elapsed_time = time.time() - st
+        print("Elapsed time: %.2fs" % elapsed_time)
+        return output_filtered
 
     def select_MRMFeatures(
         self,features,
