@@ -64,7 +64,7 @@ class MRMFeatureFilter():
         features,
         tr_expected,
         alignment_criteria=[
-            {"name":"nn_threshold", "value":10, },
+            {"name":"nn_threshold", "value":4},
             {"name":"locality_weights", "value":False}]
         ):
         """Aligns feature Tr (retention time, normalized retention time)
@@ -82,7 +82,7 @@ class MRMFeatureFilter():
 
         """
         alignment_criteria_dict = {d['name']:d['value'] for d in alignment_criteria}
-        nn_threshold = 1
+        nn_threshold = 10
         locality_weights = False
         if "nn_threshold" in alignment_criteria_dict.keys():
             nn_threshold = alignment_criteria_dict["nn_threshold"]
@@ -110,122 +110,15 @@ class MRMFeatureFilter():
                 if not component_name in Tr_dict.keys():
                     Tr_dict[component_name] = []
                 Tr_dict[component_name].append(tmp)
-        #build the model variables and constraints
-        from optlang import Model, Variable, Constraint, Objective
-        import time as time
-        variables = {}
-        component_names_1 = []
-        obj_variables = {}
-        n_constraints = 0
-        n_variables = 0
-        model = Model(name='Retention time alignment')
-        print("Building and adding model constraints")
-        st = time.time()
-        for cnt_1,v1 in enumerate(To_list):
-            print("Building and adding variables and constraints for (%s/%s) components"%(cnt_1,len(To_list)-1))
-            component_name_1 = v1['component_name']
-            constraints = []
-            constraint_name_1 = '%s_constraint'%(component_name_1)
-            if not component_name_1 in Tr_dict.keys():
-                continue
-            for i_1,row_1 in enumerate(Tr_dict[component_name_1]):
-                #variable capture 1
-                variable_name_1 = '%s_%s'%(component_name_1,Tr_dict[component_name_1][i_1]['transition_id'])
-                if not variable_name_1 in variables.keys():
-                    variables[variable_name_1] = Variable(variable_name_1, lb=0, ub=1, type="integer")
-                    component_names_1.append(component_name_1)
-                    n_variables += 1
-                #constraint capture 1
-                constraints.append(variables[variable_name_1])
-                #iterate over nearest neighbors
-                start_iter, stop_iter = 0, 0
-                start_iter = max([cnt_1-nn_threshold,0])
-                stop_iter = min([cnt_1+nn_threshold,len(To_list)])
-                for v2 in To_list[start_iter:stop_iter]:
-                    component_name_2 = v2['component_name']
-                    #prevent redundant combinations
-                    if component_name_1 == component_name_2:
-                        continue
-                    if not component_name_2 in Tr_dict.keys():
-                        continue
-                    for i_2,row_2 in enumerate(Tr_dict[component_name_2]):
-                        #variable capture 2
-                        variable_name_2 = '%s_%s'%(component_name_2,Tr_dict[component_name_2][i_2]['transition_id'])
-                        if not variable_name_2 in variables.keys():
-                            variables[variable_name_2] = Variable(variable_name_2, lb=0, ub=1, type="integer")
-                            n_variables += 1
-                        #record the objective
-                        obj_constraints = []
-                        tr_delta_expected = Tr_expected_dict[component_name_1]['retention_time'] - Tr_expected_dict[component_name_1]['retention_time']
-                        tr_delta = row_1['retention_time'] - row_2['retention_time']  
-                        obj_constraint_name = '%s_%s-%s_%s'%(component_name_1,i_1,component_name_2,i_2)
-                        #linearized binary variable multiplication
-                        var_qp_name = '%s_%s-%s_%s'%(component_name_1,i_1,component_name_2,i_2)
-                        var_qp = Variable(var_qp_name, lb=0, ub=1, type="continuous")
-                        obj_constraints.append(Constraint(
-                            variables[variable_name_1]-var_qp,
-                            name=obj_constraint_name+'-QP1',
-                            lb=0
-                        ))
-                        obj_constraints.append(Constraint(
-                            variables[variable_name_2]-var_qp,
-                            name=obj_constraint_name+'-QP2',
-                            lb=0
-                        ))
-                        obj_constraints.append(Constraint(
-                            variables[variable_name_1]+variables[variable_name_2]-1-var_qp,
-                            name=obj_constraint_name+'-QP3',
-                            ub=0
-                        ))
-                        #linearized ABS terms
-                        locality_weight = 1.0
-                        if locality_weights:
-                            locality_weight = 1.0/nn_threshold
-                        obj_variable_name = '%s_%s-%s_%s-ABS'%(component_name_1,i_1,component_name_2,i_2)
-                        obj_variables[obj_variable_name] = Variable(obj_variable_name, type="continuous")
-                        obj_constraints.append(Constraint(
-                            var_qp*locality_weight*(tr_delta-tr_delta_expected)-obj_variables[obj_variable_name],
-                            name=obj_constraint_name+'-obj+',
-                            ub=0
-                        ))
-                        obj_constraints.append(Constraint(
-                            -var_qp*locality_weight*(tr_delta-tr_delta_expected)-obj_variables[obj_variable_name],
-                            name=obj_constraint_name+'-obj-',
-                            ub=0
-                        ))
-                        model.add(obj_constraints)
-                        n_constraints += 5 
-                        n_variables += 2
-            model.add(Constraint(sum(constraints),name=constraint_name_1, lb=1, ub=1))  
-            n_constraints += 1    
-        print("Model variables:", n_variables)
-        print("Model constraints:", n_constraints)
-        # #make the constraints
-        # print("Adding model constraints")
-        # st = time.time()
-        # model.add([Constraint(sum(v),name=constraint_name, lb=1, ub=1) for constraint_name, v in constraints.items()])
-        # # for constraint_name, v in constraints.items():
-        # #     model.add(Constraint(sum(v),name=constraint_name, lb=1, ub=1))
-        # for constraint_name, v in obj_constraints.items(): #model.add([v for constraint_name, v in obj_constraints.items()])
-        #     model.add(v)
-        #make the objective
-        objective = Objective(sum(obj_variables.values()),direction='min')
-        model.objective = objective      
-        elapsed_time = time.time() - st
-        print("Elapsed time: %.2fs" % elapsed_time)
-        # Optimize and print the solution
-        print("Solving the model")
-        st = time.time()
-        status = model.optimize()
-        print("Status:", status)
-        print("Objective value:", model.objective.value)        
-        elapsed_time = time.time() - st
-        print("Elapsed time: %.2fs" % elapsed_time)
+        Tr_optimal = self.optimize_Tr(
+            To_list,
+            Tr_dict,
+            Tr_expected_dict,
+            nn_threshold,
+            locality_weights)        
         # Filter the FeatureMap
         print("Filtering features")
-        st = time.time()
         output_filtered = pyopenms.FeatureMap()
-        Tr_optimal = [var.name for var in model.variables if var.primal != 0 and var.name in variables.keys()]
         for feature in features:
             subordinates_tmp = []
             for subordinate in feature.getSubordinates():
@@ -239,8 +132,6 @@ class MRMFeatureFilter():
             feature_tmp = copy.copy(feature)
             feature_tmp.setSubordinates(subordinates_tmp)
             output_filtered.push_back(feature_tmp)
-        elapsed_time = time.time() - st
-        print("Elapsed time: %.2fs" % elapsed_time)
         return output_filtered
 
     def select_MRMFeatures(
@@ -384,10 +275,136 @@ class MRMFeatureFilter():
             print("precision: " + str(precision))
         return auc,accuracy,recall,precision
 
-    def normalize_Tr(self,tr_I):
+    def optimize_Tr(
+        self,
+        To_list,
+        Tr_dict,
+        Tr_expected_dict,
+        nn_threshold,
+        locality_weights
+        ):
         """
-        normalize the retention time
+        optimize the retention time using MIP
 
         Args
             tr_I (list(float))
+
+        Returns
+            tr_optimial (list): list of optimal transition variable names
         """
+        #build the model variables and constraints
+        from optlang.glpk_interface import Model, Variable, Constraint, Objective
+        from sympy import S
+        import time as time
+        variables = {}
+        component_names_1 = []
+        obj_variables = {}
+        n_constraints = 0
+        n_variables = 0
+        model = Model(name='Retention time alignment')
+        print("Building and adding model constraints")
+        st = time.time()
+        for cnt_1,v1 in enumerate(To_list):
+            print("Building and adding variables and constraints for (%s/%s) components"%(cnt_1,len(To_list)-1))
+            component_name_1 = v1['component_name']
+            constraints = []
+            constraint_name_1 = '%s_constraint'%(component_name_1)
+            if not component_name_1 in Tr_dict.keys():
+                continue
+            for i_1,row_1 in enumerate(Tr_dict[component_name_1]):
+                #variable capture 1
+                variable_name_1 = '%s_%s'%(component_name_1,Tr_dict[component_name_1][i_1]['transition_id'])
+                if not variable_name_1 in variables.keys():
+                    variables[variable_name_1] = Variable(variable_name_1, lb=0, ub=1, type="integer")
+                    component_names_1.append(component_name_1)
+                    n_variables += 1
+                #constraint capture 1
+                constraints.append(variables[variable_name_1])
+                #iterate over nearest neighbors
+                start_iter, stop_iter = 0, 0
+                start_iter = max([cnt_1-nn_threshold,0])
+                stop_iter = min([cnt_1+nn_threshold,len(To_list)])
+                for v2 in To_list[start_iter:stop_iter]:
+                    component_name_2 = v2['component_name']
+                    #prevent redundant combinations
+                    if component_name_1 == component_name_2:
+                        continue
+                    if not component_name_2 in Tr_dict.keys():
+                        continue
+                    for i_2,row_2 in enumerate(Tr_dict[component_name_2]):
+                        #variable capture 2
+                        variable_name_2 = '%s_%s'%(component_name_2,Tr_dict[component_name_2][i_2]['transition_id'])
+                        if not variable_name_2 in variables.keys():
+                            variables[variable_name_2] = Variable(variable_name_2, lb=0, ub=1, type="integer")
+                            n_variables += 1
+                        #record the objective
+                        obj_constraints = []
+                        tr_delta_expected = Tr_expected_dict[component_name_1]['retention_time'] - Tr_expected_dict[component_name_1]['retention_time']
+                        tr_delta = row_1['retention_time'] - row_2['retention_time']  
+                        obj_constraint_name = '%s_%s-%s_%s'%(component_name_1,i_1,component_name_2,i_2)
+                        #linearized binary variable multiplication
+                        var_qp_name = '%s_%s-%s_%s'%(component_name_1,i_1,component_name_2,i_2)
+                        var_qp = Variable(var_qp_name, lb=0, ub=1, type="continuous")
+                        obj_constraints.append(Constraint(
+                            variables[variable_name_1]-var_qp,
+                            name=obj_constraint_name+'-QP1',
+                            lb=0
+                        ))
+                        obj_constraints.append(Constraint(
+                            variables[variable_name_2]-var_qp,
+                            name=obj_constraint_name+'-QP2',
+                            lb=0
+                        ))
+                        obj_constraints.append(Constraint(
+                            variables[variable_name_1]+variables[variable_name_2]-1-var_qp,
+                            name=obj_constraint_name+'-QP3',
+                            ub=0
+                        ))
+                        #linearized ABS terms
+                        locality_weight = 1.0
+                        if locality_weights:
+                            locality_weight = 1.0/nn_threshold
+                        obj_variable_name = '%s_%s-%s_%s-ABS'%(component_name_1,i_1,component_name_2,i_2)
+                        obj_variables[obj_variable_name] = Variable(obj_variable_name, type="continuous")
+                        obj_constraints.append(Constraint(
+                            var_qp*locality_weight*(tr_delta-tr_delta_expected)-obj_variables[obj_variable_name],
+                            name=obj_constraint_name+'-obj+',
+                            ub=0
+                        ))
+                        obj_constraints.append(Constraint(
+                            -var_qp*locality_weight*(tr_delta-tr_delta_expected)-obj_variables[obj_variable_name],
+                            name=obj_constraint_name+'-obj-',
+                            ub=0
+                        ))
+                        model.add(obj_constraints)
+                        n_constraints += 5 
+                        n_variables += 2
+            model.add(Constraint(sum(constraints),name=constraint_name_1, lb=1, ub=1))  
+            # model.add(S.Zero,name=constraint_name_1, lb=1, ub=1))  
+            # model.constraints[constraint_name_1].set_linear_coefficients({d:1 for d in constraints})
+            n_constraints += 1    
+        print("Model variables:", n_variables)
+        print("Model constraints:", n_constraints)
+        # #make the constraints
+        # print("Adding model constraints")
+        # st = time.time()
+        # model.add([Constraint(sum(v),name=constraint_name, lb=1, ub=1) for constraint_name, v in constraints.items()])
+        # # for constraint_name, v in constraints.items():
+        # #     model.add(Constraint(sum(v),name=constraint_name, lb=1, ub=1))
+        # for constraint_name, v in obj_constraints.items(): #model.add([v for constraint_name, v in obj_constraints.items()])
+        #     model.add(v)
+        #make the objective
+        objective = Objective(sum(obj_variables.values()),direction='min')
+        model.objective = objective      
+        elapsed_time = time.time() - st
+        print("Elapsed time: %.2fs" % elapsed_time)
+        # Optimize and print the solution
+        print("Solving the model")
+        st = time.time()
+        status = model.optimize()
+        print("Status:", status)
+        print("Objective value:", model.objective.value)        
+        elapsed_time = time.time() - st
+        print("Elapsed time: %.2fs" % elapsed_time)
+        Tr_optimal = [var.name for var in model.variables if var.primal != 0 and var.name in variables.keys()]
+        return Tr_optimal
