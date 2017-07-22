@@ -122,7 +122,7 @@ class MRMFeatureFilter():
         for feature in features:
             subordinates_tmp = []
             for subordinate in feature.getSubordinates():
-                var_name = "%s_%s"%(subordinate.getMetaValue("native_id"),feature.getUniqueId())
+                var_name = "%s_%s"%(subordinate.getMetaValue("native_id").decode('utf-8'),feature.getUniqueId())                
                 if var_name in Tr_optimal: 
                     subordinates_tmp.append(subordinate)
             #check that subordinates were found
@@ -304,6 +304,7 @@ class MRMFeatureFilter():
         model = Model(name='Retention time alignment')
         print("Building and adding model constraints")
         st = time.time()
+        To_list = To_list[:10]
         for cnt_1,v1 in enumerate(To_list):
             print("Building and adding variables and constraints for (%s/%s) components"%(cnt_1,len(To_list)-1))
             component_name_1 = v1['component_name']
