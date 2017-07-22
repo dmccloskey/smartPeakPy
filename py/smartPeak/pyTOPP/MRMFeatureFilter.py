@@ -304,7 +304,6 @@ class MRMFeatureFilter():
         model = Model(name='Retention time alignment')
         print("Building and adding model constraints")
         st = time.time()
-        To_list = To_list[:10]
         for cnt_1,v1 in enumerate(To_list):
             print("Building and adding variables and constraints for (%s/%s) components"%(cnt_1,len(To_list)-1))
             component_name_1 = v1['component_name']
@@ -317,6 +316,7 @@ class MRMFeatureFilter():
                 variable_name_1 = '%s_%s'%(component_name_1,Tr_dict[component_name_1][i_1]['transition_id'])
                 if not variable_name_1 in variables.keys():
                     variables[variable_name_1] = Variable(variable_name_1, lb=0, ub=1, type="integer")
+                    model.add(variables[variable_name_1])
                     component_names_1.append(component_name_1)
                     n_variables += 1
                 #constraint capture 1
@@ -337,6 +337,7 @@ class MRMFeatureFilter():
                         variable_name_2 = '%s_%s'%(component_name_2,Tr_dict[component_name_2][i_2]['transition_id'])
                         if not variable_name_2 in variables.keys():
                             variables[variable_name_2] = Variable(variable_name_2, lb=0, ub=1, type="integer")
+                            model.add(variables[variable_name_2])
                             n_variables += 1
                         #record the objective
                         obj_constraints = []
@@ -346,43 +347,74 @@ class MRMFeatureFilter():
                         #linearized binary variable multiplication
                         var_qp_name = '%s_%s-%s_%s'%(component_name_1,i_1,component_name_2,i_2)
                         var_qp = Variable(var_qp_name, lb=0, ub=1, type="continuous")
-                        obj_constraints.append(Constraint(
-                            variables[variable_name_1]-var_qp,
+                        model.add(var_qp)
+                        # model.add(Constraint(
+                        #     variables[variable_name_1]-var_qp,
+                        #     name=obj_constraint_name+'-QP1',
+                        #     lb=0
+                        # ))
+                        model.add(Constraint(S.Zero,
                             name=obj_constraint_name+'-QP1',
-                            lb=0
-                        ))
-                        obj_constraints.append(Constraint(
-                            variables[variable_name_2]-var_qp,
+                            lb=0))
+                        model.constraints[obj_constraint_name+'-QP1'].set_linear_coefficients({
+                            variables[variable_name_1]:1,var_qp:-1
+                        })
+                        # model.add(Constraint(
+                        #     variables[variable_name_2]-var_qp,
+                        #     name=obj_constraint_name+'-QP2',
+                        #     lb=0
+                        # ))
+                        model.add(Constraint(S.Zero,
                             name=obj_constraint_name+'-QP2',
-                            lb=0
-                        ))
-                        obj_constraints.append(Constraint(
-                            variables[variable_name_1]+variables[variable_name_2]-1-var_qp,
+                            lb=0))
+                        model.constraints[obj_constraint_name+'-QP2'].set_linear_coefficients({
+                            variables[variable_name_2]:1,var_qp:-1
+                        })
+                        # model.add(Constraint(
+                        #     variables[variable_name_1]+variables[variable_name_2]-1-var_qp,
+                        #     name=obj_constraint_name+'-QP3',
+                        #     ub=0
+                        # ))
+                        model.add(Constraint(S.Zero,
                             name=obj_constraint_name+'-QP3',
-                            ub=0
-                        ))
+                            ub=1))
+                        model.constraints[obj_constraint_name+'-QP3'].set_linear_coefficients({
+                            variables[variable_name_1]:1,variables[variable_name_2]:1,var_qp:-1
+                        })
                         #linearized ABS terms
                         locality_weight = 1.0
                         if locality_weights:
                             locality_weight = 1.0/nn_threshold
                         obj_variable_name = '%s_%s-%s_%s-ABS'%(component_name_1,i_1,component_name_2,i_2)
                         obj_variables[obj_variable_name] = Variable(obj_variable_name, type="continuous")
-                        obj_constraints.append(Constraint(
-                            var_qp*locality_weight*(tr_delta-tr_delta_expected)-obj_variables[obj_variable_name],
+                        model.add(obj_variables[obj_variable_name])
+                        # model.add(Constraint(
+                        #     var_qp*locality_weight*(tr_delta-tr_delta_expected)-obj_variables[obj_variable_name],
+                        #     name=obj_constraint_name+'-obj+',
+                        #     ub=0
+                        # ))
+                        model.add(Constraint(S.Zero,
                             name=obj_constraint_name+'-obj+',
-                            ub=0
-                        ))
-                        obj_constraints.append(Constraint(
-                            -var_qp*locality_weight*(tr_delta-tr_delta_expected)-obj_variables[obj_variable_name],
+                            ub=0))
+                        model.constraints[obj_constraint_name+'-obj+'].set_linear_coefficients({
+                            obj_variables[obj_variable_name]:-1,var_qp:locality_weight*(tr_delta-tr_delta_expected)
+                        })
+                        # model.add(Constraint(
+                        #     -var_qp*locality_weight*(tr_delta-tr_delta_expected)-obj_variables[obj_variable_name],
+                        #     name=obj_constraint_name+'-obj-',
+                        #     ub=0
+                        # ))
+                        model.add(Constraint(S.Zero,
                             name=obj_constraint_name+'-obj-',
-                            ub=0
-                        ))
-                        model.add(obj_constraints)
+                            ub=0))
+                        model.constraints[obj_constraint_name+'-obj-'].set_linear_coefficients({
+                            obj_variables[obj_variable_name]:-1,var_qp:-locality_weight*(tr_delta-tr_delta_expected)
+                        })
                         n_constraints += 5 
                         n_variables += 2
-            model.add(Constraint(sum(constraints),name=constraint_name_1, lb=1, ub=1))  
-            # model.add(S.Zero,name=constraint_name_1, lb=1, ub=1))  
-            # model.constraints[constraint_name_1].set_linear_coefficients({d:1 for d in constraints})
+            # model.add(Constraint(sum(constraints),name=constraint_name_1, lb=1, ub=1))  
+            model.add(Constraint(S.Zero,name=constraint_name_1, lb=1, ub=1))
+            model.constraints[constraint_name_1].set_linear_coefficients({d:1 for d in constraints})
             n_constraints += 1    
         print("Model variables:", n_variables)
         print("Model constraints:", n_constraints)
@@ -395,8 +427,10 @@ class MRMFeatureFilter():
         # for constraint_name, v in obj_constraints.items(): #model.add([v for constraint_name, v in obj_constraints.items()])
         #     model.add(v)
         #make the objective
-        objective = Objective(sum(obj_variables.values()),direction='min')
-        model.objective = objective      
+        # objective = Objective(sum(obj_variables.values()),direction='min')
+        objective = Objective(S.Zero,direction='min')
+        model.objective = objective     
+        model.objective.set_linear_coefficients({d:1 for d in obj_variables.values()}) 
         elapsed_time = time.time() - st
         print("Elapsed time: %.2fs" % elapsed_time)
         # Optimize and print the solution
