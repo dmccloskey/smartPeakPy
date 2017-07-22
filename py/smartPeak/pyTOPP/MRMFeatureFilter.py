@@ -64,7 +64,7 @@ class MRMFeatureFilter():
         features,
         tr_expected,
         alignment_criteria=[
-            {"name":"nn_threshold", "value":4},
+            {"name":"nn_threshold", "value":10},
             {"name":"locality_weights", "value":False}]
         ):
         """Aligns feature Tr (retention time, normalized retention time)
