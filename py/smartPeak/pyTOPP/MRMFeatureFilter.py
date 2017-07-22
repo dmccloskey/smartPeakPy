@@ -64,7 +64,7 @@ class MRMFeatureFilter():
         features,
         tr_expected,
         alignment_criteria=[
-            {"name":"nn_threshold", "value":10},
+            {"name":"nn_threshold", "value":4},
             {"name":"locality_weights", "value":False}]
         ):
         """Aligns feature Tr (retention time, normalized retention time)
@@ -205,6 +205,8 @@ class MRMFeatureFilter():
                 #make the reference_data_dict key
                 reference_data_key = (subordinate.getMetaValue('native_id').decode('utf-8'))
                 if not reference_data_key in reference_data_dict.keys():
+                    subordinate.setMetaValue('FullPeptideName'.encode('utf-8'),'ND'.encode('utf-8'))
+                    subordinates_tmp.append(subordinate)
                     continue
                 y_true.append(1)
                 #extract and format rt information
@@ -223,13 +225,15 @@ class MRMFeatureFilter():
                 #      transition-specific, there is no need to loop
                 #      through each transition
                 if fc_pass:
+                    subordinate.setMetaValue('FullPeptideName'.encode('utf-8'),'tp'.encode('utf-8'))
                     subordinates_tmp.append(subordinate)
                     y_pred.append(1)
                 else:
+                    subordinate.setMetaValue('FullPeptideName'.encode('utf-8'),'fp'.encode('utf-8'))
+                    subordinates_tmp.append(subordinate)
                     y_pred.append(0)
                 # #TESTING:
                 #     print('Tr for transition ' + subordinate.getMetaValue('native_id').decode('utf-8') + ' does not match the reference.')
-                
             #check that subordinates were found
             if not subordinates_tmp:
                 continue
@@ -325,7 +329,7 @@ class MRMFeatureFilter():
                 start_iter, stop_iter = 0, 0
                 start_iter = max([cnt_1-nn_threshold,0])
                 stop_iter = min([cnt_1+nn_threshold,len(To_list)])
-                for v2 in To_list[start_iter:stop_iter]:
+                for cnt_2,v2 in enumerate(To_list[start_iter:stop_iter]):
                     component_name_2 = v2['component_name']
                     #prevent redundant combinations
                     if component_name_1 == component_name_2:
@@ -384,7 +388,7 @@ class MRMFeatureFilter():
                         #linearized ABS terms
                         locality_weight = 1.0
                         if locality_weights:
-                            locality_weight = 1.0/nn_threshold
+                            locality_weight = 1.0/(nn_threshold-abs(start_iter+cnt_2-cnt_1)+1)
                         obj_variable_name = '%s_%s-%s_%s-ABS'%(component_name_1,i_1,component_name_2,i_2)
                         obj_variables[obj_variable_name] = Variable(obj_variable_name, type="continuous")
                         model.add(obj_variables[obj_variable_name])

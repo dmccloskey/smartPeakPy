@@ -290,8 +290,8 @@ class __main__():
                 featurexml = pyopenms.FeatureXMLFile()
                 featurexml.load(v['featureXML_i'].encode('utf-8'), features)
                 # read in the reference data
-                # smartpeak_i.read_csv(v['referenceData_csv_i'],delimiter)
-                smartpeak_i.read_csv(v['calibrators_csv_i'],delimiter)
+                smartpeak_i.read_csv(v['referenceData_csv_i'],delimiter)
+                # smartpeak_i.read_csv(v['calibrators_csv_i'],delimiter)
                 data_ref = smartpeak_i.getData()
                 smartpeak_i.clear_data()
                 # map the reference data
