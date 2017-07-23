@@ -265,8 +265,9 @@ class __main__():
         Example
 
         """
-        from .pyTOPP.MRMFeatureFilter import MRMFeatureFilter
+        from .pyTOPP.MRMFeatureValidator import MRMFeatureValidator
         featureFilter = MRMFeatureFilter()
+        featureValidator= MRMFeatureValidator()
         from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
         featurescsv = OpenSwathFeatureXMLToTSV()
         from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
@@ -295,7 +296,7 @@ class __main__():
                 data_ref = smartpeak_i.getData()
                 smartpeak_i.clear_data()
                 # map the reference data
-                features_mapped = featureFilter.validate_MRMFeatures(
+                features_mapped = featureValidator.validate_MRMFeatures(
                     reference_data = data_ref,
                     features = features,
                     Tr_window = float(params['validate_MRMFeatures'][0]['value'])

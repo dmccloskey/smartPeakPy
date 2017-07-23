@@ -8,6 +8,7 @@ from .pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtracto
 from .pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
 from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
 from .pyTOPP.MRMFeatureFilter import MRMFeatureFilter
+from .pyTOPP.MRMFeatureSelector import MRMFeatureSelector
 #3rd part libraries
 try:
     import pyopenms
@@ -22,7 +23,7 @@ class smartPeak_openSWATH_py():
         filenames_I,
         MRMFeatureFinderScoring_params_I={},
         MRMFeatureFilter_filter_params_I={},
-        MRMFeatureFilter_select_params_I={},
+        MRMFeatureSelector_select_params_I={},
         ):
         """Run the openSWATH workflow for a single sample
         
@@ -151,12 +152,15 @@ class smartPeak_openSWATH_py():
         # featurescsv = OpenSwathFeatureXMLToTSV()
         # featurescsv.store(feature_csv_o, output, targeted, run_id = 'run0', filename = featureXML_o)
 
-        # filter and select features
+        # filter features
         featureFilter = MRMFeatureFilter()
         output_filtered = featureFilter.filter_MRMFeatures(
             output,
             MRMFeatureFilter_filter_params_I)
-        # output_filtered = featureFilter.select_MRMFeatures(
+
+        # select features
+        featureSelector = MRMFeatureSelector()
+        # output_filtered = featureSelector.select_MRMFeatures_scores(
         #     output_filtered,
         #     MRMFeatureFilter_select_params_I)
         from .smartPeak_i import smartPeak_i
@@ -164,9 +168,10 @@ class smartPeak_openSWATH_py():
         smartpeak_i.read_csv(calibrators_csv_i,delimiter=',')
         calibrators = smartpeak_i.getData()
         smartpeak_i.clear_data()
-        output_filtered = featureFilter.align_MRMFeatures(
+        output_filtered = featureFilter.select_MRMFeatures_qmip(
             features = output_filtered,
-            tr_expected = calibrators,            
+            tr_expected = calibrators,    
+            select_criteria = MRMFeatureSelector_select_params_I,     
         )
 
         # Store outfile as featureXML
