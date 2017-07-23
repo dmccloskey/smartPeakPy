@@ -37,8 +37,9 @@ class MRMFeatureSelector():
             output_O (FeatureMap): filtered features
 
         """
+        from math import floor
         select_criteria_dict = {d['name']:d['value'] for d in select_criteria}
-        nn_threshold = 1
+        nn_threshold = 2
         locality_weights = True
         select_transition_groups = True
         if "nn_threshold" in select_criteria_dict.keys():
@@ -86,14 +87,25 @@ class MRMFeatureSelector():
                     if not component_name in Tr_dict.keys():
                         Tr_dict[component_name] = []
                     Tr_dict[component_name].append(tmp)
-        Tr_optimal = self.optimize_Tr(
-            To_list,
-            Tr_dict,
-            Tr_expected_dict,
-            nn_threshold,
-            locality_weights,
-            select_transition_groups
-            )        
+        # select optimal retention times
+        Tr_optimal = []
+        # To_list = To_list[:70] #TESTING ONLY
+        window = 12
+        step = 6
+        segments = int(floor(len(To_list)/6))
+        print("Selecting optimal Tr in segments")
+        for i in range(segments):
+            print("Optimizing for segment (%s/%s)"%(i,segments))
+            start_iter = step*i
+            stop_iter = min([step*i+window,len(To_list)])
+            Tr_optimal.extend(self.optimize_Tr(
+                To_list[start_iter:stop_iter],
+                Tr_dict,
+                Tr_expected_dict,
+                nn_threshold,
+                locality_weights,
+                select_transition_groups
+                ))    
         # Filter the FeatureMap
         print("Filtering features")
         output_filtered = pyopenms.FeatureMap()
@@ -186,7 +198,6 @@ class MRMFeatureSelector():
         model = Model(name='Retention time alignment')
         print("Building and adding model constraints")
         st = time.time()
-        # To_list = To_list[:10] #TESTING ONLY
         for cnt_1,v1 in enumerate(To_list):
             print("Building and adding variables and constraints for (%s/%s) components"%(cnt_1,len(To_list)-1))
             component_name_1 = v1['component_name']
