@@ -8,8 +8,8 @@ try:
 except ImportError as e:
     print(e)
 
-class MRMFeatureFilter():
-    """MRMFeatureFilter selects features (FeatureMap)
+class MRMFeatureSelector():
+    """MRMFeatureSelector selects features (FeatureMap)
 
     """
 
@@ -38,7 +38,7 @@ class MRMFeatureFilter():
 
         """
         select_criteria_dict = {d['name']:d['value'] for d in select_criteria}
-        nn_threshold = 4
+        nn_threshold = 6
         locality_weights = True
         select_transition_groups = True
         if "nn_threshold" in select_criteria_dict.keys():
@@ -50,9 +50,9 @@ class MRMFeatureFilter():
         #build the retention time dictionaries
         from operator import itemgetter
         if select_transition_groups:
-            Tr_expected_dict = {d['component_name']:{
+            Tr_expected_dict = {d['component_group_name']:{
             'retention_time':float(d['retention_time']),
-            'component_name':d['component_name'],
+            'component_name':d['component_group_name'], #note component_name ~ component_group_name
             'component_group_name':d['component_group_name'],
             } for d in tr_expected}
         else:
@@ -70,7 +70,8 @@ class MRMFeatureFilter():
             if select_transition_groups:                
                 if not component_group_name in Tr_expected_dict.keys():
                     continue
-                tmp = {'component_group_name':component_group_name,'component_name':component_group_name,
+                tmp = {'component_group_name':component_group_name,
+                    'component_name':component_group_name, #note component_name ~ component_group_name
                     'retention_time':retention_time,'transition_id':transition_id}
                 if not component_group_name in Tr_dict.keys():
                     Tr_dict[component_group_name] = []
@@ -99,7 +100,10 @@ class MRMFeatureFilter():
         for feature in features:
             subordinates_tmp = []
             for subordinate in feature.getSubordinates():
-                var_name = "%s_%s"%(subordinate.getMetaValue("native_id").decode('utf-8'),feature.getUniqueId())                
+                if select_transition_groups:
+                    var_name = "%s_%s"%(feature.getMetaValue("PeptideRef").decode('utf-8'),feature.getUniqueId()) 
+                else:
+                    var_name = "%s_%s"%(subordinate.getMetaValue("native_id").decode('utf-8'),feature.getUniqueId())                
                 if var_name in Tr_optimal: 
                     subordinates_tmp.append(subordinate)
             #check that subordinates were found
@@ -182,6 +186,7 @@ class MRMFeatureFilter():
         model = Model(name='Retention time alignment')
         print("Building and adding model constraints")
         st = time.time()
+        # To_list = To_list[:10] #TESTING ONLY
         for cnt_1,v1 in enumerate(To_list):
             print("Building and adding variables and constraints for (%s/%s) components"%(cnt_1,len(To_list)-1))
             component_name_1 = v1['component_name']

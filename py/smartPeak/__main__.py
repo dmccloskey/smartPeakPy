@@ -119,7 +119,7 @@ class __main__():
                     v,
                     params['MRMFeatureFinderScoring'],
                     params['MRMFeatureFilter.filter_MRMFeatures'],
-                    params['MRMFeatureFilter.select_MRMFeatures'])
+                    params['MRMFeatureSelector.select_MRMFeatures'])
 
     def run_testSmartPeak(self):
         from .test_smartPeak import test_smartPeak
@@ -266,7 +266,6 @@ class __main__():
 
         """
         from .pyTOPP.MRMFeatureValidator import MRMFeatureValidator
-        featureFilter = MRMFeatureFilter()
         featureValidator= MRMFeatureValidator()
         from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
         featurescsv = OpenSwathFeatureXMLToTSV()

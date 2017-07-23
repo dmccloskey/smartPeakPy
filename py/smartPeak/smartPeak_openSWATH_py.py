@@ -168,7 +168,7 @@ class smartPeak_openSWATH_py():
         smartpeak_i.read_csv(calibrators_csv_i,delimiter=',')
         calibrators = smartpeak_i.getData()
         smartpeak_i.clear_data()
-        output_filtered = featureFilter.select_MRMFeatures_qmip(
+        output_filtered = featureSelector.select_MRMFeatures_qmip(
             features = output_filtered,
             tr_expected = calibrators,    
             select_criteria = MRMFeatureSelector_select_params_I,     
