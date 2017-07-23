@@ -49,7 +49,7 @@ class MRMFeatureFilter():
             select_transition_groups = select_criteria_dict["select_transition_groups"]
         #build the retention time dictionaries
         from operator import itemgetter
-        if select_transition_groups
+        if select_transition_groups:
             Tr_expected_dict = {d['component_name']:{
             'retention_time':float(d['retention_time']),
             'component_name':d['component_name'],
@@ -75,7 +75,7 @@ class MRMFeatureFilter():
                 if not component_group_name in Tr_dict.keys():
                     Tr_dict[component_group_name] = []
                 Tr_dict[component_group_name].append(tmp)
-            else
+            else:
                 for subordinate in feature.getSubordinates():
                     component_name = subordinate.getMetaValue('native_id').decode('utf-8')
                     if not component_name in Tr_expected_dict.keys():
