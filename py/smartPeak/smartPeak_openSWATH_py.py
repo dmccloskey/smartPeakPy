@@ -188,6 +188,8 @@ class smartPeak_openSWATH_py():
             filename = filename
             )
 
+        # calculate QCs
+
         # calculate peak intensity and area
 
         # # other metadata

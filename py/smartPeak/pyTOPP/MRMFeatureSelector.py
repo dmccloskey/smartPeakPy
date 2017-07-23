@@ -18,8 +18,8 @@ class MRMFeatureSelector():
         features,
         tr_expected,
         select_criteria=[
-            {"name":"nn_threshold", "value":4},
-            {"name":"locality_weights", "value":False},
+            {"name":"nn_threshold", "value":3},
+            {"name":"locality_weights", "value":True},
             {"name":"select_transition_groups", "value":True}]
         ):
         """Aligns feature Tr (retention time, normalized retention time)
@@ -38,7 +38,7 @@ class MRMFeatureSelector():
 
         """
         select_criteria_dict = {d['name']:d['value'] for d in select_criteria}
-        nn_threshold = 6
+        nn_threshold = 1
         locality_weights = True
         select_transition_groups = True
         if "nn_threshold" in select_criteria_dict.keys():
@@ -56,7 +56,7 @@ class MRMFeatureSelector():
             'component_group_name':d['component_group_name'],
             } for d in tr_expected}
         else:
-            Tr_expected_dict = {d['component_group_name']:{
+            Tr_expected_dict = {d['component_name']:{
             'retention_time':float(d['retention_time']),
             'component_name':d['component_name'],
             'component_group_name':d['component_group_name'],
@@ -207,7 +207,7 @@ class MRMFeatureSelector():
                 #iterate over nearest neighbors
                 start_iter, stop_iter = 0, 0
                 start_iter = max([cnt_1-nn_threshold,0])
-                stop_iter = min([cnt_1+nn_threshold,len(To_list)])
+                stop_iter = min([cnt_1+nn_threshold+1,len(To_list)]) #NOTE: +1 to compensate for component_name_1 != component_name_2
                 for cnt_2,v2 in enumerate(To_list[start_iter:stop_iter]):
                     component_name_2 = v2['component_name']
                     #prevent redundant combinations
