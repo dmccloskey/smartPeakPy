@@ -174,7 +174,7 @@ class MRMFeatureSelector():
             feature_tmp = copy.copy(feature)
             feature_tmp.setSubordinates(subordinates_tmp)
             output_filtered.push_back(feature_tmp)
-        print("Filtered %s features"%(len(Tr_optimal)))
+        print("Filtered %s features"%(len(list(set(Tr_optimal)))))
         return output_filtered
 
     def select_MRMFeatures_score(
