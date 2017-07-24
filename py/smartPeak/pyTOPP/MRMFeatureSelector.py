@@ -79,6 +79,7 @@ class MRMFeatureSelector():
             } for d in tr_expected}
         To_list = sorted(Tr_expected_dict.values(), key=itemgetter('retention_time')) 
         Tr_dict = {}
+        feature_count = 0
         for feature in features:
             component_group_name = feature.getMetaValue("PeptideRef").decode('utf-8')
             retention_time = feature.getRT()
@@ -92,6 +93,7 @@ class MRMFeatureSelector():
                 if not component_group_name in Tr_dict.keys():
                     Tr_dict[component_group_name] = []
                 Tr_dict[component_group_name].append(tmp)
+                feature_count += 1
             else:
                 for subordinate in feature.getSubordinates():
                     component_name = subordinate.getMetaValue('native_id').decode('utf-8')
@@ -102,13 +104,15 @@ class MRMFeatureSelector():
                     if not component_name in Tr_dict.keys():
                         Tr_dict[component_name] = []
                     Tr_dict[component_name].append(tmp)
+                    feature_count += 1
+        print("Extracted %s features"%(feature_count))
         # Select optimal retention times
         Tr_optimal_count = {}
         # To_list = To_list[:35] #TESTING ONLY
         segments = int(ceil(len(To_list)/segment_step_length))
         print("Selecting optimal Tr in segments")
         Tr_optimal = []
-        for i in range(segments):
+        for i in range(segments): #could be distributed and parallelized
             print("Optimizing for segment (%s/%s)"%(i,segments))
             start_iter = segment_step_length*i
             stop_iter = min([segment_step_length*i+segment_window_length,len(To_list)])
@@ -153,7 +157,6 @@ class MRMFeatureSelector():
                         best_vars.append(var)
                 Tr_optimal.extend(best_vars)             
         # Filter the FeatureMap
-        print("Filtering features")
         output_filtered = pyopenms.FeatureMap()
         for feature in features:
             subordinates_tmp = []
@@ -171,6 +174,7 @@ class MRMFeatureSelector():
             feature_tmp = copy.copy(feature)
             feature_tmp.setSubordinates(subordinates_tmp)
             output_filtered.push_back(feature_tmp)
+        print("Filtered %s features"%(len(Tr_optimal)))
         return output_filtered
 
     def select_MRMFeatures_score(
@@ -393,15 +397,17 @@ class MRMFeatureSelector():
         features,
         tr_expected,
         schedule_criteria):
+
+        import time as time
         
         # Parse the input parameters
         select_criteria_dict = {d['name']:d['value'] for d in schedule_criteria}
-        nn_thresholds = [3,3]
-        locality_weights = [True,True]
-        select_transition_groups = [True,True]
-        segment_window_lengths = [12,24]
-        segment_step_lengths = [3,6]
-        select_highest_counts = [False,False]
+        nn_thresholds = [2,4,6]
+        locality_weights = [True,True,True]
+        select_transition_groups = [True,True,True]
+        segment_window_lengths = [12,24,48]
+        segment_step_lengths = [2,6,12]
+        select_highest_counts = [False,False,False]
         if "nn_thresholds" in select_criteria_dict.keys():
             nn_threshold = select_criteria_dict["nn_thresholds"]
         if "locality_weights" in select_criteria_dict.keys():
@@ -424,6 +430,7 @@ class MRMFeatureSelector():
 				
         # Select optimal retention times
         print("Selecting optimal Tr in iterations")
+        st = time.time()
         output_features = features
         for i in range(len(segment_window_lengths)):
             print("Optimizing for iteration (%s/%s)"%(i,len(segment_window_lengths)-1))
@@ -438,4 +445,11 @@ class MRMFeatureSelector():
                 output_features,
                 tr_expected,
                 select_criteria)
+            cnt = 0
+            for feature in output_features:
+                for subordinate in feature.getSubordinates():
+                    cnt +=1
+            print("Features: %s"%(cnt))    
+        elapsed_time = time.time() - st
+        print("Scheduler time: %.2fs" % elapsed_time)
         return output_features
