@@ -29,9 +29,11 @@ class MRMFeatureSelector():
             features (FeatureMap):
             tr_expected (list(dict)): expected retention times
             select_criteria (list,dict): e.g., [{"name":, "value":, }]
-                name: "nn_threshold", value:10, description: # of nearest compounds by Tr to include in network
-                name: "locality_weights": value:True, description: weight compounds with a nearer Tr greater than compounds with a further Tr
-                name: "select_transition_groups": value:True, description: select transition groups or transitions
+                name: "nn_threshold", value:10, type: float, description: # of nearest compounds by Tr to include in network
+                name: "locality_weights": value:True, type: boolean, description: weight compounds with a nearer Tr greater than compounds with a further Tr
+                name: "select_transition_groups": value:True, type: boolean, description: select transition groups or transitions
+                name: "segment_window_length": value:12, type: float, description: select transition groups or transitions
+                name: "segment_step_length": value:6, type: float, description: select transition groups or transitions
 
         Returns
             output_O (FeatureMap): filtered features
@@ -39,7 +41,7 @@ class MRMFeatureSelector():
         """
         from math import floor
         select_criteria_dict = {d['name']:d['value'] for d in select_criteria}
-        nn_threshold = 2
+        nn_threshold = 3
         locality_weights = True
         select_transition_groups = True
         if "nn_threshold" in select_criteria_dict.keys():
@@ -89,23 +91,54 @@ class MRMFeatureSelector():
                     Tr_dict[component_name].append(tmp)
         # select optimal retention times
         Tr_optimal = []
-        # To_list = To_list[:70] #TESTING ONLY
+        Tr_optimal_count = {}
+        # To_list = To_list[:35] #TESTING ONLY
         window = 12
-        step = 6
+        step = 5
         segments = int(floor(len(To_list)/6))
         print("Selecting optimal Tr in segments")
         for i in range(segments):
             print("Optimizing for segment (%s/%s)"%(i,segments))
             start_iter = step*i
             stop_iter = min([step*i+window,len(To_list)])
-            Tr_optimal.extend(self.optimize_Tr(
+            tmp = self.optimize_Tr(
                 To_list[start_iter:stop_iter],
                 Tr_dict,
                 Tr_expected_dict,
                 nn_threshold,
                 locality_weights,
                 select_transition_groups
-                ))    
+                )
+            # Tr_optimal.extend(tmp)
+            for var in tmp:
+                transition_id = var.split('_')[-1]
+                if not var in Tr_optimal_count.keys():
+                    Tr_optimal_count[var] = 0
+                Tr_optimal_count[var] += 1
+        # Reorganize
+        Tr_optimal_dict = {}
+        for var,count in Tr_optimal_count.items():
+            component_name = '_'.join(var.split('_')[:-1])
+            transition_id = var.split('_')[-1]
+            if not var in Tr_optimal_dict.keys():
+                Tr_optimal_dict[component_name] = []
+            tmp = {'transition_id':transition_id,
+                    'count':count
+                }
+            Tr_optimal_dict[component_name].append(tmp)
+        # Select highest count transitions
+        Tr_optimal = []
+        for component_name,rows in Tr_optimal_dict.items():
+            best_count = 0
+            for i,row in enumerate(rows):
+                if row['count']>best_count:
+                    best_count = row['count']
+            best_vars = []
+            for i,row in enumerate(rows):
+                if row['count']==best_count:
+                    var = '_'.join([component_name,row['transition_id']])
+                    best_vars.append(var)
+            Tr_optimal.extend(best_vars)             
         # Filter the FeatureMap
         print("Filtering features")
         output_filtered = pyopenms.FeatureMap()
@@ -181,7 +214,11 @@ class MRMFeatureSelector():
         optimize the retention time using MIP
 
         Args
-            tr_I (list(float))
+            To_list (list(dict))
+            To_list (dict)
+            nn_threshold (float): # of nearest compounds by Tr to include in network
+            locality_weights (boolean): weight compounds with a nearer Tr greater than compounds with a further Tr
+            select_transition_groups (boolean): select transition groups or transitions
 
         Returns
             tr_optimial (list): list of optimal transition variable names  
