@@ -109,6 +109,9 @@ class MRMFeatureSelector():
         # Select optimal retention times
         Tr_optimal_count = {}
         # To_list = To_list[:35] #TESTING ONLY
+        if segment_step_length == -1 and segment_window_length == -1:
+            segment_step_length = len(To_list)
+            segment_window_length = len(To_list)
         segments = int(ceil(len(To_list)/segment_step_length))
         print("Selecting optimal Tr in segments")
         Tr_optimal = []
@@ -402,12 +405,12 @@ class MRMFeatureSelector():
         
         # Parse the input parameters
         select_criteria_dict = {d['name']:d['value'] for d in schedule_criteria}
-        nn_thresholds = [2,4,6]
-        locality_weights = [True,True,True]
-        select_transition_groups = [True,True,True]
-        segment_window_lengths = [12,24,48]
-        segment_step_lengths = [2,6,12]
-        select_highest_counts = [False,False,False]
+        nn_thresholds = [2,4,6,4]
+        locality_weights = [False,True,True,True]
+        select_transition_groups = [True,True,True,True]
+        segment_window_lengths = [12,24,48,-1]
+        segment_step_lengths = [2,6,12,-1]
+        select_highest_counts = [False,False,False,False]
         if "nn_thresholds" in select_criteria_dict.keys():
             nn_threshold = select_criteria_dict["nn_thresholds"]
         if "locality_weights" in select_criteria_dict.keys():
@@ -444,12 +447,7 @@ class MRMFeatureSelector():
             output_features = self.select_MRMFeatures_qmip(
                 output_features,
                 tr_expected,
-                select_criteria)
-            cnt = 0
-            for feature in output_features:
-                for subordinate in feature.getSubordinates():
-                    cnt +=1
-            print("Features: %s"%(cnt))    
+                select_criteria) 
         elapsed_time = time.time() - st
         print("Scheduler time: %.2fs" % elapsed_time)
         return output_features
