@@ -24,6 +24,7 @@ class smartPeak_openSWATH_py():
         MRMFeatureFinderScoring_params_I={},
         MRMFeatureFilter_filter_params_I={},
         MRMFeatureSelector_select_params_I={},
+        MRMFeatureSelector_schedule_params_I={},
         ):
         """Run the openSWATH workflow for a single sample
         
@@ -168,11 +169,15 @@ class smartPeak_openSWATH_py():
         smartpeak_i.read_csv(calibrators_csv_i,delimiter=',')
         calibrators = smartpeak_i.getData()
         smartpeak_i.clear_data()
-        output_filtered = featureSelector.select_MRMFeatures_qmip(
+        output_filtered = featureSelector.schedule_MRMFeatures_qmip(
             features = output_filtered,
             tr_expected = calibrators,    
-            select_criteria = MRMFeatureSelector_select_params_I,     
-        )
+            schedule_criteria = MRMFeatureSelector_schedule_params_I)
+        # output_filtered = featureSelector.select_MRMFeatures_qmip(
+        #     features = output_filtered,
+        #     tr_expected = calibrators,    
+        #     select_criteria = MRMFeatureSelector_select_params_I,     
+        # )
 
         # Store outfile as featureXML
         featurexml = pyopenms.FeatureXMLFile()

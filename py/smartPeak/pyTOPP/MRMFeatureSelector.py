@@ -20,7 +20,10 @@ class MRMFeatureSelector():
         select_criteria=[
             {"name":"nn_threshold", "value":3},
             {"name":"locality_weights", "value":True},
-            {"name":"select_transition_groups", "value":True}]
+            {"name":"select_transition_groups", "value":True},
+            {"name":"segment_window_lengths", "value":12},
+            {"name":"segment_step_lengths", "value":3},
+            {"name":"select_highest_count", "value":False}]
         ):
         """Aligns feature Tr (retention time, normalized retention time)
         and removes features that violate retention time order
@@ -32,24 +35,34 @@ class MRMFeatureSelector():
                 name: "nn_threshold", value:10, type: float, description: # of nearest compounds by Tr to include in network
                 name: "locality_weights": value:True, type: boolean, description: weight compounds with a nearer Tr greater than compounds with a further Tr
                 name: "select_transition_groups": value:True, type: boolean, description: select transition groups or transitions
-                name: "segment_window_length": value:12, type: float, description: select transition groups or transitions
-                name: "segment_step_length": value:6, type: float, description: select transition groups or transitions
+                name: "segment_window_length": value:12, type: float, description: 
+                name: "segment_step_length": value:6, type: float, description: 
 
         Returns
             output_O (FeatureMap): filtered features
 
         """
-        from math import floor
+        from math import floor, ceil
+        # Parse the input parameters
         select_criteria_dict = {d['name']:d['value'] for d in select_criteria}
-        nn_threshold = 3
+        nn_threshold = 2
         locality_weights = True
         select_transition_groups = True
+        segment_window_length = 12
+        segment_step_length = 2
+        select_highest_count = False
         if "nn_threshold" in select_criteria_dict.keys():
             nn_threshold = select_criteria_dict["nn_threshold"]
         if "locality_weights" in select_criteria_dict.keys():
             locality_weights = select_criteria_dict["locality_weights"]
         if "select_transition_groups" in select_criteria_dict.keys():
             select_transition_groups = select_criteria_dict["select_transition_groups"]
+        if "segment_window_length" in select_criteria_dict.keys():
+            segment_window_length = select_criteria_dict["segment_window_length"]
+        if "segment_step_length" in select_criteria_dict.keys():
+            segment_step_length = select_criteria_dict["segment_step_length"]
+        if "select_highest_count" in select_criteria_dict.keys():
+            select_highest_count = select_criteria_dict["select_highest_count"]
         #build the retention time dictionaries
         from operator import itemgetter
         if select_transition_groups:
@@ -89,18 +102,16 @@ class MRMFeatureSelector():
                     if not component_name in Tr_dict.keys():
                         Tr_dict[component_name] = []
                     Tr_dict[component_name].append(tmp)
-        # select optimal retention times
-        Tr_optimal = []
+        # Select optimal retention times
         Tr_optimal_count = {}
         # To_list = To_list[:35] #TESTING ONLY
-        window = 12
-        step = 5
-        segments = int(floor(len(To_list)/6))
+        segments = int(ceil(len(To_list)/segment_step_length))
         print("Selecting optimal Tr in segments")
+        Tr_optimal = []
         for i in range(segments):
             print("Optimizing for segment (%s/%s)"%(i,segments))
-            start_iter = step*i
-            stop_iter = min([step*i+window,len(To_list)])
+            start_iter = segment_step_length*i
+            stop_iter = min([segment_step_length*i+segment_window_length,len(To_list)])
             tmp = self.optimize_Tr(
                 To_list[start_iter:stop_iter],
                 Tr_dict,
@@ -109,36 +120,38 @@ class MRMFeatureSelector():
                 locality_weights,
                 select_transition_groups
                 )
-            # Tr_optimal.extend(tmp)
-            for var in tmp:
+            if select_highest_count:
+                for var in tmp:
+                    transition_id = var.split('_')[-1]
+                    if not var in Tr_optimal_count.keys():
+                        Tr_optimal_count[var] = 0
+                    Tr_optimal_count[var] += 1
+            else:                
+                Tr_optimal.extend(tmp)
+        if select_highest_count:
+            # Reorganize
+            Tr_optimal_dict = {}
+            for var,count in Tr_optimal_count.items():
+                component_name = '_'.join(var.split('_')[:-1])
                 transition_id = var.split('_')[-1]
-                if not var in Tr_optimal_count.keys():
-                    Tr_optimal_count[var] = 0
-                Tr_optimal_count[var] += 1
-        # Reorganize
-        Tr_optimal_dict = {}
-        for var,count in Tr_optimal_count.items():
-            component_name = '_'.join(var.split('_')[:-1])
-            transition_id = var.split('_')[-1]
-            if not var in Tr_optimal_dict.keys():
-                Tr_optimal_dict[component_name] = []
-            tmp = {'transition_id':transition_id,
-                    'count':count
-                }
-            Tr_optimal_dict[component_name].append(tmp)
-        # Select highest count transitions
-        Tr_optimal = []
-        for component_name,rows in Tr_optimal_dict.items():
-            best_count = 0
-            for i,row in enumerate(rows):
-                if row['count']>best_count:
-                    best_count = row['count']
-            best_vars = []
-            for i,row in enumerate(rows):
-                if row['count']==best_count:
-                    var = '_'.join([component_name,row['transition_id']])
-                    best_vars.append(var)
-            Tr_optimal.extend(best_vars)             
+                if not var in Tr_optimal_dict.keys():
+                    Tr_optimal_dict[component_name] = []
+                tmp = {'transition_id':transition_id,
+                        'count':count
+                    }
+                Tr_optimal_dict[component_name].append(tmp)
+            # Select highest count transitions
+            for component_name,rows in Tr_optimal_dict.items():
+                best_count = 0
+                for i,row in enumerate(rows):
+                    if row['count']>best_count:
+                        best_count = row['count']
+                best_vars = []
+                for i,row in enumerate(rows):
+                    if row['count']==best_count:
+                        var = '_'.join([component_name,row['transition_id']])
+                        best_vars.append(var)
+                Tr_optimal.extend(best_vars)             
         # Filter the FeatureMap
         print("Filtering features")
         output_filtered = pyopenms.FeatureMap()
@@ -374,3 +387,55 @@ class MRMFeatureSelector():
         print("Elapsed time: %.2fs" % elapsed_time)
         Tr_optimal = [var.name for var in model.variables if var.primal != 0 and var.name in variables.keys()]
         return Tr_optimal
+
+    def schedule_MRMFeatures_qmip(
+        self,
+        features,
+        tr_expected,
+        schedule_criteria):
+        
+        # Parse the input parameters
+        select_criteria_dict = {d['name']:d['value'] for d in schedule_criteria}
+        nn_thresholds = [3,3]
+        locality_weights = [True,True]
+        select_transition_groups = [True,True]
+        segment_window_lengths = [12,24]
+        segment_step_lengths = [3,6]
+        select_highest_counts = [False,False]
+        if "nn_thresholds" in select_criteria_dict.keys():
+            nn_threshold = select_criteria_dict["nn_thresholds"]
+        if "locality_weights" in select_criteria_dict.keys():
+            locality_weights = select_criteria_dict["locality_weights"]
+        if "select_transition_groups" in select_criteria_dict.keys():
+            select_transition_groups = select_criteria_dict["select_transition_groups"]
+        if "segment_window_lengths" in select_criteria_dict.keys():
+            segment_window_lengths = select_criteria_dict["segment_window_lengths"]
+        if "segment_step_lengths" in select_criteria_dict.keys():
+            segment_step_lengths = select_criteria_dict["segment_step_lengths"]  
+        if "select_highest_counts" in select_criteria_dict.keys():
+            select_highest_counts = select_criteria_dict["select_highest_counts"]      
+        if len(segment_window_lengths) != len(segment_step_lengths):
+            print("The number of segment_window_lengths != number of segment_step_lengths")
+            print("Truncating lists to the smallest length.")
+            if len(segment_window_lengths) < len(segment_step_lengths):
+                segment_step_lengths = segment_step_lengths[:len(segment_window_lengths)-1]
+            else:
+                segment_window_lengths = segment_window_lengths[:len(segmentation_window_lengths)-1]				
+				
+        # Select optimal retention times
+        print("Selecting optimal Tr in iterations")
+        output_features = features
+        for i in range(len(segment_window_lengths)):
+            print("Optimizing for iteration (%s/%s)"%(i,len(segment_window_lengths)-1))
+            select_criteria = [
+            {"name":"nn_threshold", "value":nn_thresholds[i]},
+            {"name":"locality_weights", "value":locality_weights[i]},
+            {"name":"select_transition_groups", "value":select_transition_groups[i]},
+            {"name":"segment_window_length", "value": segment_window_lengths[i]},
+            {"name":"segment_step_length", "value": segment_step_lengths[i]},
+            {"name":"select_highest_count", "value":select_highest_counts[i]}]
+            output_features = self.select_MRMFeatures_qmip(
+                output_features,
+                tr_expected,
+                select_criteria)
+        return output_features
