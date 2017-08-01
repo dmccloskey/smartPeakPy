@@ -51,6 +51,7 @@ class MRMFeatureSelector():
         segment_window_length = 12
         segment_step_length = 2
         select_highest_count = False
+        variable_type = 'continuous'
         if "nn_threshold" in select_criteria_dict.keys():
             nn_threshold = select_criteria_dict["nn_threshold"]
         if "locality_weights" in select_criteria_dict.keys():
@@ -63,6 +64,8 @@ class MRMFeatureSelector():
             segment_step_length = select_criteria_dict["segment_step_length"]
         if "select_highest_count" in select_criteria_dict.keys():
             select_highest_count = select_criteria_dict["select_highest_count"]
+        if "variable_type" in select_criteria_dict.keys():
+            variable_type = select_criteria_dict["variable_type"]
         #build the retention time dictionaries
         from operator import itemgetter
         if select_transition_groups:
@@ -125,7 +128,8 @@ class MRMFeatureSelector():
                 Tr_expected_dict,
                 nn_threshold,
                 locality_weights,
-                select_transition_groups
+                select_transition_groups,
+                variable_type
                 )
             if select_highest_count:
                 for var in tmp:
@@ -228,7 +232,8 @@ class MRMFeatureSelector():
         Tr_expected_dict,
         nn_threshold,
         locality_weights,
-        select_transition_groups
+        select_transition_groups,
+        variable_type = 'integer'
         ):
         """
         optimize the retention time using MIP
@@ -239,6 +244,7 @@ class MRMFeatureSelector():
             nn_threshold (float): # of nearest compounds by Tr to include in network
             locality_weights (boolean): weight compounds with a nearer Tr greater than compounds with a further Tr
             select_transition_groups (boolean): select transition groups or transitions
+            variable_type (str): the type of variable, 'integer' or 'continuous'
 
         Returns
             tr_optimial (list): list of optimal transition variable names  
@@ -402,15 +408,17 @@ class MRMFeatureSelector():
         schedule_criteria):
 
         import time as time
+        smartpeak = smartPeak()
         
         # Parse the input parameters
-        select_criteria_dict = {d['name']:d['value'] for d in schedule_criteria}
+        select_criteria_dict = {d['name']:smartpeak.parseString(d['value'],encode_str_I = False) for d in schedule_criteria}
         nn_thresholds = [2,4,6,4]
         locality_weights = [False,True,True,True]
         select_transition_groups = [True,True,True,True]
         segment_window_lengths = [12,24,48,-1]
         segment_step_lengths = [2,6,12,-1]
         select_highest_counts = [False,False,False,False]
+        variable_types = ['continous','continous','continous','continous']
         if "nn_thresholds" in select_criteria_dict.keys():
             nn_threshold = select_criteria_dict["nn_thresholds"]
         if "locality_weights" in select_criteria_dict.keys():

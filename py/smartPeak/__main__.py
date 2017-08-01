@@ -119,7 +119,8 @@ class __main__():
                     v,
                     params['MRMFeatureFinderScoring'],
                     params['MRMFeatureFilter.filter_MRMFeatures'],
-                    params['MRMFeatureSelector.select_MRMFeatures'])
+                    params['MRMFeatureSelector.select_MRMFeatures_score'],
+                    params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
 
     def run_testSmartPeak(self):
         from .test_smartPeak import test_smartPeak

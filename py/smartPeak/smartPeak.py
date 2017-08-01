@@ -280,12 +280,13 @@ class smartPeak():
             print(e);
         return str_O;
 
-    @staticmethod
-    def parseString(str_I):
+    #@staticmethod
+    def parseString(self,str_I,encode_str_I = True):
         """Parse string and return the eval
         
         Args
             str_I (str): input string
+            encode_str_I (bool): encode string as utf-8?
             
         Returns
             str_O (): evaluated string
@@ -302,6 +303,9 @@ class smartPeak():
             assert(parseString('a')==a.encode('utf-8'))
             
         """
+        import csv
+        from io import StringIO
+
         def isfloat(str_i):
             isfloat_o = True;
             try:
@@ -310,6 +314,12 @@ class smartPeak():
             # except ValueError:
                 isfloat_o = False;
             return isfloat_o;
+
+        def isBool(str_I):
+            isbool_O = False
+            if str_I in ['True','False']:
+                isbool_O = True
+            return isbool_O
 
         str_O = None;
         try:
@@ -323,14 +333,26 @@ class smartPeak():
             #     str_O = float(str_I)
             # elif str_I[0]=='-' and str_I[1:].isdecimal():
             #     str_O = float(str_I)
+            elif isBool(str_I):
+                str_O = eval(str_I)
             elif str_I[0]=='[' and str_I[-1]==']':
-                str_O = list(str_I[1:-1])
+                str_O = []
+                f= StringIO(str_I[1:-1])
+                reader = csv.reader(f, delimiter=',')
+                for row in reader:
+                    for item in row:
+                        str_O.append(self.parseString(item,encode_str_I = encode_str_I))
             elif str_I[0]=='{' and str_I[-1]=='}':
                 str_O = dict(str_I[1:-1])
             elif str_I[0]=='(' and str_I[-1]==')':
                 str_O = tuple(str_I[1:-1])
+            elif str_I[0] in ["'",'"'] and str_I[-1] in ["'",'"']:
+                str_O = eval(str_I)
+                if encode_str_I:
+                    str_O = str_I.encode('utf-8')
             else:
-                str_O = str_I.encode('utf-8')
+                if encode_str_I:
+                    str_O = str_I.encode('utf-8')
         except Exception as e:
             print(e)
         return str_O
