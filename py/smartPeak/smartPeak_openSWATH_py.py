@@ -158,6 +158,16 @@ class smartPeak_openSWATH_py():
         output_filtered = featureFilter.filter_MRMFeatures(
             output,
             MRMFeatureFilter_filter_params_I)
+        
+        # Store the outfile as csv
+        featurescsv = OpenSwathFeatureXMLToTSV()
+        filename = chromatograms_mapped.getLoadedFilePath().decode('utf-8').replace('file://','')
+        samplename_list = chromatograms_mapped.getMetaValue(b'mzml_id').decode('utf-8').split('-')
+        samplename = '-'.join(samplename_list[1:])
+        featurescsv.store(feature_csv_o + "_1", output_filtered, targeted,
+            run_id = samplename,
+            filename = filename
+            )
 
         # select features
         featureSelector = MRMFeatureSelector()
@@ -188,7 +198,7 @@ class smartPeak_openSWATH_py():
         filename = chromatograms_mapped.getLoadedFilePath().decode('utf-8').replace('file://','')
         samplename_list = chromatograms_mapped.getMetaValue(b'mzml_id').decode('utf-8').split('-')
         samplename = '-'.join(samplename_list[1:])
-        featurescsv.store(feature_csv_o, output_selected, targeted,
+        featurescsv.store(feature_csv_o + "_2", output_selected, targeted,
             run_id = samplename,
             filename = filename
             )
