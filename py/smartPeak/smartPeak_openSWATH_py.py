@@ -161,7 +161,7 @@ class smartPeak_openSWATH_py():
 
         # select features
         featureSelector = MRMFeatureSelector()
-        # output_filtered = featureSelector.select_MRMFeatures_scores(
+        # output_selected = featureSelector.select_MRMFeatures_scores(
         #     output_filtered,
         #     MRMFeatureFilter_select_params_I)
         from .smartPeak_i import smartPeak_i
@@ -169,11 +169,11 @@ class smartPeak_openSWATH_py():
         smartpeak_i.read_csv(calibrators_csv_i,delimiter=',')
         calibrators = smartpeak_i.getData()
         smartpeak_i.clear_data()
-        output_filtered = featureSelector.schedule_MRMFeatures_qmip(
+        output_selected = featureSelector.schedule_MRMFeatures_qmip(
             features = output_filtered,
             tr_expected = calibrators,    
             schedule_criteria = MRMFeatureSelector_schedule_params_I)
-        # output_filtered = featureSelector.select_MRMFeatures_qmip(
+        # output_selected = featureSelector.select_MRMFeatures_qmip(
         #     features = output_filtered,
         #     tr_expected = calibrators,    
         #     select_criteria = MRMFeatureSelector_select_params_I,     
@@ -181,19 +181,23 @@ class smartPeak_openSWATH_py():
 
         # Store outfile as featureXML
         featurexml = pyopenms.FeatureXMLFile()
-        featurexml.store(featureXML_o.encode('utf-8'), output_filtered)
+        featurexml.store(featureXML_o.encode('utf-8'), output_selected)
         
         # Store the outfile as csv
         featurescsv = OpenSwathFeatureXMLToTSV()
         filename = chromatograms_mapped.getLoadedFilePath().decode('utf-8').replace('file://','')
         samplename_list = chromatograms_mapped.getMetaValue(b'mzml_id').decode('utf-8').split('-')
         samplename = '-'.join(samplename_list[1:])
-        featurescsv.store(feature_csv_o, output_filtered, targeted,
+        featurescsv.store(feature_csv_o, output_selected, targeted,
             run_id = samplename,
             filename = filename
             )
 
         # calculate QCs
+
+        # combine all data 
+
+        # output to visualization and database
 
         # calculate peak intensity and area
 

@@ -213,6 +213,11 @@ class MRMFeatureSelector():
 
         Returns
             tr_optimial (list): list of optimal transition variable names  
+
+        Potential Speed Optimizations
+            Add in a check to see if multiple peaks for a transition or transition group actually exist
+
+
         """
         #build the model variables and constraints
         from optlang.glpk_interface import Model, Variable, Constraint, Objective
@@ -364,6 +369,10 @@ class MRMFeatureSelector():
         elapsed_time = time.time() - st
         print("Elapsed time: %.2fs" % elapsed_time)
         Tr_optimal = [var.name for var in model.variables if var.primal > optimal_threshold and var.name in variables.keys()]
+        # # DEBUGING:
+        # print(len(Tr_optimal),len(variables.keys()))
+        # Tr_primals = [{var.name:var.primal} for var in model.variables if var.name in variables.keys()]
+        # for var in model.variables: if var.name in variables.keys(): print("%s:%s"%(var.name,var.primal))
         return Tr_optimal
 
     def schedule_MRMFeatures_qmip(
@@ -384,7 +393,7 @@ class MRMFeatureSelector():
         segment_step_lengths = [2,6,12,-1]
         select_highest_counts = [False,False,False,False]
         variable_types = ['continous','continous','continous','continous']
-        optimal_threshold = [0.5,0.5,0.5,0.5]
+        optimal_thresholds = [0.5,0.5,0.5,0.5]
         if "nn_thresholds" in select_criteria_dict.keys():
             nn_threshold = select_criteria_dict["nn_thresholds"]
         if "locality_weights" in select_criteria_dict.keys():

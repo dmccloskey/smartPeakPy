@@ -27,6 +27,11 @@ class MRMFeatureValidator():
             
         Returns
             features_mapped (FeatureMap): mapped features
+
+        Potential code optimizations
+            identify True Negatives and False Negatives 
+                (can be problematic due to selection of peaks not in the quantification target list...)
+            add in plots and other visualizations
         """
         #reformat reference_data into a dict by unique key
         # TODO: need to add in the experiment_id and acquisition_method_id to feature or as a parameter
