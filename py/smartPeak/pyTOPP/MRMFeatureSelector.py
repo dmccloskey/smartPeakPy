@@ -51,7 +51,8 @@ class MRMFeatureSelector():
         segment_window_length = 12
         segment_step_length = 2
         select_highest_count = False
-        variable_type = 'continuous'
+        variable_type = 'continuous',
+        optimal_threshold = 0.5
         if "nn_threshold" in select_criteria_dict.keys():
             nn_threshold = select_criteria_dict["nn_threshold"]
         if "locality_weights" in select_criteria_dict.keys():
@@ -66,6 +67,8 @@ class MRMFeatureSelector():
             select_highest_count = select_criteria_dict["select_highest_count"]
         if "variable_type" in select_criteria_dict.keys():
             variable_type = select_criteria_dict["variable_type"]
+        if "optimal_threshold" in select_criteria_dict.keys():
+            optimal_threshold = select_criteria_dict["optimal_threshold"]
         #build the retention time dictionaries
         from operator import itemgetter
         if select_transition_groups:
@@ -129,7 +132,8 @@ class MRMFeatureSelector():
                 nn_threshold,
                 locality_weights,
                 select_transition_groups,
-                variable_type
+                variable_type,
+                optimal_threshold
                 )
             if select_highest_count:
                 for var in tmp:
@@ -380,6 +384,7 @@ class MRMFeatureSelector():
         segment_step_lengths = [2,6,12,-1]
         select_highest_counts = [False,False,False,False]
         variable_types = ['continous','continous','continous','continous']
+        optimal_threshold = [0.5,0.5,0.5,0.5]
         if "nn_thresholds" in select_criteria_dict.keys():
             nn_threshold = select_criteria_dict["nn_thresholds"]
         if "locality_weights" in select_criteria_dict.keys():
@@ -391,7 +396,11 @@ class MRMFeatureSelector():
         if "segment_step_lengths" in select_criteria_dict.keys():
             segment_step_lengths = select_criteria_dict["segment_step_lengths"]  
         if "select_highest_counts" in select_criteria_dict.keys():
-            select_highest_counts = select_criteria_dict["select_highest_counts"]      
+            select_highest_counts = select_criteria_dict["select_highest_counts"]   
+        if "variable_types" in select_criteria_dict.keys():
+            variable_types = select_criteria_dict["variable_types"]
+        if "optimal_thresholds" in select_criteria_dict.keys():
+            optimal_thresholds = select_criteria_dict["optimal_thresholds"]   
         if len(segment_window_lengths) != len(segment_step_lengths):
             print("The number of segment_window_lengths != number of segment_step_lengths")
             print("Truncating lists to the smallest length.")
@@ -412,7 +421,9 @@ class MRMFeatureSelector():
             {"name":"select_transition_groups", "value":select_transition_groups[i]},
             {"name":"segment_window_length", "value": segment_window_lengths[i]},
             {"name":"segment_step_length", "value": segment_step_lengths[i]},
-            {"name":"select_highest_count", "value":select_highest_counts[i]}]
+            {"name":"select_highest_count", "value":select_highest_counts[i]},
+            {"name":"variable_type", "value":variable_types[i]},
+            {"name":"optimal_threshold", "value":optimal_thresholds[i]}]
             output_features = self.select_MRMFeatures_qmip(
                 output_features,
                 tr_expected,
