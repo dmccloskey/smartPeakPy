@@ -15,14 +15,18 @@ class MRMFeatureFilter():
 
     def filter_MRMFeatures(
         self,features,
-        filter_criteria=[]
+        filter_criteria=[],
+        remove_filtered_transitions = True,        
         ):
         """Filter features from a FeatureMap that satisfy a filter criteria
         
         Args
             features (FeatureMap):
             filter_criteria (list,dict): e.g., [{"name":, "value":, }]
-            n_peaks_max (int): maximum number of features per transition to extract
+            remove_filtered_transitions (bool): remove filter transitions?
+                if True: only transitions that pass the filter are returrned
+                if False: all transitions are returned with an annotation in 
+                    metaValue for "used_" specifying True or False whether the peak passed the threshold
 
         Returns
             output_O (FeatureMap): filtered features
@@ -50,6 +54,12 @@ class MRMFeatureFilter():
                 if fc_pass:
                     # subordinates_tmp.addFeature(subordinate,subordinate.getMetaValue("native_id"))
                     subordinates_tmp.append(subordinate)
+                    if not remove_filtered_transitions:
+                        subordinate.setMetaValue('used_'.encode('utf-8'),'True'.encode('utf-8'))
+                else:
+                    if not remove_filtered_transitions:
+                        subordinate.setMetaValue('used_'.encode('utf-8'),'False'.encode('utf-8'))
+                        subordinates_tmp.append(subordinate)
             #check that subordinates were found
             if not subordinates_tmp:
                 continue

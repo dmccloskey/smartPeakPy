@@ -184,47 +184,6 @@ class MRMFeatureSelector():
         print("Filtered %s features"%(len(list(set(Tr_optimal)))))
         return output_filtered
 
-    def select_MRMFeatures_score(
-        self,features,
-        score_weights=[]):
-        """Selects the best feature from a FeatureMap based on a scoring criteria
-        
-        Args
-            features (FeatureMap):
-            score_weights (list,dict): e.g., [{"name":, "value":, }]
-            n_peaks_max (int): maximum number of features per transition to extract
-                in ascending order
-
-        Returns
-            output_O (FeatureMap): selected features
-        """
-        smartpeak = smartPeak()
-        score_tmp = 0
-        output_ranked = pyopenms.FeatureMap()
-        #compute a pooled score for each transition group
-        transition_group_id_current = ''
-        best_transition_group = None
-        best_transition_group_score = 0
-        for feature in features:
-            subordinates_tmp = []
-            transition_group_id = feature.getMetaValue("PeptideRef").decode('utf-8')
-            # add the best transition
-            if transition_group_id != transition_group_id_current and not best_transition_group is None:
-                output_ranked.push_back(best_transition_group)
-            # initialize the best transition
-            if transition_group_id != transition_group_id_current:
-                transition_group_id_current = transition_group_id
-                best_transition_group = None
-                best_transition_group_score = 0
-            for score_weight in score_weights:
-                score = float(feature.getMetaValue(score_weight['name']))*float(score_weight['value'])
-                if best_transition_group_score < score:
-                    best_transition_group_score = score
-                    best_transition_group = feature
-        #add in the last best transition
-        output_ranked.push_back(best_transition_group)
-        return output_ranked
-
     def optimize_Tr(
         self,
         To_list,
@@ -233,7 +192,8 @@ class MRMFeatureSelector():
         nn_threshold,
         locality_weights,
         select_transition_groups,
-        variable_type = 'integer'
+        variable_type = 'integer',
+        optimal_threshold = 0.5
         ):
         """
         optimize the retention time using MIP
@@ -245,6 +205,7 @@ class MRMFeatureSelector():
             locality_weights (boolean): weight compounds with a nearer Tr greater than compounds with a further Tr
             select_transition_groups (boolean): select transition groups or transitions
             variable_type (str): the type of variable, 'integer' or 'continuous'
+            optimal_threshold (float): value above which the transition group or transition is considered optimal (0 < x < 1)
 
         Returns
             tr_optimial (list): list of optimal transition variable names  
@@ -398,7 +359,7 @@ class MRMFeatureSelector():
         print("Objective value:", model.objective.value)        
         elapsed_time = time.time() - st
         print("Elapsed time: %.2fs" % elapsed_time)
-        Tr_optimal = [var.name for var in model.variables if var.primal != 0 and var.name in variables.keys()]
+        Tr_optimal = [var.name for var in model.variables if var.primal > optimal_threshold and var.name in variables.keys()]
         return Tr_optimal
 
     def schedule_MRMFeatures_qmip(
@@ -459,3 +420,44 @@ class MRMFeatureSelector():
         elapsed_time = time.time() - st
         print("Scheduler time: %.2fs" % elapsed_time)
         return output_features
+
+    def select_MRMFeatures_score(
+        self,features,
+        score_weights=[]):
+        """Selects the best feature from a FeatureMap based on a scoring criteria
+        
+        Args
+            features (FeatureMap):
+            score_weights (list,dict): e.g., [{"name":, "value":, }]
+            n_peaks_max (int): maximum number of features per transition to extract
+                in ascending order
+
+        Returns
+            output_O (FeatureMap): selected features
+        """
+        smartpeak = smartPeak()
+        score_tmp = 0
+        output_ranked = pyopenms.FeatureMap()
+        #compute a pooled score for each transition group
+        transition_group_id_current = ''
+        best_transition_group = None
+        best_transition_group_score = 0
+        for feature in features:
+            subordinates_tmp = []
+            transition_group_id = feature.getMetaValue("PeptideRef").decode('utf-8')
+            # add the best transition
+            if transition_group_id != transition_group_id_current and not best_transition_group is None:
+                output_ranked.push_back(best_transition_group)
+            # initialize the best transition
+            if transition_group_id != transition_group_id_current:
+                transition_group_id_current = transition_group_id
+                best_transition_group = None
+                best_transition_group_score = 0
+            for score_weight in score_weights:
+                score = float(feature.getMetaValue(score_weight['name']))*float(score_weight['value'])
+                if best_transition_group_score < score:
+                    best_transition_group_score = score
+                    best_transition_group = feature
+        #add in the last best transition
+        output_ranked.push_back(best_transition_group)
+        return output_ranked

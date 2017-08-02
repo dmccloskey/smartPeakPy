@@ -34,6 +34,8 @@ class MRMFeatureValidator():
         reference_data_dict = {(d['component_name']):d for d in reference_data}
         #intialize y_true,y_pred
         y_true, y_pred = [], []
+        # #TESTING FN:
+        # reference_data_keys = []
         output_filtered = pyopenms.FeatureMap()
         for feature in features:
             subordinates_tmp = []
@@ -41,8 +43,10 @@ class MRMFeatureValidator():
                 fc_pass = False
                 #make the reference_data_dict key
                 reference_data_key = (subordinate.getMetaValue('native_id').decode('utf-8'))
+                # #TESTING FN:
+                # reference_data_keys.append(reference_data_key)
                 if not reference_data_key in reference_data_dict.keys():
-                    subordinate.setMetaValue('FullPeptideName'.encode('utf-8'),'ND'.encode('utf-8'))
+                    subordinate.setMetaValue('validation'.encode('utf-8'),'ND'.encode('utf-8'))
                     subordinates_tmp.append(subordinate)
                     continue
                 y_true.append(1)
@@ -61,12 +65,12 @@ class MRMFeatureValidator():
                 #NOTE: if there are no other validation parameters that are
                 #      transition-specific, there is no need to loop
                 #      through each transition
-                if fc_pass:
-                    subordinate.setMetaValue('FullPeptideName'.encode('utf-8'),'tp'.encode('utf-8'))
+                if fc_pass: #True Positive
+                    subordinate.setMetaValue('validation'.encode('utf-8'),'tp'.encode('utf-8'))
                     subordinates_tmp.append(subordinate)
                     y_pred.append(1)
-                else:
-                    subordinate.setMetaValue('FullPeptideName'.encode('utf-8'),'fp'.encode('utf-8'))
+                else: #False Positive
+                    subordinate.setMetaValue('validation'.encode('utf-8'),'fp'.encode('utf-8'))
                     subordinates_tmp.append(subordinate)
                     y_pred.append(0)
                 # #TESTING:
@@ -78,6 +82,12 @@ class MRMFeatureValidator():
             feature_tmp = copy.copy(feature)
             feature_tmp.setSubordinates(subordinates_tmp)
             output_filtered.push_back(feature_tmp)
+        # #TESTING FN:
+        # # add in False Negative
+        # for k in reference_data_dict.keys():
+        #     if k not in reference_data_keys:
+        #         y_pred.append(0)
+        #         y_true.append(1)
         # calculate AUC, precision, accuracy, recall
         auc,accuracy,recall,precision = self.calculate_validationMetrics(y_true,y_pred,verbose_I=True)
         return output_filtered

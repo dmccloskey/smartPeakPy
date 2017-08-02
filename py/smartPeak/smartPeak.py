@@ -301,6 +301,7 @@ class smartPeak():
             assert(parseString('(1)')==(1))
             assert(parseString('{1}')=={1})
             assert(parseString('a')==a.encode('utf-8'))
+            assert(parseString("'a'")==a.encode('utf-8'))
             
         """
         import csv
