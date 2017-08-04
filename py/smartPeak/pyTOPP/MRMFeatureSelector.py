@@ -395,7 +395,7 @@ class MRMFeatureSelector():
         variable_types = ['continous','continous','continous','continous']
         optimal_thresholds = [0.5,0.5,0.5,0.5]
         if "nn_thresholds" in select_criteria_dict.keys():
-            nn_threshold = select_criteria_dict["nn_thresholds"]
+            nn_thresholds = select_criteria_dict["nn_thresholds"]
         if "locality_weights" in select_criteria_dict.keys():
             locality_weights = select_criteria_dict["locality_weights"]
         if "select_transition_groups" in select_criteria_dict.keys():
