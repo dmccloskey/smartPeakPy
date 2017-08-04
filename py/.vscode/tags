@@ -4,7 +4,7 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-Constraint	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        from optlang.glpk_interface import Model, Variable, Constraint, Objective$/;"	kind:namespace	line:247
+Constraint	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        from optlang.glpk_interface import Model, Variable, Constraint, Objective$/;"	kind:namespace	line:223
 DIASpectrumExtractor_py	smartPeak/smartPeak_MRMTransitionGroupPicker_py.py	/^    def DIASpectrumExtractor_py(self,$/;"	kind:member	line:20
 DIASpectrumExtractor_py	smartPeak/smartPeak_PeakPickerMRM_py.py	/^    def DIASpectrumExtractor_py(self,$/;"	kind:member	line:20
 MRMFeatureFilter	smartPeak/pyTOPP/MRMFeatureFilter.py	/^class MRMFeatureFilter():$/;"	kind:class	line:11
@@ -13,7 +13,7 @@ MRMFeatureFilter.py	smartPeak/pyTOPP/MRMFeatureFilter.py	1;"	kind:file	line:1
 MRMFeatureSelector	smartPeak/pyTOPP/MRMFeatureSelector.py	/^class MRMFeatureSelector():$/;"	kind:class	line:11
 MRMFeatureSelector	smartPeak/smartPeak_openSWATH_py.py	/^from .pyTOPP.MRMFeatureSelector import MRMFeatureSelector$/;"	kind:namespace	line:11
 MRMFeatureSelector.py	smartPeak/pyTOPP/MRMFeatureSelector.py	1;"	kind:file	line:1
-MRMFeatureValidator	smartPeak/__main__.py	/^        from .pyTOPP.MRMFeatureValidator import MRMFeatureValidator$/;"	kind:namespace	line:268
+MRMFeatureValidator	smartPeak/__main__.py	/^        from .pyTOPP.MRMFeatureValidator import MRMFeatureValidator$/;"	kind:namespace	line:269
 MRMFeatureValidator	smartPeak/pyTOPP/MRMFeatureValidator.py	/^class MRMFeatureValidator():$/;"	kind:class	line:11
 MRMFeatureValidator.py	smartPeak/pyTOPP/MRMFeatureValidator.py	1;"	kind:file	line:1
 MRMGroupMapper	smartPeak/pyTOPP/MRMGroupMapper.py	/^class MRMGroupMapper():$/;"	kind:class	line:11
@@ -29,15 +29,15 @@ MRMTransitionGroupPicker	smartPeak/smartPeak_MRMTransitionGroupPicker_py.py	/^fr
 MRMTransitionGroupPicker	smartPeak/smartPeak_PeakPickerMRM_py.py	/^from .pyTOPP.MRMTransitionGroupPicker import MRMTransitionGroupPicker$/;"	kind:namespace	line:9
 MRMTransitionGroupPicker.py	smartPeak/pyTOPP/MRMTransitionGroupPicker.py	1;"	kind:file	line:1
 MRMTransitionGroupPicker_py	smartPeak/smartPeak_MRMTransitionGroupPicker_py.py	/^    def MRMTransitionGroupPicker_py(self,$/;"	kind:member	line:79
-Model	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        from optlang.glpk_interface import Model, Variable, Constraint, Objective$/;"	kind:namespace	line:247
-Objective	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        from optlang.glpk_interface import Model, Variable, Constraint, Objective$/;"	kind:namespace	line:247
+Model	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        from optlang.glpk_interface import Model, Variable, Constraint, Objective$/;"	kind:namespace	line:223
+Objective	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        from optlang.glpk_interface import Model, Variable, Constraint, Objective$/;"	kind:namespace	line:223
 OpenSwathChromatogramExtractor	smartPeak/pyTOPP/OpenSwathChromatogramExtractor.py	/^class OpenSwathChromatogramExtractor():$/;"	kind:class	line:12
 OpenSwathChromatogramExtractor	smartPeak/smartPeak_MRMTransitionGroupPicker_py.py	/^from .pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor$/;"	kind:namespace	line:5
 OpenSwathChromatogramExtractor	smartPeak/smartPeak_PeakPickerMRM_py.py	/^from .pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor$/;"	kind:namespace	line:5
 OpenSwathChromatogramExtractor	smartPeak/smartPeak_isotopeLabeledQuantitation_py.py	/^from .pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor$/;"	kind:namespace	line:5
 OpenSwathChromatogramExtractor	smartPeak/smartPeak_openSWATH_py.py	/^from .pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor$/;"	kind:namespace	line:7
 OpenSwathChromatogramExtractor.py	smartPeak/pyTOPP/OpenSwathChromatogramExtractor.py	1;"	kind:file	line:1
-OpenSwathFeatureXMLToTSV	smartPeak/__main__.py	/^        from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV$/;"	kind:namespace	line:270
+OpenSwathFeatureXMLToTSV	smartPeak/__main__.py	/^        from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV$/;"	kind:namespace	line:271
 OpenSwathFeatureXMLToTSV	smartPeak/pyTOPP/OpenSwathFeatureXMLToTSV.py	/^class OpenSwathFeatureXMLToTSV():$/;"	kind:class	line:7
 OpenSwathFeatureXMLToTSV	smartPeak/smartPeak_MRMTransitionGroupPicker_py.py	/^from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV$/;"	kind:namespace	line:7
 OpenSwathFeatureXMLToTSV	smartPeak/smartPeak_PeakPickerMRM_py.py	/^from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV$/;"	kind:namespace	line:7
@@ -49,13 +49,14 @@ OpenSwathRTNormalizer	smartPeak/smartPeak_PeakPickerMRM_py.py	/^from .pyTOPP.Ope
 OpenSwathRTNormalizer	smartPeak/smartPeak_openSWATH_py.py	/^from .pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer$/;"	kind:namespace	line:8
 OpenSwathRTNormalizer.py	smartPeak/pyTOPP/OpenSwathRTNormalizer.py	1;"	kind:file	line:1
 PeakPickerMRM_py	smartPeak/smartPeak_PeakPickerMRM_py.py	/^    def PeakPickerMRM_py(self,$/;"	kind:member	line:79
-ReferenceData	smartPeak/__main__.py	/^        from .data.ReferenceData import ReferenceData$/;"	kind:namespace	line:207
+ReferenceData	smartPeak/__main__.py	/^        from .data.ReferenceData import ReferenceData$/;"	kind:namespace	line:208
 ReferenceData	smartPeak/data/ReferenceData.py	/^class ReferenceData(sbaas_base):$/;"	kind:class	line:8
 ReferenceData.py	smartPeak/data/ReferenceData.py	1;"	kind:file	line:1
 RetentionComponents	smartPeak/data/RetentionComponents.py	/^class RetentionComponents():$/;"	kind:class	line:10
 RetentionComponents.py	smartPeak/data/RetentionComponents.py	1;"	kind:file	line:1
-S	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        from sympy import S$/;"	kind:namespace	line:248
-Variable	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        from optlang.glpk_interface import Model, Variable, Constraint, Objective$/;"	kind:namespace	line:247
+S	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        from sympy import S$/;"	kind:namespace	line:224
+StringIO	smartPeak/smartPeak.py	/^        from io import StringIO$/;"	kind:namespace	line:308
+Variable	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        from optlang.glpk_interface import Model, Variable, Constraint, Objective$/;"	kind:namespace	line:223
 __init__	smartPeak/smartPeak_MRMTransitionGroupPicker_py.py	/^    def __init__(self):$/;"	kind:member	line:17
 __init__	smartPeak/smartPeak_PeakPickerMRM_py.py	/^    def __init__(self):$/;"	kind:member	line:17
 __init__	smartPeak/smartPeak_isotopeLabeledQuantitation_py.py	/^    def __init__(self):$/;"	kind:member	line:13
@@ -72,14 +73,14 @@ algorithm	smartPeak/pyTOPP/MRMMapper.py	/^    def algorithm(self, chromatogram_m
 allAssaysHaveChromatograms	smartPeak/pyTOPP/MRMGroupMapper.py	/^    def allAssaysHaveChromatograms(self):$/;"	kind:member	line:59
 base_exportData	smartPeak/smartPeak_o.py	/^from io_utilities.base_exportData import base_exportData$/;"	kind:namespace	line:4
 calculateConcentrations	smartPeak/smartPeak_isotopeLabeledQuantitation_py.py	/^    def calculateConcentrations(self):$/;"	kind:member	line:16
-calculate_statisticsDescriptive	smartPeak/__main__.py	/^        from python_statistics.calculate_statisticsDescriptive import calculate_statisticsDescriptive$/;"	kind:namespace	line:242
-calculate_validationMetrics	smartPeak/pyTOPP/MRMFeatureValidator.py	/^    def calculate_validationMetrics(self,y_true,y_pred,verbose_I=False):$/;"	kind:member	line:85
+calculate_statisticsDescriptive	smartPeak/__main__.py	/^        from python_statistics.calculate_statisticsDescriptive import calculate_statisticsDescriptive$/;"	kind:namespace	line:243
+calculate_validationMetrics	smartPeak/pyTOPP/MRMFeatureValidator.py	/^    def calculate_validationMetrics(self,y_true,y_pred,verbose_I=False):$/;"	kind:member	line:100
 castString	smartPeak/smartPeak.py	/^    def castString(str_I,type_I):$/;"	kind:member	line:241
 ceil	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        from math import floor, ceil$/;"	kind:namespace	line:45
 checkParameterValue	smartPeak/smartPeak.py	/^    def checkParameterValue(value_I):$/;"	kind:member	line:225
-compareValues	smartPeak/smartPeak.py	/^    def compareValues(value_1_I,value_2_I,comparator_I):$/;"	kind:member	line:339
+compareValues	smartPeak/smartPeak.py	/^    def compareValues(value_1_I,value_2_I,comparator_I):$/;"	kind:member	line:362
 convert_FeatureXMLToTSV	smartPeak/pyTOPP/OpenSwathFeatureXMLToTSV.py	/^    def convert_FeatureXMLToTSV(self, features, targ, run_id = 'run0', filename = 'run0.FeatureXML'):$/;"	kind:member	line:136
-convert_MQQMethod2Feature	smartPeak/__main__.py	/^    def convert_MQQMethod2Feature(self,filename_I,filename_O):$/;"	kind:member	line:129
+convert_MQQMethod2Feature	smartPeak/__main__.py	/^    def convert_MQQMethod2Feature(self,filename_I,filename_O):$/;"	kind:member	line:130
 convert_MQQMethod2Feature	smartPeak/smartPeak.py	/^    def convert_MQQMethod2Feature(self,MQQMethod_I):$/;"	kind:member	line:77
 convert_byte2String	smartPeak/smartPeak.py	/^    def convert_byte2String(byte_I, encoding_I='utf-8'):$/;"	kind:member	line:40
 convert_string2Byte	smartPeak/smartPeak.py	/^    def convert_string2Byte(string_I, encoding_I='utf-8'):$/;"	kind:member	line:59
@@ -94,6 +95,7 @@ copy	smartPeak/pyTOPP/OpenSwathChromatogramExtractor.py	/^import copy, sys$/;"	k
 copy	smartPeak/smartPeak_i.py	/^import copy$/;"	kind:namespace	line:2
 copy	smartPeak/smartPeak_openSWATH_py.py	/^import copy$/;"	kind:namespace	line:3
 csv	smartPeak/pyTOPP/OpenSwathFeatureXMLToTSV.py	/^import csv, sys$/;"	kind:namespace	line:1
+csv	smartPeak/smartPeak.py	/^        import csv$/;"	kind:namespace	line:307
 csv	smartPeak/smartPeak_i.py	/^import csv,sys$/;"	kind:namespace	line:1
 csv	smartPeak/smartPeak_o.py	/^import csv, sys, json, io$/;"	kind:namespace	line:2
 csv	smartPeak/smartPeak_openSWATH_cmd.py	/^import csv, sys$/;"	kind:namespace	line:3
@@ -118,9 +120,10 @@ get_header	smartPeak/pyTOPP/OpenSwathFeatureXMLToTSV.py	/^    def get_header(sel
 get_referenceData	smartPeak/data/ReferenceData.py	/^    def get_referenceData($/;"	kind:member	line:13
 get_retentionComponents	smartPeak/data/RetentionComponents.py	/^    def get_retentionComponents($/;"	kind:member	line:15
 io	smartPeak/smartPeak_o.py	/^import csv, sys, json, io$/;"	kind:namespace	line:2
-isfloat	smartPeak/smartPeak.py	/^        def isfloat(str_i):$/;"	kind:function	line:305
+isBool	smartPeak/smartPeak.py	/^        def isBool(str_I):$/;"	kind:function	line:319
+isfloat	smartPeak/smartPeak.py	/^        def isfloat(str_i):$/;"	kind:function	line:310
 isotopeLabeledQuantitation_py	smartPeak/smartPeak_isotopeLabeledQuantitation_py.py	/^    def isotopeLabeledQuantitation_py(self,$/;"	kind:member	line:26
-itemgetter	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        from operator import itemgetter$/;"	kind:namespace	line:67
+itemgetter	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        from operator import itemgetter$/;"	kind:namespace	line:73
 json	smartPeak/smartPeak_o.py	/^import csv, sys, json, io$/;"	kind:namespace	line:2
 m	debug_local.py	/^m = __main__()$/;"	kind:variable	line:4
 m	debug_remote.py	/^m = __main__()$/;"	kind:variable	line:10
@@ -132,27 +135,27 @@ make_osCmd	smartPeak/smartPeak.py	/^    def make_osCmd(paramDict_I, functionName
 make_retentionTimePairs	smartPeak/pyTOPP/OpenSwathRTNormalizer.py	/^    def make_retentionTimePairs($/;"	kind:member	line:46
 make_transformation	smartPeak/pyTOPP/OpenSwathRTNormalizer.py	/^    def make_transformation($/;"	kind:member	line:130
 map_retentionComponents2Trafo	smartPeak/data/RetentionComponents.py	/^    def map_retentionComponents2Trafo($/;"	kind:member	line:82
-metrics	smartPeak/pyTOPP/MRMFeatureValidator.py	/^        from sklearn import metrics$/;"	kind:namespace	line:102
+metrics	smartPeak/pyTOPP/MRMFeatureValidator.py	/^        from sklearn import metrics$/;"	kind:namespace	line:117
 normalize_retentionComponents	smartPeak/data/RetentionComponents.py	/^    def normalize_retentionComponents($/;"	kind:member	line:62
-np	smartPeak/pyTOPP/MRMFeatureValidator.py	/^        import numpy as np$/;"	kind:namespace	line:101
+np	smartPeak/pyTOPP/MRMFeatureValidator.py	/^        import numpy as np$/;"	kind:namespace	line:116
 openSWATH_cmd	smartPeak/smartPeak_openSWATH_cmd.py	/^    def openSWATH_cmd(self, verbose_I=False):$/;"	kind:member	line:17
 openSWATH_py	smartPeak/smartPeak_openSWATH_py.py	/^    def openSWATH_py(self,$/;"	kind:member	line:22
-optimize_Tr	smartPeak/pyTOPP/MRMFeatureSelector.py	/^    def optimize_Tr($/;"	kind:member	line:224
+optimize_Tr	smartPeak/pyTOPP/MRMFeatureSelector.py	/^    def optimize_Tr($/;"	kind:member	line:191
 os	smartPeak/pyTOPP/OpenSwathChromatogramExtractor.py	/^import os,sys$/;"	kind:namespace	line:2
 os	smartPeak/pyTOPP/OpenSwathRTNormalizer.py	/^import os,sys$/;"	kind:namespace	line:1
 os	smartPeak/smartPeak.py	/^import os$/;"	kind:namespace	line:2
-parseString	smartPeak/smartPeak.py	/^    def parseString(str_I):$/;"	kind:member	line:284
+parseString	smartPeak/smartPeak.py	/^    def parseString(self,str_I,encode_str_I = True):$/;"	kind:member	line:284
 parse_MQTransitionName	smartPeak/smartPeak.py	/^    def parse_MQTransitionName(name_I):$/;"	kind:member	line:127
 parse_openMSParams	smartPeak/smartPeak_i.py	/^    def parse_openMSParams(self):$/;"	kind:member	line:9
 parse_openSWATH_cmd_params	smartPeak/smartPeak_openSWATH_cmd.py	/^    def parse_openSWATH_cmd_params(self, data_I):$/;"	kind:member	line:37
 parse_pythonParams	smartPeak/smartPeak_i.py	/^    def parse_pythonParams(self):$/;"	kind:member	line:90
 pickExperiment	smartPeak/pyTOPP/MRMTransitionGroupPicker.py	/^    def pickExperiment(self, exp, targeted, picker, feature_finder,$/;"	kind:member	line:101
 pickTransitionGroups	smartPeak/pyTOPP/MRMTransitionGroupPicker.py	/^    def pickTransitionGroups(self, exp, targeted, picker):$/;"	kind:member	line:68
-postgresql_orm	smartPeak/__main__.py	/^        from SBaaS_base.postgresql_orm import postgresql_orm$/;"	kind:namespace	line:199
-postgresql_settings	smartPeak/__main__.py	/^        from SBaaS_base.postgresql_settings import postgresql_settings$/;"	kind:namespace	line:198
+postgresql_orm	smartPeak/__main__.py	/^        from SBaaS_base.postgresql_orm import postgresql_orm$/;"	kind:namespace	line:200
+postgresql_settings	smartPeak/__main__.py	/^        from SBaaS_base.postgresql_settings import postgresql_settings$/;"	kind:namespace	line:199
 process_referenceData	smartPeak/data/ReferenceData.py	/^    def process_referenceData(self,$/;"	kind:member	line:201
 ptvsd	debug_remote.py	/^import ptvsd$/;"	kind:namespace	line:3
-pyopenms	smartPeak/__main__.py	/^            import pyopenms$/;"	kind:namespace	line:274
+pyopenms	smartPeak/__main__.py	/^            import pyopenms$/;"	kind:namespace	line:275
 pyopenms	smartPeak/pyTOPP/MRMFeatureFilter.py	/^    import pyopenms$/;"	kind:namespace	line:7
 pyopenms	smartPeak/pyTOPP/MRMFeatureSelector.py	/^    import pyopenms$/;"	kind:namespace	line:7
 pyopenms	smartPeak/pyTOPP/MRMFeatureValidator.py	/^    import pyopenms$/;"	kind:namespace	line:7
@@ -173,17 +176,17 @@ read_pythonParams	smartPeak/smartPeak_i.py	/^    def read_pythonParams(self, fil
 runAllTests	smartPeak/test_smartPeak.py	/^    def runAllTests(self):$/;"	kind:member	line:54
 run_MRMTransitionGroupPicker_py	smartPeak/__main__.py	/^    def run_MRMTransitionGroupPicker_py($/;"	kind:member	line:59
 run_PeakPickerMRM_py	smartPeak/__main__.py	/^    def run_PeakPickerMRM_py($/;"	kind:member	line:30
-run_get_referenceData	smartPeak/__main__.py	/^    def run_get_referenceData(self,$/;"	kind:member	line:167
+run_get_referenceData	smartPeak/__main__.py	/^    def run_get_referenceData(self,$/;"	kind:member	line:168
 run_openSWATH_cmd	smartPeak/__main__.py	/^    def run_openSWATH_cmd($/;"	kind:member	line:7
 run_openSWATH_py	smartPeak/__main__.py	/^    def run_openSWATH_py($/;"	kind:member	line:91
 run_osCmd	smartPeak/smartPeak.py	/^    def run_osCmd(cmd_I, verbose_I=False):$/;"	kind:member	line:28
-run_testSmartPeak	smartPeak/__main__.py	/^    def run_testSmartPeak(self):$/;"	kind:member	line:124
-run_validate_openSWATH	smartPeak/__main__.py	/^    def run_validate_openSWATH(self,$/;"	kind:member	line:256
+run_testSmartPeak	smartPeak/__main__.py	/^    def run_testSmartPeak(self):$/;"	kind:member	line:125
+run_validate_openSWATH	smartPeak/__main__.py	/^    def run_validate_openSWATH(self,$/;"	kind:member	line:257
 sbaas_base	smartPeak/data/ReferenceData.py	/^from SBaaS_base.sbaas_base import sbaas_base$/;"	kind:namespace	line:1
 sbaas_base_query_select	smartPeak/data/ReferenceData.py	/^from SBaaS_base.sbaas_base_query_select import sbaas_base_query_select$/;"	kind:namespace	line:2
-schedule_MRMFeatures_qmip	smartPeak/pyTOPP/MRMFeatureSelector.py	/^    def schedule_MRMFeatures_qmip($/;"	kind:member	line:398
+schedule_MRMFeatures_qmip	smartPeak/pyTOPP/MRMFeatureSelector.py	/^    def schedule_MRMFeatures_qmip($/;"	kind:member	line:378
 select_MRMFeatures_qmip	smartPeak/pyTOPP/MRMFeatureSelector.py	/^    def select_MRMFeatures_qmip($/;"	kind:member	line:16
-select_MRMFeatures_score	smartPeak/pyTOPP/MRMFeatureSelector.py	/^    def select_MRMFeatures_score($/;"	kind:member	line:183
+select_MRMFeatures_score	smartPeak/pyTOPP/MRMFeatureSelector.py	/^    def select_MRMFeatures_score($/;"	kind:member	line:444
 setParameters	smartPeak/smartPeak.py	/^    def setParameters(self,parameters_I,Param_O):$/;"	kind:member	line:190
 simple_find_best_feature	smartPeak/pyTOPP/OpenSwathRTNormalizer.py	/^    def simple_find_best_feature(self, output, pairs, targeted):$/;"	kind:member	line:17
 smartPeak	smartPeak/__main__.py	/^from .smartPeak import smartPeak$/;"	kind:namespace	line:2
@@ -207,7 +210,7 @@ smartPeak_PeakPickerMRM_py.py	smartPeak/smartPeak_PeakPickerMRM_py.py	1;"	kind:f
 smartPeak_i	smartPeak/__main__.py	/^from .smartPeak_i import smartPeak_i$/;"	kind:namespace	line:3
 smartPeak_i	smartPeak/smartPeak_i.py	/^class smartPeak_i(base_importData):$/;"	kind:class	line:6
 smartPeak_i	smartPeak/smartPeak_openSWATH_cmd.py	/^from .smartPeak_i import smartPeak_i$/;"	kind:namespace	line:6
-smartPeak_i	smartPeak/smartPeak_openSWATH_py.py	/^        from .smartPeak_i import smartPeak_i$/;"	kind:namespace	line:167
+smartPeak_i	smartPeak/smartPeak_openSWATH_py.py	/^        from .smartPeak_i import smartPeak_i$/;"	kind:namespace	line:177
 smartPeak_i.py	smartPeak/smartPeak_i.py	1;"	kind:file	line:1
 smartPeak_isotopeLabeledQuantitation_py	smartPeak/smartPeak_isotopeLabeledQuantitation_py.py	/^class smartPeak_isotopeLabeledQuantitation_py():$/;"	kind:class	line:12
 smartPeak_isotopeLabeledQuantitation_py.py	smartPeak/smartPeak_isotopeLabeledQuantitation_py.py	1;"	kind:file	line:1
@@ -218,7 +221,7 @@ smartPeak_openSWATH_cmd	smartPeak/__main__.py	/^        from .smartPeak_openSWAT
 smartPeak_openSWATH_cmd	smartPeak/smartPeak_openSWATH_cmd.py	/^class smartPeak_openSWATH_cmd():$/;"	kind:class	line:9
 smartPeak_openSWATH_cmd.py	smartPeak/smartPeak_openSWATH_cmd.py	1;"	kind:file	line:1
 smartPeak_openSWATH_py	smartPeak/__main__.py	/^        from .smartPeak_openSWATH_py import smartPeak_openSWATH_py$/;"	kind:namespace	line:106
-smartPeak_openSWATH_py	smartPeak/__main__.py	/^        from .smartPeak_openSWATH_py import smartPeak_openSWATH_py$/;"	kind:namespace	line:272
+smartPeak_openSWATH_py	smartPeak/__main__.py	/^        from .smartPeak_openSWATH_py import smartPeak_openSWATH_py$/;"	kind:namespace	line:273
 smartPeak_openSWATH_py	smartPeak/smartPeak_openSWATH_py.py	/^class smartPeak_openSWATH_py():$/;"	kind:class	line:18
 smartPeak_openSWATH_py	smartPeak/test_smartPeak.py	/^from .smartPeak_openSWATH_py import smartPeak_openSWATH_py$/;"	kind:namespace	line:3
 smartPeak_openSWATH_py.py	smartPeak/smartPeak_openSWATH_py.py	1;"	kind:file	line:1
@@ -237,12 +240,12 @@ sys	smartPeak/smartPeak_o.py	/^import csv, sys, json, io$/;"	kind:namespace	line
 sys	smartPeak/smartPeak_openSWATH_cmd.py	/^import csv, sys$/;"	kind:namespace	line:3
 test_make_osCmd	smartPeak/test_smartPeak.py	/^    def test_make_osCmd(self, verbose_I=False):$/;"	kind:member	line:10
 test_parseString	smartPeak/test_smartPeak.py	/^    def test_parseString(self, verbose_I=False):$/;"	kind:member	line:39
-test_smartPeak	smartPeak/__main__.py	/^        from .test_smartPeak import test_smartPeak$/;"	kind:namespace	line:125
+test_smartPeak	smartPeak/__main__.py	/^        from .test_smartPeak import test_smartPeak$/;"	kind:namespace	line:126
 test_smartPeak	smartPeak/test_smartPeak.py	/^class test_smartPeak():$/;"	kind:class	line:6
 test_smartPeak.py	smartPeak/test_smartPeak.py	1;"	kind:file	line:1
-time	smartPeak/__main__.py	/^        import time as time$/;"	kind:namespace	line:196
-time	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        import time as time$/;"	kind:namespace	line:249
-time	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        import time as time$/;"	kind:namespace	line:404
+time	smartPeak/__main__.py	/^        import time as time$/;"	kind:namespace	line:197
+time	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        import time as time$/;"	kind:namespace	line:225
+time	smartPeak/pyTOPP/MRMFeatureSelector.py	/^        import time as time$/;"	kind:namespace	line:384
 transform_targetedExperiment	smartPeak/pyTOPP/OpenSwathRTNormalizer.py	/^    def transform_targetedExperiment(self,trafo,targeted):$/;"	kind:member	line:226
 transform_targetedExperimentCSV	smartPeak/pyTOPP/OpenSwathRTNormalizer.py	/^    def transform_targetedExperimentCSV(self,trafo,targeted):$/;"	kind:member	line:241
 unittest	smartPeak/pyTOPP/OpenSwathChromatogramExtractor.py	/^import unittest$/;"	kind:namespace	line:1
