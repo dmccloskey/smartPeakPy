@@ -409,14 +409,7 @@ class MRMFeatureSelector():
         if "variable_types" in select_criteria_dict.keys():
             variable_types = select_criteria_dict["variable_types"]
         if "optimal_thresholds" in select_criteria_dict.keys():
-            optimal_thresholds = select_criteria_dict["optimal_thresholds"]   
-        if len(segment_window_lengths) != len(segment_step_lengths):
-            print("The number of segment_window_lengths != number of segment_step_lengths")
-            print("Truncating lists to the smallest length.")
-            if len(segment_window_lengths) < len(segment_step_lengths):
-                segment_step_lengths = segment_step_lengths[:len(segment_window_lengths)-1]
-            else:
-                segment_window_lengths = segment_window_lengths[:len(segmentation_window_lengths)-1]				
+            optimal_thresholds = select_criteria_dict["optimal_thresholds"]   				
 				
         # Select optimal retention times
         print("Selecting optimal Tr in iterations")
