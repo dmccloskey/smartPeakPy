@@ -111,12 +111,12 @@ class smartPeak_openSWATH_py():
             )
         featurefinder.setParameters(parameters)        
 
-        # # prepare the model parameters for RTNormalization (interpolation)
-        # model_params_list = [{'name':'interpolation_type','value':'linear','type':'string'},
-        #     {'name':'extrapolation_type','value':'two-point-linear','type':'string'},
-        # ]
-        # model_params = pyopenms.Param()
-        # model_params = smartpeak.setParameters(model_params_list,model_params)
+        # # # prepare the model parameters for RTNormalization (interpolation)
+        # # model_params_list = [{'name':'interpolation_type','value':'linear','type':'string'},
+        # #     {'name':'extrapolation_type','value':'two-point-linear','type':'string'},
+        # # ]
+        # # model_params = pyopenms.Param()
+        # # model_params = smartpeak.setParameters(model_params_list,model_params)
 
         # load and make the transition file for RTNormalization 
         targeted_rt_norm = pyopenms.TargetedExperiment()
@@ -148,15 +148,22 @@ class smartPeak_openSWATH_py():
         # # Store outfile as featureXML
         # featurexml = pyopenms.FeatureXMLFile()
         # featurexml.store(featureXML_o.encode('utf-8'), output)
-
-        # # Store the outfile as csv
-        # featurescsv = OpenSwathFeatureXMLToTSV()
-        # featurescsv.store(feature_csv_o, output, targeted, run_id = 'run0', filename = featureXML_o)
+        
+        # Store the outfile as csv
+        featurescsv = OpenSwathFeatureXMLToTSV()
+        filename = chromatograms_mapped.getLoadedFilePath().decode('utf-8').replace('file://','')
+        samplename_list = chromatograms_mapped.getMetaValue(b'mzml_id').decode('utf-8').split('-')
+        samplename = '-'.join(samplename_list[1:])
+        featurescsv.store(feature_csv_o, output, targeted,
+            run_id = samplename,
+            filename = filename
+            )
 
         # filter features
         featureFilter = MRMFeatureFilter()
         output_filtered = featureFilter.filter_MRMFeatures(
             output,
+            targeted,
             MRMFeatureFilter_filter_params_I)
         
         # Store the outfile as csv
@@ -182,6 +189,7 @@ class smartPeak_openSWATH_py():
         output_selected = featureSelector.schedule_MRMFeatures_qmip(
             features = output_filtered,
             tr_expected = calibrators,    
+            targeted = targeted,
             schedule_criteria = MRMFeatureSelector_schedule_params_I)
         # output_selected = featureSelector.select_MRMFeatures_qmip(
         #     features = output_filtered,

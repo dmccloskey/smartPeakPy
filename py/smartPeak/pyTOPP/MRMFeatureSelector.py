@@ -1,5 +1,6 @@
 #utilities
 import copy
+from math import log
 #modules
 from smartPeak.smartPeak import smartPeak
 #3rd part libraries
@@ -90,12 +91,16 @@ class MRMFeatureSelector():
             component_group_name = feature.getMetaValue("PeptideRef").decode('utf-8')
             retention_time = feature.getRT()
             transition_id = feature.getUniqueId()
+            keys = []
+            feature.getKeys(keys)
+            feature_metaValues = {k.decode('utf-8'):feature.getMetaValue(k) for k in keys}
             if select_transition_groups:                
                 if not component_group_name in Tr_expected_dict.keys():
                     continue
                 tmp = {'component_group_name':component_group_name,
                     'component_name':component_group_name, #note component_name ~ component_group_name
                     'retention_time':retention_time,'transition_id':transition_id}
+                tmp.update(feature_metaValues)
                 if not component_group_name in Tr_dict.keys():
                     Tr_dict[component_group_name] = []
                 Tr_dict[component_group_name].append(tmp)
@@ -103,10 +108,15 @@ class MRMFeatureSelector():
             else:
                 for subordinate in feature.getSubordinates():
                     component_name = subordinate.getMetaValue('native_id').decode('utf-8')
+                    keys = []
+                    subordinate.getKeys(keys)
+                    subordinate_metaValues = {k.decode('utf-8'):subordinate.getMetaValue(k) for k in keys}
                     if not component_name in Tr_expected_dict.keys():
                         continue
                     tmp = {'component_group_name':component_group_name,'component_name':component_name,
                         'retention_time':retention_time,'transition_id':transition_id}
+                    tmp.update(feature_metaValues)
+                    tmp.update(subordinate_metaValues)
                     if not component_name in Tr_dict.keys():
                         Tr_dict[component_name] = []
                     Tr_dict[component_name].append(tmp)
@@ -246,6 +256,10 @@ class MRMFeatureSelector():
                     model.add(variables[variable_name_1])
                     component_names_1.append(component_name_1)
                     n_variables += 1
+                # score_1 = (1/log(Tr_dict[component_name_1][i_1]['peak_apices_sum']))\
+                #     *(1/log(Tr_dict[component_name_1][i_1]['sn_ratio']))
+                score_1 = (1/log(Tr_dict[component_name_1][i_1]['sn_ratio']))\
+                    *(1/log(Tr_dict[component_name_1][i_1]['rt_score']))
                 #constraint capture 1
                 constraints.append(variables[variable_name_1])
                 #iterate over nearest neighbors
@@ -266,6 +280,10 @@ class MRMFeatureSelector():
                             variables[variable_name_2] = Variable(variable_name_2, lb=0, ub=1, type="integer")
                             model.add(variables[variable_name_2])
                             n_variables += 1
+                        # score_2 = (1/log(Tr_dict[component_name_2][i_2]['peak_apices_sum']))\
+                        #     *(1/log(Tr_dict[component_name_2][i_2]['sn_ratio']))
+                        score_2 = (1/log(Tr_dict[component_name_2][i_2]['sn_ratio']))\
+                            *(1/log(Tr_dict[component_name_2][i_2]['rt_score']))
                         #record the objective
                         obj_constraints = []
                         tr_delta_expected = Tr_expected_dict[component_name_1]['retention_time'] - Tr_expected_dict[component_name_1]['retention_time']
@@ -324,7 +342,7 @@ class MRMFeatureSelector():
                             name=obj_constraint_name+'-obj+',
                             ub=0))
                         model.constraints[obj_constraint_name+'-obj+'].set_linear_coefficients({
-                            obj_variables[obj_variable_name]:-1,var_qp:locality_weight*(tr_delta-tr_delta_expected)
+                            obj_variables[obj_variable_name]:-1,var_qp:locality_weight*score_1*score_2*(tr_delta-tr_delta_expected)
                         })
                         # model.add(Constraint(
                         #     -var_qp*locality_weight*(tr_delta-tr_delta_expected)-obj_variables[obj_variable_name],
@@ -335,7 +353,7 @@ class MRMFeatureSelector():
                             name=obj_constraint_name+'-obj-',
                             ub=0))
                         model.constraints[obj_constraint_name+'-obj-'].set_linear_coefficients({
-                            obj_variables[obj_variable_name]:-1,var_qp:-locality_weight*(tr_delta-tr_delta_expected)
+                            obj_variables[obj_variable_name]:-1,var_qp:-locality_weight*score_1*score_2*(tr_delta-tr_delta_expected)
                         })
                         n_constraints += 5 
                         n_variables += 2
@@ -378,8 +396,9 @@ class MRMFeatureSelector():
     def schedule_MRMFeatures_qmip(
         self,
         features,
-        tr_expected,
-        schedule_criteria):
+        targeted = None,
+        tr_expected = [],
+        schedule_criteria = []):
 
         import time as time
         smartpeak = smartPeak()

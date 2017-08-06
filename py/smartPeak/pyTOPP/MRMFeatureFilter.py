@@ -71,12 +71,14 @@ class MRMFeatureFilter():
 
     def filter_MRMFeatures(
         self,features,
+        targeted = None,
         filter_criteria=[],       
         ):
         """Filter features from a FeatureMap that satisfy a filter criteria
         
         Args
             features (FeatureMap):
+            targeted (TraML): TraML input file containt the transitions
             filter_criteria (list,dict): e.g., [{"name":, "value":, }]
 
         Returns

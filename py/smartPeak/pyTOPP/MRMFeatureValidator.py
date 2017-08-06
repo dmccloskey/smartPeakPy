@@ -71,11 +71,11 @@ class MRMFeatureValidator():
                 #      transition-specific, there is no need to loop
                 #      through each transition
                 if fc_pass: #True Positive
-                    subordinate.setMetaValue('validation'.encode('utf-8'),'tp'.encode('utf-8'))
+                    subordinate.setMetaValue('validation'.encode('utf-8'),'TP'.encode('utf-8'))
                     subordinates_tmp.append(subordinate)
                     y_pred.append(1)
                 else: #False Positive
-                    subordinate.setMetaValue('validation'.encode('utf-8'),'fp'.encode('utf-8'))
+                    subordinate.setMetaValue('validation'.encode('utf-8'),'FP'.encode('utf-8'))
                     subordinates_tmp.append(subordinate)
                     y_pred.append(0)
                 # #TESTING:
