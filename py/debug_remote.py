@@ -62,9 +62,9 @@ m.run_openSWATH_py(
 #     settings_filename_I = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini',
 #     data_filename_O = '/home/user/openMS_MRMworkflow/BloodProject01/150601_BloodProject01_Calibrators_referenceData.csv')
 
-# # Test openSWATH validation
-# m.run_validate_openSWATH(
-#     filename_filenames='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_SWATH_filenames.csv',
-#     filename_params='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_validation_params.csv',
-#     delimiter=','
-#     )
+# Test openSWATH validation
+m.run_validate_openSWATH(
+    filename_filenames='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_SWATH_filenames.csv',
+    filename_params='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_validation_params.csv',
+    delimiter=','
+    )

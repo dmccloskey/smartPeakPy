@@ -11,6 +11,7 @@ from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
 from .pyTOPP.MRMFeatureFilter import MRMFeatureFilter
 from .pyTOPP.MRMFeatureSelector import MRMFeatureSelector
 from .pyTOPP.MRMFeatureValidator import MRMFeatureValidator
+from.data.ReferenceDataMethods import ReferenceDataMethods
 #3rd part libraries
 try:
     import pyopenms
@@ -382,8 +383,22 @@ class smartPeak_openSWATH_py():
             smartpeak_i.clear_data()
             featureValidator= MRMFeatureValidator()
         elif not db_ini_i is None:
-            #TODO
-            pass
+            referenceDataMethods = ReferenceDataMethods()
+            referenceDataMethods.getAndProcess_referenceData_samples(
+                experiment_ids_I,
+                sample_names_I,
+                sample_types_I,
+                acquisition_methods_I,
+                quantitation_method_ids_I,
+                component_names_I,
+                component_group_names_I,
+                where_clause_I,
+                used__I,
+                experiment_limit_I,
+                mqresultstable_limit_I,
+                settings_filename_I = db_ini_i,
+                data_filename_O
+            )
         self.reference_data = reference_data
 
     def validate_py(self,
@@ -394,7 +409,7 @@ class smartPeak_openSWATH_py():
             features_mapped,validation_metrics = featureValidator.validate_MRMFeatures(
                 reference_data = self.reference_data,
                 features = self.featureMap,
-                Tr_window = float(params['validate_MRMFeatures'][0]['value'])
+                Tr_window = float(MRMRFeatureValidator_params_I[0]['value'])
                 )
             self.featureMap_validation = features_mapped
             self.validation_metrics = validation_metrics
