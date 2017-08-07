@@ -123,15 +123,17 @@ class __main__():
                 openSWATH_py.load_SWATHorDIA({})
                 # run the openSWATH workflow for metabolomics
                 openSWATH_py.openSWATH_py(
-                    v,
                     params['MRMFeatureFinderScoring'])
                 openSWATH_py.filterAndSelect_py(
                     v,
                     params['MRMFeatureFilter.filter_MRMFeatures'],
                     params['MRMFeatureSelector.select_MRMFeatures_score'],
                     params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
-                openSWATH_py.store_featureMap(v)
                 # validate the data
+                openSWATH_py.load_validationData(v)
+                openSWATH_py.validate_py(params['MRMFeatureValidator.validate_MRMFeatures'])
+                # store
+                openSWATH_py.store_featureMap(v)
 
     def run_testSmartPeak(self):
         from .test_smartPeak import test_smartPeak

@@ -10,6 +10,7 @@ from .pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
 from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
 from .pyTOPP.MRMFeatureFilter import MRMFeatureFilter
 from .pyTOPP.MRMFeatureSelector import MRMFeatureSelector
+from .pyTOPP.MRMFeatureValidator import MRMFeatureValidator
 #3rd part libraries
 try:
     import pyopenms
@@ -23,6 +24,8 @@ class smartPeak_openSWATH_py():
         self.targeted = None
         self.trafo = None
         self.msExperiment = None
+        self.featureMap_validation = None
+        self.validation_metrics = None
 
     def load_TraML(self,
         filenames_I
@@ -169,7 +172,6 @@ class smartPeak_openSWATH_py():
         self.swath = swath
 
     def openSWATH_py(self,
-        filenames_I,
         MRMFeatureFinderScoring_params_I={},
         ):
         """Run the openSWATH workflow for a single sample
@@ -357,3 +359,42 @@ class smartPeak_openSWATH_py():
         # filename = '''%s/%s''' %(
         #     chromatograms_mapped.getSourceFiles()[0].getPathToFile().decode('utf-8').replace('file://',''),
         #     chromatograms_mapped.getSourceFiles()[0].getNameOfFile().decode('utf-8'))
+
+    def load_validationData(self,
+        filenames_I
+        ):
+        """Load the validation data from file or from a database
+        
+        Args
+
+        Internals
+        
+        """
+        # Handle the filenames
+        referenceData_csv_i,db_ini_i = None,None
+        if 'referenceData_csv_i'in filenames_I.keys(): referenceData_csv_i = filenames_I['referenceData_csv_i']
+        if 'db_ini_i'in filenames_I.keys(): db_ini_i = filenames_I['db_ini_i']
+        # read in the reference data
+        reference_data = []
+        if not referenceData_csv_i is None:
+            smartpeak_i.read_csv(v['referenceData_csv_i'],delimiter)
+            data_ref = smartpeak_i.getData()
+            smartpeak_i.clear_data()
+            featureValidator= MRMFeatureValidator()
+        elif not db_ini_i is None:
+            #TODO
+            pass
+        self.reference_data = reference_data
+
+    def validate_py(self,
+        MRMRFeatureValidator_params_I ={}
+        ):
+        # map the reference data
+        if MRMRFeatureValidator_params_I:
+            features_mapped,validation_metrics = featureValidator.validate_MRMFeatures(
+                reference_data = self.reference_data,
+                features = self.featureMap,
+                Tr_window = float(params['validate_MRMFeatures'][0]['value'])
+                )
+            self.featureMap_validation = features_mapped
+            self.validation_metrics = validation_metrics
