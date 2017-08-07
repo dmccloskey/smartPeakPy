@@ -115,12 +115,23 @@ class __main__():
         for filename in filenames:
             for sample,v in filename.items():
                 print("processing sample "+ sample)
+                # load in the files
+                openSWATH_py.load_MSExperiment(v)
+                openSWATH_py.load_Trafo(v,
+                    params['MRMFeatureFinderScoring'])
+                openSWATH_py.load_TraML(v)
+                openSWATH_py.load_SWATHorDIA({})
+                # run the openSWATH workflow for metabolomics
                 openSWATH_py.openSWATH_py(
                     v,
-                    params['MRMFeatureFinderScoring'],
+                    params['MRMFeatureFinderScoring'])
+                openSWATH_py.filterAndSelect_py(
+                    v,
                     params['MRMFeatureFilter.filter_MRMFeatures'],
                     params['MRMFeatureSelector.select_MRMFeatures_score'],
                     params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
+                openSWATH_py.store_featureMap(v)
+                # validate the data
 
     def run_testSmartPeak(self):
         from .test_smartPeak import test_smartPeak
@@ -164,95 +175,6 @@ class __main__():
         ]
         smartpeak_o = smartPeak_o(features)
         smartpeak_o.write_dict2csv(filename_O,headers=headers)
-
-    def run_get_referenceData(self,
-        experiment_ids_I = [],
-        sample_names_I = [],
-        sample_types_I = [],
-        acquisition_methods_I = [],
-        quantitation_method_ids_I = [],
-        component_names_I = [],
-        component_group_names_I = [],
-        where_clause_I = '',
-        used__I = True,
-        experiment_limit_I = 10000,
-        mqresultstable_limit_I = 1000000,
-        settings_filename_I = 'settings.ini',
-        data_filename_O = ''):
-        """
-        Args
-
-        Returns
-
-        Example
-
-        Todo:
-            1. make seperate script
-            2. break into 3 functions
-                get_referenceData
-                get_referenceData_sample
-                get_referenceData_calibrators
-
-        """
-        import time as time
-        # DB settings
-        from SBaaS_base.postgresql_settings import postgresql_settings
-        from SBaaS_base.postgresql_orm import postgresql_orm
-        pg_settings = postgresql_settings(settings_filename_I)
-        pg_orm = postgresql_orm()
-        pg_orm.set_sessionFromSettings(pg_settings.database_settings)
-        session = pg_orm.get_session()
-        engine = pg_orm.get_engine()
-        # query the reference data
-        st = time.time()
-        from .data.ReferenceData import ReferenceData
-        referenceData = ReferenceData(session,engine,pg_settings.datadir_settings)
-        print("query the reference data")
-        data_ref = referenceData.get_referenceData(
-            experiment_ids_I = experiment_ids_I,
-            sample_names_I = sample_names_I,
-            sample_types_I = sample_types_I,
-            acquisition_methods_I = acquisition_methods_I,
-            quantitation_method_ids_I = quantitation_method_ids_I,
-            component_names_I = component_names_I,
-            component_group_names_I = component_group_names_I,
-            where_clause_I = where_clause_I,
-            used__I = used__I,
-            experiment_limit_I = experiment_limit_I,
-            mqresultstable_limit_I = mqresultstable_limit_I,
-        )
-        elapsed_time = time.time() - st
-        print("Elapsed time: %.2fs" % elapsed_time)
-        session.close()
-        # process the reference data
-        print("process the reference data")
-        data_ref_processed = referenceData.process_referenceData(data_ref)
-        elapsed_time = time.time() - st - elapsed_time
-        print("Elapsed time: %.2fs" % elapsed_time)
-        # if data_filename_O:
-        #     smartpeak_o = smartPeak_o(data_ref_processed)
-        #     smartpeak_o.write_dict2csv(filename = data_filename_O)
-        # callapse the reference data to the average retention time
-        calibrators_rt_dict = {} #{'component_name':[Tr]}
-        for row in data_ref_processed:
-            key = (row['component_name'],row['component_group_name'],row['experiment_id'],row['acquisition_method_id'],row['quantitation_method_id'])
-            if not key in calibrators_rt_dict.keys():
-                calibrators_rt_dict[key] = []
-            calibrators_rt_dict[key].append(row['retention_time'])
-        # calculate the descriptive statistics for each component
-        from python_statistics.calculate_statisticsDescriptive import calculate_statisticsDescriptive
-        descStats = calculate_statisticsDescriptive()
-        calibrators_rt_list = []
-        for k,v in calibrators_rt_dict.items():
-            tmp = {'component_name':k[0],'component_group_name':k[1],'experiment_id':k[2],'acquisition_method_id':k[3],'quantitation_method_id':k[4],
-                'sample_name':'Calibrators'}
-            out = descStats.calculate_descriptiveStats(data_I=v)
-            tmp.update(out)
-            tmp['retention_time'] = tmp['mean']
-            calibrators_rt_list.append(tmp)
-        if data_filename_O:
-            smartpeak_o = smartPeak_o(calibrators_rt_list)
-            smartpeak_o.write_dict2csv(filename = data_filename_O)
         
     def run_validate_openSWATH(self,
         filename_filenames='',
@@ -296,7 +218,7 @@ class __main__():
                 data_ref = smartpeak_i.getData()
                 smartpeak_i.clear_data()
                 # map the reference data
-                features_mapped = featureValidator.validate_MRMFeatures(
+                features_mapped,validation_metrics = featureValidator.validate_MRMFeatures(
                     reference_data = data_ref,
                     features = features,
                     Tr_window = float(params['validate_MRMFeatures'][0]['value'])

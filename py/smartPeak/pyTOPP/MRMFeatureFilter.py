@@ -78,7 +78,7 @@ class MRMFeatureFilter():
         
         Args
             features (FeatureMap):
-            targeted (TraML): TraML input file containt the transitions
+            targeted (TraML): TraML input file containing the transitions
             filter_criteria (list,dict): e.g., [{"name":, "value":, }]
 
         Returns
@@ -88,11 +88,14 @@ class MRMFeatureFilter():
         output_filtered = pyopenms.FeatureMap()
         #filter features
         for feature in features:
+            transitions = [t for t in targeted.getTransitions() if t.getPeptideRef() == feature.getMetaValue("PeptideRef")]
             subordinates_tmp = []
             for subordinate in feature.getSubordinates():
                 # print(subordinate.getMetaValue("native_id"))
                 # if subordinate.getMetaValue("native_id")==b'35cgmp.35cgmp_2.Light':
                 #     print('check')
+                transition = [t for t in transitions if t.getNativeID()==subordinate.getMetaValue("native_id")][0]
+                #TODO: extract out filter criteria...
                 fc_pass = True
                 for fc in filter_criteria:
                     fc_value,fc_comparator = fc['value'].split('|')[0],fc['value'].split('|')[1]

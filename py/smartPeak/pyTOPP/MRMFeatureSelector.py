@@ -259,7 +259,7 @@ class MRMFeatureSelector():
                 # score_1 = (1/log(Tr_dict[component_name_1][i_1]['peak_apices_sum']))\
                 #     *(1/log(Tr_dict[component_name_1][i_1]['sn_ratio']))
                 score_1 = (1/log(Tr_dict[component_name_1][i_1]['sn_ratio']))\
-                    *(1/log(Tr_dict[component_name_1][i_1]['rt_score']))
+                    *Tr_dict[component_name_1][i_1]['rt_score']
                 #constraint capture 1
                 constraints.append(variables[variable_name_1])
                 #iterate over nearest neighbors
@@ -283,7 +283,7 @@ class MRMFeatureSelector():
                         # score_2 = (1/log(Tr_dict[component_name_2][i_2]['peak_apices_sum']))\
                         #     *(1/log(Tr_dict[component_name_2][i_2]['sn_ratio']))
                         score_2 = (1/log(Tr_dict[component_name_2][i_2]['sn_ratio']))\
-                            *(1/log(Tr_dict[component_name_2][i_2]['rt_score']))
+                            *Tr_dict[component_name_2][i_2]['rt_score']
                         #record the objective
                         obj_constraints = []
                         tr_delta_expected = Tr_expected_dict[component_name_1]['retention_time'] - Tr_expected_dict[component_name_1]['retention_time']

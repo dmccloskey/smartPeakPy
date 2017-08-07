@@ -94,8 +94,8 @@ class MRMFeatureValidator():
         #         y_pred.append(0)
         #         y_true.append(1)
         # calculate AUC, precision, accuracy, recall
-        auc,accuracy,recall,precision = self.calculate_validationMetrics(y_true,y_pred,verbose_I=True)
-        return output_filtered
+        validation_metrics = self.calculate_validationMetrics(y_true,y_pred,verbose_I=True)
+        return output_filtered,validation_metrics
 
     def calculate_validationMetrics(self,y_true,y_pred,verbose_I=False):
         """
@@ -129,4 +129,5 @@ class MRMFeatureValidator():
             print("accuracy: " + str(accuracy))
             print("recall: " + str(recall))
             print("precision: " + str(precision))
-        return auc,accuracy,recall,precision
+        output = {"AUC":auc,"accuracy":accuracy,"recall":recall,"precision":precision}
+        return output
