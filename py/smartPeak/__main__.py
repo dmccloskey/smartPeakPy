@@ -103,6 +103,7 @@ class __main__():
         Eamples:
             
         """
+        validation_metrics = []
         from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
         openSWATH_py = smartPeak_openSWATH_py()
         smartpeak_i = smartPeak_i()
@@ -134,6 +135,9 @@ class __main__():
                 openSWATH_py.validate_py(params['MRMFeatureValidator.validate_MRMFeatures'])
                 # store
                 openSWATH_py.store_featureMap(v)
+                tmp = openSWATH_py.validation_metrics
+                tmp.update({'sample_name':sample})
+                validation_metrics.append(openSWATH_py.validation_metrics)
 
     def run_testSmartPeak(self):
         from .test_smartPeak import test_smartPeak
