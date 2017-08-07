@@ -100,7 +100,8 @@ class __main__():
             filename (str): name of the workflow parameter filename
             verbose (bool): print command line statements to stdout
             
-        Eamples:
+        TODO:
+            make new method: run_openSWATH_validation_py
             
         """
         validation_metrics = []
@@ -130,14 +131,14 @@ class __main__():
                     params['MRMFeatureFilter.filter_MRMFeatures'],
                     params['MRMFeatureSelector.select_MRMFeatures_score'],
                     params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
-                # validate the data
-                openSWATH_py.load_validationData(v)
-                openSWATH_py.validate_py(params['MRMFeatureValidator.validate_MRMFeatures'])
+                # # validate the data
+                # openSWATH_py.load_validationData(v)
+                # openSWATH_py.validate_py(params['MRMFeatureValidator.validate_MRMFeatures'])
                 # store
                 openSWATH_py.store_featureMap(v)
-                tmp = openSWATH_py.validation_metrics
-                tmp.update({'sample_name':sample})
-                validation_metrics.append(openSWATH_py.validation_metrics)
+                # tmp = openSWATH_py.validation_metrics
+                # tmp.update({'sample_name':sample})
+                # validation_metrics.append(openSWATH_py.validation_metrics)
 
     def run_testSmartPeak(self):
         from .test_smartPeak import test_smartPeak
