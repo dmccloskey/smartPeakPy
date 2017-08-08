@@ -255,8 +255,6 @@ class smartPeak_openSWATH_py():
         if 'calibrators_csv_i'in filenames_I.keys():
             calibrators_csv_i = filenames_I['calibrators_csv_i']
 
-        # internals
-
         # filter features
         featureFilter = MRMFeatureFilter()
         if MRMFeatureFilter_filter_params_I:
@@ -477,3 +475,12 @@ class smartPeak_openSWATH_py():
                 )
             self.featureMap = features_mapped
             self.validation_metrics = validation_metrics
+
+    def clear_data(self):
+        """Remove all data"""        
+        self.featureMap = None
+        self.chromatogram_map = None
+        self.targeted = None
+        self.trafo = None
+        self.msExperiment = None
+        self.validation_metrics = None

@@ -42,7 +42,7 @@ m.run_openSWATH_py(
 #     )
 
 # # Test ReferenceData
-# from .data.ReferenceDataMethods import ReferenceDataMethods
+# from smartPeak.data.ReferenceDataMethods import ReferenceDataMethods
 # refDataMethods = ReferenceDataMethods()
 # # reference data for samples
 # refDataMethods.getAndProcess_referenceData_samples(

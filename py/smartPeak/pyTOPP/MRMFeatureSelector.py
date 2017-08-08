@@ -17,7 +17,7 @@ class MRMFeatureSelector():
     def select_MRMFeatures_qmip(
         self,
         features,
-        tr_expected,
+        tr_expected=[],
         select_criteria=[
             {"name":"nn_threshold", "value":3},
             {"name":"locality_weights", "value":True},
@@ -70,33 +70,70 @@ class MRMFeatureSelector():
             variable_type = select_criteria_dict["variable_type"]
         if "optimal_threshold" in select_criteria_dict.keys():
             optimal_threshold = select_criteria_dict["optimal_threshold"]
+        # #build the retention time dictionaries
+        # from operator import itemgetter
+        # if select_transition_groups:
+        #     Tr_expected_dict = {d['component_group_name']:{
+        #     'retention_time':float(d['retention_time']),
+        #     'component_name':d['component_group_name'], #note component_name ~ component_group_name
+        #     'component_group_name':d['component_group_name'],
+        #     } for d in tr_expected}
+        # else:
+        #     Tr_expected_dict = {d['component_name']:{
+        #     'retention_time':float(d['retention_time']),
+        #     'component_name':d['component_name'],
+        #     'component_group_name':d['component_group_name'],
+        #     } for d in tr_expected}
+        # To_list = sorted(Tr_expected_dict.values(), key=itemgetter('retention_time')) 
+        # Tr_dict = {}
+        # feature_count = 0
+        # for feature in features:
+        #     component_group_name = feature.getMetaValue("PeptideRef").decode('utf-8')
+        #     retention_time = feature.getRT()
+        #     transition_id = feature.getUniqueId()
+        #     keys = []
+        #     feature.getKeys(keys)
+        #     feature_metaValues = {k.decode('utf-8'):feature.getMetaValue(k) for k in keys}
+        #     if select_transition_groups:                
+        #         if not component_group_name in Tr_expected_dict.keys():
+        #             continue
+        #         tmp = {'component_group_name':component_group_name,
+        #             'component_name':component_group_name, #note component_name ~ component_group_name
+        #             'retention_time':retention_time,'transition_id':transition_id}
+        #         tmp.update(feature_metaValues)
+        #         if not component_group_name in Tr_dict.keys():
+        #             Tr_dict[component_group_name] = []
+        #         Tr_dict[component_group_name].append(tmp)
+        #         feature_count += 1
+        #     else:
+        #         for subordinate in feature.getSubordinates():
+        #             component_name = subordinate.getMetaValue('native_id').decode('utf-8')
+        #             keys = []
+        #             subordinate.getKeys(keys)
+        #             subordinate_metaValues = {k.decode('utf-8'):subordinate.getMetaValue(k) for k in keys}
+        #             if not component_name in Tr_expected_dict.keys():
+        #                 continue
+        #             tmp = {'component_group_name':component_group_name,'component_name':component_name,
+        #                 'retention_time':retention_time,'transition_id':transition_id}
+        #             tmp.update(feature_metaValues)
+        #             tmp.update(subordinate_metaValues)
+        #             if not component_name in Tr_dict.keys():
+        #                 Tr_dict[component_name] = []
+        #             Tr_dict[component_name].append(tmp)
+        #             feature_count += 1
         #build the retention time dictionaries
-        from operator import itemgetter
-        if select_transition_groups:
-            Tr_expected_dict = {d['component_group_name']:{
-            'retention_time':float(d['retention_time']),
-            'component_name':d['component_group_name'], #note component_name ~ component_group_name
-            'component_group_name':d['component_group_name'],
-            } for d in tr_expected}
-        else:
-            Tr_expected_dict = {d['component_name']:{
-            'retention_time':float(d['retention_time']),
-            'component_name':d['component_name'],
-            'component_group_name':d['component_group_name'],
-            } for d in tr_expected}
-        To_list = sorted(Tr_expected_dict.values(), key=itemgetter('retention_time')) 
+        Tr_expected_dict = {}
         Tr_dict = {}
         feature_count = 0
         for feature in features:
             component_group_name = feature.getMetaValue("PeptideRef").decode('utf-8')
             retention_time = feature.getRT()
+            assay_retention_time = feature.getMetaValue("assay_rt")
             transition_id = feature.getUniqueId()
             keys = []
             feature.getKeys(keys)
             feature_metaValues = {k.decode('utf-8'):feature.getMetaValue(k) for k in keys}
-            if select_transition_groups:                
-                if not component_group_name in Tr_expected_dict.keys():
-                    continue
+            if select_transition_groups:   
                 tmp = {'component_group_name':component_group_name,
                     'component_name':component_group_name, #note component_name ~ component_group_name
                     'retention_time':retention_time,'transition_id':transition_id}
@@ -105,14 +142,17 @@ class MRMFeatureSelector():
                     Tr_dict[component_group_name] = []
                 Tr_dict[component_group_name].append(tmp)
                 feature_count += 1
+                Tr_expected_dict[component_group_name] = {
+                    'retention_time':assay_retention_time,
+                    'component_name':component_group_name, #note component_name ~ component_group_name
+                    'component_group_name':component_group_name,
+                    }
             else:
                 for subordinate in feature.getSubordinates():
                     component_name = subordinate.getMetaValue('native_id').decode('utf-8')
                     keys = []
                     subordinate.getKeys(keys)
                     subordinate_metaValues = {k.decode('utf-8'):subordinate.getMetaValue(k) for k in keys}
-                    if not component_name in Tr_expected_dict.keys():
-                        continue
                     tmp = {'component_group_name':component_group_name,'component_name':component_name,
                         'retention_time':retention_time,'transition_id':transition_id}
                     tmp.update(feature_metaValues)
@@ -121,6 +161,13 @@ class MRMFeatureSelector():
                         Tr_dict[component_name] = []
                     Tr_dict[component_name].append(tmp)
                     feature_count += 1
+                    Tr_expected_dict[component_group_name] = {
+                        'retention_time':assay_retention_time,
+                        'component_name':component_name, #note component_name ~ component_group_name
+                        'component_group_name':component_group_name,
+                        }
+        from operator import itemgetter
+        To_list = sorted(Tr_expected_dict.values(), key=itemgetter('retention_time')) 
         print("Extracted %s features"%(feature_count))
         # Select optimal retention times
         Tr_optimal_count = {}

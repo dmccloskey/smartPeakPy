@@ -100,9 +100,6 @@ class __main__():
             filename (str): name of the workflow parameter filename
             verbose (bool): print command line statements to stdout
             
-        TODO:
-            make new method: run_openSWATH_validation_py
-            
         """
         validation_metrics = []
         from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
@@ -123,19 +120,20 @@ class __main__():
                 openSWATH_py.load_Trafo(v,
                     params['MRMFeatureFinderScoring'])
                 openSWATH_py.load_SWATHorDIA({})
-                # # run the openSWATH workflow for metabolomics
-                # openSWATH_py.openSWATH_py(
-                #     params['MRMFeatureFinderScoring'])
-                # openSWATH_py.filterAndSelect_py(
-                #     v,
-                #     params['MRMFeatureFilter.filter_MRMFeatures'],
-                #     params['MRMFeatureSelector.select_MRMFeatures_score'],
-                #     params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
+                # run the openSWATH workflow for metabolomics
+                openSWATH_py.openSWATH_py(
+                    params['MRMFeatureFinderScoring'])
+                openSWATH_py.filterAndSelect_py(
+                    v,
+                    params['MRMFeatureFilter.filter_MRMFeatures'],
+                    params['MRMFeatureSelector.select_MRMFeatures_score'],
+                    params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
                 # validate the data
-                openSWATH_py.load_featureMap(v)
+                # openSWATH_py.load_featureMap(v)
                 openSWATH_py.load_validationData(
                     v,
-                    params['ReferenceDataMethods.getAndProcess_referenceData_samples'])
+                    params['ReferenceDataMethods.getAndProcess_referenceData_samples']
+                    )
                 openSWATH_py.validate_py(params['MRMFeatureValidator.validate_MRMFeatures'])
                 # store
                 openSWATH_py.store_featureMap(v)
@@ -143,8 +141,8 @@ class __main__():
                 tmp.update(openSWATH_py.validation_metrics)
                 tmp.update({'sample_name':sample})
                 validation_metrics.append(tmp)
-        smartpeak_o = smartPeak_o(validation_metrics)
-        smartpeak_o.write_dict2csv('/home/user/openMS_MRMworkflow/BloodProject01/150601_BloodProject01_validationMetrics.csv')
+                # manual clear data for the next iteration
+                openSWATH_py.clear_data()
 
     def run_testSmartPeak(self):
         from .test_smartPeak import test_smartPeak
@@ -246,3 +244,75 @@ class __main__():
                     filename = ""
                     )
                 ##accuracy: 0.982035928144
+
+    def run_openSWATH_validation_py(
+            self,
+            filename_filenames,
+            filename_params,
+            delimiter = ','
+            ):
+        """Run the openSWATH python pipeline
+        
+        Args:
+            filename (str): name of the workflow parameter filename
+            verbose (bool): print command line statements to stdout
+            
+        TODO:
+            make new method: run_openSWATH_validation_py
+            
+        """
+        validation_metrics = []
+        from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
+        openSWATH_py = smartPeak_openSWATH_py()
+
+        smartpeak_i = smartPeak_i()
+        smartpeak_i.read_pythonParams(filename_filenames,delimiter)
+        filenames = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        smartpeak_i.read_openMSParams(filename_params,delimiter)
+        params = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+
+        for filename in filenames:
+            for sample,v in filename.items():
+                print("processing sample "+ sample)
+                # load in the files
+                openSWATH_py.load_TraML(v)
+                openSWATH_py.load_SWATHorDIA({})
+                mzML_I = '''%s/%s.mzML'''%(v['mzML_feature_i'],sample)
+                openSWATH_py.load_MSExperiment(
+                    # v
+                    {'mzML_feature_i':mzML_I}
+                    )
+                openSWATH_py.load_Trafo(v,
+                    params['MRMFeatureFinderScoring'])
+                # run the openSWATH workflow for metabolomics
+                openSWATH_py.openSWATH_py(
+                    params['MRMFeatureFinderScoring'])
+                openSWATH_py.filterAndSelect_py(
+                    v,
+                    params['MRMFeatureFilter.filter_MRMFeatures'],
+                    params['MRMFeatureSelector.select_MRMFeatures_score'],
+                    params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
+                # validate the data
+                # openSWATH_py.load_featureMap(v)
+                ReferenceDataMethods_params_I = []
+                ReferenceDataMethods_params_I.extend(params['MRMFeatureValidator.validate_MRMFeatures'])
+                sample_names_I = '''['%s']'''%(sample)
+                ReferenceDataMethods_params_I.append({'description': '', 'name': 'sample_names_I', 'type': 'list', 'value': sample_names_I})
+                openSWATH_py.load_validationData(
+                    v,
+                    ReferenceDataMethods_params_I
+                    # params['ReferenceDataMethods.getAndProcess_referenceData_samples']
+                    )
+                openSWATH_py.validate_py(params['MRMFeatureValidator.validate_MRMFeatures'])
+                # store
+                openSWATH_py.store_featureMap(v)
+                tmp = {}
+                tmp.update(openSWATH_py.validation_metrics)
+                tmp.update({'sample_name':sample})
+                validation_metrics.append(tmp)
+                # manual clear data for the next iteration
+                openSWATH_py.clear_data()
+        smartpeak_o = smartPeak_o(validation_metrics)
+        smartpeak_o.write_dict2csv('/home/user/openMS_MRMworkflow/BloodProject01/150601_BloodProject01_validationMetrics.csv')
