@@ -131,14 +131,17 @@ class __main__():
                     params['MRMFeatureFilter.filter_MRMFeatures'],
                     params['MRMFeatureSelector.select_MRMFeatures_score'],
                     params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
-                # # validate the data
-                # openSWATH_py.load_validationData(v)
-                # openSWATH_py.validate_py(params['MRMFeatureValidator.validate_MRMFeatures'])
+                # validate the data
+                openSWATH_py.load_validationData(v)
+                openSWATH_py.validate_py(params['MRMFeatureValidator.validate_MRMFeatures'])
                 # store
                 openSWATH_py.store_featureMap(v)
-                # tmp = openSWATH_py.validation_metrics
-                # tmp.update({'sample_name':sample})
-                # validation_metrics.append(openSWATH_py.validation_metrics)
+                tmp = {}
+                tmp.update(openSWATH_py.validation_metrics)
+                tmp.update({'sample_name':sample})
+                validation_metrics.append(tmp)
+        smartpeak_o = smartPeak_o(validation_metrics)
+        smartpeak_o.write_dict2csv('/home/user/openMS_MRMworkflow/BloodProject01/150601_BloodProject01_validationMetrics.csv')
 
     def run_testSmartPeak(self):
         from .test_smartPeak import test_smartPeak
@@ -239,3 +242,4 @@ class __main__():
                     run_id = "",
                     filename = ""
                     )
+                ##accuracy: 0.982035928144
