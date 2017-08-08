@@ -262,6 +262,7 @@ class __main__():
             
         """
         validation_metrics = []
+        skipped_samples = []
         from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
         openSWATH_py = smartPeak_openSWATH_py()
 
@@ -328,6 +329,12 @@ class __main__():
                     openSWATH_py.clear_data()
                 except Exception as e:
                     print(e)
+                    skipped_samples.append({'sample_name':sample})
+                    # manual clear data for the next iteration
+                    openSWATH_py.clear_data()
         smartpeak_o = smartPeak_o(validation_metrics)
         validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/BloodProject01_validation/150601_BloodProject01_validationMetrics.csv'''
         smartpeak_o.write_dict2csv(validationMetrics_csv_i)
+        smartpeak_o = smartPeak_o(skipped_samples)
+        skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/BloodProject01_validation/150601_BloodProject01_skippedSamples.csv'''
+        smartpeak_o.write_dict2csv(skippedSamples_csv_i)
