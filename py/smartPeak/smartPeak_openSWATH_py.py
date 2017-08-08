@@ -326,6 +326,23 @@ class smartPeak_openSWATH_py():
 
         # calculate peak intensity and area
 
+    def load_featureMap(self,
+        filenames_I = {},
+        ):
+        """ """
+        # Handle the filenames
+        featureXML_i = None
+        if 'featureXML_i'in filenames_I.keys(): featureXML_i = filenames_I['featureXML_o']
+        
+
+        # Store outfile as featureXML    
+        featurexml = pyopenms.FeatureXMLFile()
+        output = pyopenms.FeatureMap()
+        if not featureXML_i is None:
+            featurexml.load(featureXML_i.encode('utf-8'), output)
+
+        self.featureMap = output
+
     def store_featureMap(self,
         filenames_I = {},
         # feature_csv_o = None,
@@ -362,7 +379,8 @@ class smartPeak_openSWATH_py():
         #     chromatograms_mapped.getSourceFiles()[0].getNameOfFile().decode('utf-8'))
 
     def load_validationData(self,
-        filenames_I
+        filenames_I,
+        ReferenceDataMethods_params_I = {}
         ):
         """Load the validation data from file or from a database
         
@@ -371,10 +389,55 @@ class smartPeak_openSWATH_py():
         Internals
         
         """
+        smartpeak = smartPeak()
+
         # Handle the filenames
         referenceData_csv_i,db_ini_i = None,None
         if 'referenceData_csv_i'in filenames_I.keys(): referenceData_csv_i = filenames_I['referenceData_csv_i']
         if 'db_ini_i'in filenames_I.keys(): db_ini_i = filenames_I['db_ini_i']
+
+        # Parse the input parameters
+        ReferenceDataMethods_dict = {d['name']:smartpeak.parseString(d['value'],encode_str_I = False) for d in ReferenceDataMethods_params_I}
+        experiment_ids_I = [],
+        sample_names_I = [],
+        sample_types_I = [],
+        acquisition_methods_I = [],
+        quantitation_method_ids_I = [],
+        component_names_I = [],
+        component_group_names_I = [],
+        where_clause_I = '',
+        used__I = True,
+        experiment_limit_I = 10000,
+        mqresultstable_limit_I = 1000000,
+        settings_filename_I = 'settings.ini',
+        data_filename_O = ''
+        if "experiment_ids_I" in ReferenceDataMethods_dict.keys():
+            experiment_ids_I = ReferenceDataMethods_dict["experiment_ids_I"]
+        if "sample_names_I" in ReferenceDataMethods_dict.keys():
+            sample_names_I = ReferenceDataMethods_dict["sample_names_I"]
+        if "sample_types_I" in ReferenceDataMethods_dict.keys():
+            sample_types_I = ReferenceDataMethods_dict["sample_types_I"]
+        if "acquisition_methods_I" in ReferenceDataMethods_dict.keys():
+            acquisition_methods_I = ReferenceDataMethods_dict["acquisition_methods_I"]
+        if "quantitation_method_ids_I" in ReferenceDataMethods_dict.keys():
+            quantitation_method_ids_I = ReferenceDataMethods_dict["quantitation_method_ids_I"]  
+        if "component_names_I" in ReferenceDataMethods_dict.keys():
+            component_names_I = ReferenceDataMethods_dict["component_names_I"]   
+        if "component_group_names_I" in ReferenceDataMethods_dict.keys():
+            component_group_names_I = ReferenceDataMethods_dict["component_group_names_I"]
+        if "where_clause_I" in ReferenceDataMethods_dict.keys():
+            where_clause_I = ReferenceDataMethods_dict["where_clause_I"]
+        if "used__I" in ReferenceDataMethods_dict.keys():
+            used__I = ReferenceDataMethods_dict["used__I"]
+        if "experiment_limit_I" in ReferenceDataMethods_dict.keys():
+            experiment_limit_I = ReferenceDataMethods_dict["experiment_limit_I"]
+        if "mqresultstable_limit_I" in ReferenceDataMethods_dict.keys():
+            mqresultstable_limit_I = ReferenceDataMethods_dict["mqresultstable_limit_I"]
+        if "settings_filename_I" in ReferenceDataMethods_dict.keys():
+            settings_filename_I = ReferenceDataMethods_dict["settings_filename_I"]
+        if "data_filename_O" in ReferenceDataMethods_dict.keys():
+            data_filename_O = ReferenceDataMethods_dict["data_filename_O"]
+
         # read in the reference data
         reference_data = []
         if not referenceData_csv_i is None:            
@@ -385,17 +448,17 @@ class smartPeak_openSWATH_py():
         elif not db_ini_i is None:
             referenceDataMethods = ReferenceDataMethods()
             reference_data = referenceDataMethods.getAndProcess_referenceData_samples(
-                experiment_ids_I,
-                sample_names_I,
-                sample_types_I,
-                acquisition_methods_I,
-                quantitation_method_ids_I,
-                component_names_I,
-                component_group_names_I,
-                where_clause_I,
-                used__I,
-                experiment_limit_I,
-                mqresultstable_limit_I,
+                experiment_ids_I=experiment_ids_I,
+                sample_names_I=sample_names_I,
+                sample_types_I=sample_types_I,
+                acquisition_methods_I=acquisition_methods_I,
+                quantitation_method_ids_I=quantitation_method_ids_I,
+                component_names_I=component_names_I,
+                component_group_names_I=component_group_names_I,
+                where_clause_I=where_clause_I,
+                used__I=used__I,
+                experiment_limit_I=experiment_limit_I,
+                mqresultstable_limit_I=mqresultstable_limit_I,
                 settings_filename_I = db_ini_i,
                 data_filename_O = ''
             )

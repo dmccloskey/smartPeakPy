@@ -27,7 +27,7 @@ class ReferenceDataMethods():
         Returns
 
         """
-        data_ref = self.getAndProcess_referenceData(
+        data_ref_processed = self.getAndProcess_referenceData(
             experiment_ids_I = experiment_ids_I,
             sample_names_I = sample_names_I,
             sample_types_I = sample_types_I,
@@ -68,7 +68,7 @@ class ReferenceDataMethods():
         Returns
 
         """
-        data_ref = self.getAndProcess_referenceData(
+        data_ref_processed = self.getAndProcess_referenceData(
             experiment_ids_I = experiment_ids_I,
             sample_names_I = sample_names_I,
             sample_types_I = sample_types_I,

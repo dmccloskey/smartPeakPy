@@ -56,6 +56,8 @@ class MRMFeatureValidator():
                     continue
                 y_true.append(1)
                 #extract and format rt information
+                if reference_data_dict[reference_data_key]['retention_time'] is None:
+                    print('check')
                 reference_rt = float(reference_data_dict[reference_data_key]['retention_time'])
                 feature_rt = feature.getRT()
                 feature_leftWidth = feature.getMetaValue('leftWidth')
