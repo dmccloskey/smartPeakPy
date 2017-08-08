@@ -302,11 +302,13 @@ class __main__():
                         params['MRMFeatureSelector.select_MRMFeatures_score'],
                         params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
                     # store
-                    openSWATH_py.store_featureMap(featureXML_o)
+                    openSWATH_py.store_featureMap(
+                        {'featureXML_o':featureXML_o,
+                        'feature_csv_o':feature_csv_o})
                     # validate the data
-                    openSWATH_py.load_featureMap(featureXML_o)
+                    # openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
                     ReferenceDataMethods_params_I = []
-                    ReferenceDataMethods_params_I.extend(params['MRMFeatureValidator.validate_MRMFeatures'])
+                    ReferenceDataMethods_params_I.extend(params['ReferenceDataMethods.getAndProcess_referenceData_samples'])
                     sample_names_I = '''['%s']'''%(sample)
                     ReferenceDataMethods_params_I.append({'description': '', 'name': 'sample_names_I', 'type': 'list', 'value': sample_names_I})
                     openSWATH_py.load_validationData(
@@ -315,7 +317,9 @@ class __main__():
                         )
                     openSWATH_py.validate_py(params['MRMFeatureValidator.validate_MRMFeatures'])
                     # store
-                    openSWATH_py.store_featureMap(featureXML_o)
+                    openSWATH_py.store_featureMap(
+                        {'featureXML_o':featureXML_o,
+                        'feature_csv_o':feature_csv_o})
                     tmp = {}
                     tmp.update(openSWATH_py.validation_metrics)
                     tmp.update({'sample_name':sample})
