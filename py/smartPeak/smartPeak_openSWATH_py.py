@@ -78,6 +78,7 @@ class smartPeak_openSWATH_py():
         # parse the MRMFeatureFinderScoring params
         featurefinder = pyopenms.MRMFeatureFinderScoring()
         parameters = featurefinder.getParameters()
+        smartpeak = smartPeak()
         parameters = smartpeak.updateParameters(
             parameters,
             MRMFeatureFinderScoring_params,
@@ -95,6 +96,7 @@ class smartPeak_openSWATH_py():
         if not trafo_csv_i is None:
             # load and make the transition file for RTNormalization 
             targeted_rt_norm = pyopenms.TargetedExperiment()
+            tramlfile = pyopenms.TransitionTSVReader()
             tramlfile.convertTSVToTargetedExperiment(
                 trafo_csv_i.encode('utf-8'),21,targeted_rt_norm
                 )
@@ -102,7 +104,7 @@ class smartPeak_openSWATH_py():
             # NOTE: same MRMFeatureFinderScoring params will be used to pickPeaks
             RTNormalizer = OpenSwathRTNormalizer()
             trafo = RTNormalizer.main(
-                chromatograms_mapped,
+                self.chromatogram_map,
                 targeted_rt_norm,
                 model_params=None,
                 # model_params=model_params,
@@ -117,11 +119,13 @@ class smartPeak_openSWATH_py():
 
     def load_MSExperiment(self,
         filenames_I,
+        map_chromatograms_I = True
         ):
         """Load MzML into an MSExperiment
 
         Args
             filenames_I (list): list of filename strings
+            map_chromatograms_I (boolean): map the chromatograms to the transitions (requires self.targeted)
 
         Internals
             msExperiment (TargetedExperiment)
@@ -135,8 +139,20 @@ class smartPeak_openSWATH_py():
         if not mzML_feature_i is None:
             fh = pyopenms.FileHandler()
             fh.loadExperiment(mzML_feature_i.encode('utf-8'), chromatograms)
-
         self.msExperiment = chromatograms
+
+        # map transitions to the chromatograms
+        if map_chromatograms_I and not self.targeted is None:
+            mrmmapper = MRMMapper()
+            chromatogram_map = mrmmapper.algorithm(
+                chromatogram_map=chromatograms,
+                targeted=self.targeted, 
+                precursor_tolerance=0.0005,
+                product_tolerance=0.0005, 
+                allow_unmapped=True,
+                allow_double_mappings=True
+            )
+        self.chromatogram_map = chromatogram_map
 
     def load_SWATHorDIA(self,
         filenames_I,
@@ -152,7 +168,6 @@ class smartPeak_openSWATH_py():
         """
         dia_csv_i = None
         if 'dia_csv_i'in filenames_I.keys(): dia_csv_i = filenames_I['dia_csv_i']
-        MRMFeatureFinderScoring_params = MRMFeatureFinderScoring_params_I
 
         # load in the DIA data
         swath = pyopenms.MSExperiment()
@@ -162,7 +177,7 @@ class smartPeak_openSWATH_py():
             #dia_files_i = ...(dia_csv_i)
             empty_swath=chromatogramExtractor.main(
                 infiles=[],
-                targeted=targeted,
+                targeted=self.targeted,
                 extraction_window=0.05,
                 min_upper_edge_dist=0.0,
                 ppm=False,
@@ -186,17 +201,6 @@ class smartPeak_openSWATH_py():
         #helper classes
         smartpeak = smartPeak()
 
-        # map transitions to the chromatograms
-        mrmmapper = MRMMapper()
-        chromatograms_mapped = mrmmapper.algorithm(
-            chromatogram_map=self.msExperiment,
-            targeted=self.targeted, 
-            precursor_tolerance=0.0005,
-            product_tolerance=0.0005, 
-            allow_unmapped=True,
-            allow_double_mappings=True
-        )
-
         #make the decoys
         #MRMDecoy
         #How are the decoys added into the experiment?
@@ -210,21 +214,20 @@ class smartPeak_openSWATH_py():
         parameters = featurefinder.getParameters()
         parameters = smartpeak.updateParameters(
             parameters,
-            MRMFeatureFinderScoring_params,
+            MRMFeatureFinderScoring_params_I,
             )
         featurefinder.setParameters(parameters)    
         
         # set up MRMFeatureFinderScoring (featurefinder) and 
         # run
         featurefinder.pickExperiment(
-            chromatograms_mapped, 
+            self.chromatogram_map, 
             output, 
             self.targeted, 
             self.trafo,
             self.swath)
         
         self.featureMap = output
-        self.chromatograms_map = chromatograms_mapped
 
     def filterAndSelect_py(self,
         filenames_I,
@@ -241,8 +244,8 @@ class smartPeak_openSWATH_py():
 
         Internals
             features (FeatureMap): output from SWATH workflow
-            chromatograms_mapped (MSExperiment): output from SWATH workflow
-            targeted (TargetedExperiment): output from SWATH workflow
+            msExperiment (MSExperiment): 
+            targeted (TargetedExperiment): 
 
         Returns
             output_selected (FeatureMap): filtered and/or selected features
@@ -254,18 +257,16 @@ class smartPeak_openSWATH_py():
             calibrators_csv_i = filenames_I['calibrators_csv_i']
 
         # internals
-        output = self.featureMap
-        chromatograms_mapped = self.chromatograms_map
 
         # filter features
         featureFilter = MRMFeatureFilter()
         if MRMFeatureFilter_filter_params_I:
             output_filtered = featureFilter.filter_MRMFeatures(
-                output,
+                self.featureMap,
                 self.targeted,
                 MRMFeatureFilter_filter_params_I)   
         else:
-            output_filtered = output
+            output_filtered = self.featureMap
 
         # select features
         featureSelector = MRMFeatureSelector()
@@ -341,7 +342,7 @@ class smartPeak_openSWATH_py():
         # Store outfile as featureXML    
         featurexml = pyopenms.FeatureXMLFile()
         if not featureXML_o is None:
-            featurexml.store(featureXML_o.encode('utf-8'), self.output)
+            featurexml.store(featureXML_o.encode('utf-8'), self.featureMap)
         
         # Store the outfile as csv     
         featurescsv = OpenSwathFeatureXMLToTSV()
@@ -349,7 +350,7 @@ class smartPeak_openSWATH_py():
         samplename_list = self.chromatograms_mapped.getMetaValue(b'mzml_id').decode('utf-8').split('-')
         samplename = '-'.join(samplename_list[1:])   
         if not feature_csv_o is None:
-            featurescsv.store(feature_csv_o, self.output, self.targeted,
+            featurescsv.store(feature_csv_o, self.featureMap, self.targeted,
                 run_id = samplename,
                 filename = filename
                 )
@@ -397,7 +398,7 @@ class smartPeak_openSWATH_py():
                 experiment_limit_I,
                 mqresultstable_limit_I,
                 settings_filename_I = db_ini_i,
-                data_filename_O
+                data_filename_O = ''
             )
         self.reference_data = reference_data
 

@@ -118,10 +118,10 @@ class __main__():
             for sample,v in filename.items():
                 print("processing sample "+ sample)
                 # load in the files
+                openSWATH_py.load_TraML(v)
                 openSWATH_py.load_MSExperiment(v)
                 openSWATH_py.load_Trafo(v,
                     params['MRMFeatureFinderScoring'])
-                openSWATH_py.load_TraML(v)
                 openSWATH_py.load_SWATHorDIA({})
                 # run the openSWATH workflow for metabolomics
                 openSWATH_py.openSWATH_py(
