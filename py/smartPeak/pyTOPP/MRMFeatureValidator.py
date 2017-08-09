@@ -54,10 +54,9 @@ class MRMFeatureValidator():
                     subordinate.setMetaValue('validation'.encode('utf-8'),'ND'.encode('utf-8'))
                     subordinates_tmp.append(subordinate)
                     continue
-                y_true.append(1)
                 #extract and format rt information
                 if reference_data_dict[reference_data_key]['retention_time'] is None:
-                    print('check')
+                    continue
                 reference_rt = float(reference_data_dict[reference_data_key]['retention_time'])
                 feature_rt = feature.getRT()
                 feature_leftWidth = feature.getMetaValue('leftWidth')
@@ -76,10 +75,12 @@ class MRMFeatureValidator():
                     subordinate.setMetaValue('validation'.encode('utf-8'),'TP'.encode('utf-8'))
                     subordinates_tmp.append(subordinate)
                     y_pred.append(1)
+                    y_true.append(1)
                 else: #False Positive
                     subordinate.setMetaValue('validation'.encode('utf-8'),'FP'.encode('utf-8'))
                     subordinates_tmp.append(subordinate)
                     y_pred.append(0)
+                    y_true.append(1)
                 # #TESTING:
                 #     print('Tr for transition ' + subordinate.getMetaValue('native_id').decode('utf-8') + ' does not match the reference.')
             #check that subordinates were found
