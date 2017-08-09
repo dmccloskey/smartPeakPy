@@ -286,6 +286,20 @@ class __main__():
                     db_ini_i = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini'
                     featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample)
                     feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
+                    # load in the validation data (if no data is found, continue to the next sample)
+                    ReferenceDataMethods_params_I = []
+                    ReferenceDataMethods_params_I.extend(params['ReferenceDataMethods.getAndProcess_referenceData_samples'])
+                    sample_names_I = '''['%s']'''%(sample)
+                    ReferenceDataMethods_params_I.append({'description': '', 'name': 'sample_names_I', 'type': 'list', 'value': sample_names_I})
+                    openSWATH_py.load_validationData(
+                        {'db_ini_i':db_ini_i},
+                        ReferenceDataMethods_params_I
+                        )
+                    if not openSWATH_py.reference_data:
+                        skipped_samples.append({'sample_name':sample,
+                            'error_message':'no reference data found'})
+                        print('Reference data not found for sample ' + sample + '.')
+                        continue
                     # load in the files
                     openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                     openSWATH_py.load_SWATHorDIA({})
@@ -308,14 +322,6 @@ class __main__():
                         'feature_csv_o':feature_csv_o})
                     # validate the data
                     # openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
-                    ReferenceDataMethods_params_I = []
-                    ReferenceDataMethods_params_I.extend(params['ReferenceDataMethods.getAndProcess_referenceData_samples'])
-                    sample_names_I = '''['%s']'''%(sample)
-                    ReferenceDataMethods_params_I.append({'description': '', 'name': 'sample_names_I', 'type': 'list', 'value': sample_names_I})
-                    openSWATH_py.load_validationData(
-                        {'db_ini_i':db_ini_i},
-                        ReferenceDataMethods_params_I
-                        )
                     openSWATH_py.validate_py(params['MRMFeatureValidator.validate_MRMFeatures'])
                     # store
                     openSWATH_py.store_featureMap(
@@ -325,13 +331,12 @@ class __main__():
                     tmp.update(openSWATH_py.validation_metrics)
                     tmp.update({'sample_name':sample})
                     validation_metrics.append(tmp)
-                    # manual clear data for the next iteration
-                    openSWATH_py.clear_data()
                 except Exception as e:
                     print(e)
-                    skipped_samples.append({'sample_name':sample})
-                    # manual clear data for the next iteration
-                    openSWATH_py.clear_data()
+                    skipped_samples.append({'sample_name':sample,
+                        'error_message':e})
+                # manual clear data for the next iteration
+                openSWATH_py.clear_data()
         smartpeak_o = smartPeak_o(validation_metrics)
         validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/BloodProject01_validation/150601_BloodProject01_validationMetrics.csv'''
         smartpeak_o.write_dict2csv(validationMetrics_csv_i)
