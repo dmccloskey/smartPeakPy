@@ -278,6 +278,7 @@ class __main__():
             for sample,v in filename.items():
                 print("processing sample "+ sample)
                 try:
+                    sample = '150601_0_BloodProject01_P_QC_Broth-11'
                     # dynamically make the filenames
                     data_dir = v['data_dir']
                     mzML_I = '''%s/%s.mzML'''%(data_dir,sample)
