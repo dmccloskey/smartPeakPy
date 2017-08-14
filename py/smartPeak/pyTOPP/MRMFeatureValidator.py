@@ -119,8 +119,8 @@ class MRMFeatureValidator():
         import numpy as np
         from sklearn import metrics
         auc,accuracy,recall,precision = None, None, None, None
-        fpr, tpr, thresholds = metrics.roc_curve(y_true, y_pred)
-        auc = metrics.auc(fpr, tpr)
+        # fpr, tpr, thresholds = metrics.roc_curve(y_true, y_pred)
+        # auc = metrics.auc(fpr, tpr)
         #accuracy = (tp + tn) / (tp + tn + fp + fn)
         accuracy = metrics.accuracy_score(y_true, y_pred, normalize=True)
         #recall = tp / (tp + fn)
