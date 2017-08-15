@@ -20,6 +20,7 @@ class MRMFeatureQC():
         features,
         targeted,
         qc_criteria = [],
+        remove_filtered_transitions = True,         
         ):
         """Quality control features
             
@@ -27,7 +28,11 @@ class MRMFeatureQC():
             chromatogram_mapped (MSExperiment):
             features (FeatureMap):
             targeted (TraML): TraML input file containing the transitions
-            filter_criteria (list,dict): e.g., [{"name":, "value":, }]
+            qc_criteria (list,dict): e.g., [{"name":, "value":, }]
+            remove_filtered_transitions (bool): remove filter transitions?
+                if True: only transitions that pass the filter are returned
+                if False: all transitions are returned with an annotation in 
+                    metaValue specifying the QC that failed
 
         Returns
             output_O (FeatureMap): filtered features
@@ -44,43 +49,44 @@ class MRMFeatureQC():
         for feature in features:
             transitions = [t for t in targeted.getTransitions() if t.getPeptideRef() == feature.getMetaValue("PeptideRef")]
             subordinates_tmp = []
-
             custom_qc_metrics = {}
             custom_qc_metrics.update(self.count_labelsAndTransitionTypes(feature,transitions))
             custom_qc_metrics.update(self.calculate_ionRatio(feature,transitions))
             custom_qc_metrics.update({'ms2_spectra':1.0})
-            #transition quality controls
-            fc_pass = True
-            for fc in qc_criteria:
-                fc_value,fc_comparator = fc['value'].split('|')[0],fc['value'].split('|')[1]
-                f = feature.getMetaValue(fc['name'].encode('utf-8'))
-                if fc['name'] in custom_filters:
-                    fc_pass = smartpeak.compareValues(
-                        custom_qc_metrics[fc['name']],
-                        smartpeak.parseString(fc_value),
-                        fc_comparator)
-                elif not f is None:
-                    fc_pass = smartpeak.compareValues(f,smartpeak.parseString(fc_value),fc_comparator)
-            if not fc_pass:
-                continue
 
             for subordinate in feature.getSubordinates():
-                #peak quality controls
+                #transition and peak quality controls
                 transition = [t for t in transitions if t.getNativeID()==subordinate.getMetaValue("native_id")][0]
                 #TODO: extract out QC criteria...
                 fc_pass = True
                 for fc in qc_criteria:
+                    fc_pass_tmp = True
                     fc_value,fc_comparator = fc['value'].split('|')[0],fc['value'].split('|')[1]
                     f = feature.getMetaValue(fc['name'].encode('utf-8'))
-                    if not f is None:
-                        fc_pass = smartpeak.compareValues(f,smartpeak.parseString(fc_value),fc_comparator)
+                    if fc['name'] in custom_filters:
+                        fc_pass_tmp = smartpeak.compareValues(
+                            custom_qc_metrics[fc['name']],
+                            smartpeak.parseString(fc_value),
+                            fc_comparator)
+                    elif not f is None:
+                        fc_pass_tmp = smartpeak.compareValues(f,smartpeak.parseString(fc_value),fc_comparator)
                     s = subordinate.getMetaValue(fc['name'].encode('utf-8'))
                     if not s is None:
-                        fc_pass = smartpeak.compareValues(s,smartpeak.parseString(fc_value),fc_comparator)
-                    if fc_pass:
+                        fc_pass_tmp = smartpeak.compareValues(s,smartpeak.parseString(fc_value),fc_comparator)
+                    if fc_pass_tmp:
                         subordinate.setMetaValue(fc['name'].encode('utf-8'),'True'.encode('utf-8'))
                     else:
                         subordinate.setMetaValue(fc['name'].encode('utf-8'),'False'.encode('utf-8'))
+                        fc_pass = False
+                if fc_pass:
+                    # subordinates_tmp.addFeature(subordinate,subordinate.getMetaValue("native_id"))
+                    subordinates_tmp.append(subordinate)
+                    if not remove_filtered_transitions:
+                        subordinate.setMetaValue('used_'.encode('utf-8'),'True'.encode('utf-8'))
+                else:
+                    if not remove_filtered_transitions:
+                        subordinate.setMetaValue('used_'.encode('utf-8'),'False'.encode('utf-8'))
+                        subordinates_tmp.append(subordinate)
                 # subordinates_tmp.append(subordinate)
                 if fc_pass:
                     subordinates_tmp.append(subordinate)
@@ -142,3 +148,40 @@ class MRMFeatureQC():
                 qual_peak_height = subordinate.getMetaValue("peak_apex_int".encode('utf_8'))
         ion_ratio = qual_peak_height/quant_peak_height
         return {"ion_ratio":ion_ratio}
+
+    def calculate_spectralLibraryMatch(self,
+        feature,
+        transition):
+        """Calculate the forward and reverse spectral library match
+
+        Todo...
+        """
+
+    def calculate_peakQualityMetrics(self,
+        feature,
+        transition):
+        """Calculate the following peak quality metrics:
+            assymetry factor
+            USP tailing factor
+            change in baseline to height
+            points across the peak
+            etc.
+
+        Todo...
+        """
+
+    def calculate_peakResolution(self,
+        feature,
+        transition):
+        """Calculate resolution and retention time difference between critical pairs
+
+        Todo
+        """
+
+    def calculate_quantificationQualityMetrics(self,
+        feature,
+        transition):
+        """Calculate accuracy, bias, R2, LLOQ, ULOQ, etc.
+
+        Todo
+        """

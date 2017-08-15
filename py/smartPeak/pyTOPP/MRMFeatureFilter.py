@@ -24,7 +24,7 @@ class MRMFeatureFilter():
             features (FeatureMap):
             filter_criteria (list,dict): e.g., [{"name":, "value":, }]
             remove_filtered_transitions (bool): remove filter transitions?
-                if True: only transitions that pass the filter are returrned
+                if True: only transitions that pass the filter are returned
                 if False: all transitions are returned with an annotation in 
                     metaValue for "used_" specifying True or False whether the peak passed the threshold
 
