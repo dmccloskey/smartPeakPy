@@ -1,6 +1,6 @@
 #utilities
 import copy
-from math import log
+from math import log, exp, sqrt
 #modules
 from smartPeak.smartPeak import smartPeak
 #3rd part libraries
@@ -299,7 +299,7 @@ class MRMFeatureSelector():
                 #variable capture 1
                 variable_name_1 = '%s_%s'%(component_name_1,Tr_dict[component_name_1][i_1]['transition_id'])
                 if not variable_name_1 in variables.keys():
-                    variables[variable_name_1] = Variable(variable_name_1, lb=0, ub=1, type="integer")
+                    variables[variable_name_1] = Variable(variable_name_1, lb=0, ub=1, type=variable_type)
                     model.add(variables[variable_name_1])
                     component_names_1.append(component_name_1)
                     n_variables += 1
@@ -324,7 +324,7 @@ class MRMFeatureSelector():
                         #variable capture 2
                         variable_name_2 = '%s_%s'%(component_name_2,Tr_dict[component_name_2][i_2]['transition_id'])
                         if not variable_name_2 in variables.keys():
-                            variables[variable_name_2] = Variable(variable_name_2, lb=0, ub=1, type="integer")
+                            variables[variable_name_2] = Variable(variable_name_2, lb=0, ub=1, type=variable_type)
                             model.add(variables[variable_name_2])
                             n_variables += 1
                         # score_2 = (1/log(Tr_dict[component_name_2][i_2]['peak_apices_sum']))\
@@ -514,29 +514,234 @@ class MRMFeatureSelector():
         Returns
             output_O (FeatureMap): selected features
         """
-        smartpeak = smartPeak()
-        score_tmp = 0
-        output_ranked = pyopenms.FeatureMap()
-        #compute a pooled score for each transition group
-        transition_group_id_current = ''
-        best_transition_group = None
-        best_transition_group_score = 0
+        from math import floor, ceil
+        # Parse the input parameters
+        select_criteria_dict = {d['name']:d['value'] for d in select_criteria}
+        select_transition_groups = True
+        segment_window_length = 12
+        segment_step_length = 2
+        select_highest_count = False
+        variable_type = 'continuous',
+        optimal_threshold = 0.5
+        if "select_transition_groups" in select_criteria_dict.keys():
+            select_transition_groups = select_criteria_dict["select_transition_groups"]
+        if "segment_window_length" in select_criteria_dict.keys():
+            segment_window_length = select_criteria_dict["segment_window_length"]
+        if "segment_step_length" in select_criteria_dict.keys():
+            segment_step_length = select_criteria_dict["segment_step_length"]
+        if "select_highest_count" in select_criteria_dict.keys():
+            select_highest_count = select_criteria_dict["select_highest_count"]
+        if "variable_type" in select_criteria_dict.keys():
+            variable_type = select_criteria_dict["variable_type"]
+        if "optimal_threshold" in select_criteria_dict.keys():
+            optimal_threshold = select_criteria_dict["optimal_threshold"]
+        #build the retention time dictionaries
+        Tr_expected_dict = {}
+        Tr_dict = {}
+        feature_count = 0
+        for feature in features:
+            component_group_name = feature.getMetaValue("PeptideRef").decode('utf-8')
+            retention_time = feature.getRT()
+            assay_retention_time = feature.getMetaValue("assay_rt")
+            transition_id = feature.getUniqueId()
+            keys = []
+            feature.getKeys(keys)
+            feature_metaValues = {k.decode('utf-8'):feature.getMetaValue(k) for k in keys}
+            if select_transition_groups:   
+                tmp = {'component_group_name':component_group_name,
+                    'component_name':component_group_name, #note component_name ~ component_group_name
+                    'retention_time':retention_time,'transition_id':transition_id}
+                tmp.update(feature_metaValues)
+                if not component_group_name in Tr_dict.keys():
+                    Tr_dict[component_group_name] = []
+                Tr_dict[component_group_name].append(tmp)
+                feature_count += 1
+                Tr_expected_dict[component_group_name] = {
+                    'retention_time':assay_retention_time,
+                    'component_name':component_group_name, #note component_name ~ component_group_name
+                    'component_group_name':component_group_name,
+                    }
+            else:
+                for subordinate in feature.getSubordinates():
+                    component_name = subordinate.getMetaValue('native_id').decode('utf-8')
+                    keys = []
+                    subordinate.getKeys(keys)
+                    subordinate_metaValues = {k.decode('utf-8'):subordinate.getMetaValue(k) for k in keys}
+                    tmp = {'component_group_name':component_group_name,'component_name':component_name,
+                        'retention_time':retention_time,'transition_id':transition_id}
+                    tmp.update(feature_metaValues)
+                    tmp.update(subordinate_metaValues)
+                    if not component_name in Tr_dict.keys():
+                        Tr_dict[component_name] = []
+                    Tr_dict[component_name].append(tmp)
+                    feature_count += 1
+                    Tr_expected_dict[component_group_name] = {
+                        'retention_time':assay_retention_time,
+                        'component_name':component_name, #note component_name ~ component_group_name
+                        'component_group_name':component_group_name,
+                        }
+        from operator import itemgetter
+        To_list = sorted(Tr_expected_dict.values(), key=itemgetter('retention_time')) 
+        print("Extracted %s features"%(feature_count))
+        # Select optimal retention times
+        Tr_optimal_count = {}
+        # To_list = To_list[:35] #TESTING ONLY
+        if segment_step_length == -1 and segment_window_length == -1:
+            segment_step_length = len(To_list)
+            segment_window_length = len(To_list)
+        segments = int(ceil(len(To_list)/segment_step_length))
+        print("Selecting optimal Tr in segments")
+        Tr_optimal = []
+        for i in range(segments): #could be distributed and parallelized
+            print("Optimizing for segment (%s/%s)"%(i,segments))
+            start_iter = segment_step_length*i
+            stop_iter = min([segment_step_length*i+segment_window_length,len(To_list)])
+            tmp = self.optimize_Tr(
+                To_list[start_iter:stop_iter],
+                Tr_dict,
+                Tr_expected_dict,
+                nn_threshold,
+                locality_weights,
+                select_transition_groups,
+                variable_type,
+                optimal_threshold
+                )
+            if select_highest_count:
+                for var in tmp:
+                    transition_id = var.split('_')[-1]
+                    if not var in Tr_optimal_count.keys():
+                        Tr_optimal_count[var] = 0
+                    Tr_optimal_count[var] += 1
+            else:                
+                Tr_optimal.extend(tmp)
+        if select_highest_count:
+            # Reorganize
+            Tr_optimal_dict = {}
+            for var,count in Tr_optimal_count.items():
+                component_name = '_'.join(var.split('_')[:-1])
+                transition_id = var.split('_')[-1]
+                if not var in Tr_optimal_dict.keys():
+                    Tr_optimal_dict[component_name] = []
+                tmp = {'transition_id':transition_id,
+                        'count':count
+                    }
+                Tr_optimal_dict[component_name].append(tmp)
+            # Select highest count transitions
+            for component_name,rows in Tr_optimal_dict.items():
+                best_count = 0
+                for i,row in enumerate(rows):
+                    if row['count']>best_count:
+                        best_count = row['count']
+                best_vars = []
+                for i,row in enumerate(rows):
+                    if row['count']==best_count:
+                        var = '_'.join([component_name,row['transition_id']])
+                        best_vars.append(var)
+                Tr_optimal.extend(best_vars)             
+        # Filter the FeatureMap
+        output_filtered = pyopenms.FeatureMap()
         for feature in features:
             subordinates_tmp = []
-            transition_group_id = feature.getMetaValue("PeptideRef").decode('utf-8')
-            # add the best transition
-            if transition_group_id != transition_group_id_current and not best_transition_group is None:
-                output_ranked.push_back(best_transition_group)
-            # initialize the best transition
-            if transition_group_id != transition_group_id_current:
-                transition_group_id_current = transition_group_id
-                best_transition_group = None
-                best_transition_group_score = 0
-            for score_weight in score_weights:
-                score = float(feature.getMetaValue(score_weight['name']))*float(score_weight['value'])
-                if best_transition_group_score < score:
-                    best_transition_group_score = score
-                    best_transition_group = feature
-        #add in the last best transition
-        output_ranked.push_back(best_transition_group)
-        return output_ranked
+            for subordinate in feature.getSubordinates():
+                if select_transition_groups:
+                    var_name = "%s_%s"%(feature.getMetaValue("PeptideRef").decode('utf-8'),feature.getUniqueId()) 
+                else:
+                    var_name = "%s_%s"%(subordinate.getMetaValue("native_id").decode('utf-8'),feature.getUniqueId())                
+                if var_name in Tr_optimal: 
+                    subordinates_tmp.append(subordinate)
+            #check that subordinates were found
+            if not subordinates_tmp:
+                continue
+            #copy out all feature values
+            feature_tmp = copy.copy(feature)
+            feature_tmp.setSubordinates(subordinates_tmp)
+            output_filtered.push_back(feature_tmp)
+        print("Filtered %s features"%(len(list(set(Tr_optimal)))))
+        return output_filtered
+
+    def optimize_scores(
+        self,
+        To_list,
+        Tr_dict,
+        score_weights=[],
+        variable_type = 'integer',
+        optimal_threshold = 0.5
+        ):
+        """
+        optimize the retention time using MIP
+
+        Args
+            To_list (dict)
+            score_weights (list,dict): e.g., [{"name":, "value":, }]
+                name (str) = name of the score
+                value (str) = lambda transformation function
+                e.g., scaling: lambda score: score*2
+                      inverse log scaling: lambda score: 1/log(score)
+            variable_type (str): the type of variable, 'integer' or 'continuous'
+            optimal_threshold (float): value above which the transition group or transition is considered optimal (0 < x < 1)
+
+        Returns
+            tr_optimial (list): list of optimal transition variable names  
+
+        """
+        #build the model variables and constraints
+        from optlang.glpk_interface import Model, Variable, Constraint, Objective
+        from sympy import S
+        import time as time
+        variables = {}
+        component_names_1 = []
+        obj_coefficients = {}
+        n_constraints = 0
+        n_variables = 0
+        model = Model(name='Retention time alignment')
+        print("Building and adding model constraints")
+        st = time.time()
+        for cnt_1,v1 in enumerate(To_list):
+            print("Building and adding variables and constraints for (%s/%s) components"%(cnt_1,len(To_list)-1))
+            component_name_1 = v1['component_name']
+            constraints = []
+            constraint_name_1 = '%s_constraint'%(component_name_1)
+            if not component_name_1 in Tr_dict.keys():
+                continue
+            for i_1,row_1 in enumerate(Tr_dict[component_name_1]):
+                #variable capture 1
+                variable_name_1 = '%s_%s'%(component_name_1,Tr_dict[component_name_1][i_1]['transition_id'])
+                if not variable_name_1 in variables.keys():
+                    variables[variable_name_1] = Variable(variable_name_1, lb=0, ub=1, type=variable_type)
+                    model.add(variables[variable_name_1])
+                    component_names_1.append(component_name_1)
+                    n_variables += 1
+                score_1 = 1.0
+                for score_weight in score_weights:
+                    weight_func = eval(score_weight['value']) #check for valid lambda string...
+                    score_1 *= weight_func(Tr_dict[component_name_1][i_1][score_weight['name']])
+                #constraint capture 1
+                constraints.append(variables[variable_name_1])
+                #record the objective coefficients
+                obj_coefficients[variables[variable_name_1]] = score_1
+            # model.add(Constraint(sum(constraints),name=constraint_name_1, lb=1, ub=1))  
+            model.add(Constraint(S.Zero,name=constraint_name_1, lb=1, ub=1))
+            model.constraints[constraint_name_1].set_linear_coefficients({d:1 for d in constraints})
+            n_constraints += 1    
+        print("Model variables:", n_variables)
+        print("Model constraints:", n_constraints)
+        #make the objective
+        objective = Objective(S.Zero,direction='min')
+        model.objective = objective     
+        model.objective.set_linear_coefficients({k:v for k,v in obj_coefficients.items()}) 
+        elapsed_time = time.time() - st
+        print("Elapsed time: %.2fs" % elapsed_time)
+        # Optimize and print the solution
+        print("Solving the model")
+        st = time.time()
+        status = model.optimize()
+        print("Status:", status)
+        print("Objective value:", model.objective.value)        
+        elapsed_time = time.time() - st
+        print("Elapsed time: %.2fs" % elapsed_time)
+        Tr_optimal = [var.name for var in model.variables if var.primal > optimal_threshold and var.name in variables.keys()]
+        # # DEBUGING:
+        # print(len(Tr_optimal),len(variables.keys()))
+        # Tr_primals = [{var.name:var.primal} for var in model.variables if var.name in variables.keys()]
+        # for var in model.variables: if var.name in variables.keys(): print("%s:%s"%(var.name,var.primal))
+        return Tr_optimal
