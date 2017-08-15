@@ -140,7 +140,6 @@ class MRMFeatureSelector():
                 Tr_expected_dict,
                 nn_threshold,
                 locality_weights,
-                select_transition_groups,
                 variable_type,
                 optimal_threshold
                 )
@@ -204,7 +203,6 @@ class MRMFeatureSelector():
         Tr_expected_dict,
         nn_threshold,
         locality_weights,
-        select_transition_groups,
         variable_type = 'integer',
         optimal_threshold = 0.5
         ):
@@ -216,7 +214,6 @@ class MRMFeatureSelector():
             To_list (dict)
             nn_threshold (float): # of nearest compounds by Tr to include in network
             locality_weights (boolean): weight compounds with a nearer Tr greater than compounds with a further Tr
-            select_transition_groups (boolean): select transition groups or transitions
             variable_type (str): the type of variable, 'integer' or 'continuous'
             optimal_threshold (float): value above which the transition group or transition is considered optimal (0 < x < 1)
 
@@ -468,25 +465,25 @@ class MRMFeatureSelector():
         """
         from math import floor, ceil
         # Parse the input parameters
-        select_criteria_dict = {d['name']:d['value'] for d in select_criteria}
+        # select_criteria_dict = {d['name']:d['value'] for d in select_criteria}
         select_transition_groups = True
-        segment_window_length = 12
-        segment_step_length = 2
+        segment_window_length = -1
+        segment_step_length = -1
         select_highest_count = False
-        variable_type = 'continuous',
+        variable_type = 'integer'
         optimal_threshold = 0.5
-        if "select_transition_groups" in select_criteria_dict.keys():
-            select_transition_groups = select_criteria_dict["select_transition_groups"]
-        if "segment_window_length" in select_criteria_dict.keys():
-            segment_window_length = select_criteria_dict["segment_window_length"]
-        if "segment_step_length" in select_criteria_dict.keys():
-            segment_step_length = select_criteria_dict["segment_step_length"]
-        if "select_highest_count" in select_criteria_dict.keys():
-            select_highest_count = select_criteria_dict["select_highest_count"]
-        if "variable_type" in select_criteria_dict.keys():
-            variable_type = select_criteria_dict["variable_type"]
-        if "optimal_threshold" in select_criteria_dict.keys():
-            optimal_threshold = select_criteria_dict["optimal_threshold"]
+        # if "select_transition_groups" in select_criteria_dict.keys():
+        #     select_transition_groups = select_criteria_dict["select_transition_groups"]
+        # if "segment_window_length" in select_criteria_dict.keys():
+        #     segment_window_length = select_criteria_dict["segment_window_length"]
+        # if "segment_step_length" in select_criteria_dict.keys():
+        #     segment_step_length = select_criteria_dict["segment_step_length"]
+        # if "select_highest_count" in select_criteria_dict.keys():
+        #     select_highest_count = select_criteria_dict["select_highest_count"]
+        # if "variable_type" in select_criteria_dict.keys():
+        #     variable_type = select_criteria_dict["variable_type"]
+        # if "optimal_threshold" in select_criteria_dict.keys():
+        #     optimal_threshold = select_criteria_dict["optimal_threshold"]
         #build the retention time dictionaries
         Tr_expected_dict = {}
         Tr_dict = {}
@@ -548,13 +545,10 @@ class MRMFeatureSelector():
             print("Optimizing for segment (%s/%s)"%(i,segments))
             start_iter = segment_step_length*i
             stop_iter = min([segment_step_length*i+segment_window_length,len(To_list)])
-            tmp = self.optimize_Tr(
+            tmp = self.optimize_scores(
                 To_list[start_iter:stop_iter],
                 Tr_dict,
-                Tr_expected_dict,
-                nn_threshold,
-                locality_weights,
-                select_transition_groups,
+                score_weights,
                 variable_type,
                 optimal_threshold
                 )

@@ -274,21 +274,21 @@ class smartPeak_openSWATH_py():
             smartpeak_i.clear_data()
         else: 
             calibrators = []
-        if MRMFeatureSelector_schedule_params_I:
+        if MRMFeatureSelector_select_params_I:
+            output_selected = featureSelector.select_MRMFeatures_score(
+                output_filtered,
+                MRMFeatureSelector_select_params_I)
+            # output_selected = featureSelector.select_MRMFeatures_qmip(
+            #     features = output_filtered,
+            #     tr_expected = calibrators,    
+            #     select_criteria = MRMFeatureSelector_select_params_I,     
+            # )
+        elif MRMFeatureSelector_schedule_params_I:
             output_selected = featureSelector.schedule_MRMFeatures_qmip(
                 features = output_filtered,
                 tr_expected = calibrators,    
                 targeted = self.targeted,
                 schedule_criteria = MRMFeatureSelector_schedule_params_I)
-        elif MRMFeatureSelector_select_params_I:
-            # output_selected = featureSelector.select_MRMFeatures_scores(
-            #     output_filtered,
-            #     MRMFeatureFilter_select_params_I)
-            output_selected = featureSelector.select_MRMFeatures_qmip(
-                features = output_filtered,
-                tr_expected = calibrators,    
-                select_criteria = MRMFeatureSelector_select_params_I,     
-            )
         else:
             output_selected = output_filtered
 
