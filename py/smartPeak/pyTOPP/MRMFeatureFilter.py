@@ -81,15 +81,20 @@ class MRMFeatureFilter():
             targeted (TraML): TraML input file containing the transitions
             filter_criteria (list,dict): e.g., [{"name":, "value":, }]
 
+            filter criteria include transition and peak filters
+
         Returns
             output_O (FeatureMap): filtered features
         """
         smartpeak = smartPeak()
         output_filtered = pyopenms.FeatureMap()
+
         #filter features
         for feature in features:
             transitions = [t for t in targeted.getTransitions() if t.getPeptideRef() == feature.getMetaValue("PeptideRef")]
             subordinates_tmp = []
+            
+            #peak and transition filters
             for subordinate in feature.getSubordinates():
                 # print(subordinate.getMetaValue("native_id"))
                 # if subordinate.getMetaValue("native_id")==b'35cgmp.35cgmp_2.Light':
@@ -108,7 +113,6 @@ class MRMFeatureFilter():
                     if not fc_pass:
                         break
                 if fc_pass:
-                    # subordinates_tmp.addFeature(subordinate,subordinate.getMetaValue("native_id"))
                     subordinates_tmp.append(subordinate)
             #check that subordinates were found
             if not subordinates_tmp:
@@ -118,3 +122,4 @@ class MRMFeatureFilter():
             feature_tmp.setSubordinates(subordinates_tmp)
             output_filtered.push_back(feature_tmp)
         return output_filtered
+

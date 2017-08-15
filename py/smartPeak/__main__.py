@@ -337,9 +337,11 @@ class __main__():
                         'error_message':e})
                 # manual clear data for the next iteration
                 openSWATH_py.clear_data()
-        smartpeak_o = smartPeak_o(validation_metrics)
-        validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/BloodProject01_validation/150601_BloodProject01_validationMetrics.csv'''
-        smartpeak_o.write_dict2csv(validationMetrics_csv_i)
-        smartpeak_o = smartPeak_o(skipped_samples)
-        skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/BloodProject01_validation/150601_BloodProject01_skippedSamples.csv'''
-        smartpeak_o.write_dict2csv(skippedSamples_csv_i)
+        if validation_metrics:
+            smartpeak_o = smartPeak_o(validation_metrics)
+            validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/BloodProject01_validation/150601_BloodProject01_validationMetrics.csv'''
+            smartpeak_o.write_dict2csv(validationMetrics_csv_i)
+        if skipped_samples:
+            smartpeak_o = smartPeak_o(skipped_samples)
+            skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/BloodProject01_validation/150601_BloodProject01_skippedSamples.csv'''
+            smartpeak_o.write_dict2csv(skippedSamples_csv_i)

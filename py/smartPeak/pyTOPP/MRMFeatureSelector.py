@@ -42,6 +42,9 @@ class MRMFeatureSelector():
         Returns
             output_O (FeatureMap): filtered features
 
+        Todo
+            remove features that violate retention time order...
+
         """
         from math import floor, ceil
         # Parse the input parameters
@@ -70,57 +73,6 @@ class MRMFeatureSelector():
             variable_type = select_criteria_dict["variable_type"]
         if "optimal_threshold" in select_criteria_dict.keys():
             optimal_threshold = select_criteria_dict["optimal_threshold"]
-        # #build the retention time dictionaries
-        # from operator import itemgetter
-        # if select_transition_groups:
-        #     Tr_expected_dict = {d['component_group_name']:{
-        #     'retention_time':float(d['retention_time']),
-        #     'component_name':d['component_group_name'], #note component_name ~ component_group_name
-        #     'component_group_name':d['component_group_name'],
-        #     } for d in tr_expected}
-        # else:
-        #     Tr_expected_dict = {d['component_name']:{
-        #     'retention_time':float(d['retention_time']),
-        #     'component_name':d['component_name'],
-        #     'component_group_name':d['component_group_name'],
-        #     } for d in tr_expected}
-        # To_list = sorted(Tr_expected_dict.values(), key=itemgetter('retention_time')) 
-        # Tr_dict = {}
-        # feature_count = 0
-        # for feature in features:
-        #     component_group_name = feature.getMetaValue("PeptideRef").decode('utf-8')
-        #     retention_time = feature.getRT()
-        #     transition_id = feature.getUniqueId()
-        #     keys = []
-        #     feature.getKeys(keys)
-        #     feature_metaValues = {k.decode('utf-8'):feature.getMetaValue(k) for k in keys}
-        #     if select_transition_groups:                
-        #         if not component_group_name in Tr_expected_dict.keys():
-        #             continue
-        #         tmp = {'component_group_name':component_group_name,
-        #             'component_name':component_group_name, #note component_name ~ component_group_name
-        #             'retention_time':retention_time,'transition_id':transition_id}
-        #         tmp.update(feature_metaValues)
-        #         if not component_group_name in Tr_dict.keys():
-        #             Tr_dict[component_group_name] = []
-        #         Tr_dict[component_group_name].append(tmp)
-        #         feature_count += 1
-        #     else:
-        #         for subordinate in feature.getSubordinates():
-        #             component_name = subordinate.getMetaValue('native_id').decode('utf-8')
-        #             keys = []
-        #             subordinate.getKeys(keys)
-        #             subordinate_metaValues = {k.decode('utf-8'):subordinate.getMetaValue(k) for k in keys}
-        #             if not component_name in Tr_expected_dict.keys():
-        #                 continue
-        #             tmp = {'component_group_name':component_group_name,'component_name':component_name,
-        #                 'retention_time':retention_time,'transition_id':transition_id}
-        #             tmp.update(feature_metaValues)
-        #             tmp.update(subordinate_metaValues)
-        #             if not component_name in Tr_dict.keys():
-        #                 Tr_dict[component_name] = []
-        #             Tr_dict[component_name].append(tmp)
-        #             feature_count += 1
         #build the retention time dictionaries
         Tr_expected_dict = {}
         Tr_dict = {}
@@ -257,7 +209,7 @@ class MRMFeatureSelector():
         optimal_threshold = 0.5
         ):
         """
-        optimize the retention time using MIP
+        optimize the retention time using QMIP
 
         Args
             To_list (list(dict))
@@ -668,10 +620,11 @@ class MRMFeatureSelector():
         optimal_threshold = 0.5
         ):
         """
-        optimize the retention time using MIP
+        optimize for the best peak score using MIP
 
         Args
-            To_list (dict)
+            To_list (list,dict)
+            Tr_list (dict)
             score_weights (list,dict): e.g., [{"name":, "value":, }]
                 name (str) = name of the score
                 value (str) = lambda transformation function
