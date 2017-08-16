@@ -13,16 +13,6 @@ class smartPeak_isotopeLabeledQuantitation_py():
     def __init__(self):
         pass
 
-    def calculateConcentrations(self):
-        """Calculate the concentrations 
-
-        Args
-
-        Returns
-
-        """
-        pass
-
     def isotopeLabeledQuantitation_py(self,
         filenames_I,):
         """Isotope labeled quantification workflow for a single sample

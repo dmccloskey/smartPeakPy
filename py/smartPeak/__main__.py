@@ -305,20 +305,20 @@ class __main__():
                     openSWATH_py.load_Trafo(
                         {'trafo_csv_i':trafo_csv_i},
                         params['MRMFeatureFinderScoring'])
-                    # # run the openSWATH workflow for metabolomics
-                    # openSWATH_py.openSWATH_py(
-                    #     params['MRMFeatureFinderScoring'])
-                    # openSWATH_py.filterAndSelect_py(
-                    #     {},
-                    #     params['MRMFeatureFilter.filter_MRMFeatures'],
-                    #     {},#params['MRMFeatureSelector.select_MRMFeatures_score'],
-                    #     params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
-                    # # store
-                    # openSWATH_py.store_featureMap(
-                    #     {'featureXML_o':featureXML_o,
-                    #     'feature_csv_o':feature_csv_o})
+                    # run the openSWATH workflow for metabolomics
+                    openSWATH_py.openSWATH_py(
+                        params['MRMFeatureFinderScoring'])
+                    openSWATH_py.filterAndSelect_py(
+                        {},
+                        params['MRMFeatureFilter.filter_MRMFeatures'],
+                        {},#params['MRMFeatureSelector.select_MRMFeatures_score'],
+                        params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
+                    # store
+                    openSWATH_py.store_featureMap(
+                        {'featureXML_o':featureXML_o,
+                        'feature_csv_o':feature_csv_o})
                     # validate the data
-                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                    # openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
                     openSWATH_py.validate_py(params['MRMFeatureValidator.validate_MRMFeatures'])
                     # store
                     openSWATH_py.store_featureMap(
