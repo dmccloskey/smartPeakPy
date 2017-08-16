@@ -11,7 +11,7 @@ from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
 from .pyTOPP.MRMFeatureFilter import MRMFeatureFilter
 from .pyTOPP.MRMFeatureSelector import MRMFeatureSelector
 from .pyTOPP.MRMFeatureValidator import MRMFeatureValidator
-from.data.ReferenceDataMethods import ReferenceDataMethods
+from .data.ReferenceDataMethods import ReferenceDataMethods
 #3rd part libraries
 try:
     import pyopenms

@@ -1,5 +1,10 @@
 import pytest
 from .smartPeak import smartPeak
+#3rd part libraries
+try:
+    import pyopenms
+except ImportError as e:
+    print(e)
 
 
 class test_smartPeak():
@@ -66,9 +71,7 @@ class test_smartPeak():
         component_group_name,quantifier,label_type = smartPeak.parse_MQTransitionName(light)
         assert(component_group_name=='atp')
         assert(quantifier==2)
-        assert(label_type=='Light')
-
-    
+        assert(label_type=='Light')    
 
     def test_parseString(self, verbose_I=False):
         """Test parseString function
@@ -96,13 +99,38 @@ class test_smartPeak():
         assert(smartPeak.castString('TRUE','string')==True)
         assert(smartPeak.castString('FALSE','string')==True)
         assert(smartPeak.castString('a','string')=='a'.encode('utf-8'))
+   
+    def test_updateParameters(self, verbose_I=False):
+        """Test updateParameters function
 
-    def test_compareValues(self, verbose_I=False):
-        """Test castString function
+        TODO: 
+        1. make a test "update_parameters.csv"
+        2. read in "update_parameters"
+        """
+        featurefinder = pyopenms.MRMFeatureFinderScoring()
+        ff_parameters = featurefinder.getParameters()
+        update_parameters = [] #read from file...
+        ff_parameters = smartpeak.updateParameters(
+            ff_parameters,
+            test_parameters,
+            )
+        featurefinder.setParameters(ff_parameters)
+        test_parameters = featurefinder.getParameters()
+        assert(test_parameters==ff_parameters)
+
+    def test_setParameters(self, verbose_I=False):
+        """Test setParameters function
+
+        TODO: 
+        1. make a test "update_parameters.csv"
+        2. read in "update_parameters"
         """
         pass
-        
 
-    def runAllTests(self, verbose_I=False):
-        """Run all unit tests"""
-        self.test_make_osCmd(verbose_I=verbose_I)
+    def compareValues(self, verbose_I=False):
+        """Test castString function
+        """
+        assert(smartPeak.compareValues(1,2,'<')==True)
+        assert(smartPeak.compareValues(1,2,'>')==False)
+        assert(smartPeak.compareValues(-1,2,'<abs')==True)
+        assert(smartPeak.compareValues(-3,2,'>abs')==True)

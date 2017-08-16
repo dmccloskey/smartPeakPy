@@ -144,11 +144,6 @@ class __main__():
                 # manual clear data for the next iteration
                 openSWATH_py.clear_data()
 
-    def run_testSmartPeak(self):
-        from .test_smartPeak import test_smartPeak
-        tests = test_smartPeak()
-        tests.test_parseString()
-
     def convert_MQQMethod2Feature(self,filename_I,filename_O):
         """Convert MultiQuant QMethod file to feature.csv file
         
