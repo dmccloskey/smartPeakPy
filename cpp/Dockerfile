@@ -3,7 +3,7 @@
 
 FROM dmccloskey/docker-openms:latest
 ##gbd port fowarding
-EXPOSE 3000
+# EXPOSE 3000
 ##connection via sshd
 # EXPOSE 22
 USER root
@@ -33,11 +33,13 @@ RUN apt-get update && \
     rm -r /var/lib/apt/lists/* && \
 	##change permissions
 	ln -s /usr/local/bin/docker-entrypoint.sh / && \
-	chmod +x /usr/local/bin/docker-entrypoint.sh
+	chmod +x /usr/local/bin/docker-entrypoint.sh && \
 	# chmod +x /usr/bin/gdbserver
 	# ##create a soft link to the OpenMS include path
-	# mkdir /home/user/code && \
+	mkdir /home/user/code
 	# ln -s /usr/local/OpenMS/src/openms/include/OpenMS /home/user/code/OpenMS
 
 # USER user
 CMD ["docker-entrypoint.sh"]
+
+#docker run -it --name=cpp_openms_1 -v //C/Users/domccl/GitHub/smartPeak/cpp/:/home/user/code/ --privileged --security-opt seccomp:unconfined dmccloskey/docker-openms-vscode /bin/bash
