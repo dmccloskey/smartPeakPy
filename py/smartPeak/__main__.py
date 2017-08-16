@@ -284,8 +284,10 @@ class __main__():
                     traML_csv_i = '''%s/BloodProject01_SWATH.csv'''%(data_dir)
                     trafo_csv_i = '''%s/BloodProject01_SWATH_trafo.csv'''%(data_dir)
                     db_ini_i = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini'
-                    featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample)
-                    feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
+                    # featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
+                    featureXML_o = '''%s/features_qmip2/%s.featureXML'''%(data_dir,sample)
+                    # feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
+                    feature_csv_o = '''%s/features_qmip2/%s.csv'''%(data_dir,sample)
                     # load in the validation data (if no data is found, continue to the next sample)
                     ReferenceDataMethods_params_I = []
                     ReferenceDataMethods_params_I.extend(params['ReferenceDataMethods.getAndProcess_referenceData_samples'])
@@ -308,20 +310,20 @@ class __main__():
                     openSWATH_py.load_Trafo(
                         {'trafo_csv_i':trafo_csv_i},
                         params['MRMFeatureFinderScoring'])
-                    # run the openSWATH workflow for metabolomics
-                    openSWATH_py.openSWATH_py(
-                        params['MRMFeatureFinderScoring'])
-                    openSWATH_py.filterAndSelect_py(
-                        {},
-                        params['MRMFeatureFilter.filter_MRMFeatures'],
-                        params['MRMFeatureSelector.select_MRMFeatures_score'],
-                        params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
-                    # store
-                    openSWATH_py.store_featureMap(
-                        {'featureXML_o':featureXML_o,
-                        'feature_csv_o':feature_csv_o})
+                    # # run the openSWATH workflow for metabolomics
+                    # openSWATH_py.openSWATH_py(
+                    #     params['MRMFeatureFinderScoring'])
+                    # openSWATH_py.filterAndSelect_py(
+                    #     {},
+                    #     params['MRMFeatureFilter.filter_MRMFeatures'],
+                    #     {},#params['MRMFeatureSelector.select_MRMFeatures_score'],
+                    #     params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
+                    # # store
+                    # openSWATH_py.store_featureMap(
+                    #     {'featureXML_o':featureXML_o,
+                    #     'feature_csv_o':feature_csv_o})
                     # validate the data
-                    # openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
                     openSWATH_py.validate_py(params['MRMFeatureValidator.validate_MRMFeatures'])
                     # store
                     openSWATH_py.store_featureMap(

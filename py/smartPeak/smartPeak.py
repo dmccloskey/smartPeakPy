@@ -290,18 +290,6 @@ class smartPeak():
             
         Returns
             str_O (): evaluated string
-
-        Tests:
-            assert(parseString('1')==1)
-            assert(parseString('-1')==-1)
-            assert(parseString('1.0')==1.0)
-            assert(parseString('0.005')==0.005)
-            assert(parseString('-1.0')==-1.0)
-            assert(parseString('[1]')==[1])
-            assert(parseString('(1)')==(1))
-            assert(parseString('{1}')=={1})
-            assert(parseString('a')==a.encode('utf-8'))
-            assert(parseString("'a'")==a.encode('utf-8'))
             
         """
         import csv
