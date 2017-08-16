@@ -48,5 +48,36 @@ int main(int argc, const char** argv)
 //   sg.setParameters(param_sg);
 //   sg.filter(spectrum);
 
+TransformationModelLinear* ptr = 0;
+TransformationModelLinear* nullPointer = 0;
+
+  // set-up the parameters
+  Param param; 
+  std::string x_weight_test, y_weight_test;
+  x_weight_test = "ln(x)";
+  y_weight_test = "ln(y)";
+  param.setValue("x_weight", x_weight_test);
+  param.setValue("y_weight", y_weight_test);
+  param.setValue("x_datum_min", 1e-15);
+  param.setValue("x_datum_max", 1e8);
+  param.setValue("y_datum_min", 1e-8);
+  param.setValue("y_datum_max", 1e15);
+
+  // set-up the data and test
+  TransformationModel::DataPoints data1;
+  TransformationModel::DataPoints test1;
+  data1.clear();
+  data1.push_back(make_pair(1, 2));
+  data1.push_back(make_pair(2, 4));
+  data1.push_back(make_pair(4, 8)); 
+
+  // test evaluate
+  TransformationModelLinear lm(data1, param);
+  TEST_REAL_SIMILAR(lm.evaluate(2),4);
+
+  // test evaluate using the inverted model
+  lm.invert();
+  TEST_REAL_SIMILAR(lm.evaluate(4),2);
+
   return 0;
 } //end of main
