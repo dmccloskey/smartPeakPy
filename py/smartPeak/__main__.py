@@ -279,24 +279,22 @@ class __main__():
                     traML_csv_i = '''%s/BloodProject01_SWATH.csv'''%(data_dir)
                     trafo_csv_i = '''%s/BloodProject01_SWATH_trafo.csv'''%(data_dir)
                     db_ini_i = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini'
-                    # featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
-                    featureXML_o = '''%s/features_qmip2/%s.featureXML'''%(data_dir,sample)
-                    # feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
-                    feature_csv_o = '''%s/features_qmip2/%s.csv'''%(data_dir,sample)
+                    featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
+                    feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
                     # load in the validation data (if no data is found, continue to the next sample)
                     ReferenceDataMethods_params_I = []
                     ReferenceDataMethods_params_I.extend(params['ReferenceDataMethods.getAndProcess_referenceData_samples'])
                     sample_names_I = '''['%s']'''%(sample)
                     ReferenceDataMethods_params_I.append({'description': '', 'name': 'sample_names_I', 'type': 'list', 'value': sample_names_I})
-                    openSWATH_py.load_validationData(
-                        {'db_ini_i':db_ini_i},
-                        ReferenceDataMethods_params_I
-                        )
-                    if not openSWATH_py.reference_data:
-                        skipped_samples.append({'sample_name':sample,
-                            'error_message':'no reference data found'})
-                        print('Reference data not found for sample ' + sample + '.')
-                        continue
+                    # openSWATH_py.load_validationData(
+                    #     {'db_ini_i':db_ini_i},
+                    #     ReferenceDataMethods_params_I
+                    #     )
+                    # if not openSWATH_py.reference_data:
+                    #     skipped_samples.append({'sample_name':sample,
+                    #         'error_message':'no reference data found'})
+                    #     print('Reference data not found for sample ' + sample + '.')
+                    #     continue
                     # load in the files
                     openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                     openSWATH_py.load_SWATHorDIA({})
@@ -324,10 +322,10 @@ class __main__():
                     openSWATH_py.store_featureMap(
                         {'featureXML_o':featureXML_o,
                         'feature_csv_o':feature_csv_o})
-                    tmp = {}
-                    tmp.update(openSWATH_py.validation_metrics)
-                    tmp.update({'sample_name':sample})
-                    validation_metrics.append(tmp)
+                    # tmp = {}
+                    # tmp.update(openSWATH_py.validation_metrics)
+                    # tmp.update({'sample_name':sample})
+                    # validation_metrics.append(tmp)
                 except Exception as e:
                     print(e)
                     skipped_samples.append({'sample_name':sample,
