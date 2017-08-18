@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 from .smartPeak import smartPeak
 from .smartPeak_i import smartPeak_i
 from .smartPeak_o import smartPeak_o

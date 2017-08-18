@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #system modules
 import csv, sys, json, io
 #custom modules

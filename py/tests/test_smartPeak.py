@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pytest
 from .smartPeak import smartPeak
 #3rd part libraries

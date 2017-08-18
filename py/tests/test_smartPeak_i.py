@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from smartPeak.smartPeak_i import smartPeak_i
 from smartPeak.smartPeak import smartPeak
 import pytest

@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 #modules
 from .smartPeak import smartPeak
 from .pyTOPP.MRMMapper import MRMMapper

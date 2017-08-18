@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 """
 TODO:
 1. add import statements
