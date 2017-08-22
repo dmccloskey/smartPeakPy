@@ -286,15 +286,15 @@ class __main__():
                     ReferenceDataMethods_params_I.extend(params['ReferenceDataMethods.getAndProcess_referenceData_samples'])
                     sample_names_I = '''['%s']'''%(sample)
                     ReferenceDataMethods_params_I.append({'description': '', 'name': 'sample_names_I', 'type': 'list', 'value': sample_names_I})
-                    # openSWATH_py.load_validationData(
-                    #     {'db_ini_i':db_ini_i},
-                    #     ReferenceDataMethods_params_I
-                    #     )
-                    # if not openSWATH_py.reference_data:
-                    #     skipped_samples.append({'sample_name':sample,
-                    #         'error_message':'no reference data found'})
-                    #     print('Reference data not found for sample ' + sample + '.')
-                    #     continue
+                    openSWATH_py.load_validationData(
+                        {'db_ini_i':db_ini_i},
+                        ReferenceDataMethods_params_I
+                        )
+                    if not openSWATH_py.reference_data:
+                        skipped_samples.append({'sample_name':sample,
+                            'error_message':'no reference data found'})
+                        print('Reference data not found for sample ' + sample + '.')
+                        continue
                     # load in the files
                     openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                     openSWATH_py.load_SWATHorDIA({})
