@@ -275,9 +275,9 @@ class __main__():
                 try:
                     # dynamically make the filenames
                     data_dir = v['data_dir']
-                    mzML_I = '''%s/%s.mzML'''%(data_dir,sample)
-                    traML_csv_i = '''%s/BloodProject01_SWATH.csv'''%(data_dir)
-                    trafo_csv_i = '''%s/BloodProject01_SWATH_trafo.csv'''%(data_dir)
+                    mzML_I = '''/home/user/mzML_validationData/%s.mzML'''%(sample)
+                    traML_csv_i = '''%s/traML.csv'''%(data_dir)
+                    trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
                     db_ini_i = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini'
                     featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
                     feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
@@ -298,7 +298,6 @@ class __main__():
                     # load in the files
                     openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                     openSWATH_py.load_SWATHorDIA({})
-                    mzML_I = '''%s/%s.mzML'''%(data_dir,sample)
                     openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_I})
                     openSWATH_py.load_Trafo(
                         {'trafo_csv_i':trafo_csv_i},
@@ -334,9 +333,9 @@ class __main__():
                 openSWATH_py.clear_data()
         if validation_metrics:
             smartpeak_o = smartPeak_o(validation_metrics)
-            validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/BloodProject01_validation/150601_BloodProject01_validationMetrics.csv'''
+            validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/validationMetrics.csv'''
             smartpeak_o.write_dict2csv(validationMetrics_csv_i)
         if skipped_samples:
             smartpeak_o = smartPeak_o(skipped_samples)
-            skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/BloodProject01_validation/150601_BloodProject01_skippedSamples.csv'''
+            skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/skippedSamples.csv'''
             smartpeak_o.write_dict2csv(skippedSamples_csv_i)
