@@ -37,7 +37,7 @@ class smartPeak_openSWATH_cmd():
     def parse_openSWATH_cmd_params(self, data_I):
         """parse parameters from csv file
 
-        Args
+        Args:
             data_I (list): e.g. [
                 {'function': 'TargetedFileConverter ', 'name': '-in', 'delim': ' ', 'value': 'IsolateA1.csv'},
                 {'function': 'TargetedFileConverter ', 'name': '-out', 'delim': ' ', 'value': 'IsolateA1.traML'},
@@ -49,7 +49,7 @@ class smartPeak_openSWATH_cmd():
                 {'function': 'MRMMapper', 'name': '-no-strict','delim':' ','value':''},
             ]
 
-        Returns
+        Returns:
             data_O (list): e.g. [
                 {'ConvertTSVToTraML':[
                     {'param':'-in','delim':' ','value':'IsolateA1.csv'},
@@ -97,7 +97,7 @@ class smartPeak_openSWATH_cmd():
         representing the command line arguments to run the
         openSWATH workflow
 
-        Args
+        Args:
             filename (str): header should include the following:
                 order,
                 function,

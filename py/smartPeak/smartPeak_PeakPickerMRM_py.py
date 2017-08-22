@@ -23,7 +23,7 @@ class smartPeak_PeakPickerMRM_py():
         ):
         """Isotope labeled quantification workflow for a single sample
         
-        Args
+        Args:
             filenames_I (list): list of filename strings
             DIASpectrumExtractor_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
@@ -82,7 +82,7 @@ class smartPeak_PeakPickerMRM_py():
         ):
         """Isotope labeled quantification workflow for a single sample
         
-        Args
+        Args:
             filenames_I (list): list of filename strings
             PeakPickerMRM_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags

@@ -10,7 +10,7 @@ class smartPeak_i(base_importData):
     def parse_openMSParams(self):
         """parse parameters from csv file
 
-        Args
+        Args:
             data_I (list): e.g. [
                 {'function': 'ConvertTSVToTraML', 'name': '-in', 'value': 'IsolateA1.csv'},
                 {'function': 'ConvertTSVToTraML', 'name': '-out', 'value': 'IsolateA1.traML'},
@@ -22,7 +22,7 @@ class smartPeak_i(base_importData):
                 {'function': 'MRMMapper', 'name': '-no-strict','value':''},
             ]
 
-        Returns
+        Returns:
             data_O (dict): e.g. {
                 'ConvertTSVToTraML':[
                     {'name':'-in','value':'IsolateA1.csv'},
@@ -73,7 +73,7 @@ class smartPeak_i(base_importData):
         representing the method arguments to run the
         openMS methods
 
-        Args
+        Args:
             filename (str): header should include the following:
                 function,
                 name,
@@ -91,7 +91,7 @@ class smartPeak_i(base_importData):
     def parse_pythonParams(self):
         """parse parameters from csv file
 
-        Args
+        Args:
             data_I (list): e.g. [
                 {'function': 'ConvertTSVToTraML', 'name': '-in', 'value': 'IsolateA1.csv'},
                 {'function': 'ConvertTSVToTraML', 'name': '-out', 'value': 'IsolateA1.traML'},
@@ -103,7 +103,7 @@ class smartPeak_i(base_importData):
                 {'function': 'MRMMapper', 'name': '-no-strict','value':''},
             ]
 
-        Returns
+        Returns:
             data_O (list): e.g. [
                 {'ConvertTSVToTraML':[
                     {'-in':'IsolateA1.csv'},
@@ -148,7 +148,7 @@ class smartPeak_i(base_importData):
         representing the method arguments to run the
         any generic python function
 
-        Args
+        Args:
             filename (str): header should include the following:
                 function,
                 name,

@@ -17,12 +17,12 @@ class smartPeak_isotopeLabeledQuantitation_py():
         filenames_I,):
         """Isotope labeled quantification workflow for a single sample
         
-        Args
+        Args:
             filenames_I (list): list of filename strings
             MRMFeatureFinderScoring_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
         
-        Notes
+        Notes:
             requires both heavy and light features in the same featureMap
         
         """

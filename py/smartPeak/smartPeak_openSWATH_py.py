@@ -32,10 +32,10 @@ class smartPeak_openSWATH_py():
         ):
         """Load TraML file
 
-        Args
+        Args:
             filenames_I (list): list of filename strings
 
-        Internals
+        Internals:
             targeted (TargetedExperiment)
         
         """
@@ -60,12 +60,12 @@ class smartPeak_openSWATH_py():
         ):
         """Load Trafo file
 
-        Args
+        Args:
             filenames_I (list): list of filename strings
             MRMFeatureFinderScoring_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
 
-        Internals
+        Internals:
             targeted (TargetedExperiment)
         
         """
@@ -122,11 +122,11 @@ class smartPeak_openSWATH_py():
         ):
         """Load MzML into an MSExperiment
 
-        Args
+        Args:
             filenames_I (list): list of filename strings
             map_chromatograms_I (boolean): map the chromatograms to the transitions (requires self.targeted)
 
-        Internals
+        Internals:
             msExperiment (TargetedExperiment)
         
         """
@@ -158,10 +158,10 @@ class smartPeak_openSWATH_py():
         ):
         """Load SWATH or DIA into an MSExperiment
 
-        Args
+        Args:
             filenames_I (list): list of filename strings
 
-        Internals
+        Internals:
             msExperiment (TargetedExperiment)
         
         """
@@ -191,7 +191,7 @@ class smartPeak_openSWATH_py():
         ):
         """Run the openSWATH workflow for a single sample
         
-        Args
+        Args:
             filenames_I (list): list of filename strings
             MRMFeatureFinderScoring_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
@@ -236,17 +236,17 @@ class smartPeak_openSWATH_py():
         ):
         """Run the openSWATH post processing filtering workflow for a single sample
         
-        Args
+        Args:
             filenames_I (list): list of filename strings
             MRMFeatureFinderScoring_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
 
-        Internals
+        Internals:
             features (FeatureMap): output from SWATH workflow
             msExperiment (MSExperiment): 
             targeted (TargetedExperiment): 
 
-        Returns
+        Returns:
             output_selected (FeatureMap): filtered and/or selected features
                 
         """
@@ -298,7 +298,7 @@ class smartPeak_openSWATH_py():
     ):
         """Run the openSWATH post processing quality control workflow for a single sample
         
-        Args
+        Args:
             filenames_I (list): list of filename strings
             features (FeatureMap): output from SWATH workflow or filtered and/or selected features
             chromatograms_mapped (MSExperiment): output from SWATH workflow
@@ -306,7 +306,7 @@ class smartPeak_openSWATH_py():
             MRMFeatureFinderScoring_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
 
-        Returns
+        Returns:
             quality_control (dict): dictionary of QC metrics
                 
         """
@@ -382,9 +382,9 @@ class smartPeak_openSWATH_py():
         ):
         """Load the validation data from file or from a database
         
-        Args
-
-        Internals
+        Args:
+            filenames_I (dict): dictionary of filenames
+            ReferenceDataMethods_params_I (dict): dictionary of DB query parameters
         
         """
         smartpeak = smartPeak()
