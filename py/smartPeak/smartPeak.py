@@ -1,4 +1,4 @@
-# # Imports
+# -*- coding: utf-8 -*-
 import os
 
 class smartPeak():
@@ -8,11 +8,11 @@ class smartPeak():
     def make_osCmd(paramDict_I, functionName_I):
         """Make a general command line call string
         
-        Args
+        Args:
             paramDict_I (list:dict): list of dictionaries of parameter names and values
             functionName_I (str): name of the command line function
             
-        Returns
+        Returns:
             cmd_O (str): os command string
         
         """
@@ -28,7 +28,7 @@ class smartPeak():
     def run_osCmd(cmd_I, verbose_I=False):
         """Run a general command line call string
         
-        Args
+        Args:
             cmd_I (str): os command string
             
         
@@ -40,11 +40,11 @@ class smartPeak():
     def convert_byte2String(byte_I, encoding_I='utf-8'):
         """Convert a byte to a string
         
-        Args
+        Args:
             byte_I (byte): byte representation of a string
             encoding_I (str): byte encoding, default = 'utf-8'
 
-        Returns
+        Returns:
             string_O (str):            
         
         """
@@ -59,11 +59,11 @@ class smartPeak():
     def convert_string2Byte(string_I, encoding_I='utf-8'):
         """Convert a string to a byte
         
-        Args
+        Args:
             string_I (str): 
             encoding_I (str): byte encoding, default = 'utf-8'
 
-        Returns
+        Returns:
             byte_O (byte): byte representation of a string            
         
         """
@@ -77,10 +77,10 @@ class smartPeak():
     def convert_MQQMethod2Feature(self,MQQMethod_I):
         """Convert MultiQuant QMethod.csv file to feature.csv file
         
-        Args
+        Args:
             MQQMethod_I (list:dict): list of dictionaries of headers/values
             
-        Returns
+        Returns:
             FeatureXML_O (list:dict): list of dictionaries of headers/values
         
         """
@@ -127,10 +127,10 @@ class smartPeak():
     def parse_MQTransitionName(name_I):
         """Parse MultiQuant transition name
         
-        Args
+        Args:
             name_I (str): transition name
             
-        Returns
+        Returns:
             component_group_name_O (str): component_group_name
             quantifier_O (int): quantifier = 1, qualifier = 2
             label_type_O (str): Heavy or Light
@@ -145,11 +145,11 @@ class smartPeak():
 
     def updateParameters(self,Param_IO,parameters_I):
         """Update a Param object
-        Args
+        Args:
             Param_IO (pyopenms.Param()): Param object to update
             parameters_I (list): list of parameters to update
             
-        Output
+        Returns:
             Param_IO (pyopenms.Param()): updated Param object
         
         """
@@ -189,10 +189,10 @@ class smartPeak():
 
     def setParameters(self,parameters_I,Param_O):
         """set a Param object
-        Args
+        Args:
             parameters_I (list): list of parameters to update
             
-        Output
+        Returns:
             Param_O (pyopenms.Param()): Param object
         
         """
@@ -225,10 +225,10 @@ class smartPeak():
     def checkParameterValue(value_I):
         """Check for a valid openMS parameter
         
-        Args
+        Args:
             value_I (): input value_I
 
-        Returns
+        Returns:
             valid_O (bool): true, if valid input
                             false, if invalid input
         """    
@@ -242,11 +242,11 @@ class smartPeak():
         """Cast a string to the desired type 
         and return the eval
         
-        Args
+        Args:
             str_I (str): input string
             type_I (str): type
 
-        Returns
+        Returns:
             str_O (): evaluated string
             
         """
@@ -273,11 +273,11 @@ class smartPeak():
     def parseString(self,str_I,encode_str_I = True):
         """Parse string and return the eval
         
-        Args
+        Args:
             str_I (str): input string
             encode_str_I (bool): encode string as utf-8?
             
-        Returns
+        Returns:
             str_O (): evaluated string
             
         """
@@ -338,12 +338,13 @@ class smartPeak():
     @staticmethod
     def compareValues(value_1_I,value_2_I,comparator_I):
         """Compare two values
-        Args
+        
+        Args:
             value_1_I (float)
             value_2_I (float)
             comparator_I (str): comparison operator 
                       comparator = "<", ">"
-        Returns
+        Returns:
             pass_O (boolean)
             
         """

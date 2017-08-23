@@ -1,7 +1,4 @@
-import unittest
-import os,sys
-
-import copy, sys
+# -*- coding: utf-8 -*-
 try:
     import pyopenms
 except ImportError as e:

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pytest
 from .smartPeak import smartPeak
 #3rd part libraries
@@ -12,15 +13,10 @@ class test_smartPeak():
 
     #tests for smartPeak_openSWATH_cmd
     def test_make_osCmd(self, verbose_I=False):
-        """"Test make_osCmd function
-
-        EXAMPLE:
-        tests = test_smartPeak()
-        tests.test_make_osCmd(verbose_I=True)
+        """Test make_osCmd function
 
         """
-        #         params = [{'param1':'value1'},
-        #                   {'param2':'value2'}]
+
         params = [
             {
                 'param': 'param1',

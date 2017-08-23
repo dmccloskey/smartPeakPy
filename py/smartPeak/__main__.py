@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 from .smartPeak import smartPeak
 from .smartPeak_i import smartPeak_i
 from .smartPeak_o import smartPeak_o
@@ -269,20 +269,19 @@ class __main__():
         params = smartpeak_i.getData()
         smartpeak_i.clear_data()
 
+        cnt = 0
         for filename in filenames:
             for sample,v in filename.items():
                 print("processing sample "+ sample)
                 try:
                     # dynamically make the filenames
                     data_dir = v['data_dir']
-                    mzML_I = '''%s/%s.mzML'''%(data_dir,sample)
-                    traML_csv_i = '''%s/BloodProject01_SWATH.csv'''%(data_dir)
-                    trafo_csv_i = '''%s/BloodProject01_SWATH_trafo.csv'''%(data_dir)
+                    mzML_I = '''/home/user/mzML_validationData/%s.mzML'''%(sample)
+                    traML_csv_i = '''%s/traML.csv'''%(data_dir)
+                    trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
                     db_ini_i = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini'
-                    # featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
-                    featureXML_o = '''%s/features_qmip2/%s.featureXML'''%(data_dir,sample)
-                    # feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
-                    feature_csv_o = '''%s/features_qmip2/%s.csv'''%(data_dir,sample)
+                    featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
+                    feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
                     # load in the validation data (if no data is found, continue to the next sample)
                     ReferenceDataMethods_params_I = []
                     ReferenceDataMethods_params_I.extend(params['ReferenceDataMethods.getAndProcess_referenceData_samples'])
@@ -300,25 +299,24 @@ class __main__():
                     # load in the files
                     openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                     openSWATH_py.load_SWATHorDIA({})
-                    mzML_I = '''%s/%s.mzML'''%(data_dir,sample)
                     openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_I})
                     openSWATH_py.load_Trafo(
                         {'trafo_csv_i':trafo_csv_i},
                         params['MRMFeatureFinderScoring'])
-                    # # run the openSWATH workflow for metabolomics
-                    # openSWATH_py.openSWATH_py(
-                    #     params['MRMFeatureFinderScoring'])
-                    # openSWATH_py.filterAndSelect_py(
-                    #     {},
-                    #     params['MRMFeatureFilter.filter_MRMFeatures'],
-                    #     {},#params['MRMFeatureSelector.select_MRMFeatures_score'],
-                    #     params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
-                    # # store
-                    # openSWATH_py.store_featureMap(
-                    #     {'featureXML_o':featureXML_o,
-                    #     'feature_csv_o':feature_csv_o})
+                    # run the openSWATH workflow for metabolomics
+                    openSWATH_py.openSWATH_py(
+                        params['MRMFeatureFinderScoring'])
+                    openSWATH_py.filterAndSelect_py(
+                        {},
+                        params['MRMFeatureFilter.filter_MRMFeatures'],
+                        {},#params['MRMFeatureSelector.select_MRMFeatures_score'],
+                        params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
+                    # store
+                    openSWATH_py.store_featureMap(
+                        {'featureXML_o':featureXML_o,
+                        'feature_csv_o':feature_csv_o})
                     # validate the data
-                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                    # openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
                     openSWATH_py.validate_py(params['MRMFeatureValidator.validate_MRMFeatures'])
                     # store
                     openSWATH_py.store_featureMap(
@@ -334,11 +332,23 @@ class __main__():
                         'error_message':e})
                 # manual clear data for the next iteration
                 openSWATH_py.clear_data()
+                # export the data at period intervals
+                cnt += 1
+                if cnt > 25:
+                    if validation_metrics:
+                        smartpeak_o = smartPeak_o(validation_metrics)
+                        validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/validationMetrics.csv'''
+                        smartpeak_o.write_dict2csv(validationMetrics_csv_i)
+                    if skipped_samples:
+                        smartpeak_o = smartPeak_o(skipped_samples)
+                        skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/skippedSamples.csv'''
+                        smartpeak_o.write_dict2csv(skippedSamples_csv_i)
+                    cnt = 0
         if validation_metrics:
             smartpeak_o = smartPeak_o(validation_metrics)
-            validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/BloodProject01_validation/150601_BloodProject01_validationMetrics.csv'''
+            validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/validationMetrics.csv'''
             smartpeak_o.write_dict2csv(validationMetrics_csv_i)
         if skipped_samples:
             smartpeak_o = smartPeak_o(skipped_samples)
-            skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/BloodProject01_validation/150601_BloodProject01_skippedSamples.csv'''
+            skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/skippedSamples.csv'''
             smartpeak_o.write_dict2csv(skippedSamples_csv_i)

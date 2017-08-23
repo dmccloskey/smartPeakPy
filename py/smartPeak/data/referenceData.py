@@ -1,5 +1,9 @@
-from SBaaS_base.sbaas_base import sbaas_base
-from SBaaS_base.sbaas_base_query_select import sbaas_base_query_select
+# -*- coding: utf-8 -*-
+try:
+    from SBaaS_base.sbaas_base import sbaas_base
+    from SBaaS_base.sbaas_base_query_select import sbaas_base_query_select
+except ImportError as e:
+    print(e)
 
 """
 
