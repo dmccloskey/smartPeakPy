@@ -321,10 +321,10 @@ class __main__():
                     openSWATH_py.store_featureMap(
                         {'featureXML_o':featureXML_o,
                         'feature_csv_o':feature_csv_o})
-                    # tmp = {}
-                    # tmp.update(openSWATH_py.validation_metrics)
-                    # tmp.update({'sample_name':sample})
-                    # validation_metrics.append(tmp)
+                    tmp = {}
+                    tmp.update(openSWATH_py.validation_metrics)
+                    tmp.update({'sample_name':sample})
+                    validation_metrics.append(tmp)
                 except Exception as e:
                     print(e)
                     skipped_samples.append({'sample_name':sample,

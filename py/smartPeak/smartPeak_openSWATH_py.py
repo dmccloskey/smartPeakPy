@@ -146,8 +146,8 @@ class smartPeak_openSWATH_py():
             chromatogram_map = mrmmapper.algorithm(
                 chromatogram_map=chromatograms,
                 targeted=self.targeted, 
-                precursor_tolerance=0.0005,
-                product_tolerance=0.0005, 
+                precursor_tolerance=0.0009, #hard-coded for now
+                product_tolerance=0.0009, #hard-coded for now
                 allow_unmapped=True,
                 allow_double_mappings=True
             )
