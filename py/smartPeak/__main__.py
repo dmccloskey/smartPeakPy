@@ -333,11 +333,16 @@ class __main__():
                 # manual clear data for the next iteration
                 openSWATH_py.clear_data()
                 # export the data at period intervals
+                cnt += 1
                 if cnt > 25:
                     if validation_metrics:
                         smartpeak_o = smartPeak_o(validation_metrics)
                         validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/validationMetrics.csv'''
                         smartpeak_o.write_dict2csv(validationMetrics_csv_i)
+                    if skipped_samples:
+                        smartpeak_o = smartPeak_o(skipped_samples)
+                        skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/skippedSamples.csv'''
+                        smartpeak_o.write_dict2csv(skippedSamples_csv_i)
                     cnt = 0
         if validation_metrics:
             smartpeak_o = smartPeak_o(validation_metrics)
