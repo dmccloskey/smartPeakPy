@@ -269,6 +269,7 @@ class __main__():
         params = smartpeak_i.getData()
         smartpeak_i.clear_data()
 
+        cnt = 0
         for filename in filenames:
             for sample,v in filename.items():
                 print("processing sample "+ sample)
@@ -331,6 +332,13 @@ class __main__():
                         'error_message':e})
                 # manual clear data for the next iteration
                 openSWATH_py.clear_data()
+                # export the data at period intervals
+                if cnt > 25:
+                    if validation_metrics:
+                        smartpeak_o = smartPeak_o(validation_metrics)
+                        validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/validationMetrics.csv'''
+                        smartpeak_o.write_dict2csv(validationMetrics_csv_i)
+                    cnt = 0
         if validation_metrics:
             smartpeak_o = smartPeak_o(validation_metrics)
             validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/validationMetrics.csv'''
