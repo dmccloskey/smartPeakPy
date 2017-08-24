@@ -334,7 +334,7 @@ class __main__():
                 openSWATH_py.clear_data()
                 # export the data at period intervals
                 cnt += 1
-                if cnt > 25:
+                if cnt > 5:
                     if validation_metrics:
                         smartpeak_o = smartPeak_o(validation_metrics)
                         validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/validationMetrics.csv'''
