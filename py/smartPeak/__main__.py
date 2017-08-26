@@ -279,7 +279,7 @@ class __main__():
                     mzML_I = '''/home/user/mzML_validationData/%s.mzML'''%(sample)
                     traML_csv_i = '''%s/traML.csv'''%(data_dir)
                     trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
-                    db_ini_i = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini'
+                    db_ini_i = '''%s/settings_metabolomics.ini'''%(data_dir)
                     featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
                     feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
                     # load in the validation data (if no data is found, continue to the next sample)
@@ -309,7 +309,7 @@ class __main__():
                     openSWATH_py.filterAndSelect_py(
                         {},
                         params['MRMFeatureFilter.filter_MRMFeatures'],
-                        #{},
+                        #{},#
                         params['MRMFeatureSelector.select_MRMFeatures_score'],
                         params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
                     # store
