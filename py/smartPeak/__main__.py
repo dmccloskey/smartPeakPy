@@ -342,7 +342,7 @@ class __main__():
                         smartpeak_o.write_dict2csv(validationMetrics_csv_i)
                     if skipped_samples:
                         smartpeak_o = smartPeak_o(skipped_samples)
-                        skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/skippedSamples_%s.csv'''%batch_cn
+                        skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/skippedSamples_%s.csv'''%batch_cnt
                         smartpeak_o.write_dict2csv(skippedSamples_csv_i)
                     cnt = 0
                     batch_cnt += 1
