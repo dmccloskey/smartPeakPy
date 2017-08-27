@@ -270,6 +270,7 @@ class __main__():
         smartpeak_i.clear_data()
 
         cnt = 0
+        batch_cnt = 0
         for filename in filenames:
             for sample,v in filename.items():
                 print("processing sample "+ sample)
@@ -334,17 +335,17 @@ class __main__():
                 openSWATH_py.clear_data()
                 # export the data at period intervals
                 cnt += 1
-                # if cnt > 5:
-                if cnt > 10:
+                if cnt > 100:
                     if validation_metrics:
                         smartpeak_o = smartPeak_o(validation_metrics)
-                        validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/validationMetrics.csv'''
+                        validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/validationMetrics_%s.csv'''%batch_cnt
                         smartpeak_o.write_dict2csv(validationMetrics_csv_i)
                     if skipped_samples:
                         smartpeak_o = smartPeak_o(skipped_samples)
-                        skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/skippedSamples.csv'''
+                        skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/skippedSamples_%s.csv'''%batch_cn
                         smartpeak_o.write_dict2csv(skippedSamples_csv_i)
                     cnt = 0
+                    batch_cnt += 1
         if validation_metrics:
             smartpeak_o = smartPeak_o(validation_metrics)
             validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/validationMetrics.csv'''
