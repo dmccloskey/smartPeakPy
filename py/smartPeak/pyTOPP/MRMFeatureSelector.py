@@ -25,7 +25,8 @@ class MRMFeatureSelector():
             {"name":"select_transition_groups", "value":True},
             {"name":"segment_window_lengths", "value":12},
             {"name":"segment_step_lengths", "value":3},
-            {"name":"select_highest_count", "value":False}]
+            {"name":"select_highest_count", "value":False}],
+        verbose_I=False
         ):
         """Aligns feature Tr (retention time, normalized retention time)
         and removes features that violate retention time order
@@ -121,7 +122,7 @@ class MRMFeatureSelector():
                         }
         from operator import itemgetter
         To_list = sorted(Tr_expected_dict.values(), key=itemgetter('retention_time')) 
-        print("Extracted %s features"%(feature_count))
+        if verbose_I: print("Extracted %s features"%(feature_count))
         # Select optimal retention times
         Tr_optimal_count = {}
         # To_list = To_list[:35] #TESTING ONLY
@@ -129,10 +130,10 @@ class MRMFeatureSelector():
             segment_step_length = len(To_list)
             segment_window_length = len(To_list)
         segments = int(ceil(len(To_list)/segment_step_length))
-        print("Selecting optimal Tr in segments")
+        if verbose_I: print("Selecting optimal Tr in segments")
         Tr_optimal = []
         for i in range(segments): #could be distributed and parallelized
-            print("Optimizing for segment (%s/%s)"%(i,segments))
+            if verbose_I: print("Optimizing for segment (%s/%s)"%(i,segments))
             start_iter = segment_step_length*i
             stop_iter = min([segment_step_length*i+segment_window_length,len(To_list)])
             tmp = self.optimize_Tr(
@@ -194,7 +195,7 @@ class MRMFeatureSelector():
             feature_tmp = copy.copy(feature)
             feature_tmp.setSubordinates(subordinates_tmp)
             output_filtered.push_back(feature_tmp)
-        print("Filtered %s features"%(len(list(set(Tr_optimal)))))
+        if verbose_I: print("Filtered %s features"%(len(list(set(Tr_optimal)))))
         return output_filtered
 
     def optimize_Tr(
@@ -205,7 +206,8 @@ class MRMFeatureSelector():
         nn_threshold,
         locality_weights,
         variable_type = 'integer',
-        optimal_threshold = 0.5
+        optimal_threshold = 0.5,
+        verbose_I=False
         ):
         """
         optimize the retention time using QMIP
@@ -236,10 +238,10 @@ class MRMFeatureSelector():
         n_constraints = 0
         n_variables = 0
         model = Model(name='Retention time alignment')
-        print("Building and adding model constraints")
+        if verbose_I: print("Building and adding model constraints")
         st = time.time()
         for cnt_1,v1 in enumerate(To_list):
-            print("Building and adding variables and constraints for (%s/%s) components"%(cnt_1,len(To_list)-1))
+            if verbose_I: print("Building and adding variables and constraints for (%s/%s) components"%(cnt_1,len(To_list)-1))
             component_name_1 = v1['component_name']
             constraints = []
             constraint_name_1 = '%s_constraint'%(component_name_1)
@@ -360,8 +362,8 @@ class MRMFeatureSelector():
             model.add(Constraint(S.Zero,name=constraint_name_1, lb=1, ub=1))
             model.constraints[constraint_name_1].set_linear_coefficients({d:1 for d in constraints})
             n_constraints += 1    
-        print("Model variables:", n_variables)
-        print("Model constraints:", n_constraints)
+        if verbose_I: print("Model variables:", n_variables)
+        if verbose_I: print("Model constraints:", n_constraints)
         # #make the constraints
         # print("Adding model constraints")
         # st = time.time()
@@ -376,15 +378,15 @@ class MRMFeatureSelector():
         model.objective = objective     
         model.objective.set_linear_coefficients({d:1 for d in obj_variables.values()}) 
         elapsed_time = time.time() - st
-        print("Elapsed time: %.2fs" % elapsed_time)
+        if verbose_I: print("Elapsed time: %.2fs" % elapsed_time)
         # Optimize and print the solution
-        print("Solving the model")
+        if verbose_I: print("Solving the model")
         st = time.time()
         status = model.optimize()
-        print("Status:", status)
-        print("Objective value:", model.objective.value)        
+        if verbose_I: print("Status:", status)
+        if verbose_I: print("Objective value:", model.objective.value)        
         elapsed_time = time.time() - st
-        print("Elapsed time: %.2fs" % elapsed_time)
+        if verbose_I: print("Elapsed time: %.2fs" % elapsed_time)
         Tr_optimal = [var.name for var in model.variables if var.primal > optimal_threshold and var.name in variables.keys()]
         # # DEBUGING:
         # print(len(Tr_optimal),len(variables.keys()))
@@ -397,7 +399,8 @@ class MRMFeatureSelector():
         features,
         targeted = None,
         tr_expected = [],
-        schedule_criteria = []):
+        schedule_criteria = [],
+        verbose_I = False):
 
         import time as time
         smartpeak = smartPeak()
@@ -430,11 +433,11 @@ class MRMFeatureSelector():
             optimal_thresholds = select_criteria_dict["optimal_thresholds"]   				
 				
         # Select optimal retention times
-        print("Selecting optimal Tr in iterations")
+        if verbose_I: print("Selecting optimal Tr in iterations")
         st = time.time()
         output_features = features
         for i in range(len(segment_window_lengths)):
-            print("Optimizing for iteration (%s/%s)"%(i,len(segment_window_lengths)-1))
+            if verbose_I: print("Optimizing for iteration (%s/%s)"%(i,len(segment_window_lengths)-1))
             select_criteria = [
             {"name":"nn_threshold", "value":nn_thresholds[i]},
             {"name":"locality_weights", "value":locality_weights[i]},
@@ -449,12 +452,13 @@ class MRMFeatureSelector():
                 tr_expected,
                 select_criteria) 
         elapsed_time = time.time() - st
-        print("Scheduler time: %.2fs" % elapsed_time)
+        if verbose_I: print("Scheduler time: %.2fs" % elapsed_time)
         return output_features
 
     def select_MRMFeatures_score(
         self,features,
-        score_weights=[]):
+        score_weights=[],
+        verbose_I = False):
         """Selects the best feature from a FeatureMap based on a scoring criteria
         
         Args
@@ -534,7 +538,7 @@ class MRMFeatureSelector():
                         }
         from operator import itemgetter
         To_list = sorted(Tr_expected_dict.values(), key=itemgetter('retention_time')) 
-        print("Extracted %s features"%(feature_count))
+        if verbose_I: print("Extracted %s features"%(feature_count))
         # Select optimal retention times
         Tr_optimal_count = {}
         # To_list = To_list[:35] #TESTING ONLY
@@ -542,10 +546,10 @@ class MRMFeatureSelector():
             segment_step_length = len(To_list)
             segment_window_length = len(To_list)
         segments = int(ceil(len(To_list)/segment_step_length))
-        print("Selecting optimal Tr in segments")
+        if verbose_I: print("Selecting optimal Tr in segments")
         Tr_optimal = []
         for i in range(segments): #could be distributed and parallelized
-            print("Optimizing for segment (%s/%s)"%(i,segments))
+            if verbose_I: print("Optimizing for segment (%s/%s)"%(i,segments))
             start_iter = segment_step_length*i
             stop_iter = min([segment_step_length*i+segment_window_length,len(To_list)])
             tmp = self.optimize_scores(
@@ -605,7 +609,7 @@ class MRMFeatureSelector():
             feature_tmp = copy.copy(feature)
             feature_tmp.setSubordinates(subordinates_tmp)
             output_filtered.push_back(feature_tmp)
-        print("Filtered %s features"%(len(list(set(Tr_optimal)))))
+        if verbose_I: print("Filtered %s features"%(len(list(set(Tr_optimal)))))
         return output_filtered
 
     def optimize_scores(
@@ -614,7 +618,8 @@ class MRMFeatureSelector():
         Tr_dict,
         score_weights=[],
         variable_type = 'integer',
-        optimal_threshold = 0.5
+        optimal_threshold = 0.5,
+        verbose_I = False
         ):
         """
         optimize for the best peak score using MIP
@@ -644,10 +649,10 @@ class MRMFeatureSelector():
         n_constraints = 0
         n_variables = 0
         model = Model(name='Retention time alignment')
-        print("Building and adding model constraints")
+        if verbose_I: print("Building and adding model constraints")
         st = time.time()
         for cnt_1,v1 in enumerate(To_list):
-            print("Building and adding variables and constraints for (%s/%s) components"%(cnt_1,len(To_list)-1))
+            if verbose_I: print("Building and adding variables and constraints for (%s/%s) components"%(cnt_1,len(To_list)-1))
             component_name_1 = v1['component_name']
             constraints = []
             constraint_name_1 = '%s_constraint'%(component_name_1)
@@ -673,22 +678,22 @@ class MRMFeatureSelector():
             model.add(Constraint(S.Zero,name=constraint_name_1, lb=1, ub=1))
             model.constraints[constraint_name_1].set_linear_coefficients({d:1 for d in constraints})
             n_constraints += 1    
-        print("Model variables:", n_variables)
-        print("Model constraints:", n_constraints)
+        if verbose_I: print("Model variables:", n_variables)
+        if verbose_I: print("Model constraints:", n_constraints)
         #make the objective
         objective = Objective(S.Zero,direction='min')
         model.objective = objective     
         model.objective.set_linear_coefficients({k:v for k,v in obj_coefficients.items()}) 
         elapsed_time = time.time() - st
-        print("Elapsed time: %.2fs" % elapsed_time)
+        if verbose_I: print("Elapsed time: %.2fs" % elapsed_time)
         # Optimize and print the solution
-        print("Solving the model")
+        if verbose_I: print("Solving the model")
         st = time.time()
         status = model.optimize()
-        print("Status:", status)
-        print("Objective value:", model.objective.value)        
+        if verbose_I: print("Status:", status)
+        if verbose_I: print("Objective value:", model.objective.value)        
         elapsed_time = time.time() - st
-        print("Elapsed time: %.2fs" % elapsed_time)
+        if verbose_I: print("Elapsed time: %.2fs" % elapsed_time)
         Tr_optimal = [var.name for var in model.variables if var.primal > optimal_threshold and var.name in variables.keys()]
         # # DEBUGING:
         # print(len(Tr_optimal),len(variables.keys()))
