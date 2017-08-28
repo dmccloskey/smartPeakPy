@@ -5,6 +5,7 @@ services:
     image: dmccloskey/docker-pyopenms-vscode:validate_openSWATH
     volumes:
       # - //C/Users/domccl/Dropbox (UCSD SBRG)/Project_FastPeak/openMS_MRMworkflow/:/home/user/openMS_MRMworkflow/
+      # - //C/Users/domccl/Dropbox (UCSD SBRG)/absciexQTRAP5500_dataProcessing/analyst/data/mzML_BloodProject01/Unknowns_mzML/:/home/user/mzML_validationData/
       # - //C/Users/domccl/Dropbox (UCSD SBRG)/absciexQTRAP5500_dataProcessing/analyst/data/mzML_validationData/Unknowns/:/home/user/mzML_validationData/
       # - //C/Users//domccl/GitHub/smartPeak/py/:/home/user/code/
       - /home/systemsbiochemistry1/Documents/openMS_MRMworkflow/:/home/user/openMS_MRMworkflow/
