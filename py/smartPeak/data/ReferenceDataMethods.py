@@ -119,7 +119,8 @@ class ReferenceDataMethods():
         used__I = True,
         experiment_limit_I = 10000,
         mqresultstable_limit_I = 1000000,
-        settings_filename_I = 'settings.ini'):
+        settings_filename_I = 'settings.ini',
+        verbose_I=False):
         """
         Args
 
@@ -138,7 +139,7 @@ class ReferenceDataMethods():
         st = time.time()
         from .ReferenceData import ReferenceData
         referenceData = ReferenceData(session,engine,pg_settings.datadir_settings)
-        print("query the reference data")
+        if verbose_I: print("query the reference data")
         data_ref = referenceData.get_referenceData(
             experiment_ids_I = experiment_ids_I,
             sample_names_I = sample_names_I,
@@ -153,11 +154,11 @@ class ReferenceDataMethods():
             mqresultstable_limit_I = mqresultstable_limit_I,
         )
         elapsed_time = time.time() - st
-        print("Elapsed time: %.2fs" % elapsed_time)
+        if verbose_I: print("Elapsed time: %.2fs" % elapsed_time)
         session.close()
         # process the reference data
-        print("process the reference data")
+        if verbose_I: print("process the reference data")
         data_ref_processed = referenceData.process_referenceData(data_ref)
         elapsed_time = time.time() - st - elapsed_time
-        print("Elapsed time: %.2fs" % elapsed_time)
+        if verbose_I: print("Elapsed time: %.2fs" % elapsed_time)
         return data_ref_processed
