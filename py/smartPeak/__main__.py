@@ -310,7 +310,8 @@ class __main__():
                     openSWATH_py.filterAndSelect_py(
                         {},
                         params['MRMFeatureFilter.filter_MRMFeatures'],
-                        {},#params['MRMFeatureSelector.select_MRMFeatures_score'],
+                        #{},#
+                        params['MRMFeatureSelector.select_MRMFeatures_score'],
                         params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
                     # store
                     openSWATH_py.store_featureMap(

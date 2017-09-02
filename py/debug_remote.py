@@ -12,8 +12,8 @@ m = __main__()
 # Test openSWATH_py
 m.run_openSWATH_validation_py(
     filename_filenames='/home/user/openMS_MRMworkflow/Algo1Validation/filenames.csv',
-    filename_params='/home/user/openMS_MRMworkflow/Algo1Validation/MRMFeatureFinderScoring_params.csv', #QMIP
-    # filename_params='/home/user/openMS_MRMworkflow/Algo1Validation/MRMFeatureFinderScoring_params_filterControl.csv', #FILTERCONTROL
+    # filename_params='/home/user/openMS_MRMworkflow/Algo1Validation/MRMFeatureFinderScoring_params.csv', #QMIP
+    filename_params='/home/user/openMS_MRMworkflow/Algo1Validation/MRMFeatureFinderScoring_params_filterControl.csv', #FILTERCONTROL
     delimiter=','
     )
 
