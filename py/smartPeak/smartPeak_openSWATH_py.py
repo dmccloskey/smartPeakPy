@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-#utilities
-import copy
 #modules
 from .smartPeak import smartPeak
 from .smartPeak_i import smartPeak_i
@@ -26,10 +24,11 @@ class smartPeak_openSWATH_py():
         self.trafo = None
         self.msExperiment = None
         self.validation_metrics = None
+        self.swath = None
+        self.reference_data = None
 
     def load_TraML(self,
-        filenames_I
-        ):
+        filenames_I):
         """Load TraML file
 
         Args:
@@ -37,7 +36,7 @@ class smartPeak_openSWATH_py():
 
         Internals:
             targeted (TargetedExperiment)
-        
+
         """
         traML_csv_i,traML_i = None,None
         if 'traML_csv_i'in filenames_I.keys(): traML_csv_i = filenames_I['traML_csv_i']
@@ -484,3 +483,5 @@ class smartPeak_openSWATH_py():
         self.trafo = None
         self.msExperiment = None
         self.validation_metrics = None
+        self.swath = None
+        self.reference_data = None

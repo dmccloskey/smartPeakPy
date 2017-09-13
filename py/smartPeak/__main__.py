@@ -302,7 +302,7 @@ class __main__():
                     openSWATH_py.load_SWATHorDIA({})
                     openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_I})
                     openSWATH_py.load_Trafo(
-                        {'trafo_csv_i':trafo_csv_i},
+                        {},#{'trafo_csv_i':trafo_csv_i},
                         params['MRMFeatureFinderScoring'])
                     # run the openSWATH workflow for metabolomics
                     openSWATH_py.openSWATH_py(

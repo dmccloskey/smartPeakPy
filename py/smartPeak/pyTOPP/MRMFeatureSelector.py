@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #utilities
 import copy
-from math import log, exp, sqrt
+from math import log, exp, sqrt, log10
 #modules
 from smartPeak.smartPeak import smartPeak
 #3rd part libraries
@@ -255,7 +255,7 @@ class MRMFeatureSelector():
                     model.add(variables[variable_name_1])
                     component_names_1.append(component_name_1)
                     n_variables += 1
-                score_1 = (1/log(Tr_dict[component_name_1][i_1]['peak_apices_sum']))\
+                score_1 = (1/log10(Tr_dict[component_name_1][i_1]['peak_apices_sum']))\
                     *(1/log(Tr_dict[component_name_1][i_1]['sn_ratio']))\
                     *Tr_dict[component_name_1][i_1]['rt_score']
                 # score_1 = (1/log(Tr_dict[component_name_1][i_1]['sn_ratio']))\
@@ -280,7 +280,7 @@ class MRMFeatureSelector():
                             variables[variable_name_2] = Variable(variable_name_2, lb=0, ub=1, type=variable_type)
                             model.add(variables[variable_name_2])
                             n_variables += 1
-                        score_2 = (1/log(Tr_dict[component_name_2][i_2]['peak_apices_sum']))\
+                        score_2 = (1/log10(Tr_dict[component_name_2][i_2]['peak_apices_sum']))\
                             *(1/log(Tr_dict[component_name_2][i_2]['sn_ratio']))\
                             *Tr_dict[component_name_2][i_2]['rt_score']
                         # score_2 = (1/log(Tr_dict[component_name_2][i_2]['sn_ratio']))\
