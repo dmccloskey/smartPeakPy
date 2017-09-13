@@ -15,7 +15,7 @@ class OpenSwathFeatureXMLToTSV():
     def convert_to_row(self,feature, targ, run_id, keys, keys_subordinates, filename):
         """Convert Feature into a row for csv outpout
 
-        Args
+        Args:
             feature (Feature): 
             targ (TraML): transition experiment
             run_id (str): id for the run
@@ -23,7 +23,7 @@ class OpenSwathFeatureXMLToTSV():
             keys_subordinates ([byte]): list of Feature subordinate keys to extract
             filename (str): name of the FeatureXML file
 
-        Returns
+        Returns:
             rows_O ([]): list of row values based on the header and keys
         """
         rows_O = []
@@ -96,10 +96,10 @@ class OpenSwathFeatureXMLToTSV():
 
     def get_header(self, features):
         """Get header columns from feature
-        Args
+        Args:
             features (FeatureMap): FeatureMap object
 
-        Returns
+        Returns:
             header ([str]): List of header ids
             keys ([byte]): list of FeatureMap keys
         """

@@ -32,7 +32,7 @@ class smartPeak_isotopeLabeledQuantitation_py():
         consensusXML_o = filenames_I['consensusXML_o']
 
         # load featureMap
-        maps = pyopenms.FeatureMap();
+        maps = pyopenms.FeatureMap()
         featurexml = pyopenms.FeatureXMLFile()
         featurexml.load(featureXML_i.encode('utf-8'), maps)
 
@@ -52,5 +52,5 @@ class smartPeak_isotopeLabeledQuantitation_py():
         algorithm.group(maps,output)
 
         # store outfile
-        consensus = pyopenms.ConsensusXMLFile();
+        consensus = pyopenms.ConsensusXMLFile()
         consensus_file.store(consensusXML_o.encode('utf-8'), output)

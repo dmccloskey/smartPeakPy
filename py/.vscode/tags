@@ -141,7 +141,7 @@ dirname	tests/__init__.py	/^from os.path import abspath, dirname, join$/;"	kind:
 doMap	smartPeak/pyTOPP/MRMTransitionGroupPicker.py	/^    def doMap(self,exp, targeted):$/;"	kind:member	line:39
 exp	smartPeak/pyTOPP/IsotopeLabeledQuantification.py	/^from math import log, exp, sqrt$/;"	kind:namespace	line:4
 exp	smartPeak/pyTOPP/MRMFeatureQC.py	/^from math import log, exp, sqrt$/;"	kind:namespace	line:4
-exp	smartPeak/pyTOPP/MRMFeatureSelector.py	/^from math import log, exp, sqrt$/;"	kind:namespace	line:4
+exp	smartPeak/pyTOPP/MRMFeatureSelector.py	/^from math import log, exp, sqrt, log10$/;"	kind:namespace	line:4
 export_calibration	smartPeak/pyTOPP/IsotopeLabeledQuantification.py	/^    def export_calibration(self,filename):$/;"	kind:member	line:53
 extract_features	smartPeak/pyTOPP/OpenSwathRTNormalizer.py	/^    def extract_features(self, output, pairs, targeted):$/;"	kind:member	line:41
 filename_I	debug_local.py	/^    filename_I='C:\/Users\/domccl\/Dropbox (UCSD SBRG)\/Project_FastPeak\/openMS_MRMworkflow\/qmethod.csv',$/;"	kind:variable	line:8
@@ -180,7 +180,8 @@ load_unknowns	smartPeak/pyTOPP/IsotopeLabeledQuantification.py	/^    def load_un
 load_validationData	smartPeak/smartPeak_openSWATH_py.py	/^    def load_validationData(self,$/;"	kind:member	line:379
 log	smartPeak/pyTOPP/IsotopeLabeledQuantification.py	/^from math import log, exp, sqrt$/;"	kind:namespace	line:4
 log	smartPeak/pyTOPP/MRMFeatureQC.py	/^from math import log, exp, sqrt$/;"	kind:namespace	line:4
-log	smartPeak/pyTOPP/MRMFeatureSelector.py	/^from math import log, exp, sqrt$/;"	kind:namespace	line:4
+log	smartPeak/pyTOPP/MRMFeatureSelector.py	/^from math import log, exp, sqrt, log10$/;"	kind:namespace	line:4
+log10	smartPeak/pyTOPP/MRMFeatureSelector.py	/^from math import log, exp, sqrt, log10$/;"	kind:namespace	line:4
 m	debug_local.py	/^m = __main__()$/;"	kind:variable	line:4
 m	debug_remote.py	/^m = __main__()$/;"	kind:variable	line:10
 main	smartPeak/pyTOPP/MRMMapper.py	/^    def main(self, infile, traml_in, targeted, $/;"	kind:member	line:78
@@ -209,7 +210,6 @@ pickTransitionGroups	smartPeak/pyTOPP/MRMTransitionGroupPicker.py	/^    def pick
 postgresql_orm	smartPeak/data/ReferenceDataMethods.py	/^        from SBaaS_base.postgresql_orm import postgresql_orm$/;"	kind:namespace	line:132
 postgresql_settings	smartPeak/data/ReferenceDataMethods.py	/^        from SBaaS_base.postgresql_settings import postgresql_settings$/;"	kind:namespace	line:131
 process_referenceData	smartPeak/data/ReferenceData.py	/^    def process_referenceData(self,$/;"	kind:member	line:205
-ptvsd	debug_remote.py	/^import ptvsd$/;"	kind:namespace	line:3
 pyopenms	smartPeak/__main__.py	/^            import pyopenms$/;"	kind:namespace	line:203
 pyopenms	smartPeak/pyTOPP/IsotopeLabeledQuantification.py	/^    import pyopenms$/;"	kind:namespace	line:9
 pyopenms	smartPeak/pyTOPP/MRMFeatureFilter.py	/^    import pyopenms$/;"	kind:namespace	line:8
@@ -301,7 +301,7 @@ smartPeak_openSWATH_py	smartPeak/smartPeak_openSWATH_py.py	/^class smartPeak_ope
 smartPeak_openSWATH_py.py	smartPeak/smartPeak_openSWATH_py.py	1;"	kind:file	line:1
 sqrt	smartPeak/pyTOPP/IsotopeLabeledQuantification.py	/^from math import log, exp, sqrt$/;"	kind:namespace	line:4
 sqrt	smartPeak/pyTOPP/MRMFeatureQC.py	/^from math import log, exp, sqrt$/;"	kind:namespace	line:4
-sqrt	smartPeak/pyTOPP/MRMFeatureSelector.py	/^from math import log, exp, sqrt$/;"	kind:namespace	line:4
+sqrt	smartPeak/pyTOPP/MRMFeatureSelector.py	/^from math import log, exp, sqrt, log10$/;"	kind:namespace	line:4
 store	smartPeak/pyTOPP/OpenSwathFeatureXMLToTSV.py	/^    def store(self, filename_O, output, targeted, run_id = 'run0', filename = 'run0.FeatureXML'):$/;"	kind:member	line:158
 store_TransformationXMLFile	smartPeak/pyTOPP/OpenSwathRTNormalizer.py	/^    def store_TransformationXMLFile(self,outfile,trafo_out):$/;"	kind:member	line:223
 store_featureMap	smartPeak/smartPeak_openSWATH_py.py	/^    def store_featureMap(self,$/;"	kind:member	line:344
