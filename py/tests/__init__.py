@@ -22,15 +22,15 @@ smartPeak_directory = abspath(join(dirname(abspath(__file__)), ".."))
 smartPeak_location = abspath(join(smartPeak_directory, "smartPeak"))
 data_dir = join(smartPeak_directory, "tests/data", "")
 
-def test_all(args=None):
-    """ alias for running all unit-tests on installed smartPeak
-    """
-    if pytest:
-        args = args if args else []
+# def test_all(args=None):
+#     """ alias for running all unit-tests on installed smartPeak
+#     """
+#     if pytest:
+#         args = args if args else []
 
-        return pytest.main(
-            ['--pyargs', 'smartPeak', '--benchmark-skip', '-v', '-rs'] + args
-        )
-    else:
-        raise ImportError('missing package pytest and pytest_benchmark'
-                          ' required for testing')
+#         return pytest.main(
+#             ['--pyargs', 'smartPeak', '--benchmark-skip', '-v', '-rs'] + args
+#         )
+#     else:
+#         raise ImportError('missing package pytest and pytest_benchmark'
+#                           ' required for testing')

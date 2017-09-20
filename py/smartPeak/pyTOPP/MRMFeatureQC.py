@@ -3,7 +3,7 @@
 import copy
 from math import log, exp, sqrt
 #modules
-from smartPeak.smartPeak import smartPeak
+from smartPeak.core.smartPeak import smartPeak
 #3rd part libraries
 try:
     import pyopenms

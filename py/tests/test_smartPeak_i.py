@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from smartPeak.smartPeak_i import smartPeak_i
-from smartPeak.smartPeak import smartPeak
+from smartPeak.core.smartPeak_i import smartPeak_i
+from smartPeak.core.smartPeak import smartPeak
 import pytest
 
-class test_smartPeak_i():
+class testSmartPeak_i():
     """tests for smartPeak_i
     
     TODO: 

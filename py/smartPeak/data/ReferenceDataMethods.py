@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from smartPeak.smartPeak import smartPeak
-from smartPeak.smartPeak_i import smartPeak_i
-from smartPeak.smartPeak_o import smartPeak_o
+from smartPeak.core.smartPeak import smartPeak
+from smartPeak.core.smartPeak_i import smartPeak_i
+from smartPeak.core.smartPeak_o import smartPeak_o
 import time as time
 
 class ReferenceDataMethods():

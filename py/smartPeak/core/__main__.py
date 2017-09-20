@@ -174,64 +174,6 @@ class __main__():
         ]
         smartpeak_o = smartPeak_o(features)
         smartpeak_o.write_dict2csv(filename_O,headers=headers)
-        
-    def run_validate_openSWATH(self,
-        filename_filenames='',
-        filename_params='',
-        delimiter=','):
-        """
-        Args
-
-        Returns
-
-        Example
-
-        """
-        from .pyTOPP.MRMFeatureValidator import MRMFeatureValidator
-        featureValidator= MRMFeatureValidator()
-        from .pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
-        featurescsv = OpenSwathFeatureXMLToTSV()
-        from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
-        try:
-            import pyopenms
-        except ImportError as e:
-            print(e)
-        # openSWATH_py = smartPeak_openSWATH_py()
-        smartpeak_i = smartPeak_i()
-        smartpeak_i.read_pythonParams(filename_filenames,delimiter)
-        filenames = smartpeak_i.getData()
-        smartpeak_i.clear_data()
-        smartpeak_i.read_openMSParams(filename_params,delimiter)
-        params = smartpeak_i.getData()
-        smartpeak_i.clear_data()
-        for filename in filenames:
-            for sample,v in filename.items():
-                print("processing sample "+ sample)
-                # read in the FeatureMap
-                features = pyopenms.FeatureMap()
-                featurexml = pyopenms.FeatureXMLFile()
-                featurexml.load(v['featureXML_i'].encode('utf-8'), features)
-                # read in the reference data
-                smartpeak_i.read_csv(v['referenceData_csv_i'],delimiter)
-                # smartpeak_i.read_csv(v['calibrators_csv_i'],delimiter)
-                data_ref = smartpeak_i.getData()
-                smartpeak_i.clear_data()
-                # map the reference data
-                features_mapped,validation_metrics = featureValidator.validate_MRMFeatures(
-                    reference_data = data_ref,
-                    features = features,
-                    Tr_window = float(params['validate_MRMFeatures'][0]['value'])
-                    )
-                # load and make the transition file
-                targeted = pyopenms.TargetedExperiment() #must use "PeptideSequence"
-                tramlfile = pyopenms.TransitionTSVReader()
-                tramlfile.convertTSVToTargetedExperiment(v['traML_csv_i'].encode('utf-8'),21,targeted)
-                # export the mapped features
-                featurescsv.store(v['referenceData_mapped_csv_o'], features_mapped, targeted,
-                    run_id = "",
-                    filename = ""
-                    )
-                ##accuracy: 0.982035928144
 
     def run_openSWATH_validation_py(
             self,

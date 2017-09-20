@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pytest
-from .smartPeak import smartPeak
+from smartPeak.core.smartPeak import smartPeak
 #3rd part libraries
 try:
     import pyopenms
@@ -8,7 +8,7 @@ except ImportError as e:
     print(e)
 
 
-class test_smartPeak():
+class testSmartPeak():
     """tests for fastPeak"""
 
     #tests for smartPeak_openSWATH_cmd
