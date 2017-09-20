@@ -50,7 +50,7 @@ class smartPeak_openSWATH_cmd():
             ]
 
         Returns:
-            data_O (list): e.g. [
+            list: data_O: e.g. [
                 {'ConvertTSVToTraML':[
                     {'param':'-in','delim':' ','value':'IsolateA1.csv'},
                     {'param':'-out','delim':' ','value':'IsolateA1.traML'}
@@ -111,9 +111,9 @@ class smartPeak_openSWATH_cmd():
             delimiiter (str): default = ','
 
         """
-        smartpeak_i = smartPeak_i();
+        smartpeak_i = smartPeak_i()
         smartpeak_i.read_csv(filename,delimiter)
-        data_csv = smartpeak_i.getData();
-        smartpeak_i.clear_data();
+        data_csv = smartpeak_i.getData()
+        smartpeak_i.clear_data()
         data_params = self.parse_openSWATH_cmd_params(data_csv)
         self.openSWATH_cmd_params = data_params

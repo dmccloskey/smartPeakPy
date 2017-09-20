@@ -13,7 +13,7 @@ class smartPeak():
             functionName_I (str): name of the command line function
             
         Returns:
-            cmd_O (str): os command string
+            str: cmd_O: os command string
         
         """
         cmd_O = functionName_I
@@ -45,7 +45,7 @@ class smartPeak():
             encoding_I (str): byte encoding, default = 'utf-8'
 
         Returns:
-            string_O (str):            
+            str: string_O            
         
         """
         string_O = None
@@ -64,7 +64,7 @@ class smartPeak():
             encoding_I (str): byte encoding, default = 'utf-8'
 
         Returns:
-            byte_O (byte): byte representation of a string            
+            byte: byte_O: byte representation of a string            
         
         """
         byte_O = None
@@ -78,10 +78,10 @@ class smartPeak():
         """Convert MultiQuant QMethod.csv file to feature.csv file
         
         Args:
-            MQQMethod_I (list:dict): list of dictionaries of headers/values
+            MQQMethod_I (list): list of dictionaries of headers/values
             
         Returns:
-            FeatureXML_O (list:dict): list of dictionaries of headers/values
+            list: FeatureXML_O: list of dictionaries of headers/values
         
         """
         FeatureXML_O = []
@@ -146,11 +146,11 @@ class smartPeak():
     def updateParameters(self,Param_IO,parameters_I):
         """Update a Param object
         Args:
-            Param_IO (pyopenms.Param()): Param object to update
+            Param_IO (pyopenms.Param): Param object to update
             parameters_I (list): list of parameters to update
             
         Returns:
-            Param_IO (pyopenms.Param()): updated Param object
+            pyopenms.Param: Param_IO: updated Param object
         
         """
         for param in parameters_I:
@@ -169,7 +169,7 @@ class smartPeak():
                 else:
                     value = self.parseString(param['value'])
                 # if not self.checkParameterValue(value):
-                #     continue;
+                #     continue
             else:
                 value = Param_IO.getValue(name)
             if 'description' in param.keys() and param['description']:
@@ -193,7 +193,7 @@ class smartPeak():
             parameters_I (list): list of parameters to update
             
         Returns:
-            Param_O (pyopenms.Param()): Param object
+            pyopenms.Param: Param_O: Param object
         
         """
         for param in parameters_I:
@@ -229,13 +229,13 @@ class smartPeak():
             value_I (): input value_I
 
         Returns:
-            valid_O (bool): true, if valid input
+            bool: valid_O: true, if valid input
                             false, if invalid input
         """    
-        valid_O = True;
+        valid_O = True
         if value_I == -1:
-            valid_O = False;
-        return valid_O;
+            valid_O = False
+        return valid_O
 
     @staticmethod
     def castString(str_I,type_I):
@@ -247,10 +247,10 @@ class smartPeak():
             type_I (str): type
 
         Returns:
-            str_O (): evaluated string
+            str: str_O: evaluated string
             
         """
-        str_O = None;
+        str_O = None
         try:
             if type_I == 'int':
                 str_O = int(str_I)
@@ -266,8 +266,8 @@ class smartPeak():
                 print(type_I+ ' type not supported')
                 str_O = str_I.encode('utf-8')
         except Exception as e:
-            print(e);
-        return str_O;
+            print(e)
+        return str_O
 
     #@staticmethod
     def parseString(self,str_I,encode_str_I = True):
@@ -278,20 +278,20 @@ class smartPeak():
             encode_str_I (bool): encode string as utf-8?
             
         Returns:
-            str_O (): evaluated string
+            str: str_O: evaluated string
             
         """
         import csv
         from io import StringIO
 
         def isfloat(str_i):
-            isfloat_o = True;
+            isfloat_o = True
             try:
                 float(str_i)
             except Exception:
             # except ValueError:
-                isfloat_o = False;
-            return isfloat_o;
+                isfloat_o = False
+            return isfloat_o
 
         def isBool(str_I):
             isbool_O = False
@@ -299,7 +299,7 @@ class smartPeak():
                 isbool_O = True
             return isbool_O
 
-        str_O = None;
+        str_O = None
         try:
             if str_I.isdigit():
                 str_O = int(str_I)
@@ -345,7 +345,7 @@ class smartPeak():
             comparator_I (str): comparison operator 
                       comparator = "<", ">"
         Returns:
-            pass_O (boolean)
+            bool: pass_O
             
         """
         #check comparator support

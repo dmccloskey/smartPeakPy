@@ -29,13 +29,13 @@ class ReferenceData(sbaas_base):
         mqresultstable_limit_I = 1000000):
         """Select reference data
 
-        Args
+        Args:
             experiment_ids ([str]): list of experiment ids
             sample_names ([str]): list of sample names
             used (boolean): default=True
 
-        Returns
-            reference_data (list(dict()))
+        Returns:
+            list: reference_data: list of dictionaries
 
         """
         data_O = []
@@ -208,11 +208,11 @@ class ReferenceData(sbaas_base):
         1. remove all internal standards that are not referenced by an analyte
         2. integrity check of pertinent data
 
-        Args
+        Args:
             data_I (list, dict)
 
-        Returns
-            data_O (list, dict):
+        Returns:
+            list: data_O: list of dictionaries
         """
         # list out all referenced IS
         is_names = list(set([(d['experiment_id'],d['sample_name'],d['is_name']) for d in data_I if not d['is_name'] is None]))

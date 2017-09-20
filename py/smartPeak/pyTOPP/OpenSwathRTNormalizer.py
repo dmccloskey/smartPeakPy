@@ -85,7 +85,7 @@ class OpenSwathRTNormalizer():
             MRMFeatureFinderScoring_params (Param): Param object for MRMFeatureFinderScoring 
 
         Returns:
-            pairs_corrected (list([,])): list of ["rt","rt_norm"]
+            list: pairs_corrected: list of ["rt","rt_norm"]
         
         """
         # Create empty files as input and finally as output
@@ -166,7 +166,7 @@ class OpenSwathRTNormalizer():
                 lowess (TransformationModelLowess): Non-linear smoothing via local regression, with different options for extrapolation.
 
         Returns:
-            trafo_out (TransformationDescription): 
+            TransformationDescription: trafo_out
         
         """
         # store transformation
@@ -226,11 +226,11 @@ class OpenSwathRTNormalizer():
 
     def transform_targetedExperiment(self,trafo,targeted):
         """Transform the RTs of a targeted experiment
-        Args
+        Args:
             targeted (TraML): TraML input file containing the transitions
             trafo_out (TransformationDescription): 
 
-        Returns
+        Returns:
 
         """
         for transition in targeted.getTransitions():
@@ -241,13 +241,13 @@ class OpenSwathRTNormalizer():
 
     def transform_targetedExperimentCSV(self,trafo,targeted):
         """Transform the RTs of a targeted experiment
-        Args
+        Args:
             targeted (list(dict())): TraML input file containing the transitions
                 with assay RTs in csv format
             trafo_out (TransformationDescription): 
 
-        Returns
-            targeted (list(dict())): TraML output file containing the transitions
+        Returns:
+            list: targeted: TraML output file containing the transitions
                 with normalized RTs in csv format (modified in place)
 
         """

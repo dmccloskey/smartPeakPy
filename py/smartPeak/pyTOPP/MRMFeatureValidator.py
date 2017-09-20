@@ -21,13 +21,13 @@ class MRMFeatureValidator():
         ):
         """Map reference data to FeatureMap
         
-        Args
+        Args:
             reference_data (list(dict())): reference data
             features (FeatureMap): features
             Tr_window (float): retention time difference threshold
             
-        Returns
-            features_mapped (FeatureMap): mapped features
+        Returns:
+            FeatureMap: features_mapped: mapped features
 
         Potential code optimizations
             identify True Negatives and False Negatives 
@@ -111,10 +111,10 @@ class MRMFeatureValidator():
             verbose_I (bool): if True, print results; default = False
 
         Returns:
-            auc (float): area under the ROC
-            accuracy (float): (tp + tn) / (tp + tn + fp + fn)
-            recall (float): tp / (tp + fn)
-            precision (float): tp / (tp + fp)
+            float: auc: area under the ROC
+            float: accuracy: (tp + tn) / (tp + tn + fp + fn)
+            float: recall: tp / (tp + fn)
+            float: precision: tp / (tp + fp)
         """
         # calculate AUC, precision, accuracy, recall
         import numpy as np

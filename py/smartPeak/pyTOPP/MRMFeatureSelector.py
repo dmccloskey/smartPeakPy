@@ -31,7 +31,7 @@ class MRMFeatureSelector():
         """Aligns feature Tr (retention time, normalized retention time)
         and removes features that violate retention time order
 
-        Args
+        Args:
             features (FeatureMap):
             tr_expected (list(dict)): expected retention times
             select_criteria (list,dict): e.g., [{"name":, "value":, }]
@@ -41,10 +41,10 @@ class MRMFeatureSelector():
                 name: "segment_window_length": value:12, type: float, description: 
                 name: "segment_step_length": value:6, type: float, description: 
 
-        Returns
-            output_O (FeatureMap): filtered features
+        Returns:
+            FeatureMap :output_O: filtered features
 
-        Todo
+        Todo:
             remove features that violate retention time order...
 
         """
@@ -212,7 +212,7 @@ class MRMFeatureSelector():
         """
         optimize the retention time using QMIP
 
-        Args
+        Args:
             To_list (list(dict))
             To_list (dict)
             nn_threshold (float): # of nearest compounds by Tr to include in network
@@ -220,8 +220,8 @@ class MRMFeatureSelector():
             variable_type (str): the type of variable, 'integer' or 'continuous'
             optimal_threshold (float): value above which the transition group or transition is considered optimal (0 < x < 1)
 
-        Returns
-            tr_optimial (list): list of optimal transition variable names  
+        Returns:
+            list: tr_optimial: list of optimal transition variable names  
 
         Potential Speed Optimizations
             Add in a check to see if multiple peaks for a transition or transition group actually exist
@@ -461,14 +461,14 @@ class MRMFeatureSelector():
         verbose_I = False):
         """Selects the best feature from a FeatureMap based on a scoring criteria
         
-        Args
+        Args:
             features (FeatureMap):
             score_weights (list,dict): e.g., [{"name":, "value":, }]
             n_peaks_max (int): maximum number of features per transition to extract
                 in ascending order
 
-        Returns
-            output_O (FeatureMap): selected features
+        Returns:
+            FeatureMap: output_O: selected features
         """
         from math import floor, ceil
         # Parse the input parameters
@@ -624,7 +624,7 @@ class MRMFeatureSelector():
         """
         optimize for the best peak score using MIP
 
-        Args
+        Args:
             To_list (list,dict)
             Tr_list (dict)
             score_weights (list,dict): e.g., [{"name":, "value":, }]
@@ -635,8 +635,8 @@ class MRMFeatureSelector():
             variable_type (str): the type of variable, 'integer' or 'continuous'
             optimal_threshold (float): value above which the transition group or transition is considered optimal (0 < x < 1)
 
-        Returns
-            tr_optimial (list): list of optimal transition variable names  
+        Returns:
+            list: tr_optimial: list of optimal transition variable names  
 
         """
         #build the model variables and constraints

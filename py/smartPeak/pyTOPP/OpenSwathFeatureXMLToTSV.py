@@ -24,7 +24,7 @@ class OpenSwathFeatureXMLToTSV():
             filename (str): name of the FeatureXML file
 
         Returns:
-            rows_O ([]): list of row values based on the header and keys
+            list: rows_O: list of row values based on the header and keys
         """
         rows_O = []
 
@@ -100,8 +100,8 @@ class OpenSwathFeatureXMLToTSV():
             features (FeatureMap): FeatureMap object
 
         Returns:
-            header ([str]): List of header ids
-            keys ([byte]): list of FeatureMap keys
+            list: header: List of header ids ([str])
+            list: keys: list of FeatureMap keys ([byte])
         """
         # get feature keys
         keys = []
@@ -144,7 +144,7 @@ class OpenSwathFeatureXMLToTSV():
             filename (str): filename of the original FeatureXML file
 
         Returns:
-            rows (list(dict())): list of rows for csv output
+            list: rows: list of rows for csv output
         
         """
         rows_O = []

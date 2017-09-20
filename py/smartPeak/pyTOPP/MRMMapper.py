@@ -23,7 +23,7 @@ class MRMMapper():
             product_tolerance (float): default=0.1, Product tolerance when mapping (in Th)
 
         Returns:
-            output (): mapped chromatograms
+            MSExperiment: output: mapped chromatograms
         """
 
         output = copy.copy(chromatogram_map)
@@ -87,7 +87,7 @@ class MRMMapper():
             product_tolerance (float): default=0.1, Product tolerance when mapping (in Th)
 
         Returns:
-            output (): mapped chromatograms
+            MSExperiment: output: mapped chromatograms
         """
 
         ff = pyopenms.MRMFeatureFinderScoring()

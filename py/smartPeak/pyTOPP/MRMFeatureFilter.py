@@ -21,7 +21,7 @@ class MRMFeatureFilter():
         ):
         """Filter features from a FeatureMap that satisfy a filter criteria
         
-        Args
+        Args:
             features (FeatureMap):
             filter_criteria (list,dict): e.g., [{"name":, "value":, }]
             remove_filtered_transitions (bool): remove filter transitions?
@@ -29,8 +29,8 @@ class MRMFeatureFilter():
                 if False: all transitions are returned with an annotation in 
                     metaValue for "used_" specifying True or False whether the peak passed the threshold
 
-        Returns
-            output_O (FeatureMap): filtered features
+        Returns:
+            FeatureMap: output_O: filtered features
         """
         smartpeak = smartPeak()
         output_filtered = pyopenms.FeatureMap()
@@ -77,15 +77,15 @@ class MRMFeatureFilter():
         ):
         """Filter features from a FeatureMap that satisfy a filter criteria
         
-        Args
+        Args:
             features (FeatureMap):
             targeted (TraML): TraML input file containing the transitions
             filter_criteria (list,dict): e.g., [{"name":, "value":, }]
 
             filter criteria include transition and peak filters
 
-        Returns
-            output_O (FeatureMap): filtered features
+        Returns:
+            FeatureMap: output_O: filtered features
         """
         smartpeak = smartPeak()
         output_filtered = pyopenms.FeatureMap()

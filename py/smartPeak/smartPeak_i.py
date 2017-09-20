@@ -23,7 +23,7 @@ class smartPeak_i(base_importData):
             ]
 
         Returns:
-            data_O (dict): e.g. {
+            dict: data_O: e.g. {
                 'ConvertTSVToTraML':[
                     {'name':'-in','value':'IsolateA1.csv'},
                     {'name':'-out','value':'IsolateA1.traML'}
@@ -104,7 +104,7 @@ class smartPeak_i(base_importData):
             ]
 
         Returns:
-            data_O (list): e.g. [
+            list: data_O: e.g. [
                 {'ConvertTSVToTraML':[
                     {'-in':'IsolateA1.csv'},
                     {'-out':'IsolateA1.traML'}

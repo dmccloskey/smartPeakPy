@@ -22,9 +22,9 @@ class ReferenceDataMethods():
         settings_filename_I = 'settings.ini',
         data_filename_O = ''):
         """
-        Args
+        Args:
 
-        Returns
+        Returns:
 
         """
         data_ref_processed = self.getAndProcess_referenceData(
@@ -63,9 +63,9 @@ class ReferenceDataMethods():
         settings_filename_I = 'settings.ini',
         data_filename_O = ''):
         """
-        Args
+        Args:
 
-        Returns
+        Returns:
 
         """
         data_ref_processed = self.getAndProcess_referenceData(
@@ -122,9 +122,9 @@ class ReferenceDataMethods():
         settings_filename_I = 'settings.ini',
         verbose_I=False):
         """
-        Args
+        Args:
 
-        Returns
+        Returns:
 
         """
         # DB settings

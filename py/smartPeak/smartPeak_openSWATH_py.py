@@ -306,7 +306,7 @@ class smartPeak_openSWATH_py():
                 names, values, descriptions, and tags
 
         Returns:
-            quality_control (dict): dictionary of QC metrics
+            dict: quality_control: dictionary of QC metrics
                 
         """
         quality_control = {}
@@ -326,7 +326,7 @@ class smartPeak_openSWATH_py():
     def load_featureMap(self,
         filenames_I = {},
         ):
-        """ """
+        """Load a FeatureMap"""
         # Handle the filenames
         featureXML_i = None
         if 'featureXML_i'in filenames_I.keys(): featureXML_i = filenames_I['featureXML_i']        
@@ -344,7 +344,7 @@ class smartPeak_openSWATH_py():
         # feature_csv_o = None,
         # featureXML_o = None
         ):
-        """ """
+        """Store FeatureMap as .xml and .csv"""
         # Handle the filenames
         featureXML_o,feature_csv_o = None,None
         if 'featureXML_o'in filenames_I.keys(): featureXML_o = filenames_I['featureXML_o']
@@ -463,6 +463,8 @@ class smartPeak_openSWATH_py():
     def validate_py(self,
         MRMRFeatureValidator_params_I ={}
         ):
+        """Validate the selected peaks agains reference data
+        """
         # map the reference data
         if MRMRFeatureValidator_params_I:
             featureValidator= MRMFeatureValidator()

@@ -36,7 +36,7 @@ class OpenSwathChromatogramExtractor():
             extraction_function (str): default="tophat", Extraction function (tophat or bartlett)
 
         Returns:        
-            output: Output chrom.mzML file with chromatograms
+            MSChromatogram: output: Output chrom.mzML file with chromatograms
 
         Source:
             https://github.com/sneumann/OpenMS/blob/master/pyOpenMS/pyTOPP/OpenSwathChromatogramExtractor.py

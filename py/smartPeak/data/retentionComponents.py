@@ -19,16 +19,16 @@ class RetentionComponents():
         used_ = True,
         thresholds_query = ''
         ):
-        """ Select retention components from data base
+        """Select retention components from data base
         
-        Args
+        Args:
             sample_names ([str]): calibrator or SST samples
             component_names ([str]): list of component names to be used as the retention components
             used_ (boolean): if used_ compounds should only be used; default: True
             thresholds_query (str): additional SQL text (e.g., 'signal_2_noise > 10.0') to add to the query WHERE clause
         
-        Return
-            retention_components (list(dict())): list of dictionaries with values
+        Return:
+            list: retention_components: list of dictionaries with values
         """
 
         query_cmd = '''SELECT "data_stage01_quantification_mqresultstable"."component_name",
@@ -65,11 +65,11 @@ class RetentionComponents():
         ):
         """Normalize retention components to the min/max
         
-        Args
+        Args:
             retention_components (list(dict())): list of dictionaries with values
             
-        Return
-            retention_components (list(dict())): list of dictionaries with normalized values
+        Return:
+            list: retention_components (list(dict())): list of dictionaries with normalized values
                 normalized values will be stored in key=Tr_recalibrated
         """
 
@@ -85,11 +85,11 @@ class RetentionComponents():
         ):
         """Map retentionComponents to trafo (i.e., TraML) .csv file standard
         
-        Args
+        Args:
             retention_components (list(dict())): list of dictionaries with values
             
-        Return
-            trafo_csv (list(dict())): trafo .csv file format
+        Return:
+            list: trafo_csv: trafo .csv file format
         """
 
         pass

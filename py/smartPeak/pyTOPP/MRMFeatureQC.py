@@ -25,7 +25,7 @@ class MRMFeatureQC():
         ):
         """Quality control features
             
-        Args
+        Args:
             chromatogram_mapped (MSExperiment):
             features (FeatureMap):
             targeted (TraML): TraML input file containing the transitions
@@ -35,8 +35,8 @@ class MRMFeatureQC():
                 if False: all transitions are returned with an annotation in 
                     metaValue specifying the QC that failed
 
-        Returns
-            output_O (FeatureMap): filtered features
+        Returns:
+            FeatureMap: output_O: filtered features
         """
         smartpeak = smartPeak()
         output_filtered = pyopenms.FeatureMap()
@@ -161,7 +161,9 @@ class MRMFeatureQC():
     def calculate_peakQualityMetrics(self,
         feature,
         transition):
-        """Calculate the following peak quality metrics:
+        """Calculate peak quality metrics
+        
+        Calculate the following peak quality metrics:
             assymetry factor
             USP tailing factor
             change in baseline to height
