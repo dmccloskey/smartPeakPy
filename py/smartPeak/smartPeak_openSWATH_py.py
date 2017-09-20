@@ -329,8 +329,7 @@ class smartPeak_openSWATH_py():
         """ """
         # Handle the filenames
         featureXML_i = None
-        if 'featureXML_i'in filenames_I.keys(): featureXML_i = filenames_I['featureXML_i']
-        
+        if 'featureXML_i'in filenames_I.keys(): featureXML_i = filenames_I['featureXML_i']        
 
         # Store outfile as featureXML    
         featurexml = pyopenms.FeatureXMLFile()

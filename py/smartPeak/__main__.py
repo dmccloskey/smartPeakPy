@@ -99,9 +99,12 @@ class __main__():
         Args:
             filename (str): name of the workflow parameter filename
             verbose (bool): print command line statements to stdout
+
+        Returns:
+            list: output: list of featuremaps
             
         """
-        validation_metrics = []
+        output = []
         from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
         openSWATH_py = smartPeak_openSWATH_py()
         smartpeak_i = smartPeak_i()
@@ -128,19 +131,9 @@ class __main__():
                     params['MRMFeatureFilter.filter_MRMFeatures'],
                     params['MRMFeatureSelector.select_MRMFeatures_score'],
                     params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
-                # validate the data
-                # openSWATH_py.load_featureMap(v)
-                openSWATH_py.load_validationData(
-                    v,
-                    params['ReferenceDataMethods.getAndProcess_referenceData_samples']
-                    )
-                openSWATH_py.validate_py(params['MRMFeatureValidator.validate_MRMFeatures'])
                 # store
                 openSWATH_py.store_featureMap(v)
-                tmp = {}
-                tmp.update(openSWATH_py.validation_metrics)
-                tmp.update({'sample_name':sample})
-                validation_metrics.append(tmp)
+                output.append(openSWATH_py.featureMap)
                 # manual clear data for the next iteration
                 openSWATH_py.clear_data()
 
@@ -354,3 +347,154 @@ class __main__():
             smartpeak_o = smartPeak_o(skipped_samples)
             skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/skippedSamples.csv'''
             smartpeak_o.write_dict2csv(skippedSamples_csv_i)
+
+    def run_openSWATH_py(
+            self,
+            filename_filenames,
+            filename_params,
+            delimiter = ','
+            ):
+        """Run the openSWATH python pipeline
+        
+        Args:
+            filename (str): name of the workflow parameter filename
+            verbose (bool): print command line statements to stdout
+
+        Returns:
+            list: output: list of featuremaps
+            
+        """
+        output = []
+        skipped_samples = []
+
+        from .smartPeak_openSWATH_py import smartPeak_openSWATH_py
+        openSWATH_py = smartPeak_openSWATH_py()
+        smartpeak_i = smartPeak_i()
+        smartpeak_i.read_pythonParams(filename_filenames,delimiter)
+        filenames = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        smartpeak_i.read_openMSParams(filename_params,delimiter)
+        params = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        for filename in filenames:
+            for sample,v in filename.items():
+                print("processing sample "+ sample)
+                try:
+                    ## OPTION 1: filenames defined in .csv file
+                    # # load in the files
+                    # openSWATH_py.load_TraML(v)
+                    # openSWATH_py.load_MSExperiment(v)
+                    # openSWATH_py.load_Trafo(v,
+                    #     params['MRMFeatureFinderScoring'])
+                    # openSWATH_py.load_SWATHorDIA({})
+                    # # run the openSWATH workflow for metabolomics
+                    # openSWATH_py.openSWATH_py(
+                    #     params['MRMFeatureFinderScoring'])
+                    # openSWATH_py.filterAndSelect_py(
+                    #     v,
+                    #     params['MRMFeatureFilter.filter_MRMFeatures'],
+                    #     params['MRMFeatureSelector.select_MRMFeatures_score'],
+                    #     params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
+                    # # store
+                    # openSWATH_py.store_featureMap(v)
+
+                    ## OPTION 2: dynamically make the filenames
+                    data_dir = v['data_dir']
+                    mzML_I = '''%s/data/%s.mzML'''%(data_dir,sample)
+                    traML_csv_i = '''%s/traML.csv'''%(data_dir)
+                    trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
+                    featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
+                    feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
+                    # load in the files
+                    openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
+                    openSWATH_py.load_SWATHorDIA({})
+                    openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_I})
+                    openSWATH_py.load_Trafo( #skip transformation of RT
+                        {},#{'trafo_csv_i':trafo_csv_i},
+                        params['MRMFeatureFinderScoring'])
+                    # run the openSWATH workflow for metabolomics
+                    openSWATH_py.openSWATH_py(
+                        params['MRMFeatureFinderScoring'])
+                    openSWATH_py.filterAndSelect_py(
+                        {},
+                        params['MRMFeatureFilter.filter_MRMFeatures'],
+                        {},#params['MRMFeatureSelector.select_MRMFeatures_score'],
+                        params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
+                    # store
+                    openSWATH_py.store_featureMap(
+                        {'featureXML_o':featureXML_o,
+                        'feature_csv_o':feature_csv_o})
+                    output.append(openSWATH_py.featureMap)
+                    # manual clear data for the next iteration
+                    openSWATH_py.clear_data()
+                except Exception as e:
+                    print(e)
+                    skipped_samples.append({'sample_name':sample,
+                        'error_message':e})
+        if skipped_samples:
+            smartpeak_o = smartPeak_o(skipped_samples)
+            skippedSamples_csv_i = '''%s/data/skippedSamples.csv'''%(data_dir)
+            smartpeak_o.write_dict2csv(skippedSamples_csv_i)
+        return output
+
+    def run_AbsoluteQuantitation_py(
+            self,
+            filename_filenames,
+            filename_params,
+            delimiter = ','
+            ):
+        """Run the AbsoluteQuantitation python pipeline
+        
+        Args:
+            filename (str): name of the workflow parameter filename
+            verbose (bool): print command line statements to stdout
+            
+        TODO:
+            make new method: run_openSWATH_validation_py
+            
+        """
+        skipped_samples = []
+        output = []
+
+        from .smartPeak_AbsoluteQuantitation_py import smartPeak_AbsoluteQuantitation_py
+        AbsoluteQuantitation_py = smartPeak_AbsoluteQuantitation_py()
+        smartpeak_i = smartPeak_i()
+        smartpeak_i.read_pythonParams(filename_filenames,delimiter)
+        filenames = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        smartpeak_i.read_openMSParams(filename_params,delimiter)
+        params = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        for filename in filenames:
+            for sample,v in filename.items():
+                print("processing sample "+ sample)
+                try:
+                    # dynamically make the filenames
+                    data_dir = v['data_dir']
+                    quantitationMethods_csv_i = '''%s/quantitationMethods_csv_i.csv'''%(data_dir)
+                    traML_csv_i = '''%s/traML.csv'''%(data_dir)
+                    featureXML_o = '''%s/quantitation/%s.featureXML'''%(data_dir,sample) 
+                    feature_csv_o = '''%s/quantitation/%s.csv'''%(data_dir,sample)
+                    featureXML_i = '''%s/features/%s.featureXML'''%(data_dir,sample) 
+                    feature_csv_i = '''%s/features/%s.csv'''%(data_dir,sample)
+                    # load the quantitation method
+                    AbsoluteQuantitation_py.load_quantitationMethods(
+                        {'quantitationMethods_csv_i':quantitationMethods_csv_i})
+                    # quantify the components
+                    AbsoluteQuantitation_py.load_unknowns(
+                        {'featureXML_i':[featureXML_i]})
+                    AbsoluteQuantitation_py.quantifyComponents()
+                    # store
+                    openSWATH_py.store_featureMap(
+                        {'featureXML_o':[featureXML_o]})
+                except Exception as e:
+                    print(e)
+                    skipped_samples.append({'sample_name':sample,
+                        'error_message':e})
+                # manual clear data for the next iteration
+                openSWATH_py.clear_data()
+        if skipped_samples:
+            smartpeak_o = smartPeak_o(skipped_samples)
+            skippedSamples_csv_i = '''%s/data/skippedSamples.csv'''%(data_dir)
+            smartpeak_o.write_dict2csv(skippedSamples_csv_i)
+        return output

@@ -18,7 +18,7 @@ class smartPeak_AbsoluteQuantitation_py():
         """Load AbsoluteQuantitationMethods
 
         Args:
-            filenames_I (list): list of filename strings
+            filenames_I (dict): dictionary of filename strings
 
         Internals:
             quantitationMethods (list): list of AbsoluteQuantitationMethod objects
@@ -42,7 +42,7 @@ class smartPeak_AbsoluteQuantitation_py():
         """Load AbsoluteQuantitationStandardss
 
         Args:
-            filenames_I (list): list of filename strings
+            filenames_I (dict): dictionary of filename strings
 
         Internals:
             quantitationStandards (list): list of AbsoluteQuantitationStandards objects
@@ -64,8 +64,62 @@ class smartPeak_AbsoluteQuantitation_py():
         aq.setQuantMethods(self.quantitationMethods)
         aq.quantifyComponents(self.unknowns)
 
+    def load_unknowns(self,
+        filenames_I):
+        """Load FeatureMaps to quantify
+
+        Args:
+            filenames_I (dict): dictionary of filename strings
+
+        Internals:
+            unknowns (list): list of FeatureMaps to quantify
+
+        """
+        featureXML_i = None
+        if 'featureXML_i'in filenames_I.keys(): featureXML_i = filenames_I['quantitationStandards_csv_i']
+
+        unknowns = []
+        for filename in featureXML_i:
+            featurexml = pyopenms.FeatureXMLFile()
+            output = pyopenms.FeatureMap()
+            featurexml.load(filename.encode('utf-8'), output)
+            unknowns.append(output)
+
+        self.setUnknowns(unknowns)
+
+    def store_unknowns(self,
+        filenames_I):
+        """Store quantified FeatureMaps
+
+        Args:
+            filenames_I (dict): dictionary of filename strings
+
+        Internals:
+            unknowns (list): list of FeatureMaps to quantify
+
+        """
+        featureXML_o = None
+        if 'featureXML_o'in filenames_I.keys(): featureXML_o = filenames_I['featureXML_o']
+
+        assert(len(featureXML_o==self.unknowns))
+        for i,filename in enumerate(featureXML_o):
+            featurexml = pyopenms.FeatureXMLFile()
+            featurexml.store(filename.encode('utf-8'), self.unknowns[i])
+
     def setUnknowns(self, unknowns):
+        """Set unknown featureMaps
+        
+        Args:
+            unknowns (list): list of FeatureMaps to quantify
+            
+        """
         self.unknowns = unknowns
 
-    def getUnknowns(self, unknowns):
+    def getUnknowns(self):
+        """Set unknown featureMaps
+        
+        Returns:
+            list: unknowns: list of FeatureMaps that were quantified
+            
+        """
         return self.unknowns
