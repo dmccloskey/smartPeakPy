@@ -35,7 +35,11 @@ m = __main__()
 # tabsquant = TestAbsoluteQuantitation_py()
 # tabsquant.test_QuantifyComponents(debug = True)
 
+from tests.test_MRMMapper import TestMRMMapper
+tmrmmapper = TestMRMMapper()
+tmrmmapper.test_algorithm()
+
 from tests.test_smartPeak_openSWATH_py import TestSmartPeakOpenSWATH_py
 topenswath = TestSmartPeakOpenSWATH_py()
-# topenswath.test_openSWATH_py(debug = True)
+topenswath.test_openSWATH_py(debug = True)
 topenswath.test_validate_openSWATH(debug = True)

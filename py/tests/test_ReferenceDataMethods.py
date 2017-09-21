@@ -36,3 +36,4 @@ class TestReferenceDataMethods():
             used__I = True,
             settings_filename_I = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini',
             data_filename_O = None)
+        #TODO: assert()
