@@ -31,6 +31,11 @@ m = __main__()
 #     delimiter=','
 #     )
 
-from tests.test_smartPeak_AbsoluteQuantitation_py import TestAbsoluteQuantitation
-tabsquant = TestAbsoluteQuantitation()
-tabsquant.test_QuantifyComponents()
+# from tests.test_smartPeak_AbsoluteQuantitation_py import TestAbsoluteQuantitation_py
+# tabsquant = TestAbsoluteQuantitation_py()
+# tabsquant.test_QuantifyComponents(debug = True)
+
+from tests.test_smartPeak_openSWATH_py import TestSmartPeakOpenSWATH_py
+topenswath = TestSmartPeakOpenSWATH_py()
+# topenswath.test_openSWATH_py(debug = True)
+topenswath.test_validate_openSWATH(debug = True)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from smartPeak.core.smartPeak import smartPeak
 from smartPeak.core.smartPeak_i import smartPeak_i
-from .smartPeak_o import smartPeak_o
+from smartPeak.core.smartPeak_o import smartPeak_o
 from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py
 from smartPeak.core.smartPeak_AbsoluteQuantitation_py import smartPeak_AbsoluteQuantitation_py
 from . import data_dir
@@ -11,16 +11,20 @@ try:
 except ImportError as e:
     print(e)
 
-class TestAbsoluteQuantitation():
+class TestAbsoluteQuantitation_py():
     
     def test_QuantifyComponents(self,
         filename_filenames = "BloodProject01_SWATH_filenames.csv",
         filename_params = None,
-        delimiter = ','):
+        delimiter = ',',
+        debug = True):
         """Test and Run the AbsoluteQuantitation python pipeline
         
         Args:
-            filename_filenames (str): name of the workflow parameter filename
+            filename_filenames (str): name of the workflow files
+            filename_params (str): name of the worflow parameter file
+            delimiter (str): .csv file delimiter
+            debug (bool): if True, assertions are made on default data
             verbose (bool): print command line statements to stdout,
             
         """
@@ -43,8 +47,7 @@ class TestAbsoluteQuantitation():
                 print("processing sample "+ sample)
                 try:
                     # dynamically make the filenames
-                    quantitationMethods_csv_i = '''%s/quantitationMethods_csv_i.csv'''%(data_dir)
-                    traML_csv_i = '''%s/traML.csv'''%(data_dir)
+                    quantitationMethods_csv_i = '''%s/%s'''%(data_dir,v["quantitationMethods_csv_i"])
                     featureXML_o = '''%s/quantitation/%s.featureXML'''%(data_dir,sample) 
                     feature_csv_o = '''%s/quantitation/%s.csv'''%(data_dir,sample)
                     featureXML_i = '''%s/features/%s.featureXML'''%(data_dir,sample) 
@@ -65,11 +68,12 @@ class TestAbsoluteQuantitation():
                         'error_message':e})
                 # manual clear data for the next iteration
                 openSWATH_py.clear_data()
-        if skipped_samples:
-            smartpeak_o = smartPeak_o(skipped_samples)
-            skippedSamples_csv_i = '''%s/mzML/skippedSamples.csv'''%(data_dir)
-            smartpeak_o.write_dict2csv(skippedSamples_csv_i)
-        return output
+        if not debug:
+            if skipped_samples:
+                smartpeak_o = smartPeak_o(skipped_samples)
+                skippedSamples_csv_i = '''%s/mzML/skippedSamples.csv'''%(data_dir)
+                smartpeak_o.write_dict2csv(skippedSamples_csv_i)
+            return output
 
     def test_OptimizeCalibrators(self,
         filenames_I):
