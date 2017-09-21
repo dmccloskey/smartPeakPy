@@ -12,7 +12,7 @@ except ImportError as e:
 class TestMRMFeatureFilter():
     
     def load_data(self,
-        featureXML_i = "150601_0_BloodProject01_PLT_QC_Broth-1.featureXML",
+        featureXML_i = "features/150601_0_BloodProject01_PLT_QC_Broth-1_1.featureXML",
         traML_csv_i = "BloodProject01_SWATH.csv",
         filename_params = "BloodProject01_MRMFeatureFinderScoring_params.csv"):
         """load the test data"""                   
@@ -25,9 +25,7 @@ class TestMRMFeatureFilter():
             tramlfile.convertTSVToTargetedExperiment(traML_csv_i.encode('utf-8'),21,self.targeted)
 
         # load the featureMap
-        featureXML_i = data_dir + "/" + featureXML_i       
-
-        # Store outfile as featureXML    
+        featureXML_i = data_dir + "/" + featureXML_i     
         featurexml = pyopenms.FeatureXMLFile()
         self.featureMap = pyopenms.FeatureMap()
         if not featureXML_i is None:
@@ -49,7 +47,7 @@ class TestMRMFeatureFilter():
             self.params["MRMFeatureFilter.filter_MRMFeatures"])
         assert(output_filtered[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 262623.5)
         assert(output_filtered[0].getSubordinates()[0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
-        assert(output_filtered[0].getSubordinates()[0].getRT() == 15.894456338119507)
+        assert(output_filtered[0].getSubordinates()[0].getRT() == 15.8944563381195)
         assert(output_filtered[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 1045662.0)
         assert(output_filtered[50].getSubordinates()[0].getMetaValue("native_id") == b'asp-L.asp-L_1.Heavy')
         assert(output_filtered[50].getSubordinates()[0].getRT() == 2.6657843421936036)

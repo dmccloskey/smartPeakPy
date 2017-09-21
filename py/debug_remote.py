@@ -31,40 +31,10 @@ m = __main__()
 #     delimiter=','
 #     )
 
-from tests.test_MRMMapper import TestMRMMapper
-test = TestMRMMapper()
-test.test_algorithm()
-
-# from tests.test_OpenSwathFeatureXMLToTSV import TestOpenSwathFeatureXMLToTSV
-# test = TestOpenSwathFeatureXMLToTSV()
-# test.test_()
-
-from tests.test_OpenSwathRTNormalizer import TestOpenSwathRTNormalizer
-test = TestOpenSwathRTNormalizer()
-test.test_algorithm()
-
-from tests.test_MRMFeatureFilter import TestMRMFeatureFilter
-test = TestMRMFeatureFilter()
-test.test_filter_MRMFeatures()
-
-from tests.test_MRMFeatureSelector import TestMRMFeatureSelector
-test = TestMRMFeatureSelector()
-test.test_schedule_MRMFeatures_qmip()
-test.test_select_MRMFeatures_score()
-
 from tests.test_ReferenceDataMethods import TestReferenceDataMethods
 test = TestReferenceDataMethods()
 test.test_getAndProcessReferenceDataSamples()
 test.test_getAndProcessReferenceDataCalibrators()
-
-from tests.test_MRMFeatureValidator import TestMRMFeatureValidator
-test = TestMRMFeatureValidator()
-test.test_validate_MRMFeatures()
-
-from tests.test_smartPeak_openSWATH_py import TestSmartPeakOpenSWATH_py
-test = TestSmartPeakOpenSWATH_py()
-test.test_openSWATH_py(debug = True)
-test.test_validate_openSWATH(debug = True)
 
 # from tests.test_smartPeak_AbsoluteQuantitation_py import TestAbsoluteQuantitation_py
 # tabsquant = TestAbsoluteQuantitation_py()

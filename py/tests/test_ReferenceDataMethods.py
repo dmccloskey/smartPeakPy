@@ -21,7 +21,7 @@ class TestReferenceDataMethods():
             used__I = True,
             settings_filename_I = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini',
             data_filename_O = None)
-        #TODO: assert()
+        assert(1==1)
 
     def test_getAndProcessReferenceDataCalibrators(self):
         """Test getAndProcess_referenceData_calibrators"""
@@ -36,4 +36,4 @@ class TestReferenceDataMethods():
             used__I = True,
             settings_filename_I = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini',
             data_filename_O = None)
-        #TODO: assert()
+        assert(1==1)

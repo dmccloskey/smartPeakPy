@@ -11,7 +11,7 @@ except ImportError as e:
 class TestMRMMapper():
     
     def load_data(self,
-        mzML_feature_i = "150601_0_BloodProject01_PLT_QC_Broth-1.mzML",
+        mzML_feature_i = "mzML/150601_0_BloodProject01_PLT_QC_Broth-1.mzML",
         traML_csv_i = "BloodProject01_SWATH.csv"):
         """load the test data"""            
 

@@ -13,7 +13,7 @@ except ImportError as e:
 class TestMRMFeatureSelector():
     
     def load_data(self,
-        featureXML_i = "150601_0_BloodProject01_PLT_QC_Broth-1.featureXML",
+        featureXML_i = "features/150601_0_BloodProject01_PLT_QC_Broth-1_1.featureXML",
         traML_csv_i = "BloodProject01_SWATH.csv",
         filename_params = "BloodProject01_MRMFeatureFinderScoring_params.csv"):
         """load the test data"""                   
@@ -54,10 +54,10 @@ class TestMRMFeatureSelector():
             schedule_criteria = self.params["MRMFeatureSelector.schedule_MRMFeatures_qmip"])
         assert(output_selected[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 262623.5)
         assert(output_selected[0].getSubordinates()[0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
-        assert(output_selected[0].getSubordinates()[0].getRT() == 15.894456338119507)
-        assert(output_selected[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 13919.000000000002)
+        assert(output_selected[0].getSubordinates()[0].getRT() == 15.8944563381195)
+        assert(output_selected[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 13919.0)
         assert(output_selected[50].getSubordinates()[0].getMetaValue("native_id") == b'glyclt.glyclt_1.Heavy')
-        assert(output_selected[50].getSubordinates()[0].getRT() == 3.1483763776143396)
+        assert(output_selected[50].getSubordinates()[0].getRT() == 3.14837637761434)
     
     def test_select_MRMFeatures_score(self):  
         self.load_data()    
@@ -70,10 +70,9 @@ class TestMRMFeatureSelector():
         output_selected = featureSelector.select_MRMFeatures_score(
             output_filtered,
             self.params["MRMFeatureSelector.select_MRMFeatures_score"])
-        assert(output_selected[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 262623.5)
-        assert(output_selected[0].getSubordinates()[0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
-        assert(output_selected[0].getSubordinates()[0].getRT() == 15.894456338119507)
-        #TODO: check
-        assert(output_selected[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 13919.000000000002)
-        assert(output_selected[50].getSubordinates()[0].getMetaValue("native_id") == b'glyclt.glyclt_1.Heavy')
-        assert(output_selected[50].getSubordinates()[0].getRT() == 3.1483763776143396)
+        assert(output_selected[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 1946.5)
+        assert(output_selected[0].getSubordinates()[0].getMetaValue("native_id") == b'23dpg.23dpg_1.Light')
+        assert(output_selected[0].getSubordinates()[0].getRT() == 16.4121927001953)
+        assert(output_selected[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 922.0)
+        assert(output_selected[50].getSubordinates()[0].getMetaValue("native_id") == b'f6p.f6p_1.Light')
+        assert(output_selected[50].getSubordinates()[0].getRT() == 8.0184300549825)

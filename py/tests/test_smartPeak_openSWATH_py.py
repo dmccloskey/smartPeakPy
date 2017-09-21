@@ -82,10 +82,6 @@ class TestSmartPeakOpenSWATH_py():
                         params['MRMFeatureFilter.filter_MRMFeatures'],
                         {},#params['MRMFeatureSelector.select_MRMFeatures_score'],
                         params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
-                    # store
-                    openSWATH_py.store_featureMap(
-                        {'featureXML_o':featureXML_o,
-                        'feature_csv_o':feature_csv_o})
                     if debug:
                         assert(openSWATH_py.featureMap[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 262623.5)
                         assert(openSWATH_py.featureMap[0].getSubordinates()[0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
@@ -93,6 +89,11 @@ class TestSmartPeakOpenSWATH_py():
                         assert(openSWATH_py.featureMap[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 13919.000000000002)
                         assert(openSWATH_py.featureMap[50].getSubordinates()[0].getMetaValue("native_id") == b'glyclt.glyclt_1.Heavy')
                         assert(openSWATH_py.featureMap[50].getSubordinates()[0].getRT() == 3.1483763776143396)
+                    else:
+                        # store
+                        openSWATH_py.store_featureMap(
+                            {'featureXML_o':featureXML_o,
+                            'feature_csv_o':feature_csv_o})
                 except Exception as e:
                     print(e)
                     skipped_samples.append({'sample_name':sample,

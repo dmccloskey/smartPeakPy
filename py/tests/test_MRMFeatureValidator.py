@@ -12,7 +12,7 @@ except ImportError as e:
 class TestMRMFeatureValidator():
     
     def load_data(self,
-        featureXML_i = "150601_0_BloodProject01_PLT_QC_Broth-1.featureXML",
+        featureXML_i = "features/150601_0_BloodProject01_PLT_QC_Broth-1.featureXML",
         referenceData_csv_i = "150601_0_BloodProject01_PLT_QC_Broth-1_referenceData.csv",
         filename_params = "BloodProject01_MRMFeatureFinderScoring_params.csv"):
         """load the test data"""                   
@@ -48,4 +48,4 @@ class TestMRMFeatureValidator():
             features = self.featureMap,
             Tr_window = float(self.params['MRMFeatureValidator.validate_MRMFeatures'][0]['value'])
             )
-        assert(validation_metrics["accuracy"] == 0.977941176471)
+        assert(validation_metrics["accuracy"] == 0.9779411764705882)

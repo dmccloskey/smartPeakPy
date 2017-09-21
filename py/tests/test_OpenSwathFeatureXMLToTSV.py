@@ -17,7 +17,7 @@ class TestOpenSwathFeatureXMLToTSV():
     """
     
     def load_data(self,
-        mzML_feature_i = "150601_0_BloodProject01_PLT_QC_Broth-1.mzML",
+        featureXML_i = "features/150601_0_BloodProject01_PLT_QC_Broth-1.featureXML",
         traML_csv_i = "BloodProject01_SWATH.csv"):
         """load the test data"""        
 
@@ -28,21 +28,34 @@ class TestOpenSwathFeatureXMLToTSV():
             tramlfile = pyopenms.TransitionTSVReader()
             tramlfile.convertTSVToTargetedExperiment(traML_csv_i.encode('utf-8'),21,self.targeted)
 
-        # load chromatograms
-        mzML_feature_i = data_dir + "/" + mzML_feature_i
-        self.chromatograms = pyopenms.MSExperiment()
-        if not mzML_feature_i is None:
-            fh = pyopenms.FileHandler()
-            fh.loadExperiment(mzML_feature_i.encode('utf-8'), self.chromatograms)
+        # load the featureMap
+        featureXML_i = data_dir + "/" + featureXML_i     
+        featurexml = pyopenms.FeatureXMLFile()
+        self.featureMap = pyopenms.FeatureMap()
+        if not featureXML_i is None:
+            featurexml.load(featureXML_i.encode('utf-8'), self.featureMap)
     
     def test_get_header(self,
         ):
         self.load_data()
-
-        #TODO: assert()
+        featurescsv = OpenSwathFeatureXMLToTSV()
+        header,keys,keys_subordinates = featurescsv.get_header(self.featureMap)
+        assert(header[0] == 'transition_group_id')
+        assert(header[17] == 'peak_apices_sum')
+        assert(keys[0] == b'potentialOutlier')
+        assert(keys[17] == b'nr_peaks')
+        assert(keys_subordinates[0] == b'MZ')
+        assert(keys_subordinates[6] == b'FeatureLevel')
     
     def test_convert_FeatureXMLToTSV(self,
         ):
         self.load_data()
-
-        #TODO: assert()
+        featurescsv = OpenSwathFeatureXMLToTSV()
+        header,rows_O = featurescsv.convert_FeatureXMLToTSV(
+            self.featureMap, self.targeted, run_id = 'run0', filename = 'run0.FeatureXML')
+        assert(header[0] == 'transition_group_id')
+        assert(header[17] == 'peak_apices_sum')
+        assert(rows_O[0]['PeptideRef'] == '23dpg')
+        assert(rows_O[0]['native_id'] == '23dpg.23dpg_1.Heavy')
+        assert(rows_O[50]['PeptideRef'] == 'camp')
+        assert(rows_O[50]['native_id'] == 'camp.camp_2.Light')

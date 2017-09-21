@@ -18,8 +18,8 @@ class TestOpenSwathRTNormalizer():
     """
     
     def load_data(self,
-        mzML_feature_i = "150601_0_BloodProject01_PLT_QC_Broth-1.mzML",
-        trafo_csv_i = "BloodProject01_SWATH_trafo.csv.csv",
+        mzML_feature_i = "mzML/150601_0_BloodProject01_PLT_QC_Broth-1.mzML",
+        trafo_csv_i = "BloodProject01_SWATH_trafo.csv",
         traML_csv_i = "BloodProject01_SWATH.csv",
         filename_params = "BloodProject01_MRMFeatureFinderScoring_params.csv"):
         """load the test data"""            
@@ -90,5 +90,6 @@ class TestOpenSwathRTNormalizer():
             estimateBestPeptides=True,
             MRMFeatureFinderScoring_params=parameters
             )
-
-        #TODO: assert()
+        params = trafo.getModelParameters()
+        assert(params.getValue("slope") == 6.254079466897194)
+        assert(params.getValue("intercept") == -5.349869779072912)
