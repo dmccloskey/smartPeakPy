@@ -9,25 +9,13 @@ ptvsd.wait_for_attach()
 from smartPeak.core.__main__ import __main__
 m = __main__()
 
-# Test openSWATH_py
-m.run_openSWATH_validation_py(
-    filename_filenames='/home/user/openMS_MRMworkflow/Algo1Validation/filenames.csv',
-    filename_params='/home/user/openMS_MRMworkflow/Algo1Validation/MRMFeatureFinderScoring_params.csv', #QMIP
-    # filename_params='/home/user/openMS_MRMworkflow/Algo1Validation/MRMFeatureFinderScoring_params_filterControl.csv', #FILTERCONTROL
-    delimiter=','
-    )
-
 # # Test openSWATH_py
-# m.run_openSWATH_py(
-#     filename_filenames='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_SWATH_filenames.csv',
-#     filename_params='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_MRMFeatureFinderScoring_params.csv',
+# m.run_openSWATH_validation_py(
+#     filename_filenames='/home/user/openMS_MRMworkflow/Algo1Validation/filenames.csv',
+#     filename_params='/home/user/openMS_MRMworkflow/Algo1Validation/MRMFeatureFinderScoring_params.csv', #QMIP
+#     # filename_params='/home/user/openMS_MRMworkflow/Algo1Validation/MRMFeatureFinderScoring_params_filterControl.csv', #FILTERCONTROL
 #     delimiter=','
 #     )
-
-# # Test openSWATH_cmd
-# # filename='/home/user/openMS_MRMworkflow/openSWATH_cmd_params_QC1.csv'
-# filename='/home/user/openMS_MRMworkflow/openSWATH_cmd_params_QC1_FeatureXML2TSV.csv'
-# m.run_openSWATH_cmd(filename)
 
 # # Test MRMTransitionGroupPicker_py
 # m.run_MRMTransitionGroupPicker_py(
@@ -43,36 +31,6 @@ m.run_openSWATH_validation_py(
 #     delimiter=','
 #     )
 
-# Test file conversions
-# m.convert_MQQMethod2Feature(
-#     filename_I='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_qmethod.csv',
-#     filename_O='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_SWATH_feature.csv'
-#     )
-
-# # Test ReferenceData
-# from smartPeak.data.ReferenceDataMethods import ReferenceDataMethods
-# refDataMethods = ReferenceDataMethods()
-# # reference data for samples
-# refDataMethods.getAndProcess_referenceData_samples(
-#     experiment_ids_I = ['BloodProject01'],
-#     sample_names_I = ['150601_0_BloodProject01_PLT_QC_Broth-1'],
-#     acquisition_methods_I = ['140718_McCloskey2013'],
-#     used__I = True,
-#     settings_filename_I = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini',
-#     data_filename_O = '/home/user/openMS_MRMworkflow/BloodProject01/150601_0_BloodProject01_PLT_QC_Broth-1_referenceData.csv')
-# # reference data for calibrators
-# refDataMethods.getAndProcess_referenceData_calibrators(
-#     experiment_ids_I = ['BloodProject01'],
-#     sample_names_I = [],
-#     sample_types_I = ['Standard'],
-#     acquisition_methods_I = ['140718_McCloskey2013'],
-#     used__I = True,
-#     settings_filename_I = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini',
-#     data_filename_O = '/home/user/openMS_MRMworkflow/BloodProject01/150601_BloodProject01_Calibrators_referenceData.csv')
-
-# # Test openSWATH validation
-# m.run_validate_openSWATH(
-#     filename_filenames='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_SWATH_filenames.csv',
-#     filename_params='/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_validation_params.csv',
-#     delimiter=','
-#     )
+from tests.test_smartPeak_AbsoluteQuantitation_py import TestAbsoluteQuantitation
+tabsquant = TestAbsoluteQuantitation()
+tabsquant.test_QuantifyComponents()

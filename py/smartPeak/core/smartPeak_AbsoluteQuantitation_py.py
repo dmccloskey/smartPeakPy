@@ -76,7 +76,7 @@ class smartPeak_AbsoluteQuantitation_py():
 
         """
         featureXML_i = None
-        if 'featureXML_i'in filenames_I.keys(): featureXML_i = filenames_I['quantitationStandards_csv_i']
+        if 'featureXML_i'in filenames_I.keys(): featureXML_i = filenames_I['featureXML_i']
 
         unknowns = []
         for filename in featureXML_i:
