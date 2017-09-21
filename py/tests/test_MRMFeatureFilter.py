@@ -40,7 +40,8 @@ class TestMRMFeatureFilter():
         self.params = smartpeak_i.getData()
         smartpeak_i.clear_data()
 
-    def test_filter_MRMFeatures(self):
+    def test_filter_MRMFeatures(self):  
+        self.load_data()    
         featureFilter = MRMFeatureFilter()
         output_filtered = featureFilter.filter_MRMFeatures(
             self.featureMap,

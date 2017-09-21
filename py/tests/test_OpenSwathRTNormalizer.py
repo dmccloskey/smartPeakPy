@@ -66,6 +66,7 @@ class TestOpenSwathRTNormalizer():
     
     def test_algorithm(self,
         ):
+        self.load_data()
 
         # set up MRMFeatureFinderScoring (featurefinder) and
         # parse the MRMFeatureFinderScoring params

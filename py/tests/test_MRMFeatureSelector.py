@@ -39,7 +39,8 @@ class TestMRMFeatureSelector():
         self.params = smartpeak_i.getData()
         smartpeak_i.clear_data()
 
-    def test_schedule_MRMFeatures_qmip(self):
+    def test_schedule_MRMFeatures_qmip(self):  
+        self.load_data()    
         featureFilter = MRMFeatureFilter()
         output_filtered = featureFilter.filter_MRMFeatures(
             self.featureMap,
@@ -58,7 +59,8 @@ class TestMRMFeatureSelector():
         assert(output_selected[50].getSubordinates()[0].getMetaValue("native_id") == b'glyclt.glyclt_1.Heavy')
         assert(output_selected[50].getSubordinates()[0].getRT() == 3.1483763776143396)
     
-    def test_select_MRMFeatures_score(self):
+    def test_select_MRMFeatures_score(self):  
+        self.load_data()    
         featureFilter = MRMFeatureFilter()
         output_filtered = featureFilter.filter_MRMFeatures(
             self.featureMap,

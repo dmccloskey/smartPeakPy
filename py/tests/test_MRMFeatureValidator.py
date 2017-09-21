@@ -40,7 +40,8 @@ class TestMRMFeatureValidator():
         self.params = smartpeak_i.getData()
         smartpeak_i.clear_data()
 
-    def test_validate_MRMFeatures(self):        
+    def test_validate_MRMFeatures(self):    
+        self.load_data()    
         featureValidator= MRMFeatureValidator()
         features_mapped,validation_metrics = featureValidator.validate_MRMFeatures(
             reference_data = self.reference_data,
