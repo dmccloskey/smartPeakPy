@@ -72,7 +72,7 @@ class TestMRMFeatureSelector():
             self.params["MRMFeatureSelector.select_MRMFeatures_score"])
         assert(output_selected[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 1946.5)
         assert(output_selected[0].getSubordinates()[0].getMetaValue("native_id") == b'23dpg.23dpg_1.Light')
-        assert(output_selected[0].getSubordinates()[0].getRT() == 16.4121927001953)
+        assert(output_selected[0].getSubordinates()[0].getRT() == 16.4121927001953) #refactor to us pytest.approx
         assert(output_selected[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 922.0)
         assert(output_selected[50].getSubordinates()[0].getMetaValue("native_id") == b'f6p.f6p_1.Light')
-        assert(output_selected[50].getSubordinates()[0].getRT() == 8.0184300549825)
+        assert(output_selected[50].getSubordinates()[0].getRT() == 8.0184300549825) #refactor to us pytest.approx

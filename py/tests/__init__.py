@@ -58,6 +58,10 @@ def runAllTests():
     test.test_schedule_MRMFeatures_qmip()
     test.test_select_MRMFeatures_score()
 
+    from tests.test_ReferenceDataMethods import TestReferenceDataMethods
+    test = TestReferenceDataMethods()
+    test.test_getAndProcessReferenceDataSamples()
+    test.test_getAndProcessReferenceDataCalibrators()
 
     from tests.test_MRMFeatureValidator import TestMRMFeatureValidator
     test = TestMRMFeatureValidator()

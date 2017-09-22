@@ -31,10 +31,8 @@ m = __main__()
 #     delimiter=','
 #     )
 
-from tests.test_ReferenceDataMethods import TestReferenceDataMethods
-test = TestReferenceDataMethods()
-test.test_getAndProcessReferenceDataSamples()
-test.test_getAndProcessReferenceDataCalibrators()
+from tests import runAllTests
+runAllTests()
 
 # from tests.test_smartPeak_AbsoluteQuantitation_py import TestAbsoluteQuantitation_py
 # tabsquant = TestAbsoluteQuantitation_py()

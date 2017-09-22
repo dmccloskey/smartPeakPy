@@ -21,7 +21,13 @@ class TestReferenceDataMethods():
             used__I = True,
             settings_filename_I = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini',
             data_filename_O = None)
-        assert(1==1)
+        assert(len(data_ref_processed) == 179)
+        assert(data_ref_processed[0]['sample_name'] == '150601_0_BloodProject01_PLT_QC_Broth-1')
+        assert(data_ref_processed[0]['sample_type'] == 'Quality Control')
+        assert(data_ref_processed[0]['component_name'] == '23dpg.23dpg_1.Heavy')
+        assert(data_ref_processed[178]['sample_name'] == '150601_0_BloodProject01_PLT_QC_Broth-1')
+        assert(data_ref_processed[178]['sample_type'] == 'Quality Control')
+        assert(data_ref_processed[178]['component_name'] == 'xan.xan_1.Light')
 
     def test_getAndProcessReferenceDataCalibrators(self):
         """Test getAndProcess_referenceData_calibrators"""
@@ -36,4 +42,8 @@ class TestReferenceDataMethods():
             used__I = True,
             settings_filename_I = '/home/user/openMS_MRMworkflow/settings_metabolomics.ini',
             data_filename_O = None)
-        assert(1==1)
+        assert(len(data_ref_processed) == 193)
+        assert(data_ref_processed[0]['sample_name'] == 'Calibrators')
+        assert(data_ref_processed[0]['component_name'] == 'cytd.cytd_1.Light')
+        assert(data_ref_processed[192]['sample_name'] == 'Calibrators')
+        assert(data_ref_processed[192]['component_name'] == 'gthox.gthox_1.Light')

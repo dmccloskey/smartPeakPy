@@ -73,7 +73,7 @@ class TestSmartPeakOpenSWATH_py():
                     if debug:
                         assert(openSWATH_py.featureMap[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 262623.5)
                         assert(openSWATH_py.featureMap[0].getSubordinates()[0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
-                        assert(openSWATH_py.featureMap[0].getSubordinates()[0].getRT() == 15.894456338119507)
+                        assert(openSWATH_py.featureMap[0].getSubordinates()[0].getRT() == 15.894456338119507) #refactor to use pytest.approx
                         assert(openSWATH_py.featureMap[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 1913.0)
                         assert(openSWATH_py.featureMap[50].getSubordinates()[0].getMetaValue("native_id") == b'6pgc.6pgc_1.Heavy')
                         assert(openSWATH_py.featureMap[50].getSubordinates()[0].getRT() == 13.66598913269043)
@@ -85,10 +85,10 @@ class TestSmartPeakOpenSWATH_py():
                     if debug:
                         assert(openSWATH_py.featureMap[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 262623.5)
                         assert(openSWATH_py.featureMap[0].getSubordinates()[0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
-                        assert(openSWATH_py.featureMap[0].getSubordinates()[0].getRT() == 15.894456338119507)
+                        assert(openSWATH_py.featureMap[0].getSubordinates()[0].getRT() == 15.894456338119507) #refactor to use pytest.approx
                         assert(openSWATH_py.featureMap[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 13919.000000000002)
                         assert(openSWATH_py.featureMap[50].getSubordinates()[0].getMetaValue("native_id") == b'glyclt.glyclt_1.Heavy')
-                        assert(openSWATH_py.featureMap[50].getSubordinates()[0].getRT() == 3.1483763776143396)
+                        assert(openSWATH_py.featureMap[50].getSubordinates()[0].getRT() == 3.1483763776143396) #refactor to use pytest.approx
                     else:
                         # store
                         openSWATH_py.store_featureMap(

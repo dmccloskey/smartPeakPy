@@ -91,5 +91,5 @@ class TestOpenSwathRTNormalizer():
             MRMFeatureFinderScoring_params=parameters
             )
         params = trafo.getModelParameters()
-        assert(params.getValue("slope") == 6.254079466897194)
-        assert(params.getValue("intercept") == -5.349869779072912)
+        assert(params.getValue("slope") == 6.254079466897194) #refactor to us pytest.approx
+        assert(params.getValue("intercept") == -5.349869779072912) #refactor to us pytest.approx

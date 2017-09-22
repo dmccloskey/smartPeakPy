@@ -48,4 +48,4 @@ class TestMRMFeatureValidator():
             features = self.featureMap,
             Tr_window = float(self.params['MRMFeatureValidator.validate_MRMFeatures'][0]['value'])
             )
-        assert(validation_metrics["accuracy"] == 0.9779411764705882)
+        assert(validation_metrics["accuracy"] == 0.9779411764705882) #refactor to us pytest.approx
