@@ -10,6 +10,63 @@ try:
 except ImportError as e:
     print(e)
 
+"""
+    /// Representation of a quality parameter
+    struct OPENMS_DLLAPI QualityParameter
+    {
+      String name; ///< Name
+      String id; ///< Identifier
+      String value; ///< Value
+      String cvRef; ///< cv reference
+      String cvAcc; ///< cv accession
+      String unitRef; ///< cv reference of the unit
+      String unitAcc; ///< cv accession of the unit
+      String flag; ///< cv accession of the unit
+
+      ///Default constructor
+      QualityParameter();
+
+      QualityParameter(const QualityParameter& rhs);
+
+      QualityParameter& operator=(const QualityParameter& rhs);
+      bool operator==(const QualityParameter& rhs) const;
+      bool operator<(const QualityParameter& rhs) const;
+      bool operator>(const QualityParameter& rhs) const;
+
+      String toXMLString(UInt indentation_level) const;
+    };
+
+    /// Representation of an attachment
+    struct OPENMS_DLLAPI Attachment
+    {
+      String name; ///< Name
+      String id; ///< Name
+      String value; ///< Value
+      String cvRef; ///< cv reference
+      String cvAcc; ///< cv accession
+      String unitRef; ///< cv reference of the unit
+      String unitAcc; ///< cv accession of the unit
+      String binary; ///< binary content of the attachment
+      String qualityRef; ///< reference to qp to which attachment, if empty attached to run/set
+      std::vector<String> colTypes; ///< type of the cols if QP has a table of values
+      std::vector< std::vector<String> > tableRows; ///< cell values if QP has a table, type see colType
+      //~ TODO -schema- coltypes with full definition (uintRef, unitAcc)
+
+      ///Default constructor
+      Attachment();
+
+      Attachment(const Attachment& rhs);
+
+      Attachment& operator=(const Attachment& rhs);
+      bool operator==(const Attachment& rhs) const;
+      bool operator<(const Attachment& rhs) const;
+      bool operator>(const Attachment& rhs) const;
+
+      String toXMLString(UInt indentation_level) const;
+      String toCSVString(String separator) const;
+    };
+"""
+
 class MRMFeatureQC():
     """MRMFeatureQC quality controls features (FeatureMap)
 
@@ -21,7 +78,7 @@ class MRMFeatureQC():
         features,
         targeted,
         qc_criteria = [],
-        remove_filtered_transitions = True,         
+        flag_transitions = True,         
         ):
         """Quality control features
             
@@ -30,10 +87,10 @@ class MRMFeatureQC():
             features (FeatureMap):
             targeted (TraML): TraML input file containing the transitions
             qc_criteria (list,dict): e.g., [{"name":, "value":, }]
-            remove_filtered_transitions (bool): remove filter transitions?
-                if True: only transitions that pass the filter are returned
-                if False: all transitions are returned with an annotation in 
+            flag_transitions (bool): flag or remove transitions
+                if True: all transitions are returned with an annotation in 
                     metaValue specifying the QC that failed
+                if False: only transitions that pass the filter are returned
 
         Returns:
             FeatureMap: output_O: filtered features
@@ -82,10 +139,10 @@ class MRMFeatureQC():
                 if fc_pass:
                     # subordinates_tmp.addFeature(subordinate,subordinate.getMetaValue("native_id"))
                     subordinates_tmp.append(subordinate)
-                    if not remove_filtered_transitions:
+                    if flag_transitions:
                         subordinate.setMetaValue('used_'.encode('utf-8'),'True'.encode('utf-8'))
                 else:
-                    if not remove_filtered_transitions:
+                    if flag_transitions:
                         subordinate.setMetaValue('used_'.encode('utf-8'),'False'.encode('utf-8'))
                         subordinates_tmp.append(subordinate)
                 # subordinates_tmp.append(subordinate)
@@ -158,21 +215,6 @@ class MRMFeatureQC():
         Todo...
         """
 
-    def calculate_peakQualityMetrics(self,
-        feature,
-        transition):
-        """Calculate peak quality metrics
-        
-        Calculate the following peak quality metrics:
-            assymetry factor
-            USP tailing factor
-            change in baseline to height
-            points across the peak
-            etc.
-
-        Todo...
-        """
-
     def calculate_peakResolution(self,
         feature,
         transition):
@@ -181,10 +223,22 @@ class MRMFeatureQC():
         Todo
         """
 
-    def calculate_quantificationQualityMetrics(self,
+    def check_peakMetrics(self,
         feature,
-        transition):
-        """Calculate accuracy, bias, R2, LLOQ, ULOQ, etc.
+        transition,
+        metrics):
+        """Calculate peak metrics
+        
+        Metrics include peak quality (e.g., asymmetry_factor, etc.,) 
+        and quantification (e.g., accuracy, r2, lloq, etc.,)
 
-        Todo
+        Args:
+            feature (Feature): OpenMS feature
+            transition (MRMTransition): transition
+            metrics (list): list of quality control metrics and thresholds
+                e.g., {"name":"value"}
+
+        Returns:
+
         """
+        pass

@@ -31,8 +31,16 @@ m = __main__()
 #     delimiter=','
 #     )
 
-from tests import runAllTests
-runAllTests()
+# from tests import runAllTests
+# runAllTests()
+
+from tests.test_smartPeak_openSWATH_py import TestSmartPeakOpenSWATH_py
+test = TestSmartPeakOpenSWATH_py()
+test.test_openSWATH_py(
+    # filename_filenames='/home/user/openMS_MRMworkflow/Algo1Validation/filenames.csv',
+    # filename_params='/home/user/openMS_MRMworkflow/Algo1Validation/MRMFeatureFinderScoring_params.csv', #QMIP
+    delimiter=',',
+    debug = False)
 
 # from tests.test_smartPeak_AbsoluteQuantitation_py import TestAbsoluteQuantitation_py
 # tabsquant = TestAbsoluteQuantitation_py()
