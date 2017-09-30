@@ -13,6 +13,11 @@ class smartPeak_AbsoluteQuantitation_py():
         self.quantitationMethods = None
         self.quantitationStandards = None
 
+    def clear_data(self):
+        self.unknowns = None
+        self.quantitationMethods = None
+        self.quantitationStandards = None
+
     def load_quantitationMethods(self,
         filenames_I):
         """Load AbsoluteQuantitationMethods
@@ -101,7 +106,11 @@ class smartPeak_AbsoluteQuantitation_py():
         featureXML_o = None
         if 'featureXML_o'in filenames_I.keys(): featureXML_o = filenames_I['featureXML_o']
 
-        assert(len(featureXML_o==self.unknowns))
+        if len(featureXML_o)!=len(self.unknowns):
+            print("The number of filenames and the number of unknowns do not match.")
+            print("Check that the number and names of the files match the unknowns.")
+            return
+
         for i,filename in enumerate(featureXML_o):
             featurexml = pyopenms.FeatureXMLFile()
             featurexml.store(filename.encode('utf-8'), self.unknowns[i])

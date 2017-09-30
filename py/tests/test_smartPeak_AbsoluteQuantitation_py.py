@@ -59,15 +59,22 @@ class TestAbsoluteQuantitation_py():
                     AbsoluteQuantitation_py.load_unknowns(
                         {'featureXML_i':[featureXML_i]})
                     AbsoluteQuantitation_py.quantifyComponents()
+                    if debug:
+                        assert(AbsoluteQuantitation_py.unknowns[0][0].getSubordinates()[1].getMetaValue("native_id") == b'23dpg.23dpg_1.Light')
+                        assert(AbsoluteQuantitation_py.unknowns[0][0].getSubordinates()[1].getMetaValue("calculated_concentration") == 30.18523195039847) #refactor to use pytest.approx
+                        assert(AbsoluteQuantitation_py.unknowns[0][0].getSubordinates()[1].getMetaValue("concentration_units") == b'uM')
+                        assert(AbsoluteQuantitation_py.unknowns[0][15].getSubordinates()[1].getMetaValue("native_id") == b'amp.amp_1.Light')
+                        assert(AbsoluteQuantitation_py.unknowns[0][15].getSubordinates()[1].getMetaValue("calculated_concentration") == 1.2076773974114277) #refactor to use pytest.approx
+                        assert(AbsoluteQuantitation_py.unknowns[0][15].getSubordinates()[1].getMetaValue("concentration_units") == b'uM')
                     # store
-                    openSWATH_py.store_featureMap(
+                    AbsoluteQuantitation_py.store_unknowns(
                         {'featureXML_o':[featureXML_o]})
                 except Exception as e:
                     print(e)
                     skipped_samples.append({'sample_name':sample,
                         'error_message':e})
                 # manual clear data for the next iteration
-                openSWATH_py.clear_data()
+                AbsoluteQuantitation_py.clear_data()
         if not debug:
             if skipped_samples:
                 smartpeak_o = smartPeak_o(skipped_samples)
