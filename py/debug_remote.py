@@ -28,10 +28,6 @@ m = __main__()
 #     delimiter=',',
 #     debug = False)
 
-from tests.test_smartPeak_AbsoluteQuantitation_py import TestAbsoluteQuantitation_py
-tabsquant = TestAbsoluteQuantitation_py()
-tabsquant.test_QuantifyComponents(debug = True)
-
 
 ###TESTING:
 # # Test MRMTransitionGroupPicker_py

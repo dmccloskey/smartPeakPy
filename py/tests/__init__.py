@@ -71,3 +71,7 @@ def runAllTests():
     test = TestSmartPeakOpenSWATH_py()
     test.test_openSWATH_py(debug = True)
     test.test_validate_openSWATH(debug = True)
+
+    from tests.test_smartPeak_AbsoluteQuantitation_py import TestAbsoluteQuantitation_py
+    test = TestAbsoluteQuantitation_py()
+    test.test_QuantifyComponents(debug = True)
