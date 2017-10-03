@@ -338,8 +338,10 @@ class __main__():
         skipped_samples = []
         output = []
 
-        from .smartPeak_AbsoluteQuantitation_py import smartPeak_AbsoluteQuantitation_py
+        from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py
+        from smartPeak.core.smartPeak_AbsoluteQuantitation_py import smartPeak_AbsoluteQuantitation_py
         AbsoluteQuantitation_py = smartPeak_AbsoluteQuantitation_py()
+        openSWATH_py = smartPeak_openSWATH_py()
         smartpeak_i = smartPeak_i()
         smartpeak_i.read_pythonParams(filename_filenames,delimiter)
         filenames = smartpeak_i.getData()
@@ -351,24 +353,49 @@ class __main__():
             for sample,v in filename.items():
                 print("processing sample "+ sample)
                 try:
+                    ## pick peaks with OpenSWATH
                     # dynamically make the filenames
                     data_dir = v['data_dir']
-                    quantitationMethods_csv_i = '''%s/quantitationMethods_csv_i.csv'''%(data_dir)
+                    mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
                     traML_csv_i = '''%s/traML.csv'''%(data_dir)
+                    trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
+                    featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
+                    feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
+                    # load in the files
+                    openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
+                    openSWATH_py.load_SWATHorDIA({})
+                    openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i})
+                    openSWATH_py.extract_metaData()
+                    openSWATH_py.load_Trafo( #skip transformation of RT
+                        {},#{'trafo_csv_i':trafo_csv_i},
+                        params['MRMFeatureFinderScoring'])
+                    # run the openSWATH workflow for metabolomics
+                    openSWATH_py.openSWATH_py(
+                        params['MRMFeatureFinderScoring'])
+                    # filter and select
+                    openSWATH_py.filterAndSelect_py(
+                        {},
+                        params['MRMFeatureFilter.filter_MRMFeatures'],
+                        {},#params['MRMFeatureSelector.select_MRMFeatures_score'],
+                        params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
+
+                    ## Quantify peaks
+                    # dynamically make the filenames
+                    quantitationMethods_csv_i = '''%s/quantitationMethods_csv_i.csv'''%(data_dir)
                     featureXML_o = '''%s/quantitation/%s.featureXML'''%(data_dir,sample) 
                     feature_csv_o = '''%s/quantitation/%s.csv'''%(data_dir,sample)
-                    featureXML_i = '''%s/features/%s.featureXML'''%(data_dir,sample) 
-                    feature_csv_i = '''%s/features/%s.csv'''%(data_dir,sample)
                     # load the quantitation method
                     AbsoluteQuantitation_py.load_quantitationMethods(
                         {'quantitationMethods_csv_i':quantitationMethods_csv_i})
                     # quantify the components
-                    AbsoluteQuantitation_py.load_unknowns(
-                        {'featureXML_i':[featureXML_i]})
+                    AbsoluteQuantitation_py.setUnknowns(openSWATH_py.featureMap)
                     AbsoluteQuantitation_py.quantifyComponents()
                     # store
+                    openSWATH_py.featureMap = AbsoluteQuantitation_py.getUnknowns()
                     openSWATH_py.store_featureMap(
-                        {'featureXML_o':[featureXML_o]})
+                        {'featureXML_o':featureXML_o,
+                        'feature_csv_o':feature_csv_o})
+
                 except Exception as e:
                     print(e)
                     skipped_samples.append({'sample_name':sample,
@@ -377,6 +404,6 @@ class __main__():
                 openSWATH_py.clear_data()
         if skipped_samples:
             smartpeak_o = smartPeak_o(skipped_samples)
-            skippedSamples_csv_i = '''%s/data/skippedSamples.csv'''%(data_dir)
+            skippedSamples_csv_i = '''%s/mzML/skippedSamples.csv'''%(data_dir)
             smartpeak_o.write_dict2csv(skippedSamples_csv_i)
         return output

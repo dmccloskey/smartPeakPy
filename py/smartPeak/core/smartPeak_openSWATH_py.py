@@ -390,8 +390,8 @@ class smartPeak_openSWATH_py():
         samplename = '-'.join(samplename_list[1:])   
 
         # instrument and software name
-        instrument = self.chromatograms_mapped.getInstrument().getName()
-        software = self.chromatograms_mapped.getInstrument().getSoftware().getName()
+        instrument = self.chromatogram_map.getInstrument().getName()
+        software = self.chromatogram_map.getInstrument().getSoftware().getName()
 
         self.meta_data = {
             "filename":filename,

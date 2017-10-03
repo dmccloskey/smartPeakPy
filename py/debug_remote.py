@@ -17,12 +17,13 @@ m = __main__()
 #     delimiter=','
 #     )
 
+m.run_AbsoluteQuantitation_py(
+    filename_filenames='/home/user/openMS_MRMworkflow/Unknowns/filenames.csv',
+    filename_params='/home/user/openMS_MRMworkflow/Unknowns/MRMFeatureFinderScoring_params.csv',
+    delimiter=',',)
+
 # from tests import runAllTests
 # runAllTests()
-
-from tests.test_smartPeak_AbsoluteQuantitation_py import TestAbsoluteQuantitation_py
-test = TestAbsoluteQuantitation_py()
-test.test_QuantifyComponents(debug = True)
 
 # from tests.test_smartPeak_openSWATH_py import TestSmartPeakOpenSWATH_py
 # test = TestSmartPeakOpenSWATH_py()
