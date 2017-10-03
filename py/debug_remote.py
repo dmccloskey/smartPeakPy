@@ -25,15 +25,6 @@ m.run_AbsoluteQuantitation_py(
 # from tests import runAllTests
 # runAllTests()
 
-# from tests.test_smartPeak_openSWATH_py import TestSmartPeakOpenSWATH_py
-# test = TestSmartPeakOpenSWATH_py()
-# test.test_openSWATH_py(
-#     # filename_filenames='/home/user/openMS_MRMworkflow/Algo1Validation/filenames.csv',
-#     # filename_params='/home/user/openMS_MRMworkflow/Algo1Validation/MRMFeatureFinderScoring_params.csv', #QMIP
-#     delimiter=',',
-#     debug = False)
-
-
 ###TESTING:
 # # Test MRMTransitionGroupPicker_py
 # m.run_MRMTransitionGroupPicker_py(

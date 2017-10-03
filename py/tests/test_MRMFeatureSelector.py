@@ -51,7 +51,8 @@ class TestMRMFeatureSelector():
             features = output_filtered,
             tr_expected = [],    
             targeted = self.targeted,
-            schedule_criteria = self.params["MRMFeatureSelector.schedule_MRMFeatures_qmip"])
+            schedule_criteria = self.params["MRMFeatureSelector.schedule_MRMFeatures_qmip"],
+            score_weights = self.params["MRMFeatureSelector.select_MRMFeatures_qmip"])
         assert(output_selected[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 262623.5)
         assert(output_selected[0].getSubordinates()[0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
         assert(output_selected[0].getSubordinates()[0].getRT() == 15.8944563381195)

@@ -185,7 +185,7 @@ class __main__():
                     openSWATH_py.filterAndSelect_py(
                         {},
                         params['MRMFeatureFilter.filter_MRMFeatures'],
-                        {},#params['MRMFeatureSelector.select_MRMFeatures_score'],
+                        params['MRMFeatureSelector.select_MRMFeatures_score'],
                         params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
                     # store
                     openSWATH_py.store_featureMap(
@@ -300,7 +300,7 @@ class __main__():
                     openSWATH_py.filterAndSelect_py(
                         {},
                         params['MRMFeatureFilter.filter_MRMFeatures'],
-                        {},#params['MRMFeatureSelector.select_MRMFeatures_score'],
+                        params['MRMFeatureSelector.select_MRMFeatures_score'],
                         params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
                     # store
                     openSWATH_py.store_featureMap(
@@ -376,8 +376,12 @@ class __main__():
                     openSWATH_py.filterAndSelect_py(
                         {},
                         params['MRMFeatureFilter.filter_MRMFeatures'],
-                        {},#params['MRMFeatureSelector.select_MRMFeatures_score'],
+                        params['MRMFeatureSelector.select_MRMFeatures_score'],
                         params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
+                    # store
+                    openSWATH_py.store_featureMap(
+                        {'featureXML_o':featureXML_o,
+                        'feature_csv_o':feature_csv_o})
 
                     ## Quantify peaks
                     # dynamically make the filenames

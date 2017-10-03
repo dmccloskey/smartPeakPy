@@ -26,6 +26,7 @@ class MRMFeatureSelector():
             {"name":"segment_window_lengths", "value":12},
             {"name":"segment_step_lengths", "value":3},
             {"name":"select_highest_count", "value":False}],
+        score_weights = [],
         verbose_I=False
         ):
         """Aligns feature Tr (retention time, normalized retention time)
@@ -143,7 +144,8 @@ class MRMFeatureSelector():
                 nn_threshold,
                 locality_weights,
                 variable_type,
-                optimal_threshold
+                optimal_threshold,
+                score_weights
                 )
             if select_highest_count:
                 for var in tmp:
@@ -207,6 +209,7 @@ class MRMFeatureSelector():
         locality_weights,
         variable_type = 'integer',
         optimal_threshold = 0.5,
+        score_weights = [],
         verbose_I=False
         ):
         """
@@ -219,13 +222,17 @@ class MRMFeatureSelector():
             locality_weights (boolean): weight compounds with a nearer Tr greater than compounds with a further Tr
             variable_type (str): the type of variable, 'integer' or 'continuous'
             optimal_threshold (float): value above which the transition group or transition is considered optimal (0 < x < 1)
+            score_weights (list,dict): e.g., [{"name":, "value":, }]
+                name (str) = name of the score
+                value (str) = lambda transformation function
+                e.g., scaling: lambda score: score*2
+                      inverse log scaling: lambda score: 1/log(score)
 
         Returns:
             list: tr_optimial: list of optimal transition variable names  
 
         Potential Speed Optimizations
             Add in a check to see if multiple peaks for a transition or transition group actually exist
-
 
         """
         #build the model variables and constraints
@@ -255,9 +262,10 @@ class MRMFeatureSelector():
                     model.add(variables[variable_name_1])
                     component_names_1.append(component_name_1)
                     n_variables += 1
-                score_1 = (1/log10(Tr_dict[component_name_1][i_1]['peak_apices_sum']))\
-                    *(1/log(Tr_dict[component_name_1][i_1]['sn_ratio']))\
-                    *Tr_dict[component_name_1][i_1]['rt_score']
+                score_1 = self.make_score(Tr_dict[component_name_1][i_1], score_weights)
+                # score_1 = (1/log10(Tr_dict[component_name_1][i_1]['peak_apices_sum']))\
+                #     *(1/log(Tr_dict[component_name_1][i_1]['sn_ratio']))\
+                #     *Tr_dict[component_name_1][i_1]['rt_score']
                 # score_1 = (1/log(Tr_dict[component_name_1][i_1]['sn_ratio']))\
                 #     *Tr_dict[component_name_1][i_1]['rt_score']
                 #constraint capture 1
@@ -280,9 +288,10 @@ class MRMFeatureSelector():
                             variables[variable_name_2] = Variable(variable_name_2, lb=0, ub=1, type=variable_type)
                             model.add(variables[variable_name_2])
                             n_variables += 1
-                        score_2 = (1/log10(Tr_dict[component_name_2][i_2]['peak_apices_sum']))\
-                            *(1/log(Tr_dict[component_name_2][i_2]['sn_ratio']))\
-                            *Tr_dict[component_name_2][i_2]['rt_score']
+                        score_2 = self.make_score(Tr_dict[component_name_2][i_2], score_weights)
+                        # score_2 = (1/log10(Tr_dict[component_name_2][i_2]['peak_apices_sum']))\
+                        #     *(1/log(Tr_dict[component_name_2][i_2]['sn_ratio']))\
+                        #     *Tr_dict[component_name_2][i_2]['rt_score']
                         # score_2 = (1/log(Tr_dict[component_name_2][i_2]['sn_ratio']))\
                         #     *Tr_dict[component_name_2][i_2]['rt_score']
                         #record the objective
@@ -400,6 +409,7 @@ class MRMFeatureSelector():
         targeted = None,
         tr_expected = [],
         schedule_criteria = [],
+        score_weights = [],
         verbose_I = False):
 
         import time as time
@@ -450,7 +460,8 @@ class MRMFeatureSelector():
             output_features = self.select_MRMFeatures_qmip(
                 output_features,
                 tr_expected,
-                select_criteria) 
+                select_criteria,
+                score_weights) 
         elapsed_time = time.time() - st
         if verbose_I: print("Scheduler time: %.2fs" % elapsed_time)
         return output_features
@@ -666,10 +677,7 @@ class MRMFeatureSelector():
                     model.add(variables[variable_name_1])
                     component_names_1.append(component_name_1)
                     n_variables += 1
-                score_1 = 1.0
-                for score_weight in score_weights:
-                    weight_func = eval(score_weight['value']) #check for valid lambda string...
-                    score_1 *= weight_func(Tr_dict[component_name_1][i_1][score_weight['name']])
+                score_1 = self.make_score(Tr_dict[component_name_1][i_1], score_weights)
                 #constraint capture 1
                 constraints.append(variables[variable_name_1])
                 #record the objective coefficients
@@ -700,3 +708,23 @@ class MRMFeatureSelector():
         # Tr_primals = [{var.name:var.primal} for var in model.variables if var.name in variables.keys()]
         # for var in model.variables: if var.name in variables.keys(): print("%s:%s"%(var.name,var.primal))
         return Tr_optimal
+
+    def make_score(self, tr_dict_row, score_weights):
+        """make the score
+
+        Args:
+            score_weights (list,dict): e.g., [{"name":, "value":, }]
+                name (str) = name of the score
+                value (str) = lambda transformation function
+                e.g., scaling: lambda score: score*2
+                      inverse log scaling: lambda score: 1/log(score)
+
+        Returns:
+            float: score 
+        
+        """
+        score_1 = 1.0
+        for score_weight in score_weights:
+            weight_func = eval(score_weight['value']) #check for valid lambda string...
+            score_1 *= weight_func(tr_dict_row[score_weight['name']])
+        return score_1
