@@ -72,7 +72,7 @@ class TestAbsoluteQuantitation_py():
                     AbsoluteQuantitation_py.store_unknowns(
                         {'featureXML_o':[featureXML_o],
                         'feature_csv_o':[feature_csv_o],
-                        'traML_csv_i':traML_csv_i, #embed into featureMap...
+                        'traML_csv_i':traML_csv_i, #TODO: embed into featureMap...
                         'traML_i':traML_i,
                         'mzML_feature_i':mzML_feature_i,})
                 except Exception as e:

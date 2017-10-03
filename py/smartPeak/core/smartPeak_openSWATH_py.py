@@ -26,6 +26,7 @@ class smartPeak_openSWATH_py():
         self.validation_metrics = None
         self.swath = None
         self.reference_data = None
+        self.meta_data = None
 
     def load_TraML(self,
         filenames_I):
@@ -326,7 +327,12 @@ class smartPeak_openSWATH_py():
     def load_featureMap(self,
         filenames_I = {},
         ):
-        """Load a FeatureMap"""
+        """Load a FeatureMap
+        
+        Args:
+            filenames_I (list): list of filename strings
+            
+        """
         # Handle the filenames
         featureXML_i = None
         if 'featureXML_i'in filenames_I.keys(): featureXML_i = filenames_I['featureXML_i']        
@@ -339,12 +345,41 @@ class smartPeak_openSWATH_py():
 
         self.featureMap = output
 
+    def extract_metaData(self):
+        """Extracts metadata from the chromatogram
+        """
+        # filename
+        filename = self.chromatogram_map.getLoadedFilePath().decode('utf-8').replace('file://','')
+        # filename = '''%s/%s''' %(
+        #     chromatograms_mapped.getSourceFiles()[0].getPathToFile().decode('utf-8').replace('file://',''),
+        #     chromatograms_mapped.getSourceFiles()[0].getNameOfFile().decode('utf-8'))
+
+        # sample name
+        samplename_list = self.chromatogram_map.getMetaValue(b'mzml_id').decode('utf-8').split('-')
+        samplename = '-'.join(samplename_list[1:])   
+
+        # instrument and software name
+        instrument = self.chromatograms_mapped.getInstrument().getName()
+        software = self.chromatograms_mapped.getInstrument().getSoftware().getName()
+
+        self.meta_data = {
+            "filename":filename,
+            "samplename":samplename,
+            "instrument":instrument,
+            "software":software
+        }
+
+
     def store_featureMap(self,
         filenames_I = {},
         # feature_csv_o = None,
         # featureXML_o = None
         ):
-        """Store FeatureMap as .xml and .csv"""
+        """Store FeatureMap as .xml and .csv
+        
+        Args:
+            filenames_I (list): list of filename strings
+        """
         # Handle the filenames
         featureXML_o,feature_csv_o = None,None
         if 'featureXML_o'in filenames_I.keys(): featureXML_o = filenames_I['featureXML_o']
@@ -366,13 +401,6 @@ class smartPeak_openSWATH_py():
                 run_id = samplename,
                 filename = filename
                 )
-
-        # # other metadata
-        # chromatograms_mapped.getInstrument().getName()
-        # chromatograms_mapped.getInstrument().getSoftware().getName()
-        # filename = '''%s/%s''' %(
-        #     chromatograms_mapped.getSourceFiles()[0].getPathToFile().decode('utf-8').replace('file://',''),
-        #     chromatograms_mapped.getSourceFiles()[0].getNameOfFile().decode('utf-8'))
 
     def load_validationData(self,
         filenames_I,
@@ -486,3 +514,4 @@ class smartPeak_openSWATH_py():
         self.validation_metrics = None
         self.swath = None
         self.reference_data = None
+        self.meta_data = None
