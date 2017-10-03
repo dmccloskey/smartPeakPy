@@ -48,7 +48,7 @@ class TestAbsoluteQuantitation_py():
                 try:
                     # dynamically make the filenames
                     quantitationMethods_csv_i = '''%s/%s'''%(data_dir,v["quantitationMethods_csv_i"])
-                    mzML_I = '''%s/mzML/%s.mzML'''%(data_dir,sample)
+                    mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
                     traML_csv_i = '''%s/%s'''%(data_dir,v["traML_csv_i"])
                     featureXML_o = '''%s/quantitation/%s.featureXML'''%(data_dir,sample) 
                     feature_csv_o = '''%s/quantitation/%s.csv'''%(data_dir,sample)
@@ -68,13 +68,13 @@ class TestAbsoluteQuantitation_py():
                         assert(AbsoluteQuantitation_py.unknowns[0][15].getSubordinates()[1].getMetaValue("native_id") == b'amp.amp_1.Light')
                         assert(AbsoluteQuantitation_py.unknowns[0][15].getSubordinates()[1].getMetaValue("calculated_concentration") == 1.2076773974114277) #refactor to use pytest.approx
                         assert(AbsoluteQuantitation_py.unknowns[0][15].getSubordinates()[1].getMetaValue("concentration_units") == b'uM')
+                    # else: 
                     # store
                     AbsoluteQuantitation_py.store_unknowns(
                         {'featureXML_o':[featureXML_o],
                         'feature_csv_o':[feature_csv_o],
                         'traML_csv_i':traML_csv_i, #TODO: embed into featureMap...
-                        'traML_i':traML_i,
-                        'mzML_feature_i':mzML_feature_i,})
+                        'mzML_feature_i':mzML_i,})
                 except Exception as e:
                     print(e)
                     skipped_samples.append({'sample_name':sample,

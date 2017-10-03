@@ -28,6 +28,37 @@ class smartPeak_openSWATH_py():
         self.reference_data = None
         self.meta_data = None
 
+    def clear_data(self):
+        """Remove all data"""        
+        self.featureMap = None
+        self.chromatogram_map = None
+        self.targeted = None
+        self.trafo = None
+        self.msExperiment = None
+        self.validation_metrics = None
+        self.swath = None
+        self.reference_data = None
+        self.meta_data = None
+
+    def load_quantitationMethods(self,
+        filenames_I):
+        """Load AbsoluteQuantitationMethods
+
+        Args:
+            filenames_I (dict): dictionary of filename strings
+
+        Internals:
+            quantitationMethods (list): list of AbsoluteQuantitationMethod objects
+
+        """
+        quantitationMethods_csv_i = None
+        if 'quantitationMethods_csv_i'in filenames_I.keys(): quantitationMethods_csv_i = filenames_I['quantitationMethods_csv_i']
+
+        quantitationMethods = []
+        aqmf = pyopenms.AbsoluteQuantitationMethodFile()
+        aqmf.load(quantitationMethods_csv_i, quantitationMethods)
+        self.quantitationMethods = quantitationMethods
+
     def load_TraML(self,
         filenames_I):
         """Load TraML file
@@ -369,7 +400,6 @@ class smartPeak_openSWATH_py():
             "software":software
         }
 
-
     def store_featureMap(self,
         filenames_I = {},
         # feature_csv_o = None,
@@ -392,14 +422,11 @@ class smartPeak_openSWATH_py():
             featurexml.store(featureXML_o.encode('utf-8'), self.featureMap)
         
         # Store the outfile as csv     
-        featurescsv = OpenSwathFeatureXMLToTSV()
-        filename = self.chromatogram_map.getLoadedFilePath().decode('utf-8').replace('file://','')
-        samplename_list = self.chromatogram_map.getMetaValue(b'mzml_id').decode('utf-8').split('-')
-        samplename = '-'.join(samplename_list[1:])   
+        featurescsv = OpenSwathFeatureXMLToTSV()  
         if not feature_csv_o is None:
             featurescsv.store(feature_csv_o, self.featureMap, self.targeted,
-                run_id = samplename,
-                filename = filename
+                run_id = self.meta_data['samplename'],
+                filename = self.meta_data['filename']
                 )
 
     def load_validationData(self,
@@ -503,15 +530,3 @@ class smartPeak_openSWATH_py():
                 )
             self.featureMap = features_mapped
             self.validation_metrics = validation_metrics
-
-    def clear_data(self):
-        """Remove all data"""        
-        self.featureMap = None
-        self.chromatogram_map = None
-        self.targeted = None
-        self.trafo = None
-        self.msExperiment = None
-        self.validation_metrics = None
-        self.swath = None
-        self.reference_data = None
-        self.meta_data = None

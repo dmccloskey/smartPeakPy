@@ -20,6 +20,10 @@ m = __main__()
 # from tests import runAllTests
 # runAllTests()
 
+from tests.test_smartPeak_AbsoluteQuantitation_py import TestAbsoluteQuantitation_py
+test = TestAbsoluteQuantitation_py()
+test.test_QuantifyComponents(debug = True)
+
 # from tests.test_smartPeak_openSWATH_py import TestSmartPeakOpenSWATH_py
 # test = TestSmartPeakOpenSWATH_py()
 # test.test_openSWATH_py(

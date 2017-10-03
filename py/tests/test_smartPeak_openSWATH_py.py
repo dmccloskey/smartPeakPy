@@ -55,7 +55,7 @@ class TestSmartPeakOpenSWATH_py():
             for sample,v in filename.items():
                 print("processing sample "+ sample)
                 try:
-                    mzML_I = '''%s/mzML/%s.mzML'''%(data_dir,sample)
+                    mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
                     traML_csv_i = '''%s/%s'''%(data_dir,v["traML_csv_i"])
                     trafo_csv_i = '''%s/%s'''%(data_dir,v["trafo_csv_i"])
                     featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
@@ -63,7 +63,7 @@ class TestSmartPeakOpenSWATH_py():
                     # load in the files
                     openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                     openSWATH_py.load_SWATHorDIA({})
-                    openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_I})
+                    openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i})
                     openSWATH_py.extract_metadata()
                     if debug:
                         assert(openSWATH_py.meta_data['filename'] == '/home/user/code/tests/data//mzML/150601_0_BloodProject01_PLT_QC_Broth-1.mzML')
