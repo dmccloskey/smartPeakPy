@@ -296,7 +296,7 @@ class MRMFeatureSelector():
                         #     *Tr_dict[component_name_2][i_2]['rt_score']
                         #record the objective
                         obj_constraints = []
-                        tr_delta_expected = Tr_expected_dict[component_name_1]['retention_time'] - Tr_expected_dict[component_name_1]['retention_time']
+                        tr_delta_expected = Tr_expected_dict[component_name_1]['retention_time'] - Tr_expected_dict[component_name_2]['retention_time']
                         tr_delta = row_1['retention_time'] - row_2['retention_time']  
                         obj_constraint_name = '%s_%s-%s_%s'%(component_name_1,i_1,component_name_2,i_2)
                         #linearized binary variable multiplication

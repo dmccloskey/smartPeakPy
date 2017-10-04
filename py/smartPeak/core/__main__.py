@@ -373,16 +373,16 @@ class __main__():
                     openSWATH_py.openSWATH_py(
                         params['MRMFeatureFinderScoring'])
                     # filter and select
-                    # openSWATH_py.filterAndSelect_py(
-                    #     filenames_I={},
-                    #     MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
-                    #     MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_qmip'],
-                    #     MRMFeatureSelector_schedule_params_I=params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
                     openSWATH_py.filterAndSelect_py(
                         filenames_I={},
                         MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
-                        MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_score'],
-                        MRMFeatureSelector_schedule_params_I={})
+                        MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_qmip'],
+                        MRMFeatureSelector_schedule_params_I=params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
+                    # openSWATH_py.filterAndSelect_py(
+                    #     filenames_I={},
+                    #     MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
+                    #     MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_score'],
+                    #     MRMFeatureSelector_schedule_params_I={})
                     # store
                     openSWATH_py.store_featureMap(
                         {'featureXML_o':featureXML_o,
