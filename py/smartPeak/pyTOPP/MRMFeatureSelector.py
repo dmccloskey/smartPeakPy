@@ -724,7 +724,10 @@ class MRMFeatureSelector():
         
         """
         score_1 = 1.0
-        for score_weight in score_weights:
-            weight_func = eval(score_weight['value']) #check for valid lambda string...
-            score_1 *= weight_func(tr_dict_row[score_weight['name']])
+        try:
+            for score_weight in score_weights:
+                weight_func = eval(score_weight['value']) #check for valid lambda string...
+                score_1 *= weight_func(tr_dict_row[score_weight['name']])
+        except Exception as e:
+            print(e)
         return score_1

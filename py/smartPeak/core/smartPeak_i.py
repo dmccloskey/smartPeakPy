@@ -37,21 +37,50 @@ class smartPeak_i(base_importData):
                     {'name':'-no-strict','value':''}
                 ]}
         """
+        # data_I = self.getData()
+        # data_O = {}
+        # function_current = ''
+        # function_params = {}
+        # function_param = {}
+        # for i, d in enumerate(data_I):
+        #     #skip non-used lines
+        #     if not d['used_'] or d['used_'] == "FALSE":
+        #         continue
+        #     #update function_current
+        #     if d['function'] != function_current:
+        #         function_current = d['function']
+        #         if function_params:  #append only if list is not empty
+        #             data_O.update(function_params)
+        #         function_params = {function_current:[]}
+        #     #make the function parameter line
+        #     function_param = {}
+        #     function_param['name'] = d['name']
+        #     function_param['value'] = d['value']
+        #     if 'tags' in d.keys():
+        #         function_param['tags'] = d['tags']
+        #     if 'description' in d.keys():
+        #         function_param['description'] = d['description']
+        #     if 'type' in d.keys():
+        #         function_param['type'] = d['type']
+        #     function_params[function_current].append(function_param)
+        #     #add in the last value
+        #     if i==len(data_I)-1:
+        #         data_O.update(function_params)
+        # self.setData(data_O)
+
+        
         data_I = self.getData()
         data_O = {}
         function_current = ''
         function_params = {}
-        function_param = {}
         for i, d in enumerate(data_I):
             #skip non-used lines
             if not d['used_'] or d['used_'] == "FALSE":
                 continue
             #update function_current
-            if d['function'] != function_current:
-                function_current = d['function']
-                if function_params:  #append only if list is not empty
-                    data_O.update(function_params)
-                function_params = {function_current:[]}
+            function_current = d['function']
+            if not function_current in data_O.keys():
+                data_O[function_current] = []
             #make the function parameter line
             function_param = {}
             function_param['name'] = d['name']
@@ -62,10 +91,7 @@ class smartPeak_i(base_importData):
                 function_param['description'] = d['description']
             if 'type' in d.keys():
                 function_param['type'] = d['type']
-            function_params[function_current].append(function_param)
-            #add in the last value
-            if i==len(data_I)-1:
-                data_O.update(function_params)
+            data_O[function_current].append(function_param)
         self.setData(data_O)
 
     def read_openMSParams(self, filename, delimiter):
