@@ -150,7 +150,7 @@ class smartPeak_AbsoluteQuantitation_py():
             unknowns (FeatureMap): FeatureMap to quantify
             
         """
-        self.unknowns = [unknowns] #tmp fix until new docker image is ready
+        self.unknowns = unknowns
 
     def getUnknowns(self):
         """Set unknown featureMaps
@@ -159,4 +159,4 @@ class smartPeak_AbsoluteQuantitation_py():
             FeatureMap: unknowns: FeatureMaps that was quantified
             
         """
-        return self.unknowns[0] #tmp fix until new docker image is ready
+        return self.unknowns

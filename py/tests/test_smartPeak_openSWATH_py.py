@@ -84,7 +84,7 @@ class TestSmartPeakOpenSWATH_py():
                     openSWATH_py.filterAndSelect_py(
                         {},
                         params['MRMFeatureFilter.filter_MRMFeatures'],
-                        params['MRMFeatureSelector.select_MRMFeatures_score'],
+                        params['MRMFeatureSelector.select_MRMFeatures_qmip'],
                         params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
                     if debug:
                         assert(openSWATH_py.featureMap[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 262623.5)

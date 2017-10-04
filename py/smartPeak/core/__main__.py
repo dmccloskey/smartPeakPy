@@ -185,7 +185,7 @@ class __main__():
                     openSWATH_py.filterAndSelect_py(
                         {},
                         params['MRMFeatureFilter.filter_MRMFeatures'],
-                        params['MRMFeatureSelector.select_MRMFeatures_score'],
+                        params['MRMFeatureSelector.select_MRMFeatures_qmip'],
                         params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
                     # store
                     openSWATH_py.store_featureMap(
@@ -300,7 +300,7 @@ class __main__():
                     openSWATH_py.filterAndSelect_py(
                         {},
                         params['MRMFeatureFilter.filter_MRMFeatures'],
-                        params['MRMFeatureSelector.select_MRMFeatures_score'],
+                        params['MRMFeatureSelector.select_MRMFeatures_qmip'],
                         params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
                     # store
                     openSWATH_py.store_featureMap(
@@ -376,7 +376,7 @@ class __main__():
                     openSWATH_py.filterAndSelect_py(
                         {},
                         params['MRMFeatureFilter.filter_MRMFeatures'],
-                        params['MRMFeatureSelector.select_MRMFeatures_score'],
+                        params['MRMFeatureSelector.select_MRMFeatures_qmip'],
                         params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
                     # store
                     openSWATH_py.store_featureMap(
@@ -385,7 +385,7 @@ class __main__():
 
                     ## Quantify peaks
                     # dynamically make the filenames
-                    quantitationMethods_csv_i = '''%s/quantitationMethods_csv_i.csv'''%(data_dir)
+                    quantitationMethods_csv_i = '''%s/quantitationMethods.csv'''%(data_dir)
                     featureXML_o = '''%s/quantitation/%s.featureXML'''%(data_dir,sample) 
                     feature_csv_o = '''%s/quantitation/%s.csv'''%(data_dir,sample)
                     # load the quantitation method
