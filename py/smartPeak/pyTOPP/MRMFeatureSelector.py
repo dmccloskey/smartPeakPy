@@ -210,7 +210,7 @@ class MRMFeatureSelector():
         variable_type = 'integer',
         optimal_threshold = 0.5,
         score_weights = [],
-        verbose_I=False
+        verbose_I=True
         ):
         """
         optimize the retention time using QMIP

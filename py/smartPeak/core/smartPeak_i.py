@@ -146,27 +146,19 @@ class smartPeak_i(base_importData):
                 ]
         """
         data_I = self.getData()
-        data_O = []
-        function_current = ''
-        function_params = {}
-        function_param = {}
+        data_O = {}
         for i, d in enumerate(data_I):
             #skip non-used lines
             if not d['used_'] or d['used_'] == "FALSE":
                 continue
             #update function_current
-            if d['function'] != function_current:
-                function_current = d['function']
-                if function_params:  #append only if list is not empty
-                    data_O.append(function_params)
-                function_params = {function_current:{}}
+            function_current = d['function']
+            if not function_current in data_O.keys():
+                data_O[function_current] = {}
             #make the function parameter line
             function_param = {}
             function_param[d['name']] = d['value']
-            function_params[function_current].update(function_param)
-            #add in the last value
-            if i==len(data_I)-1:
-                data_O.append(function_params)
+            data_O[function_current].update(function_param)
         self.setData(data_O)
 
     def read_pythonParams(self, filename, delimiter):
