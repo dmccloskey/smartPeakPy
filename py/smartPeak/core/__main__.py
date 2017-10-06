@@ -375,21 +375,22 @@ class __main__():
                 openSWATH_py.load_Trafo( #skip transformation of RT
                     {},#{'trafo_csv_i':trafo_csv_i},
                     params['MRMFeatureFinderScoring'])
-                # run the openSWATH workflow for metabolomics
-                openSWATH_py.openSWATH_py(
-                    params['MRMFeatureFinderScoring'])
-                # filter and select
-                openSWATH_py.filterAndSelect_py(
-                    filenames_I={},
-                    MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
-                    MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_qmip'],
-                    MRMFeatureSelector_schedule_params_I=params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
-                # store
-                openSWATH_py.store_featureMap(
-                    {'featureXML_o':featureXML_o,
-                    'feature_csv_o':feature_csv_o})
+                # # run the openSWATH workflow for metabolomics
+                # openSWATH_py.openSWATH_py(
+                #     params['MRMFeatureFinderScoring'])
+                # # filter and select
+                # openSWATH_py.filterAndSelect_py(
+                #     filenames_I={},
+                #     MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
+                #     MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_qmip'],
+                #     MRMFeatureSelector_schedule_params_I=params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
+                # # store
+                # openSWATH_py.store_featureMap(
+                #     {'featureXML_o':featureXML_o,
+                #     'feature_csv_o':feature_csv_o})
 
                 ## Quantify peaks
+                openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
                 # dynamically make the filenames
                 quantitationMethods_csv_i = '''%s/quantitationMethods.csv'''%(data_dir)
                 featureXML_o = '''%s/quantitation/%s.featureXML'''%(data_dir,sample) 
