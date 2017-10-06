@@ -176,17 +176,24 @@ class __main__():
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
                 openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_I})
+                openSWATH_py.extract_metaData()
                 openSWATH_py.load_Trafo(
                     {},#{'trafo_csv_i':trafo_csv_i},
                     params['MRMFeatureFinderScoring'])
                 # run the openSWATH workflow for metabolomics
                 openSWATH_py.openSWATH_py(
                     params['MRMFeatureFinderScoring'])
+                # Filter and select
                 openSWATH_py.filterAndSelect_py(
-                    {},
-                    params['MRMFeatureFilter.filter_MRMFeatures'],
-                    params['MRMFeatureSelector.select_MRMFeatures_qmip'],
-                    params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
+                    filenames_I={},
+                    MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
+                    MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_qmip'],
+                    MRMFeatureSelector_schedule_params_I=params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
+                # openSWATH_py.filterAndSelect_py(
+                #     filenames_I={},
+                #     MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
+                #     MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_score'],
+                #     MRMFeatureSelector_schedule_params_I={})
                 # store
                 openSWATH_py.store_featureMap(
                     {'featureXML_o':featureXML_o,
@@ -208,26 +215,26 @@ class __main__():
                     'error_message':e})
             # manual clear data for the next iteration
             openSWATH_py.clear_data()
-            # export the data at period intervals
-            cnt += 1
-            if cnt > 10:
-                if validation_metrics:
-                    smartpeak_o = smartPeak_o(validation_metrics)
-                    validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/validationMetrics_%s.csv'''%batch_cnt
-                    smartpeak_o.write_dict2csv(validationMetrics_csv_i)
-                if skipped_samples:
-                    smartpeak_o = smartPeak_o(skipped_samples)
-                    skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/skippedSamples_%s.csv'''%batch_cnt
-                    smartpeak_o.write_dict2csv(skippedSamples_csv_i)
-                cnt = 0
-                batch_cnt += 1
+            # # export the data at period intervals
+            # cnt += 1
+            # if cnt > 10:
+            #     if validation_metrics:
+            #         smartpeak_o = smartPeak_o(validation_metrics)
+            #         validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/validationMetrics_%s.csv'''%batch_cnt
+            #         smartpeak_o.write_dict2csv(validationMetrics_csv_i)
+            #     if skipped_samples:
+            #         smartpeak_o = smartPeak_o(skipped_samples)
+            #         skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/skippedSamples_%s.csv'''%batch_cnt
+            #         smartpeak_o.write_dict2csv(skippedSamples_csv_i)
+            #     cnt = 0
+            #     batch_cnt += 1
         if validation_metrics:
             smartpeak_o = smartPeak_o(validation_metrics)
-            validationMetrics_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/validationMetrics.csv'''
+            validationMetrics_csv_i = '''%s/validation/validationMetrics.csv'''%(data_dir)
             smartpeak_o.write_dict2csv(validationMetrics_csv_i)
         if skipped_samples:
             smartpeak_o = smartPeak_o(skipped_samples)
-            skippedSamples_csv_i = '''/home/user/openMS_MRMworkflow/Algo1Validation/skippedSamples.csv'''
+            skippedSamples_csv_i = '''%s/validation/skippedSamples.csv'''%(data_dir)
             smartpeak_o.write_dict2csv(skippedSamples_csv_i)
 
     def run_openSWATH_py(
@@ -290,6 +297,7 @@ class __main__():
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
                 openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_I})
+                openSWATH_py.extract_metaData()
                 openSWATH_py.load_Trafo( #skip transformation of RT
                     {},#{'trafo_csv_i':trafo_csv_i},
                     params['MRMFeatureFinderScoring'])
@@ -376,11 +384,6 @@ class __main__():
                     MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
                     MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_qmip'],
                     MRMFeatureSelector_schedule_params_I=params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
-                # openSWATH_py.filterAndSelect_py(
-                #     filenames_I={},
-                #     MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
-                #     MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_score'],
-                #     MRMFeatureSelector_schedule_params_I={})
                 # store
                 openSWATH_py.store_featureMap(
                     {'featureXML_o':featureXML_o,
