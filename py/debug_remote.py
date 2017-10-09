@@ -9,7 +9,6 @@ ptvsd.wait_for_attach()
 from smartPeak.core.__main__ import __main__
 m = __main__()
 
-# Test openSWATH_py
 # m.run_openSWATH_validation_py(
 #     filename_filenames='/home/user/openMS_MRMworkflow/BloodProject01_validation/filenames.csv',
 #     filename_params='/home/user/openMS_MRMworkflow/BloodProject01_validation/MRMFeatureFinderScoring_params.csv', #QMIP

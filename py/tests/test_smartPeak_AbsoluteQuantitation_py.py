@@ -42,49 +42,48 @@ class TestAbsoluteQuantitation_py():
         # smartpeak_i.read_openMSParams(filename_params,delimiter)
         # params = smartpeak_i.getData()
         # smartpeak_i.clear_data()
-        for filename in filenames:
-            for sample,v in filename.items():
-                print("processing sample "+ sample)
-                try:
-                    # dynamically make the filenames
-                    quantitationMethods_csv_i = '''%s/%s'''%(data_dir,v["quantitationMethods_csv_i"])
-                    mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
-                    traML_csv_i = '''%s/%s'''%(data_dir,v["traML_csv_i"])
-                    featureXML_o = '''%s/quantitation/%s.featureXML'''%(data_dir,sample) 
-                    feature_csv_o = '''%s/quantitation/%s.csv'''%(data_dir,sample)
-                    featureXML_i = '''%s/features/%s.featureXML'''%(data_dir,sample) 
-                    feature_csv_i = '''%s/features/%s.csv'''%(data_dir,sample)
-                    # load in the files
-                    openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
-                    openSWATH_py.load_SWATHorDIA({})
-                    openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i})
-                    openSWATH_py.extract_metaData()
-                    # load the quantitation method
-                    AbsoluteQuantitation_py.load_quantitationMethods(
-                        {'quantitationMethods_csv_i':quantitationMethods_csv_i})
-                    # quantify the components
-                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_i})
-                    AbsoluteQuantitation_py.setUnknowns(openSWATH_py.featureMap)
-                    AbsoluteQuantitation_py.quantifyComponents()
-                    if debug:
-                        assert(AbsoluteQuantitation_py.unknowns[0][0].getSubordinates()[1].getMetaValue("native_id") == b'23dpg.23dpg_1.Light')
-                        assert(AbsoluteQuantitation_py.unknowns[0][0].getSubordinates()[1].getMetaValue("calculated_concentration") == 30.18523195039847) #refactor to use pytest.approx
-                        assert(AbsoluteQuantitation_py.unknowns[0][0].getSubordinates()[1].getMetaValue("concentration_units") == b'uM')
-                        assert(AbsoluteQuantitation_py.unknowns[0][15].getSubordinates()[1].getMetaValue("native_id") == b'amp.amp_1.Light')
-                        assert(AbsoluteQuantitation_py.unknowns[0][15].getSubordinates()[1].getMetaValue("calculated_concentration") == 1.2076773974114277) #refactor to use pytest.approx
-                        assert(AbsoluteQuantitation_py.unknowns[0][15].getSubordinates()[1].getMetaValue("concentration_units") == b'uM')
-                    else: 
-                        # store
-                        openSWATH_py.featureMap = AbsoluteQuantitation_py.getUnknowns()
-                        openSWATH_py.store_featureMap(
-                            {'featureXML_o':featureXML_o,
-                            'feature_csv_o':feature_csv_o})
-                except Exception as e:
-                    print(e)
-                    skipped_samples.append({'sample_name':sample,
-                        'error_message':e})
-                # manual clear data for the next iteration
-                AbsoluteQuantitation_py.clear_data()
+        for sample,v in filenames.items():
+            print("processing sample "+ sample)
+            try:
+                # dynamically make the filenames
+                quantitationMethods_csv_i = '''%s/%s'''%(data_dir,v["quantitationMethods_csv_i"])
+                mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
+                traML_csv_i = '''%s/%s'''%(data_dir,v["traML_csv_i"])
+                featureXML_o = '''%s/quantitation/%s.featureXML'''%(data_dir,sample) 
+                feature_csv_o = '''%s/quantitation/%s.csv'''%(data_dir,sample)
+                featureXML_i = '''%s/features/%s.featureXML'''%(data_dir,sample) 
+                feature_csv_i = '''%s/features/%s.csv'''%(data_dir,sample)
+                # load in the files
+                openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
+                openSWATH_py.load_SWATHorDIA({})
+                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i})
+                openSWATH_py.extract_metaData()
+                # load the quantitation method
+                AbsoluteQuantitation_py.load_quantitationMethods(
+                    {'quantitationMethods_csv_i':quantitationMethods_csv_i})
+                # quantify the components
+                openSWATH_py.load_featureMap({'featureXML_i':featureXML_i})
+                AbsoluteQuantitation_py.setUnknowns(openSWATH_py.featureMap)
+                AbsoluteQuantitation_py.quantifyComponents()
+                if debug:
+                    assert(AbsoluteQuantitation_py.unknowns[0].getSubordinates()[1].getMetaValue("native_id") == b'23dpg.23dpg_1.Light')
+                    assert(AbsoluteQuantitation_py.unknowns[0].getSubordinates()[1].getMetaValue("calculated_concentration") == 0.4422842478400926) #refactor to use pytest.approx
+                    assert(AbsoluteQuantitation_py.unknowns[0].getSubordinates()[1].getMetaValue("concentration_units") == b'uM')
+                    assert(AbsoluteQuantitation_py.unknowns[15].getSubordinates()[1].getMetaValue("native_id") == b'amp.amp_1.Light')
+                    assert(AbsoluteQuantitation_py.unknowns[15].getSubordinates()[1].getMetaValue("calculated_concentration") == 5.516940577368133) #refactor to use pytest.approx
+                    assert(AbsoluteQuantitation_py.unknowns[15].getSubordinates()[1].getMetaValue("concentration_units") == b'uM')
+                else: 
+                    # store
+                    openSWATH_py.featureMap = AbsoluteQuantitation_py.getUnknowns()
+                    openSWATH_py.store_featureMap(
+                        {'featureXML_o':featureXML_o,
+                        'feature_csv_o':feature_csv_o})
+            except Exception as e:
+                print(e)
+                skipped_samples.append({'sample_name':sample,
+                    'error_message':e})
+            # manual clear data for the next iteration
+            AbsoluteQuantitation_py.clear_data()
         if not debug:
             if skipped_samples:
                 smartpeak_o = smartPeak_o(skipped_samples)

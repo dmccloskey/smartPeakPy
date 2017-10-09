@@ -365,8 +365,6 @@ class __main__():
                 mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
                 traML_csv_i = '''%s/traML.csv'''%(data_dir)
                 trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
-                featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
-                feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
@@ -378,13 +376,23 @@ class __main__():
                 # # run the openSWATH workflow for metabolomics
                 # openSWATH_py.openSWATH_py(
                 #     params['MRMFeatureFinderScoring'])
-                # # filter and select
+                # # store
+                # featureXML_o = '''%s/features_tmp/%s.featureXML'''%(data_dir,sample) 
+                # feature_csv_o = '''%s/features_tmp/%s.csv'''%(data_dir,sample)
+                # openSWATH_py.store_featureMap(
+                #     {'featureXML_o':featureXML_o,
+                #     'feature_csv_o':feature_csv_o})
+
+
+                ## Filter and select features
                 # openSWATH_py.filterAndSelect_py(
                 #     filenames_I={},
                 #     MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
                 #     MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_qmip'],
                 #     MRMFeatureSelector_schedule_params_I=params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
                 # # store
+                featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
+                feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
                 # openSWATH_py.store_featureMap(
                 #     {'featureXML_o':featureXML_o,
                 #     'feature_csv_o':feature_csv_o})
