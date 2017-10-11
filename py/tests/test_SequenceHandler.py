@@ -63,14 +63,69 @@ class TestSequenceHandler():
         self.load_data()    
         seqhandler = SequenceHandler()
 
-        feature, subordinate, meta_value = None, None, None
-        result = seqhandler.getMetaValue(feature, subordinate, meta_value)
-
+        feature, subordinate = None, None
+        result = seqhandler.getMetaValue(feature, subordinate, "RT")
+        assert(result == 10.0) #TODO
+        result = seqhandler.getMetaValue(feature, subordinate, "calculated_concentration")
         assert(result == 10.0) #TODO
 
     def test_makeDataMatrixFromMetaValue(self):  
-        self.load_data()    
         seqhandler = SequenceHandler()
 
+        # load the data
+        filename_filenames = data_dir + "/" + '/home/user/openMS_MRMworkflow/Unknowns/filenames.csv',
+        filename_params = data_dir + "/" + '/home/user/openMS_MRMworkflow/Unknowns/MRMFeatureFinderScoring_params.csv',
+        delimiter = ','
+        from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py
+        from smartPeak.core.smartPeak_AbsoluteQuantitation_py import smartPeak_AbsoluteQuantitation_py
+        AbsoluteQuantitation_py = smartPeak_AbsoluteQuantitation_py()
+        openSWATH_py = smartPeak_openSWATH_py()
+        smartpeak_i = smartPeak_i()
+        smartpeak_i.read_pythonParams(filename_filenames,delimiter)
+        filenames = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        smartpeak_i.read_openMSParams(filename_params,delimiter)
+        params = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        for sample,v in filenames.items():
+            print("processing sample "+ sample)
+            try:
+                ## pick peaks with OpenSWATH
+                # dynamically make the filenames
+                data_dir = v['data_dir']
+                mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
+                traML_csv_i = '''%s/traML.csv'''%(data_dir)
+                trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
+                # load in the files
+                openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
+                openSWATH_py.load_SWATHorDIA({})
+                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i})
+                openSWATH_py.extract_metaData()
+                openSWATH_py.meta_data['sample_type'] = 'Unknown'
+                openSWATH_py.load_Trafo( #skip transformation of RT
+                    {},#{'trafo_csv_i':trafo_csv_i},
+                    params['MRMFeatureFinderScoring'])
+                # dynamically make the filenames
+                featureXML_o = '''%s/quantitation/%s.featureXML'''%(data_dir,sample) 
+                feature_csv_o = '''%s/quantitation/%s.csv'''%(data_dir,sample)
+                openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+
+                # record features
+                seqhandler.addSampleToSequence(openSWATH_py.meta_data,openSWATH_py.featureMap)
+            except Exception as e:
+                print(e)
+                skipped_samples.append({'sample_name':sample,
+                    'error_message':e})
+            # manual clear data for the next iteration
+            openSWATH_py.clear_data()
+
+        # Test:
         columns, rows, data = seqhandler.makeDataMatrixFromMetaValue(
             meta_values = ["calculated_concentration"], sample_types = ["Unknown"])
+        
+        assert(len(columns) == 6)
+        assert(columns[0] == '170808_Jonathan_yeast_Sacc1_1x')
+        assert(rows[0] == ('accoa', 'accoa.accoa_1.Light'))
+        assert(rows[0,0] == 1.2483242974681299)
+        assert(data[len(rows)-1,len(columns)-1] == 1.57260671576702)
+        
