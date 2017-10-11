@@ -330,7 +330,10 @@ class __main__():
             self,
             filename_filenames,
             filename_params,
-            delimiter = ','
+            delimiter = ',',
+            pick_peaks = True,
+            select_peaks = True,
+            quantify_peaks = True
             ):
         """Run the AbsoluteQuantitation python pipeline
         
@@ -342,6 +345,9 @@ class __main__():
             make new method: run_openSWATH_validation_py
             
         """
+        from smartPeak.pyTOPP.SequenceHandler import SequenceHandler
+        seqhandler = SequenceHandler()
+
         skipped_samples = []
         output = []
 
@@ -370,59 +376,78 @@ class __main__():
                 openSWATH_py.load_SWATHorDIA({})
                 openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i})
                 openSWATH_py.extract_metaData()
+                openSWATH_py.meta_data['sample_type'] = 'Unknown'
                 openSWATH_py.load_Trafo( #skip transformation of RT
                     {},#{'trafo_csv_i':trafo_csv_i},
                     params['MRMFeatureFinderScoring'])
-                # # run the openSWATH workflow for metabolomics
-                # openSWATH_py.openSWATH_py(
-                #     params['MRMFeatureFinderScoring'])
-                # # store
-                # featureXML_o = '''%s/features_tmp/%s.featureXML'''%(data_dir,sample) 
-                # feature_csv_o = '''%s/features_tmp/%s.csv'''%(data_dir,sample)
-                # openSWATH_py.store_featureMap(
-                #     {'featureXML_o':featureXML_o,
-                #     'feature_csv_o':feature_csv_o})
-
+                    
+                featureXML_o = '''%s/features_tmp/%s.featureXML'''%(data_dir,sample) 
+                feature_csv_o = '''%s/features_tmp/%s.csv'''%(data_dir,sample)
+                if pick_peaks:
+                    # run the openSWATH workflow for metabolomics
+                    openSWATH_py.openSWATH_py(
+                        params['MRMFeatureFinderScoring'])
+                    # store
+                    openSWATH_py.store_featureMap(
+                        {'featureXML_o':featureXML_o,
+                        'feature_csv_o':feature_csv_o})
+                else:
+                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
 
                 ## Filter and select features
-                # openSWATH_py.filterAndSelect_py(
-                #     filenames_I={},
-                #     MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
-                #     MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_qmip'],
-                #     MRMFeatureSelector_schedule_params_I=params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
-                # # store
                 featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
                 feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
-                # openSWATH_py.store_featureMap(
-                #     {'featureXML_o':featureXML_o,
-                #     'feature_csv_o':feature_csv_o})
+                if select_peaks:
+                    openSWATH_py.filterAndSelect_py(
+                        filenames_I={},
+                        MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
+                        MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_qmip'],
+                        MRMFeatureSelector_schedule_params_I=params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
+                    # store
+                    openSWATH_py.store_featureMap(
+                        {'featureXML_o':featureXML_o,
+                        'feature_csv_o':feature_csv_o})
+                else:                    
+                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
 
                 ## Quantify peaks
-                openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
                 # dynamically make the filenames
                 quantitationMethods_csv_i = '''%s/quantitationMethods.csv'''%(data_dir)
                 featureXML_o = '''%s/quantitation/%s.featureXML'''%(data_dir,sample) 
                 feature_csv_o = '''%s/quantitation/%s.csv'''%(data_dir,sample)
-                # load the quantitation method
-                AbsoluteQuantitation_py.load_quantitationMethods(
-                    {'quantitationMethods_csv_i':quantitationMethods_csv_i})
-                # quantify the components
-                AbsoluteQuantitation_py.setUnknowns(openSWATH_py.featureMap)
-                AbsoluteQuantitation_py.quantifyComponents()
-                # store
-                openSWATH_py.featureMap = AbsoluteQuantitation_py.getUnknowns()
-                openSWATH_py.store_featureMap(
-                    {'featureXML_o':featureXML_o,
-                    'feature_csv_o':feature_csv_o})
+                if quantify_peaks:
+                    # load the quantitation method
+                    AbsoluteQuantitation_py.load_quantitationMethods(
+                        {'quantitationMethods_csv_i':quantitationMethods_csv_i})
+                    # quantify the components
+                    AbsoluteQuantitation_py.setUnknowns(openSWATH_py.featureMap)
+                    AbsoluteQuantitation_py.quantifyComponents()
+                    # store
+                    openSWATH_py.featureMap = AbsoluteQuantitation_py.getUnknowns()
+                    openSWATH_py.store_featureMap(
+                        {'featureXML_o':featureXML_o,
+                        'feature_csv_o':feature_csv_o})
+                else:
+                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
 
+                # record features
+                seqhandler.addSampleToSequence(openSWATH_py.meta_data,openSWATH_py.featureMap)
             except Exception as e:
                 print(e)
                 skipped_samples.append({'sample_name':sample,
                     'error_message':e})
             # manual clear data for the next iteration
             openSWATH_py.clear_data()
+        # export results
         if skipped_samples:
             smartpeak_o = smartPeak_o(skipped_samples)
             skippedSamples_csv_i = '''%s/mzML/skippedSamples.csv'''%(data_dir)
             smartpeak_o.write_dict2csv(skippedSamples_csv_i)
+        sequenceSummary_csv_i = '''%s/SequenceSummary.csv'''%(data_dir)
+        seqhandler.exportDataMatrixFromMetaValue(
+            filename = sequenceSummary_csv_i,
+            meta_values = ['calculated_concentration','RT'],
+            # meta_values = ['calculated_concentration'],
+            sample_types = ['Unknown']
+        )
         return output

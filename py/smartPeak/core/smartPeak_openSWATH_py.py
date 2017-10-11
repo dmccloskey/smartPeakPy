@@ -397,7 +397,7 @@ class smartPeak_openSWATH_py():
 
         self.meta_data = {
             "filename":filename,
-            "samplename":samplename,
+            "sample_name":samplename,
             "instrument":instrument,
             "software":software
         }
@@ -427,7 +427,7 @@ class smartPeak_openSWATH_py():
         featurescsv = OpenSwathFeatureXMLToTSV()  
         if not feature_csv_o is None:
             featurescsv.store(feature_csv_o, self.featureMap, self.targeted,
-                run_id = self.meta_data['samplename'],
+                run_id = self.meta_data['sample_name'],
                 filename = self.meta_data['filename']
                 )
 
