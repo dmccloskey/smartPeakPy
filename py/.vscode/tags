@@ -362,6 +362,7 @@ smartPeak	tests/test_smartPeak_openSWATH_py.py	/^from smartPeak.core.smartPeak i
 smartPeak.py	smartPeak/core/smartPeak.py	1;"	kind:file	line:1
 smartPeak_AbsoluteQuantitation_py	smartPeak/core/__main__.py	/^        from smartPeak.core.smartPeak_AbsoluteQuantitation_py import smartPeak_AbsoluteQuantitation_py$/;"	kind:namespace	line:355
 smartPeak_AbsoluteQuantitation_py	smartPeak/core/smartPeak_AbsoluteQuantitation_py.py	/^class smartPeak_AbsoluteQuantitation_py():$/;"	kind:class	line:10
+smartPeak_AbsoluteQuantitation_py	tests/test_SequenceHandler.py	/^        from smartPeak.core.smartPeak_AbsoluteQuantitation_py import smartPeak_AbsoluteQuantitation_py$/;"	kind:namespace	line:80
 smartPeak_AbsoluteQuantitation_py	tests/test_smartPeak_AbsoluteQuantitation_py.py	/^from smartPeak.core.smartPeak_AbsoluteQuantitation_py import smartPeak_AbsoluteQuantitation_py$/;"	kind:namespace	line:6
 smartPeak_AbsoluteQuantitation_py.py	smartPeak/core/smartPeak_AbsoluteQuantitation_py.py	1;"	kind:file	line:1
 smartPeak_MRMTransitionGroupPicker_py	smartPeak/core/__main__.py	/^        from .smartPeak_MRMTransitionGroupPicker_py import smartPeak_MRMTransitionGroupPicker_py$/;"	kind:namespace	line:52
@@ -405,6 +406,7 @@ smartPeak_openSWATH_py	smartPeak/core/__main__.py	/^        from .smartPeak_open
 smartPeak_openSWATH_py	smartPeak/core/__main__.py	/^        from .smartPeak_openSWATH_py import smartPeak_openSWATH_py$/;"	kind:namespace	line:86
 smartPeak_openSWATH_py	smartPeak/core/__main__.py	/^        from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py$/;"	kind:namespace	line:354
 smartPeak_openSWATH_py	smartPeak/core/smartPeak_openSWATH_py.py	/^class smartPeak_openSWATH_py():$/;"	kind:class	line:19
+smartPeak_openSWATH_py	tests/test_SequenceHandler.py	/^        from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py$/;"	kind:namespace	line:79
 smartPeak_openSWATH_py	tests/test_smartPeak_AbsoluteQuantitation_py.py	/^from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py$/;"	kind:namespace	line:5
 smartPeak_openSWATH_py	tests/test_smartPeak_openSWATH_cmd.py	/^from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py$/;"	kind:namespace	line:7
 smartPeak_openSWATH_py	tests/test_smartPeak_openSWATH_py.py	/^from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py$/;"	kind:namespace	line:8
@@ -437,6 +439,7 @@ test_OptimizeCalibrators	tests/test_smartPeak_AbsoluteQuantitation_py.py	/^    d
 test_QuantifyComponents	tests/test_smartPeak_AbsoluteQuantitation_py.py	/^    def test_QuantifyComponents(self,$/;"	kind:member	line:16
 test_ReferenceDataMethods.py	tests/test_ReferenceDataMethods.py	1;"	kind:file	line:1
 test_SequenceHandler.py	tests/test_SequenceHandler.py	1;"	kind:file	line:1
+test_addSampleToSequence	tests/test_SequenceHandler.py	/^    def test_addSampleToSequence(self):$/;"	kind:member	line:41
 test_algorithm	tests/test_MRMMapper.py	/^    def test_algorithm(self):$/;"	kind:member	line:32
 test_algorithm	tests/test_OpenSwathRTNormalizer.py	/^    def test_algorithm(self,$/;"	kind:member	line:67
 test_castString	tests/test_smartPeak.py	/^    def test_castString(self, verbose_I=False):$/;"	kind:member	line:131
@@ -445,10 +448,11 @@ test_convert_MQQMethod2Feature	tests/test_smartPeak.py	/^    def test_convert_MQ
 test_convert_byte2String	tests/test_smartPeak.py	/^    def test_convert_byte2String(self, verbose_I=False):$/;"	kind:member	line:38
 test_convert_string2Byte	tests/test_smartPeak.py	/^    def test_convert_string2Byte(self, verbose_I=False):$/;"	kind:member	line:45
 test_filter_MRMFeatures	tests/test_MRMFeatureFilter.py	/^    def test_filter_MRMFeatures(self):  $/;"	kind:member	line:41
-test_filter_MRMFeatures	tests/test_SequenceHandler.py	/^    def test_filter_MRMFeatures(self):  $/;"	kind:member	line:41
 test_getAndProcessReferenceDataCalibrators	tests/test_ReferenceDataMethods.py	/^    def test_getAndProcessReferenceDataCalibrators(self):$/;"	kind:member	line:32
 test_getAndProcessReferenceDataSamples	tests/test_ReferenceDataMethods.py	/^    def test_getAndProcessReferenceDataSamples(self):$/;"	kind:member	line:12
+test_getMetaValue	tests/test_SequenceHandler.py	/^    def test_getMetaValue(self):$/;"	kind:member	line:62
 test_get_header	tests/test_OpenSwathFeatureXMLToTSV.py	/^    def test_get_header(self,$/;"	kind:member	line:38
+test_makeDataMatrixFromMetaValue	tests/test_SequenceHandler.py	/^    def test_makeDataMatrixFromMetaValue(self):  $/;"	kind:member	line:72
 test_make_osCmd	tests/test_smartPeak.py	/^    def test_make_osCmd(self, verbose_I=False):$/;"	kind:member	line:15
 test_openSWATH_cmd	tests/test_smartPeak_openSWATH_cmd.py	/^    def test_openSWATH_cmd(self):$/;"	kind:member	line:50
 test_openSWATH_py	tests/test_smartPeak_openSWATH_py.py	/^    def test_openSWATH_py($/;"	kind:member	line:29

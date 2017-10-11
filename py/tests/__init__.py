@@ -75,3 +75,9 @@ def runAllTests():
     from tests.test_smartPeak_AbsoluteQuantitation_py import TestAbsoluteQuantitation_py
     test = TestAbsoluteQuantitation_py()
     test.test_QuantifyComponents(debug = True)
+
+    from tests.test_SequenceHandler import TestSequenceHandler
+    test = TestSequenceHandler()
+    test.test_addSampleToSequence()
+    test.test_getMetaValue()
+    test.test_makeDataMatrixFromMetaValue()
