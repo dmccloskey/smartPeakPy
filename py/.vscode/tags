@@ -126,7 +126,7 @@ __init__.py	smartPeak/data/__init__.py	1;"	kind:file	line:1
 __init__.py	smartPeak/drafts/__init__.py	1;"	kind:file	line:1
 __init__.py	smartPeak/pyTOPP/__init__.py	1;"	kind:file	line:1
 __init__.py	tests/__init__.py	1;"	kind:file	line:1
-__main__	debug_local.py	/^from smartPeak.__main__ import __main__$/;"	kind:namespace	line:1
+__main__	debug_local.py	/^from smartPeak.core.__main__ import __main__$/;"	kind:namespace	line:1
 __main__	debug_remote.py	/^from smartPeak.core.__main__ import __main__$/;"	kind:namespace	line:9
 __main__	smartPeak/core/__main__.py	/^class __main__():$/;"	kind:class	line:6
 __main__.py	smartPeak/core/__main__.py	1;"	kind:file	line:1
@@ -187,7 +187,7 @@ data_dir	tests/test_smartPeak_openSWATH_cmd.py	/^from . import data_dir$/;"	kind
 data_dir	tests/test_smartPeak_openSWATH_py.py	/^from . import data_dir$/;"	kind:namespace	line:17
 debug_local.py	debug_local.py	1;"	kind:file	line:1
 debug_remote.py	debug_remote.py	1;"	kind:file	line:1
-delimiter	debug_local.py	/^    delimiter=',',)$/;"	kind:variable	line:8
+delimiter	debug_local.py	/^    delimiter=',',$/;"	kind:variable	line:8
 delimiter	debug_remote.py	/^    delimiter=',',$/;"	kind:variable	line:22
 dirname	tests/__init__.py	/^from os.path import abspath, dirname, join$/;"	kind:namespace	line:13
 doMap	smartPeak/pyTOPP/MRMTransitionGroupPicker.py	/^    def doMap(self,exp, targeted):$/;"	kind:member	line:39
@@ -268,6 +268,7 @@ parse_openSWATH_cmd_params	smartPeak/core/smartPeak_openSWATH_cmd.py	/^    def p
 parse_pythonParams	smartPeak/core/smartPeak_i.py	/^    def parse_pythonParams(self):$/;"	kind:member	line:117
 pickExperiment	smartPeak/pyTOPP/MRMTransitionGroupPicker.py	/^    def pickExperiment(self, exp, targeted, picker, feature_finder,$/;"	kind:member	line:101
 pickTransitionGroups	smartPeak/pyTOPP/MRMTransitionGroupPicker.py	/^    def pickTransitionGroups(self, exp, targeted, picker):$/;"	kind:member	line:68
+pick_peaks	debug_local.py	/^    pick_peaks = True,$/;"	kind:variable	line:9
 pick_peaks	debug_remote.py	/^    pick_peaks = True,$/;"	kind:variable	line:23
 postgresql_orm	smartPeak/data/ReferenceDataMethods.py	/^        from SBaaS_base.postgresql_orm import postgresql_orm$/;"	kind:namespace	line:136
 postgresql_settings	smartPeak/data/ReferenceDataMethods.py	/^        from SBaaS_base.postgresql_settings import postgresql_settings$/;"	kind:namespace	line:135
@@ -310,6 +311,7 @@ pytest	tests/test_smartPeak_openSWATH_cmd.py	/^import pytest$/;"	kind:namespace	
 pytest	tests/test_smartPeak_openSWATH_py.py	/^import pytest$/;"	kind:namespace	line:23
 pytest_benchmark	tests/__init__.py	/^    import pytest_benchmark$/;"	kind:namespace	line:17
 quantifyComponents	smartPeak/core/smartPeak_AbsoluteQuantitation_py.py	/^    def quantifyComponents(self):$/;"	kind:member	line:61
+quantify_peaks	debug_local.py	/^    quantify_peaks = True$/;"	kind:variable	line:11
 quantify_peaks	debug_remote.py	/^    quantify_peaks = True$/;"	kind:variable	line:25
 read_openMSParams	smartPeak/core/smartPeak_i.py	/^    def read_openMSParams(self, filename, delimiter):$/;"	kind:member	line:97
 read_openSWATH_cmd_params	smartPeak/core/smartPeak_openSWATH_cmd.py	/^    def read_openSWATH_cmd_params(self,$/;"	kind:member	line:93
@@ -329,6 +331,7 @@ sbaas_base_query_select	smartPeak/data/ReferenceData.py	/^    from SBaaS_base.sb
 schedule_MRMFeatures_qmip	smartPeak/pyTOPP/MRMFeatureSelector.py	/^    def schedule_MRMFeatures_qmip($/;"	kind:member	line:400
 select_MRMFeatures_qmip	smartPeak/pyTOPP/MRMFeatureSelector.py	/^    def select_MRMFeatures_qmip($/;"	kind:member	line:18
 select_MRMFeatures_score	smartPeak/pyTOPP/MRMFeatureSelector.py	/^    def select_MRMFeatures_score($/;"	kind:member	line:463
+select_peaks	debug_local.py	/^    select_peaks = True,$/;"	kind:variable	line:10
 select_peaks	debug_remote.py	/^    select_peaks = True,$/;"	kind:variable	line:24
 setParameters	smartPeak/core/smartPeak.py	/^    def setParameters(self,parameters_I,Param_O):$/;"	kind:member	line:190
 setUnknowns	smartPeak/core/smartPeak_AbsoluteQuantitation_py.py	/^    def setUnknowns(self, unknowns):$/;"	kind:member	line:146

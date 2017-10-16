@@ -446,7 +446,7 @@ class __main__():
         sequenceSummary_csv_i = '''%s/SequenceSummary.csv'''%(data_dir)
         seqhandler.exportDataMatrixFromMetaValue(
             filename = sequenceSummary_csv_i,
-            meta_values = ['calculated_concentration','RT'],
+            meta_values = ['calculated_concentration','RT','peak_apex_int','noise_background_level','leftWidth','rightWidth'],
             # meta_values = ['calculated_concentration'],
             sample_types = ['Unknown']
         )
