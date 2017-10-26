@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import pytest
 from smartPeak.core.smartPeak import smartPeak
+from smartPeak.core.smartPeak_i import smartPeak_i
+from smartPeak.core.smartPeak_o import smartPeak_o
 #3rd part libraries
 try:
     import pyopenms
