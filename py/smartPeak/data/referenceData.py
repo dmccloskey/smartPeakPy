@@ -1,15 +1,10 @@
 # -*- coding: utf-8 -*-
-try:
-    from SBaaS_base.sbaas_base import sbaas_base
-    from SBaaS_base.sbaas_base_query_select import sbaas_base_query_select
-except ImportError as e:
-    print(e)
-
+from .DB_io import DB_io
 """
 
 """
 
-class ReferenceData(sbaas_base):
+class ReferenceData(DB_io):
     """
     Select reference data
     """
@@ -38,7 +33,7 @@ class ReferenceData(sbaas_base):
             list: reference_data: list of dictionaries
 
         """
-        data_O = []
+        data_O = []       
         #subquery 1: experiment
         subquery1 = '''SELECT "experiment"."id" AS experiment_id,
                 "experiment"."sample_name", 
@@ -196,8 +191,7 @@ class ReferenceData(sbaas_base):
         #final query
         query_cmd = '''%s; ''' %subquery2
         try:
-            query_select = sbaas_base_query_select(self.session,self.engine,self.settings)
-            data_O = [dict(d) for d in query_select.execute_select(query_cmd)]
+            data_O = [dict(d) for d in self.execute_select(query_cmd)]
         except Exception as e:
             print(e)
         return data_O
