@@ -25,8 +25,13 @@ m = __main__()
 #     quantify_peaks = False
 #     )
 
-from tests import runAllTests
-runAllTests()
+# from tests import runAllTests
+# runAllTests()
+
+from tests.test_ReferenceDataMethods import TestReferenceDataMethods
+test = TestReferenceDataMethods()
+test.test_getAndProcessReferenceDataSamples()
+test.test_getAndProcessReferenceDataCalibrators()
 
 ###TESTING:
 # # Test MRMTransitionGroupPicker_py
