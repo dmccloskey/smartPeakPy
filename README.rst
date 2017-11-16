@@ -34,7 +34,7 @@ Set up your fork:
 -----------------
 1. Fork the main repository_.
 
-.. repository_: https://github.com/dmccloskey/smartPeak
+.. _repository: https://github.com/dmccloskey/smartPeak
 
 2. Clone your fork.
 
@@ -88,7 +88,7 @@ Contributing:
 -------------
 Please follow the GitFlow_ project guidelines for contributing.
 
-.. GitFlow_:`http://nvie.com/posts/a-successful-git-branching-model/`
+.. _GitFlow: http://nvie.com/posts/a-successful-git-branching-model/
 
 In addition, please follow the following rules:
 
@@ -100,7 +100,7 @@ Documentation:
 --------------
 Please follow the Google Python Docstrings_ style guide.
 
-.. Docstrings_:`http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html`
+.. _Docstrings: http://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
 
 Docker integration
 ------------------
