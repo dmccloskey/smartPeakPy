@@ -20,26 +20,8 @@ smartPeak
 fast and intelligent processing of GC and LC MS data, and HPLC data
 
 
-* Free software: Apache Software License 2.0
+* Free software: MIT License
 * Documentation: https://smartPeak.readthedocs.io.
-
-
-ToDo
-====
-
-Before doing much else you should go through the following steps to fully enable
-all the testing goodies of this repository:
-
-* Create a `GitHub <https://github.com/>`_ account and import your local
-  repository.
-* Create an account at `Read the Docs <https://readthedocs.org>`_ import your
-  `GitHub repository`_ there and install the webhook on it.
-* Create a `Travis-CI <https://travis-ci.org/>`_ account and enable the
-  `GitHub repository`_.
-* Create an `AppVeyor <https://ci.appveyor.com/>`_ account and enable the
-  `GitHub repository`_.
-
-.. _`GitHub repository`: https://github.com/dmccloskey/smartPeak
 
 Features
 ========
@@ -53,4 +35,3 @@ This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypack
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
-.. _`dmccloskey/cookiecutter-decaf-python`: https://github.com/dmccloskey/cookiecutter-decaf-python
