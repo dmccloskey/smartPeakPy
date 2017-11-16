@@ -16,17 +16,17 @@ m = __main__()
 #     delimiter=','
 #     )
 
-m.run_AbsoluteQuantitation_py(
-    filename_filenames='/home/user/openMS_MRMworkflow/Unknowns/filenames.csv',
-    filename_params='/home/user/openMS_MRMworkflow/Unknowns/MRMFeatureFinderScoring_params.csv',
-    delimiter=',',
-    pick_peaks = False,
-    select_peaks = False,
-    quantify_peaks = False
-    )
+# m.run_AbsoluteQuantitation_py(
+#     filename_filenames='/home/user/openMS_MRMworkflow/Unknowns/filenames.csv',
+#     filename_params='/home/user/openMS_MRMworkflow/Unknowns/MRMFeatureFinderScoring_params.csv',
+#     delimiter=',',
+#     pick_peaks = False,
+#     select_peaks = False,
+#     quantify_peaks = False
+#     )
 
-# from tests import runAllTests
-# runAllTests()
+from tests import runAllTests
+runAllTests()
 
 ###TESTING:
 # # Test MRMTransitionGroupPicker_py

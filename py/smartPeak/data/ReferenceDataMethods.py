@@ -3,11 +3,7 @@ from smartPeak.core.smartPeak import smartPeak
 from smartPeak.core.smartPeak_i import smartPeak_i
 from smartPeak.core.smartPeak_o import smartPeak_o
 import time as time
-try:
-    from python_statistics.calculate_statisticsDescriptive import calculate_statisticsDescriptive
-except ImportError as e:
-    print(e)
-    calculate_statisticsDescriptive = None
+from .DescriptiveStatistics import DescriptiveStatistics
 
 class ReferenceDataMethods():
     """Methods for getting and processing reference validation data"""
@@ -95,7 +91,7 @@ class ReferenceDataMethods():
                 calibrators_rt_dict[key] = []
             calibrators_rt_dict[key].append(row['retention_time'])
         # calculate the descriptive statistics for each component
-        descStats = calculate_statisticsDescriptive()
+        descStats = DescriptiveStatistics()
         calibrators_rt_list = []
         for k,v in calibrators_rt_dict.items():
             tmp = {'component_name':k[0],'component_group_name':k[1],'experiment_id':k[2],'acquisition_method_id':k[3],'quantitation_method_id':k[4],

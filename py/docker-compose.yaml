@@ -5,19 +5,21 @@ services:
     image: dmccloskey/docker-pyopenms-vscode:AbsoluteQuantitation
     volumes:
       ## Input/Output file directory
-      - //C/Users/domccl/Dropbox (UCSD SBRG)/Project_FastPeak/openMS_MRMworkflow/:/home/user/openMS_MRMworkflow/
+      # - //C/Users/domccl/Dropbox (UCSD SBRG)/Project_FastPeak/openMS_MRMworkflow/:/home/user/openMS_MRMworkflow/
+      - //C/Users/dmccloskey/Dropbox (UCSD SBRG)/Project_FastPeak/openMS_MRMworkflow/:/home/user/openMS_MRMworkflow/
       # - /home/systemsbiochemistry1/Documents/openMS_MRMworkflow/:/home/user/openMS_MRMworkflow/
       ## MS data directory
       # - //C/Users/domccl/Dropbox (UCSD SBRG)/absciexQTRAP5500_dataProcessing/analyst/data/mzML_BloodProject01/Unknowns_mzML/:/home/user/mzML_validationData/
       # # - //C/Users/domccl/Dropbox (UCSD SBRG)/absciexQTRAP5500_dataProcessing/analyst/data/mzML_validationData/Unknowns/:/home/user/mzML_validationData/
       # - /home/systemsbiochemistry1/Documents/mzML_BloodProject01/Unknowns_mzML/:/home/user/mzML_validationData/
       ## EXE directory
-      - //C/Users//domccl/GitHub/smartPeak/py/:/home/user/code/
+      # - //C/Users//domccl/GitHub/smartPeak/py/:/home/user/code/
+      - //C/Users/dmccloskey/Documents/GitHub/smartPeak/py/:/home/user/code/
       # - /home/systemsbiochemistry1/Documents/GitHub/smartPeak/py/:/home/user/code/
     ports:
       - "3000:3000"
-    # command: python /home/user/code/debug_remote.py #testing
-    command: python /home/user/code/debug_local.py
+    command: python /home/user/code/debug_remote.py #testing
+    # command: python /home/user/code/debug_local.py
     # restart: always
     networks:
       - pyopenms_network
