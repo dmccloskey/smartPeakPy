@@ -97,7 +97,9 @@ class __main__():
                 print("processing sample "+ sample)
                 # load in the files
                 openSWATH_py.load_TraML(v)
-                openSWATH_py.load_MSExperiment(v)
+                openSWATH_py.load_MSExperiment(v,
+                    True,
+                    params['MRMMapping'])
                 openSWATH_py.load_Trafo(v,
                     params['MRMFeatureFinderScoring'])
                 openSWATH_py.load_SWATHorDIA({})
@@ -175,7 +177,9 @@ class __main__():
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
-                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_I})
+                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_I},
+                    True,
+                    params['MRMMapping'])
                 openSWATH_py.extract_metaData()
                 openSWATH_py.load_Trafo(
                     {},#{'trafo_csv_i':trafo_csv_i},
@@ -271,7 +275,9 @@ class __main__():
                 ## OPTION 1: filenames defined in .csv file
                 # # load in the files
                 # openSWATH_py.load_TraML(v)
-                # openSWATH_py.load_MSExperiment(v)
+                # openSWATH_py.load_MSExperiment(v,
+                #     map_chromatograms_I = True,
+                #     MRMMapping_params_I = params['MRMMapping'])
                 # openSWATH_py.load_Trafo(v,
                 #     params['MRMFeatureFinderScoring'])
                 # openSWATH_py.load_SWATHorDIA({})
@@ -296,7 +302,9 @@ class __main__():
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
-                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_I})
+                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_I},
+                    True,
+                    params['MRMMapping'])
                 openSWATH_py.extract_metaData()
                 openSWATH_py.load_Trafo( #skip transformation of RT
                     {},#{'trafo_csv_i':trafo_csv_i},
@@ -342,7 +350,8 @@ class __main__():
             verbose (bool): print command line statements to stdout
             
         TODO:
-            make new method: run_openSWATH_validation_py
+            add option for run_openSWATH_validation_py
+            remove run_openSWATH and run_openSWATH_validation
             
         """
         from smartPeak.pyTOPP.SequenceHandler import SequenceHandler
@@ -374,7 +383,9 @@ class __main__():
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
-                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i})
+                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i},
+                    map_chromatograms_I = True,
+                    MRMMapping_params_I = params['MRMMapping'])
                 openSWATH_py.extract_metaData()
                 openSWATH_py.meta_data['sample_type'] = 'Unknown'
                 openSWATH_py.load_Trafo( #skip transformation of RT

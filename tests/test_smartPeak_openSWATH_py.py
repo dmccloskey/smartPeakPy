@@ -62,7 +62,9 @@ class TestSmartPeakOpenSWATH_py():
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
-                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i})
+                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i}
+                    True,
+                    params['MRMMapping'])
                 openSWATH_py.extract_metaData()
                 if debug:
                     assert(openSWATH_py.meta_data['filename'] == '/home/user/code/tests/data//mzML/150601_0_BloodProject01_PLT_QC_Broth-1.mzML')
