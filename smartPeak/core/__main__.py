@@ -157,6 +157,7 @@ class __main__():
                 mzML_I = '''%s/mzML/%s.mzML'''%(data_dir,sample) 
                 traML_csv_i = '''%s/traML.csv'''%(data_dir)
                 trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
+                mrmfeatureqcs_csv_i = '''%s/%s'''%(data_dir,v["mrmfeatureqcs_csv_i"])
                 db_ini_i = '''%s/settings_metabolomics.ini'''%(data_dir)
                 featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
                 feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
@@ -189,12 +190,12 @@ class __main__():
                     params['MRMFeatureFinderScoring'])
                 # Filter and select
                 openSWATH_py.filterAndSelect_py(
-                    filenames_I={},
+                    filenames_I={'mrmfeatureqcs_csv_i':mrmfeatureqcs_csv_i},
                     MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
                     MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_qmip'],
                     MRMFeatureSelector_schedule_params_I=params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
                 # openSWATH_py.filterAndSelect_py(
-                #     filenames_I={},
+                #     filenames_I={'mrmfeatureqcs_csv_i':mrmfeatureqcs_csv_i},
                 #     MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
                 #     MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_score'],
                 #     MRMFeatureSelector_schedule_params_I={})
@@ -297,6 +298,7 @@ class __main__():
                 mzML_I = '''%s/data/%s.mzML'''%(data_dir,sample)
                 traML_csv_i = '''%s/traML.csv'''%(data_dir)
                 trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
+                mrmfeatureqcs_csv_i = '''%s/%s'''%(data_dir,v["mrmfeatureqcs_csv_i"])
                 featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
                 feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
                 # load in the files
@@ -313,7 +315,7 @@ class __main__():
                 openSWATH_py.openSWATH_py(
                     params['MRMFeatureFinderScoring'])
                 openSWATH_py.filterAndSelect_py(
-                    {},
+                    {'mrmfeatureqcs_csv_i':mrmfeatureqcs_csv_i},
                     params['MRMFeatureFilter.filter_MRMFeatures'],
                     params['MRMFeatureSelector.select_MRMFeatures_qmip'],
                     params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
@@ -380,6 +382,7 @@ class __main__():
                 mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
                 traML_csv_i = '''%s/traML.csv'''%(data_dir)
                 trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
+                mrmfeatureqcs_csv_i = '''%s/%s'''%(data_dir,v["mrmfeatureqcs_csv_i"])
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
@@ -410,7 +413,7 @@ class __main__():
                 feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
                 if select_peaks:
                     openSWATH_py.filterAndSelect_py(
-                        filenames_I={},
+                        filenames_I={'mrmfeatureqcs_csv_i':mrmfeatureqcs_csv_i},
                         MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
                         MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_qmip'],
                         MRMFeatureSelector_schedule_params_I=params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])

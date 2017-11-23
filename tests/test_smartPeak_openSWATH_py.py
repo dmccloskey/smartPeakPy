@@ -57,12 +57,13 @@ class TestSmartPeakOpenSWATH_py():
                 mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
                 traML_csv_i = '''%s/%s'''%(data_dir,v["traML_csv_i"])
                 trafo_csv_i = '''%s/%s'''%(data_dir,v["trafo_csv_i"])
+                mrmfeatureqcs_csv_i = '''%s/%s'''%(data_dir,v["mrmfeatureqcs_csv_i"])
                 featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
                 feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
-                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i}
+                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i},
                     True,
                     params['MRMMapping'])
                 openSWATH_py.extract_metaData()
@@ -83,7 +84,7 @@ class TestSmartPeakOpenSWATH_py():
                     assert(openSWATH_py.featureMap[50].getSubordinates()[0].getMetaValue("native_id") == b'6pgc.6pgc_1.Heavy')
                     assert(openSWATH_py.featureMap[50].getSubordinates()[0].getRT() == 13.66598913269043)
                 openSWATH_py.filterAndSelect_py(
-                    {},
+                    {'mrmfeatureqcs_csv_i':mrmfeatureqcs_csv_i},
                     params['MRMFeatureFilter.filter_MRMFeatures'],
                     params['MRMFeatureSelector.select_MRMFeatures_qmip'],
                     params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
