@@ -149,7 +149,8 @@ class smartPeak_openSWATH_py():
 
     def load_MSExperiment(self,
         filenames_I,
-        map_chromatograms_I = True
+        map_chromatograms_I = True,
+        MRMMapping_params_I = {}
         ):
         """Load MzML into an MSExperiment
 
@@ -172,16 +173,28 @@ class smartPeak_openSWATH_py():
         self.msExperiment = chromatograms
 
         # map transitions to the chromatograms
-        if map_chromatograms_I and not self.targeted is None:
-            mrmmapper = MRMMapper()
-            chromatogram_map = mrmmapper.algorithm(
-                chromatogram_map=chromatograms,
-                targeted=self.targeted, 
-                precursor_tolerance=0.0009, #hard-coded for now
-                product_tolerance=0.0009, #hard-coded for now
-                allow_unmapped=True,
-                allow_double_mappings=True
-            )
+        if map_chromatograms_I and not self.targeted is None:        
+            # set up MRMMapping and
+            # parse the MRMMapping params
+            mrmmapper = pyopenms.MRMMapping()
+            parameters = mrmmapper.getParameters()
+            parameters = smartpeak.updateParameters(
+                parameters,
+                MRMMapping_params_I,
+                )
+            mrmmapper.setParameters(parameters)  
+
+            # mrmmapper = MRMMapper()
+            # chromatogram_map = mrmmapper.algorithm(
+            #     chromatogram_map=chromatograms,
+            #     targeted=self.targeted, 
+            #     precursor_tolerance=0.0009, #hard-coded for now
+            #     product_tolerance=0.0009, #hard-coded for now
+            #     allow_unmapped=True,
+            #     allow_double_mappings=True
+            # )
+
+            mrmmapper.mapExperiment(chromatograms, self.targeted, chromatogram_map)
         self.chromatogram_map = chromatogram_map
 
     def load_SWATHorDIA(self,
