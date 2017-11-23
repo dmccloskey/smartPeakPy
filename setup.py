@@ -29,7 +29,7 @@ setup(
         'smartPeak',
     ],
     package_dir={'smartPeak':
-                 'py/smartPeak'},
+                 'smartPeak'},
     include_package_data=True,
     install_requires=requirements,
     license="Apache Software License 2.0",
