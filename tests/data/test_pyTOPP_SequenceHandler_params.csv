@@ -1,0 +1,5 @@
+function,name,type,value,default,restrictions,description,used_,comment_
+MRMMapping,precursor_tolerance,float,0.0009,0.1,0.1,Precursor tolerance when mapping (in Th),TRUE,
+MRMMapping,product_tolerance,float,0.0009,0.1,0.1,Product tolerance when mapping (in Th),TRUE,
+MRMMapping,map_multiple_assays,string,TRUE,FALSE,true; false,Allow to map multiple assays to chromatograms and duplicate these chromatograms in the output.,TRUE,
+MRMMapping,error_on_unmapped,string,FALSE,FALSE,true; false,"Treat remaining, unmapped chromatograms as an error",TRUE,

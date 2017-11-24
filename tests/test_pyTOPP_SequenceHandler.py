@@ -51,7 +51,7 @@ class TestSequenceHandler():
 
         # load the data
         filename_filenames = data_dir + '/YeastProject01_filenames.csv'
-        filename_params = data_dir + '/BloodProject01_MRMFeatureFinderScoring_params.csv'
+        filename_params = data_dir + '/test_pyTOPP_SequenceHandler_params.csv'
         delimiter = ','
 
         from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py

@@ -10,7 +10,10 @@ except ImportError as e:
 class TestReferenceDataMethods():
 
     def test_getAndProcessReferenceDataSamples(self):
-        """Test getAndProcess_referenceData_samples"""
+        """Test getAndProcess_referenceData_samples
+        
+        TODO: change settings_filename_I directory?
+        """
 
         refDataMethods = ReferenceDataMethods()
         # reference data for samples

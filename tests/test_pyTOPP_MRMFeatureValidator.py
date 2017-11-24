@@ -14,7 +14,7 @@ class TestMRMFeatureValidator():
     def load_data(self,
         featureXML_i = "features/150601_0_BloodProject01_PLT_QC_Broth-1.featureXML",
         referenceData_csv_i = "150601_0_BloodProject01_PLT_QC_Broth-1_referenceData.csv",
-        filename_params = "BloodProject01_MRMFeatureFinderScoring_params.csv"):
+        filename_params = "test_pyTOPP_MRMFeatureValidator_params.csv"):
         """load the test data"""                   
 
         # load the reference data

@@ -179,12 +179,14 @@ class smartPeak_openSWATH_py():
             # set up MRMMapping and
             # parse the MRMMapping params
             mrmmapper = pyopenms.MRMMapping()
+            smartpeak = smartPeak()
             parameters = mrmmapper.getParameters()
             parameters = smartpeak.updateParameters(
                 parameters,
                 MRMMapping_params_I,
                 )
             mrmmapper.setParameters(parameters)  
+            chromatogram_map = pyopenms.MSExperiment()
 
             # mrmmapper = MRMMapper()
             # chromatogram_map = mrmmapper.algorithm(
