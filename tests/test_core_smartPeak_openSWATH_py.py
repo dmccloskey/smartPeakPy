@@ -57,6 +57,7 @@ class TestSmartPeakOpenSWATH_py():
                 mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
                 traML_csv_i = '''%s/%s'''%(data_dir,v["traML_csv_i"])
                 trafo_csv_i = '''%s/%s'''%(data_dir,v["trafo_csv_i"])
+                #TODO: remove if/else once MRMFeatureFilter PR is accepted
                 if "mrmfeatureqcs_csv_i" in v:
                     mrmfeatureqcs_csv_i = '''%s/%s'''%(data_dir,v["mrmfeatureqcs_csv_i"])
                 else:
