@@ -57,7 +57,10 @@ class TestSmartPeakOpenSWATH_py():
                 mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
                 traML_csv_i = '''%s/%s'''%(data_dir,v["traML_csv_i"])
                 trafo_csv_i = '''%s/%s'''%(data_dir,v["trafo_csv_i"])
-                mrmfeatureqcs_csv_i = '''%s/%s'''%(data_dir,v["mrmfeatureqcs_csv_i"])
+                if "mrmfeatureqcs_csv_i" in v:
+                    mrmfeatureqcs_csv_i = '''%s/%s'''%(data_dir,v["mrmfeatureqcs_csv_i"])
+                else:
+                    mrmfeatureqcs_csv_i = {}
                 featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
                 feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
                 # load in the files
@@ -69,7 +72,7 @@ class TestSmartPeakOpenSWATH_py():
                 openSWATH_py.extract_metaData()
                 if debug:
                     assert(openSWATH_py.meta_data['filename'] == '/home/user/code/tests/data//mzML/150601_0_BloodProject01_PLT_QC_Broth-1.mzML')
-                    assert(openSWATH_py.meta_data['samplename'] == '150601_0_BloodProject01_PLT_QC_Broth-1')
+                    assert(openSWATH_py.meta_data['sample_name'] == '150601_0_BloodProject01_PLT_QC_Broth-1')
                 openSWATH_py.load_Trafo(
                     {},#{'trafo_csv_i':trafo_csv_i},
                     params['MRMFeatureFinderScoring'])
