@@ -49,8 +49,9 @@ matrix:
         - TOXENV=py36
 
 
-# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+# command to install dependencies, e.g. pip install -r requirements_dev.txt --use-mirrors
 install:
+  - pip install -r requirements_dev.txt
   - bash ci/travis/setup.sh
 
 # command to run tests

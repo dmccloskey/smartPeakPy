@@ -14,7 +14,7 @@ class TestMRMFeatureFilter():
     def load_data(self,
         featureXML_i = "features/150601_0_BloodProject01_PLT_QC_Broth-1_1.featureXML",
         traML_csv_i = "BloodProject01_SWATH.csv",
-        filename_params = "BloodProject01_MRMFeatureFinderScoring_params.csv"):
+        filename_params = "test_pyTOPP_MRMFeatureFilter_params.csv"):
         """load the test data"""                   
 
         # load targeted experiment

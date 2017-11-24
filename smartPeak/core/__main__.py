@@ -97,7 +97,9 @@ class __main__():
                 print("processing sample "+ sample)
                 # load in the files
                 openSWATH_py.load_TraML(v)
-                openSWATH_py.load_MSExperiment(v)
+                openSWATH_py.load_MSExperiment(v,
+                    True,
+                    params['MRMMapping'])
                 openSWATH_py.load_Trafo(v,
                     params['MRMFeatureFinderScoring'])
                 openSWATH_py.load_SWATHorDIA({})
@@ -155,6 +157,7 @@ class __main__():
                 mzML_I = '''%s/mzML/%s.mzML'''%(data_dir,sample) 
                 traML_csv_i = '''%s/traML.csv'''%(data_dir)
                 trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
+                mrmfeatureqcs_csv_i = '''%s/%s'''%(data_dir,v["mrmfeatureqcs_csv_i"])
                 db_ini_i = '''%s/settings_metabolomics.ini'''%(data_dir)
                 featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
                 feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
@@ -175,7 +178,9 @@ class __main__():
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
-                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_I})
+                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_I},
+                    True,
+                    params['MRMMapping'])
                 openSWATH_py.extract_metaData()
                 openSWATH_py.load_Trafo(
                     {},#{'trafo_csv_i':trafo_csv_i},
@@ -185,12 +190,12 @@ class __main__():
                     params['MRMFeatureFinderScoring'])
                 # Filter and select
                 openSWATH_py.filterAndSelect_py(
-                    filenames_I={},
+                    filenames_I={'mrmfeatureqcs_csv_i':mrmfeatureqcs_csv_i},
                     MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
                     MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_qmip'],
                     MRMFeatureSelector_schedule_params_I=params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
                 # openSWATH_py.filterAndSelect_py(
-                #     filenames_I={},
+                #     filenames_I={'mrmfeatureqcs_csv_i':mrmfeatureqcs_csv_i},
                 #     MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
                 #     MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_score'],
                 #     MRMFeatureSelector_schedule_params_I={})
@@ -271,7 +276,9 @@ class __main__():
                 ## OPTION 1: filenames defined in .csv file
                 # # load in the files
                 # openSWATH_py.load_TraML(v)
-                # openSWATH_py.load_MSExperiment(v)
+                # openSWATH_py.load_MSExperiment(v,
+                #     map_chromatograms_I = True,
+                #     MRMMapping_params_I = params['MRMMapping'])
                 # openSWATH_py.load_Trafo(v,
                 #     params['MRMFeatureFinderScoring'])
                 # openSWATH_py.load_SWATHorDIA({})
@@ -291,12 +298,15 @@ class __main__():
                 mzML_I = '''%s/data/%s.mzML'''%(data_dir,sample)
                 traML_csv_i = '''%s/traML.csv'''%(data_dir)
                 trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
+                mrmfeatureqcs_csv_i = '''%s/%s'''%(data_dir,v["mrmfeatureqcs_csv_i"])
                 featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
                 feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
-                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_I})
+                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_I},
+                    True,
+                    params['MRMMapping'])
                 openSWATH_py.extract_metaData()
                 openSWATH_py.load_Trafo( #skip transformation of RT
                     {},#{'trafo_csv_i':trafo_csv_i},
@@ -305,7 +315,7 @@ class __main__():
                 openSWATH_py.openSWATH_py(
                     params['MRMFeatureFinderScoring'])
                 openSWATH_py.filterAndSelect_py(
-                    {},
+                    {'mrmfeatureqcs_csv_i':mrmfeatureqcs_csv_i},
                     params['MRMFeatureFilter.filter_MRMFeatures'],
                     params['MRMFeatureSelector.select_MRMFeatures_qmip'],
                     params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
@@ -342,7 +352,8 @@ class __main__():
             verbose (bool): print command line statements to stdout
             
         TODO:
-            make new method: run_openSWATH_validation_py
+            add option for run_openSWATH_validation_py
+            remove run_openSWATH and run_openSWATH_validation
             
         """
         from smartPeak.pyTOPP.SequenceHandler import SequenceHandler
@@ -371,10 +382,13 @@ class __main__():
                 mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
                 traML_csv_i = '''%s/traML.csv'''%(data_dir)
                 trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
+                mrmfeatureqcs_csv_i = '''%s/%s'''%(data_dir,v["mrmfeatureqcs_csv_i"])
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
-                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i})
+                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i},
+                    map_chromatograms_I = True,
+                    MRMMapping_params_I = params['MRMMapping'])
                 openSWATH_py.extract_metaData()
                 openSWATH_py.meta_data['sample_type'] = 'Unknown'
                 openSWATH_py.load_Trafo( #skip transformation of RT
@@ -399,7 +413,7 @@ class __main__():
                 feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
                 if select_peaks:
                     openSWATH_py.filterAndSelect_py(
-                        filenames_I={},
+                        filenames_I={'mrmfeatureqcs_csv_i':mrmfeatureqcs_csv_i},
                         MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
                         MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_qmip'],
                         MRMFeatureSelector_schedule_params_I=params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])

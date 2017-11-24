@@ -36,50 +36,51 @@ data_dir = join(smartPeak_directory, "tests/data", "")
 #                           ' required for testing')
 
 def runAllTests():
-    from tests.test_MRMMapper import TestMRMMapper
+    from tests.test_pyTOPP_MRMMapper import TestMRMMapper
     test = TestMRMMapper()
     test.test_algorithm()
 
-    from tests.test_OpenSwathFeatureXMLToTSV import TestOpenSwathFeatureXMLToTSV
+    from tests.test_pyTOPP_OpenSwathFeatureXMLToTSV import TestOpenSwathFeatureXMLToTSV
     test = TestOpenSwathFeatureXMLToTSV()
     test.test_get_header()
     test.test_convert_FeatureXMLToTSV()
 
-    ##TODO: update to new pyopenms interface
+    ##TODO: update to new pyopenms interface (potential bug?)
     ## File "pyopenms/pyopenms_2.pyx", line 6748, in pyopenms.pyopenms_2.TransformationDescription.setDataPoints (pyopenms/pyopenms_2.cpp:143629)
     ## AssertionError: arg data wrong type
-    # from tests.test_OpenSwathRTNormalizer import TestOpenSwathRTNormalizer
+    # from tests.test_pyTOPP_OpenSwathRTNormalizer import TestOpenSwathRTNormalizer
     # test = TestOpenSwathRTNormalizer()
     # test.test_algorithm()
 
-    from tests.test_MRMFeatureFilter import TestMRMFeatureFilter
+    from tests.test_pyTOPP_MRMFeatureFilter import TestMRMFeatureFilter
     test = TestMRMFeatureFilter()
     test.test_filter_MRMFeatures()
 
-    from tests.test_MRMFeatureSelector import TestMRMFeatureSelector
+    from tests.test_pyTOPP_MRMFeatureSelector import TestMRMFeatureSelector
     test = TestMRMFeatureSelector()
-    # test.test_schedule_MRMFeatures_qmip()  ##TODO: algorithm update broke test
+    # test.test_schedule_MRMFeatures_qmip()  ##TODO: algorithm update broken test
     test.test_select_MRMFeatures_score()
 
-    from tests.test_ReferenceDataMethods import TestReferenceDataMethods
-    test = TestReferenceDataMethods()
-    test.test_getAndProcessReferenceDataSamples()
-    test.test_getAndProcessReferenceDataCalibrators()
+    ##NOTE: requires database settings file
+    # from tests.test_data_ReferenceDataMethods import TestReferenceDataMethods
+    # test = TestReferenceDataMethods()
+    # test.test_getAndProcessReferenceDataSamples()
+    # test.test_getAndProcessReferenceDataCalibrators()
 
-    from tests.test_MRMFeatureValidator import TestMRMFeatureValidator
+    from tests.test_pyTOPP_MRMFeatureValidator import TestMRMFeatureValidator
     test = TestMRMFeatureValidator()
     test.test_validate_MRMFeatures()
 
-    from tests.test_smartPeak_openSWATH_py import TestSmartPeakOpenSWATH_py
+    from tests.test_core_smartPeak_openSWATH_py import TestSmartPeakOpenSWATH_py
     test = TestSmartPeakOpenSWATH_py()
     test.test_openSWATH_py(debug = True)
     test.test_validate_openSWATH(debug = True)
 
-    from tests.test_smartPeak_AbsoluteQuantitation_py import TestAbsoluteQuantitation_py
+    from tests.test_core_smartPeak_AbsoluteQuantitation_py import TestAbsoluteQuantitation_py
     test = TestAbsoluteQuantitation_py()
     test.test_QuantifyComponents(debug = True)
 
-    from tests.test_SequenceHandler import TestSequenceHandler
+    from tests.test_pyTOPP_SequenceHandler import TestSequenceHandler
     test = TestSequenceHandler()
     test.test_addSampleToSequence()
     test.test_getMetaValue()

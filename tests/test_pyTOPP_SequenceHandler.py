@@ -51,7 +51,7 @@ class TestSequenceHandler():
 
         # load the data
         filename_filenames = data_dir + '/YeastProject01_filenames.csv'
-        filename_params = data_dir + '/BloodProject01_MRMFeatureFinderScoring_params.csv'
+        filename_params = data_dir + '/test_pyTOPP_SequenceHandler_params.csv'
         delimiter = ','
 
         from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py
@@ -75,7 +75,9 @@ class TestSequenceHandler():
                 traML_csv_i = '''%s/YeastProject01_traML.csv'''%(data_dir)
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
-                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i})
+                openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i},
+                    map_chromatograms_I = True,
+                    MRMMapping_params_I = params['MRMMapping'])
                 openSWATH_py.extract_metaData()
                 openSWATH_py.meta_data['sample_type'] = 'Unknown'
                 # dynamically make the filenames
