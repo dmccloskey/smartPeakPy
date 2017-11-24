@@ -15,7 +15,7 @@ class TestAbsoluteQuantitation_py():
     
     def test_QuantifyComponents(self,
         filename_filenames = "BloodProject01_SWATH_filenames.csv",
-        filename_params = None,
+        filename_params = "test_pyTOPP_SequenceHandler_params.csv",
         delimiter = ',',
         debug = True):
         """Test and Run the AbsoluteQuantitation python pipeline
@@ -29,6 +29,7 @@ class TestAbsoluteQuantitation_py():
             
         """
         filename_filenames = data_dir + "/" + filename_filenames
+        filename_params = data_dir + "/" + filename_params
 
         skipped_samples = []
         output = []
@@ -39,9 +40,9 @@ class TestAbsoluteQuantitation_py():
         smartpeak_i.read_pythonParams(filename_filenames,delimiter)
         filenames = smartpeak_i.getData()
         smartpeak_i.clear_data()
-        # smartpeak_i.read_openMSParams(filename_params,delimiter)
-        # params = smartpeak_i.getData()
-        # smartpeak_i.clear_data()
+        smartpeak_i.read_openMSParams(filename_params,delimiter)
+        params = smartpeak_i.getData()
+        smartpeak_i.clear_data()
         for sample,v in filenames.items():
             print("processing sample "+ sample)
             try:
