@@ -68,6 +68,8 @@ class TestMRMFeatureSelector():
             self.targeted,
             self.params["MRMFeatureFilter.filter_MRMFeatures"])   
         featureSelector = MRMFeatureSelector()  
+        ##TODO: pyopenms.FeatureXMLFile().store("tests/data/150601_0_BloodProject01_PLT_QC_Broth-1_2.featureXML".encode('utf-8'), output_filtered)
+        ##then use 150601_0_BloodProject01_PLT_QC_Broth-1_2.featureXML instead of 150601_0_BloodProject01_PLT_QC_Broth-1_1.featureXML
         output_selected = featureSelector.select_MRMFeatures_score(
             output_filtered,
             self.params["MRMFeatureSelector.select_MRMFeatures_score"])

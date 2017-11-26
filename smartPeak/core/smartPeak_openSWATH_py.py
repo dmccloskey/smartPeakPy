@@ -310,7 +310,7 @@ class smartPeak_openSWATH_py():
         if MRMFeatureFilter_filter_params_I:   
             # set up MRMFeatureFilter and parse the MRMFeatureFilter params
             featureFilter = pyopenms.MRMFeatureFilter()
-            parameters = featurefinder.getParameters()
+            parameters = featureFilter.getParameters()
             parameters = smartpeak.updateParameters(
                 parameters,
                 MRMFeatureFilter_filter_params_I,
@@ -319,7 +319,7 @@ class smartPeak_openSWATH_py():
 
             # read in the parameters for the MRMFeatureQC
             featureQC = pyopenms.MRMFeatureQC()
-            featureQCFile = MRMFeatureQCFile()
+            featureQCFile = pyopenms.MRMFeatureQCFile()
             featureQCFile.load(mrmfeatureqcs_csv_i.encode('utf-8'),featureQC)  
 
             output_filtered = copy.copy(self.featureMap)
