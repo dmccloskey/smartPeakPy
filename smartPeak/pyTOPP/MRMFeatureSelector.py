@@ -302,23 +302,29 @@ class MRMFeatureSelector():
                         #     name=obj_constraint_name+'-QP1',
                         #     lb=0
                         # ))
-                        model.add(Constraint(S.Zero,
-                            name=obj_constraint_name+'-QP1',
-                            lb=0))
-                        model.constraints[obj_constraint_name+'-QP1'].set_linear_coefficients({
-                            variables[variable_name_1]:1,var_qp:-1
-                        })
+                        try:
+                            model.add(Constraint(S.Zero,
+                                name=obj_constraint_name+'-QP1',
+                                lb=0))
+                            model.constraints[obj_constraint_name+'-QP1'].set_linear_coefficients({
+                                variables[variable_name_1]:1,var_qp:-1
+                            })
+                        except Exception as e:
+                            print(e)
                         # model.add(Constraint(
                         #     variables[variable_name_2]-var_qp,
                         #     name=obj_constraint_name+'-QP2',
                         #     lb=0
                         # ))
-                        model.add(Constraint(S.Zero,
-                            name=obj_constraint_name+'-QP2',
-                            lb=0))
-                        model.constraints[obj_constraint_name+'-QP2'].set_linear_coefficients({
-                            variables[variable_name_2]:1,var_qp:-1
-                        })
+                        try:
+                            model.add(Constraint(S.Zero,
+                                name=obj_constraint_name+'-QP2',
+                                lb=0))
+                            model.constraints[obj_constraint_name+'-QP2'].set_linear_coefficients({
+                                variables[variable_name_2]:1,var_qp:-1
+                            })
+                        except Exception as e:
+                            print(e)
                         # model.add(Constraint(
                         #     variables[variable_name_1]+variables[variable_name_2]-1-var_qp,
                         #     name=obj_constraint_name+'-QP3',
@@ -342,12 +348,15 @@ class MRMFeatureSelector():
                         #     name=obj_constraint_name+'-obj+',
                         #     ub=0
                         # ))
-                        model.add(Constraint(S.Zero,
-                            name=obj_constraint_name+'-obj+',
-                            ub=0))
-                        model.constraints[obj_constraint_name+'-obj+'].set_linear_coefficients({
-                            obj_variables[obj_variable_name]:-1,var_qp:locality_weight*score_1*score_2*(tr_delta-tr_delta_expected)
-                        })
+                        try:
+                            model.add(Constraint(S.Zero,
+                                name=obj_constraint_name+'-obj+',
+                                ub=0))
+                            model.constraints[obj_constraint_name+'-obj+'].set_linear_coefficients({
+                                obj_variables[obj_variable_name]:-1,var_qp:locality_weight*score_1*score_2*(tr_delta-tr_delta_expected)
+                            })
+                        except Exception as e:
+                            print(e)
                         # model.add(Constraint(
                         #     -var_qp*locality_weight*(tr_delta-tr_delta_expected)-obj_variables[obj_variable_name],
                         #     name=obj_constraint_name+'-obj-',
@@ -362,9 +371,12 @@ class MRMFeatureSelector():
                         n_constraints += 5 
                         n_variables += 2
             # model.add(Constraint(sum(constraints),name=constraint_name_1, lb=1, ub=1))  
-            model.add(Constraint(S.Zero,name=constraint_name_1, lb=1, ub=1))
-            model.constraints[constraint_name_1].set_linear_coefficients({d:1 for d in constraints})
-            n_constraints += 1    
+            try:
+                model.add(Constraint(S.Zero,name=constraint_name_1, lb=1, ub=1))
+                model.constraints[constraint_name_1].set_linear_coefficients({d:1 for d in constraints})
+                n_constraints += 1    
+            except Exception as e:
+                print(e)
         if verbose_I: print("Model variables:", n_variables)
         if verbose_I: print("Model constraints:", n_constraints)
         # #make the constraints

@@ -6,11 +6,11 @@ from smartPeak.core.smartPeak import smartPeak
 from smartPeak.core.smartPeak_i import smartPeak_i
 from smartPeak.core.smartPeak_o import smartPeak_o
 from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py
-from smartPeak.pyTOPP.MRMMapper import MRMMapper
+# from smartPeak.pyTOPP.MRMMapper import MRMMapper
 from smartPeak.pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor
 from smartPeak.pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
 from smartPeak.pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
-from smartPeak.pyTOPP.MRMFeatureFilter import MRMFeatureFilter
+# from smartPeak.pyTOPP.MRMFeatureFilter import MRMFeatureFilter
 from smartPeak.pyTOPP.MRMFeatureSelector import MRMFeatureSelector
 from smartPeak.pyTOPP.MRMFeatureValidator import MRMFeatureValidator
 from smartPeak.data.ReferenceDataMethods import ReferenceDataMethods
@@ -57,11 +57,7 @@ class TestSmartPeakOpenSWATH_py():
                 mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
                 traML_csv_i = '''%s/%s'''%(data_dir,v["traML_csv_i"])
                 trafo_csv_i = '''%s/%s'''%(data_dir,v["trafo_csv_i"])
-                #TODO: remove if/else once MRMFeatureFilter PR is accepted
-                if "mrmfeatureqcs_csv_i" in v:
-                    mrmfeatureqcs_csv_i = '''%s/%s'''%(data_dir,v["mrmfeatureqcs_csv_i"])
-                else:
-                    mrmfeatureqcs_csv_i = {}
+                mrmfeatureqcs_csv_i = '''%s/%s'''%(data_dir,v["mrmfeatureqcs_csv_i"])
                 featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
                 feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
                 # load in the files
@@ -84,9 +80,9 @@ class TestSmartPeakOpenSWATH_py():
                     assert(openSWATH_py.featureMap[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 262623.5)
                     assert(openSWATH_py.featureMap[0].getSubordinates()[0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
                     assert(openSWATH_py.featureMap[0].getSubordinates()[0].getRT() == 15.894456338119507) #refactor to use pytest.approx
-                    assert(openSWATH_py.featureMap[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 1913.0)
-                    assert(openSWATH_py.featureMap[50].getSubordinates()[0].getMetaValue("native_id") == b'6pgc.6pgc_1.Heavy')
-                    assert(openSWATH_py.featureMap[50].getSubordinates()[0].getRT() == 13.66598913269043)
+                    assert(openSWATH_py.featureMap[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 50.5)
+                    assert(openSWATH_py.featureMap[50].getSubordinates()[0].getMetaValue("native_id") == b'actp.actp_1.Heavy')
+                    assert(openSWATH_py.featureMap[50].getSubordinates()[0].getRT() == 12.430290568542478)
                 openSWATH_py.filterAndSelect_py(
                     {'mrmfeatureqcs_csv_i':mrmfeatureqcs_csv_i},
                     params['MRMFeatureFilter.filter_MRMFeatures'],
@@ -96,9 +92,9 @@ class TestSmartPeakOpenSWATH_py():
                     assert(openSWATH_py.featureMap[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 262623.5)
                     assert(openSWATH_py.featureMap[0].getSubordinates()[0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
                     assert(openSWATH_py.featureMap[0].getSubordinates()[0].getRT() == 15.894456338119507) #refactor to use pytest.approx
-                    assert(openSWATH_py.featureMap[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 13919.000000000002)
-                    assert(openSWATH_py.featureMap[50].getSubordinates()[0].getMetaValue("native_id") == b'glyclt.glyclt_1.Heavy')
-                    assert(openSWATH_py.featureMap[50].getSubordinates()[0].getRT() == 3.1483763776143396) #refactor to use pytest.approx
+                    assert(openSWATH_py.featureMap[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 1080.0)
+                    assert(openSWATH_py.featureMap[50].getSubordinates()[0].getMetaValue("native_id") == b'oxa.oxa_1.Heavy')
+                    assert(openSWATH_py.featureMap[50].getSubordinates()[0].getRT() == 13.4963475631714)
                 else:
                     # store
                     openSWATH_py.store_featureMap(

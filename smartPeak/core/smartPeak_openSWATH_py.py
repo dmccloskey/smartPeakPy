@@ -6,7 +6,7 @@ from .smartPeak_i import smartPeak_i
 from smartPeak.pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor
 from smartPeak.pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
 from smartPeak.pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
-from smartPeak.pyTOPP.MRMFeatureFilter import MRMFeatureFilter
+# from smartPeak.pyTOPP.MRMFeatureFilter import MRMFeatureFilter
 from smartPeak.pyTOPP.MRMFeatureSelector import MRMFeatureSelector
 from smartPeak.pyTOPP.MRMFeatureValidator import MRMFeatureValidator
 from smartPeak.data.ReferenceDataMethods import ReferenceDataMethods
@@ -307,33 +307,34 @@ class smartPeak_openSWATH_py():
             mrmfeatureqcs_csv_i = filenames_I['mrmfeatureqcs_csv_i']
 
         # filter features
-        if MRMFeatureFilter_filter_params_I:  
-            ##TODO: uncomment once MRMFeatureQC PR is finalized      
-            # # set up MRMFeatureFilter and parse the MRMFeatureFilter params
-            # featureFilter = pyopenms.MRMFeatureFilter()
-            # parameters = featurefinder.getParameters()
-            # parameters = smartpeak.updateParameters(
-            #     parameters,
-            #     MRMFeatureFilter_filter_params_I,
-            #     )
-            # featureFilter.setParameters(parameters) 
+        if MRMFeatureFilter_filter_params_I:   
+            # set up MRMFeatureFilter and parse the MRMFeatureFilter params
+            featureFilter = pyopenms.MRMFeatureFilter()
+            parameters = featureFilter.getParameters()
+            smartpeak = smartPeak()
+            parameters = smartpeak.updateParameters(
+                parameters,
+                MRMFeatureFilter_filter_params_I,
+                )
+            featureFilter.setParameters(parameters) 
 
-            # # read in the parameters for the MRMFeatureQC
-            # featureQC = pyopenms.MRMFeatureQC()
-            # featureQCFile = MRMFeatureQCFile()
-            # featureQCFile.load(mrmfeatureqcs_csv_i.encode('utf-8'),featureQC)  
+            # read in the parameters for the MRMFeatureQC
+            featureQC = pyopenms.MRMFeatureQC()
+            featureQCFile = pyopenms.MRMFeatureQCFile()
+            featureQCFile.load(mrmfeatureqcs_csv_i.encode('utf-8'),featureQC)  
 
-            # output_filtered = copy.copy(self.featureMap)
-            # featureFilter.filter_MRMFeatures(
-            #     output_filtered,
-            #     featureQC,
-            #     self.targeted)  
+            output_filtered = copy.copy(self.featureMap)
+            featureFilter.FilterFeatureMap(
+                output_filtered,
+                featureQC,
+                self.targeted)  
 
-            featureFilter = MRMFeatureFilter()
-            output_filtered = featureFilter.filter_MRMFeatures(
-                self.featureMap,
-                self.targeted,
-                MRMFeatureFilter_filter_params_I) 
+            ##Deprecated
+            # featureFilter = MRMFeatureFilter()
+            # output_filtered = featureFilter.filter_MRMFeatures(
+            #     self.featureMap,
+            #     self.targeted,
+            #     MRMFeatureFilter_filter_params_I) 
         else:
             output_filtered = self.featureMap
 

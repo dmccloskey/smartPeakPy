@@ -58,8 +58,8 @@ def runAllTests():
 
     from tests.test_pyTOPP_MRMFeatureSelector import TestMRMFeatureSelector
     test = TestMRMFeatureSelector()
-    # test.test_schedule_MRMFeatures_qmip()  ##TODO: algorithm update broken test
     test.test_select_MRMFeatures_score()
+    test.test_schedule_MRMFeatures_qmip()  ##TODO: algorithm update broken test
 
     ##NOTE: requires database settings file
     # from tests.test_data_ReferenceDataMethods import TestReferenceDataMethods

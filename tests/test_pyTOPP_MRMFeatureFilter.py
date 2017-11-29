@@ -48,6 +48,6 @@ class TestMRMFeatureFilter():
         assert(output_filtered[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 262623.5)
         assert(output_filtered[0].getSubordinates()[0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
         assert(output_filtered[0].getSubordinates()[0].getRT() == 15.8944563381195) #refactor to us pytest.approx
-        assert(output_filtered[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 1045662.0)
-        assert(output_filtered[50].getSubordinates()[0].getMetaValue("native_id") == b'asp-L.asp-L_1.Heavy')
-        assert(output_filtered[50].getSubordinates()[0].getRT() == 2.6657843421936) #refactor to us pytest.approx
+        assert(output_filtered[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 5627.5)
+        assert(output_filtered[50].getSubordinates()[0].getMetaValue("native_id") == b'amp.amp_1.Heavy')
+        assert(output_filtered[50].getSubordinates()[0].getRT() == 12.3341685109456) #refactor to us pytest.approx

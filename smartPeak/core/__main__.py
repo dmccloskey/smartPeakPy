@@ -382,11 +382,7 @@ class __main__():
                 mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
                 traML_csv_i = '''%s/traML.csv'''%(data_dir)
                 trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
-                #TODO: remove if/else once MRMFeatureFilter PR is accepted
-                if "mrmfeatureqcs_csv_i" in v:
-                    mrmfeatureqcs_csv_i = '''%s/%s'''%(data_dir,v["mrmfeatureqcs_csv_i"])
-                else:
-                    mrmfeatureqcs_csv_i = {}
+                mrmfeatureqcs_csv_i = '''%s/%s'''%(data_dir,v["mrmfeatureqcs_csv_i"])
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
@@ -432,6 +428,8 @@ class __main__():
                         'feature_csv_o':feature_csv_o})
                 else:                    
                     openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+
+                ##TODO: validate peaks
 
                 ## Quantify peaks
                 # dynamically make the filenames
