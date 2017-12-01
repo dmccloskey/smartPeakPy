@@ -179,7 +179,7 @@ class smartPeak_openSWATH_py():
             # exctract chromatograms
             chromatograms_copy = copy.copy(chromatograms)
             chromatogramExtractor = pyopenms.ChromatogramExtractor()
-            empty_swath=chromatogramExtractor.extractChromatograms(
+            chromatogramExtractor.extractChromatograms(
                 chromatograms_copy,
                 chromatograms, 
                 self.targeted,
