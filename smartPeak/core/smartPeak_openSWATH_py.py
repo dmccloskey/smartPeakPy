@@ -176,6 +176,10 @@ class smartPeak_openSWATH_py():
             fh.loadExperiment(mzML_feature_i.encode('utf-8'), chromatograms)
 
         if extract_chromatograms_I and not self.targeted is None:  
+            # convert parameters
+            smartpeak = smartPeak()
+            chromatogramExtractor_params = {d['name']:smartpeak.castString(d['value'],d['type']) for d in chromatogramExtractor_params_I}
+            # chromatogramExtractor_params = {d['name']:smartpeak.parseString(d['value']) for d in chromatogramExtractor_params_I}
             # exctract chromatograms
             chromatograms_copy = copy.copy(chromatograms)
             chromatogramExtractor = pyopenms.ChromatogramExtractor()
@@ -183,11 +187,11 @@ class smartPeak_openSWATH_py():
                 chromatograms_copy,
                 chromatograms, 
                 self.targeted,
-                chromatogramExtractor_params_I['extract_window'], #0.05,
-                chromatogramExtractor_params_I['ppm'], #False,
-                self.trafo,
-                chromatogramExtractor_params_I['rt_extraction_window'], #-1,
-                chromatogramExtractor_params_I['filter'], #"tophat"
+                chromatogramExtractor_params['extract_window'], #0.05,
+                chromatogramExtractor_params['ppm'], #False,
+                pyopenms.TransformationDescription(),
+                chromatogramExtractor_params['rt_extraction_window'], #-1,
+                chromatogramExtractor_params['filter'], #"tophat"
                 )
 
         self.msExperiment = chromatograms

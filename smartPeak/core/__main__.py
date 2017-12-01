@@ -389,7 +389,9 @@ class __main__():
                 openSWATH_py.load_SWATHorDIA({})
                 openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i},
                     map_chromatograms_I = True,
-                    MRMMapping_params_I = params['MRMMapping'])
+                    MRMMapping_params_I = params['MRMMapping'],
+                    extract_chromatograms_I = True,
+                    chromatogramExtractor_params_I = params['ChromatogramExtractor'])
                 openSWATH_py.extract_metaData()
                 openSWATH_py.meta_data['sample_type'] = 'Unknown'
                 openSWATH_py.load_Trafo( #skip transformation of RT
