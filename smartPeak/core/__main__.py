@@ -343,7 +343,9 @@ class __main__():
             delimiter = ',',
             pick_peaks = True,
             select_peaks = True,
-            quantify_peaks = True
+            validate_peaks = False,
+            quantify_peaks = True,
+            check_peaks = False,
             ):
         """Run the AbsoluteQuantitation python pipeline
         
@@ -352,7 +354,6 @@ class __main__():
             verbose (bool): print command line statements to stdout
             
         TODO:
-            add option for run_openSWATH_validation_py
             remove run_openSWATH and run_openSWATH_validation
             
         """
@@ -361,6 +362,7 @@ class __main__():
 
         skipped_samples = []
         output = []
+        validation_metrics = []
 
         from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py
         from smartPeak.core.smartPeak_AbsoluteQuantitation_py import smartPeak_AbsoluteQuantitation_py
@@ -382,7 +384,6 @@ class __main__():
                 mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
                 traML_csv_i = '''%s/traML.csv'''%(data_dir)
                 trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
-                mrmfeatureqcs_csv_i = '''%s/%s'''%(data_dir,v["mrmfeatureqcs_csv_i"])
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
@@ -409,11 +410,12 @@ class __main__():
                     openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
 
                 ## Filter and select features
+                mrmfeaturefilter_csv_i = '''%s/FeatureFilters.csv'''%(data_dir)
                 featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
                 feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
                 if select_peaks:
                     openSWATH_py.filterAndSelect_py(
-                        filenames_I={'mrmfeatureqcs_csv_i':mrmfeatureqcs_csv_i},
+                        filenames_I={'mrmfeatureqcs_csv_i':mrmfeaturefilter_csv_i},
                         MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures'],
                         # qmip algorithm
                         MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_qmip'],
@@ -429,7 +431,32 @@ class __main__():
                 else:                    
                     openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
 
-                ##TODO: validate peaks
+                ## Validate peaks
+                # dynamically make the filenames
+                featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample) 
+                feature_csv_o = '''%s/features/%s.csv'''%(data_dir,sample)
+                if validate_peaks:
+                    # load in the validation data (if no data is found, continue to the next sample)
+                    ReferenceDataMethods_params_I = []
+                    ReferenceDataMethods_params_I.extend(params['ReferenceDataMethods.getAndProcess_referenceData_samples'])
+                    sample_names_I = '''['%s']'''%(sample)
+                    ReferenceDataMethods_params_I.append({'description': '', 'name': 'sample_names_I', 'type': 'list', 'value': sample_names_I})
+                    openSWATH_py.load_validationData(
+                        {'db_ini_i':db_ini_i},
+                        ReferenceDataMethods_params_I
+                        )
+                    if not openSWATH_py.reference_data:
+                        skipped_samples.append({'sample_name':sample,
+                            'error_message':'no reference data found'})
+                        print('Reference data not found for sample ' + sample + '.')
+                        continue
+                    # validate the data
+                    openSWATH_py.validate_py(params['MRMFeatureValidator.validate_MRMFeatures'])
+                    openSWATH_py.store_featureMap(
+                        {'featureXML_o':featureXML_o,
+                        'feature_csv_o':feature_csv_o})
+                else:
+                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
 
                 ## Quantify peaks
                 # dynamically make the filenames
@@ -451,6 +478,25 @@ class __main__():
                 else:
                     openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
 
+                ## QC the peaks
+                mrmfeatureqcs_csv_i = '''%s/FeatureQCs.csv'''%(data_dir)
+                featureXML_o = '''%s/quantitation/%s.featureXML'''%(data_dir,sample) 
+                feature_csv_o = '''%s/quantitation/%s.csv'''%(data_dir,sample)
+                if check_peaks:
+                    openSWATH_py.filterAndSelect_py(
+                        filenames_I={'mrmfeatureqcs_csv_i':mrmfeatureqcs_csv_i},
+                        MRMFeatureFilter_filter_params_I=params['MRMFeatureFilter.filter_MRMFeatures.qc'],
+                        # no selection
+                        MRMFeatureSelector_select_params_I={},
+                        MRMFeatureSelector_schedule_params_I={}
+                    )
+                    # store
+                    openSWATH_py.store_featureMap(
+                        {'featureXML_o':featureXML_o,
+                        'feature_csv_o':feature_csv_o})
+                else:
+                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+
                 # record features
                 seqhandler.addSampleToSequence(openSWATH_py.meta_data,openSWATH_py.featureMap)
             except Exception as e:
@@ -464,6 +510,10 @@ class __main__():
             smartpeak_o = smartPeak_o(skipped_samples)
             skippedSamples_csv_i = '''%s/mzML/skippedSamples.csv'''%(data_dir)
             smartpeak_o.write_dict2csv(skippedSamples_csv_i)
+        if validation_metrics:
+            smartpeak_o = smartPeak_o(validation_metrics)
+            validationMetrics_csv_i = '''%s/validation/validationMetrics.csv'''%(data_dir)
+            smartpeak_o.write_dict2csv(validationMetrics_csv_i)
         sequenceSummary_csv_i = '''%s/SequenceSummary.csv'''%(data_dir)
         seqhandler.exportDataMatrixFromMetaValue(
             filename = sequenceSummary_csv_i,

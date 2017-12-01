@@ -286,7 +286,11 @@ class smartPeak_openSWATH_py():
         
         Args:
             filenames_I (list): list of filename strings
-            MRMFeatureFinderScoring_params_I (dict): dictionary of parameter
+            MRMFeatureFilter_filter_params_I (dict): dictionary of parameter
+                names, values, descriptions, and tags
+            MRMFeatureSelector_select_params_I (dict): dictionary of parameter
+                names, values, descriptions, and tags
+            MRMFeatureSelector_schedule_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
 
         Internals:
@@ -368,36 +372,6 @@ class smartPeak_openSWATH_py():
             output_selected = output_filtered
 
         self.featureMap = output_selected
-
-    def calculateQCs_py(self,
-    ):
-        """Run the openSWATH post processing quality control workflow for a single sample
-        
-        Args:
-            filenames_I (list): list of filename strings
-            features (FeatureMap): output from SWATH workflow or filtered and/or selected features
-            chromatograms_mapped (MSExperiment): output from SWATH workflow
-            targeted (TargetedExperiment): output from SWATH workflow
-            MRMFeatureFinderScoring_params_I (dict): dictionary of parameter
-                names, values, descriptions, and tags
-
-        Returns:
-            dict: quality_control: dictionary of QC metrics
-                
-        """
-        quality_control = {}
-        qcs = []
-        # calculate QCs
-        for qc in qcs:
-            pass
-
-        return quality_control
-
-        # combine all data 
-
-        # output to visualization and database
-
-        # calculate peak intensity and area
 
     def load_featureMap(self,
         filenames_I = {},
