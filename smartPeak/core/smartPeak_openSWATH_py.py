@@ -152,7 +152,9 @@ class smartPeak_openSWATH_py():
     def load_MSExperiment(self,
         filenames_I,
         map_chromatograms_I = True,
-        MRMMapping_params_I = {}
+        MRMMapping_params_I = {},
+        extract_chromatograms_I = False,
+        chromatogramExtractor_params_I = {},
         ):
         """Load MzML into an MSExperiment
 
@@ -172,6 +174,22 @@ class smartPeak_openSWATH_py():
         if not mzML_feature_i is None:
             fh = pyopenms.FileHandler()
             fh.loadExperiment(mzML_feature_i.encode('utf-8'), chromatograms)
+
+        if extract_chromatograms_I and not self.targeted is None:  
+            # exctract chromatograms
+            chromatograms_copy = copy.copy(chromatograms)
+            chromatogramExtractor = pyopenms.ChromatogramExtractor()
+            empty_swath=chromatogramExtractor.extractChromatograms(
+                chromatograms_copy,
+                chromatograms, 
+                self.targeted,
+                chromatogramExtractor_params_I['extract_window'], #0.05,
+                chromatogramExtractor_params_I['ppm'], #False,
+                self.trafo,
+                chromatogramExtractor_params_I['rt_extraction_window'], #-1,
+                chromatogramExtractor_params_I['filter'], #"tophat"
+                )
+
         self.msExperiment = chromatograms
 
         # map transitions to the chromatograms
