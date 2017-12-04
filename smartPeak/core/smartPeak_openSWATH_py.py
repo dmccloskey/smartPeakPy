@@ -154,7 +154,6 @@ class smartPeak_openSWATH_py():
         map_chromatograms_I = True,
         MRMMapping_params_I = {},
         extract_chromatograms_I = False,
-        extract_precursors_I = False,
         chromatogramExtractor_params_I = {},
         ):
         """Load MzML into an MSExperiment
@@ -184,7 +183,7 @@ class smartPeak_openSWATH_py():
             # exctract chromatograms
             chromatograms_copy = copy.copy(chromatograms)
             chromatograms.clear(True)
-            if extract_precursors_I:
+            if chromatogramExtractor_params['extract_precursors']:
                 tr = self.targeted.getTransitions()
                 for t in tr:
                     t.setProductMZ(t.getPrecursorMZ())
