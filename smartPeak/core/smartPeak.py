@@ -256,6 +256,10 @@ class smartPeak():
                 str_O = int(str_I)
             elif type_I == 'float':
                 str_O = float(str_I)
+            elif type_I == 'bool' and str_I == 'TRUE':
+                str_O = True
+            elif type_I == 'bool' and str_I == 'FALSE':
+                str_O = False
             elif type_I == 'string' and str_I == 'TRUE':
                 str_O = 'true'.encode('utf-8')
             elif type_I == 'string' and str_I == 'FALSE':

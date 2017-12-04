@@ -16,25 +16,26 @@ m = __main__()
 #     delimiter=','
 #     )
 
+# m.run_AbsoluteQuantitation_py(
+#     filename_filenames='/home/user/openMS_MRMworkflow/Unknowns/filenames.csv',
+#     filename_params='/home/user/openMS_MRMworkflow/Unknowns/MRMFeatureFinderScoring_params.csv',
+#     delimiter=',',
+#     pick_peaks = False,
+#     select_peaks = True,
+#     validate_peaks = False,
+#     quantify_peaks = True,
+#     check_peaks = True,
+#     )
+
 m.run_AbsoluteQuantitation_py(
-    filename_filenames='/home/user/openMS_MRMworkflow/Unknowns/filenames.csv',
-    filename_params='/home/user/openMS_MRMworkflow/Unknowns/MRMFeatureFinderScoring_params.csv',
+    filename_filenames='/home/user/openMS_MRMworkflow/GC-MS/filenames.csv',
+    filename_params='/home/user/openMS_MRMworkflow/GC-MS/MRMFeatureFinderScoring_params.csv',
     delimiter=',',
-    pick_peaks = False,
+    pick_peaks = True,
     select_peaks = True,
     validate_peaks = False,
-    quantify_peaks = True,
-    check_peaks = True,
+    quantify_peaks = False
     )
-
-# m.run_AbsoluteQuantitation_py(
-#     filename_filenames='/home/user/openMS_MRMworkflow/GC-MS/filenames.csv',
-#     filename_params='/home/user/openMS_MRMworkflow/GC-MS/MRMFeatureFinderScoring_params.csv',
-#     delimiter=',',
-#     pick_peaks = True,
-#     select_peaks = True,
-#     quantify_peaks = False
-#     )
 
 # from tests import runAllTests
 # runAllTests()

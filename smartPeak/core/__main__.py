@@ -389,7 +389,9 @@ class __main__():
                 openSWATH_py.load_SWATHorDIA({})
                 openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i},
                     map_chromatograms_I = True,
-                    MRMMapping_params_I = params['MRMMapping'])
+                    MRMMapping_params_I = params['MRMMapping'],
+                    extract_chromatograms_I = True,
+                    chromatogramExtractor_params_I = params['ChromatogramExtractor'])
                 openSWATH_py.extract_metaData()
                 openSWATH_py.meta_data['sample_type'] = 'Unknown'
                 openSWATH_py.load_Trafo( #skip transformation of RT
@@ -406,8 +408,11 @@ class __main__():
                     openSWATH_py.store_featureMap(
                         {'featureXML_o':featureXML_o,
                         'feature_csv_o':feature_csv_o})
-                else:
-                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                elif select_peaks or validate_peaks or quantify_peaks or check_peaks:
+                    try:
+                        openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                    except Exception as e:
+                        print(e)
 
                 ## Filter and select features
                 mrmfeaturefilter_csv_i = '''%s/FeatureFilters.csv'''%(data_dir)
@@ -428,8 +433,11 @@ class __main__():
                     openSWATH_py.store_featureMap(
                         {'featureXML_o':featureXML_o,
                         'feature_csv_o':feature_csv_o})
-                else:                    
-                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                elif validate_peaks or quantify_peaks or check_peaks:                   
+                    try:
+                        openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                    except Exception as e:
+                        print(e)
 
                 ## Validate peaks
                 # dynamically make the filenames
@@ -455,8 +463,11 @@ class __main__():
                     openSWATH_py.store_featureMap(
                         {'featureXML_o':featureXML_o,
                         'feature_csv_o':feature_csv_o})
-                else:
-                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                elif quantify_peaks or check_peaks:                   
+                    try:
+                        openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                    except Exception as e:
+                        print(e)
 
                 ## Quantify peaks
                 # dynamically make the filenames
@@ -475,8 +486,13 @@ class __main__():
                     openSWATH_py.store_featureMap(
                         {'featureXML_o':featureXML_o,
                         'feature_csv_o':feature_csv_o})
-                else:
-                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                elif check_peaks: 
+                    try:
+                        openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                    except Exception as e:
+                        # Peaks have not been quantified, try opening picked peaks
+                        featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample)
+                        openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
 
                 ## QC the peaks
                 mrmfeatureqcs_csv_i = '''%s/FeatureQCs.csv'''%(data_dir)
@@ -494,8 +510,6 @@ class __main__():
                     openSWATH_py.store_featureMap(
                         {'featureXML_o':featureXML_o,
                         'feature_csv_o':feature_csv_o})
-                else:
-                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
 
                 # record features
                 seqhandler.addSampleToSequence(openSWATH_py.meta_data,openSWATH_py.featureMap)

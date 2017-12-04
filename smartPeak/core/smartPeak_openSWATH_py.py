@@ -152,7 +152,9 @@ class smartPeak_openSWATH_py():
     def load_MSExperiment(self,
         filenames_I,
         map_chromatograms_I = True,
-        MRMMapping_params_I = {}
+        MRMMapping_params_I = {},
+        extract_chromatograms_I = False,
+        chromatogramExtractor_params_I = {},
         ):
         """Load MzML into an MSExperiment
 
@@ -172,6 +174,32 @@ class smartPeak_openSWATH_py():
         if not mzML_feature_i is None:
             fh = pyopenms.FileHandler()
             fh.loadExperiment(mzML_feature_i.encode('utf-8'), chromatograms)
+
+        if extract_chromatograms_I and not self.targeted is None:  
+            # convert parameters
+            smartpeak = smartPeak()
+            chromatogramExtractor_params = {d['name']:smartpeak.castString(d['value'],d['type']) for d in chromatogramExtractor_params_I}
+            # chromatogramExtractor_params = {d['name']:smartpeak.parseString(d['value']) for d in chromatogramExtractor_params_I}
+            # exctract chromatograms
+            chromatograms_copy = copy.copy(chromatograms)
+            chromatograms.clear(True)
+            if chromatogramExtractor_params['extract_precursors']:
+                tr = self.targeted.getTransitions()
+                for t in tr:
+                    t.setProductMZ(t.getPrecursorMZ())
+                self.targeted.setTransitions(tr)
+            chromatogramExtractor = pyopenms.ChromatogramExtractor()
+            chromatogramExtractor.extractChromatograms(
+                chromatograms_copy,
+                chromatograms, 
+                self.targeted,
+                chromatogramExtractor_params['extract_window'], #0.05,
+                chromatogramExtractor_params['ppm'], #False,
+                pyopenms.TransformationDescription(),
+                chromatogramExtractor_params['rt_extraction_window'], #-1,
+                chromatogramExtractor_params['filter'], #"tophat"
+                )
+
         self.msExperiment = chromatograms
 
         # map transitions to the chromatograms
@@ -397,19 +425,34 @@ class smartPeak_openSWATH_py():
     def extract_metaData(self):
         """Extracts metadata from the chromatogram
         """
+        # initialize output variables
+        filename = ''
+        samplename = ''
+        instrument = ''
+        software = ''
+
         # filename
-        filename = self.chromatogram_map.getLoadedFilePath().decode('utf-8').replace('file://','')
+        loaded_file_path = self.chromatogram_map.getLoadedFilePath()
+        if not loaded_file_path is None:
+            filename = loaded_file_path.decode('utf-8').replace('file://','')
         # filename = '''%s/%s''' %(
         #     chromatograms_mapped.getSourceFiles()[0].getPathToFile().decode('utf-8').replace('file://',''),
         #     chromatograms_mapped.getSourceFiles()[0].getNameOfFile().decode('utf-8'))
 
         # sample name
-        samplename_list = self.chromatogram_map.getMetaValue(b'mzml_id').decode('utf-8').split('-')
-        samplename = '-'.join(samplename_list[1:])   
+        mzml_id = self.chromatogram_map.getMetaValue(b'mzml_id')
+        if not mzml_id is None:
+            samplename_list = mzml_id.decode('utf-8').split('-')
+            samplename = '-'.join(samplename_list[1:])   
 
-        # instrument and software name
-        instrument = self.chromatogram_map.getInstrument().getName()
-        software = self.chromatogram_map.getInstrument().getSoftware().getName()
+        # instrument
+        instrument_name = self.chromatogram_map.getInstrument().getName()
+        if not instrument_name is None:
+            instrument = instrument_name.decode('utf-8')
+            # software
+            software_name = self.chromatogram_map.getInstrument().getSoftware().getName()
+            if not software_name is None:
+                software = software_name.decode('utf-8')
 
         self.meta_data = {
             "filename":filename,
