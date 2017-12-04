@@ -425,19 +425,34 @@ class smartPeak_openSWATH_py():
     def extract_metaData(self):
         """Extracts metadata from the chromatogram
         """
+        # initialize output variables
+        filename = ''
+        samplename = ''
+        instrument = ''
+        software = ''
+
         # filename
-        filename = self.chromatogram_map.getLoadedFilePath().decode('utf-8').replace('file://','')
+        loaded_file_path = self.chromatogram_map.getLoadedFilePath()
+        if not loaded_file_path is None:
+            filename = loaded_file_path.decode('utf-8').replace('file://','')
         # filename = '''%s/%s''' %(
         #     chromatograms_mapped.getSourceFiles()[0].getPathToFile().decode('utf-8').replace('file://',''),
         #     chromatograms_mapped.getSourceFiles()[0].getNameOfFile().decode('utf-8'))
 
         # sample name
-        samplename_list = self.chromatogram_map.getMetaValue(b'mzml_id').decode('utf-8').split('-')
-        samplename = '-'.join(samplename_list[1:])   
+        mzml_id = self.chromatogram_map.getMetaValue(b'mzml_id')
+        if not mzml_id is None:
+            samplename_list = mzml_id.decode('utf-8').split('-')
+            samplename = '-'.join(samplename_list[1:])   
 
-        # instrument and software name
-        instrument = self.chromatogram_map.getInstrument().getName()
-        software = self.chromatogram_map.getInstrument().getSoftware().getName()
+        # instrument
+        instrument_name = self.chromatogram_map.getInstrument().getName()
+        if not instrument_name is None:
+            instrument = instrument_name.decode('utf-8')
+            # software
+            software_name = self.chromatogram_map.getInstrument().getSoftware().getName()
+            if not software_name is None:
+                software = software_name.decode('utf-8')
 
         self.meta_data = {
             "filename":filename,
