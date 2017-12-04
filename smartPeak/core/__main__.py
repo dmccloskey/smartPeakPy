@@ -408,8 +408,11 @@ class __main__():
                     openSWATH_py.store_featureMap(
                         {'featureXML_o':featureXML_o,
                         'feature_csv_o':feature_csv_o})
-                else:
-                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                elif select_peaks or validate_peaks or quantify_peaks or check_peaks:
+                    try:
+                        openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                    except Exception as e:
+                        print(e)
 
                 ## Filter and select features
                 mrmfeaturefilter_csv_i = '''%s/FeatureFilters.csv'''%(data_dir)
@@ -430,8 +433,11 @@ class __main__():
                     openSWATH_py.store_featureMap(
                         {'featureXML_o':featureXML_o,
                         'feature_csv_o':feature_csv_o})
-                else:                    
-                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                elif validate_peaks or quantify_peaks or check_peaks:                   
+                    try:
+                        openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                    except Exception as e:
+                        print(e)
 
                 ## Validate peaks
                 # dynamically make the filenames
@@ -457,8 +463,11 @@ class __main__():
                     openSWATH_py.store_featureMap(
                         {'featureXML_o':featureXML_o,
                         'feature_csv_o':feature_csv_o})
-                else:
-                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                elif quantify_peaks or check_peaks:                   
+                    try:
+                        openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                    except Exception as e:
+                        print(e)
 
                 ## Quantify peaks
                 # dynamically make the filenames
@@ -477,8 +486,13 @@ class __main__():
                     openSWATH_py.store_featureMap(
                         {'featureXML_o':featureXML_o,
                         'feature_csv_o':feature_csv_o})
-                else:
-                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                elif check_peaks: 
+                    try:
+                        openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
+                    except Exception as e:
+                        # Peaks have not been quantified, try opening picked peaks
+                        featureXML_o = '''%s/features/%s.featureXML'''%(data_dir,sample)
+                        openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
 
                 ## QC the peaks
                 mrmfeatureqcs_csv_i = '''%s/FeatureQCs.csv'''%(data_dir)
@@ -496,8 +510,6 @@ class __main__():
                     openSWATH_py.store_featureMap(
                         {'featureXML_o':featureXML_o,
                         'feature_csv_o':feature_csv_o})
-                else:
-                    openSWATH_py.load_featureMap({'featureXML_i':featureXML_o})
 
                 # record features
                 seqhandler.addSampleToSequence(openSWATH_py.meta_data,openSWATH_py.featureMap)

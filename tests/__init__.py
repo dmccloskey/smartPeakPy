@@ -36,10 +36,6 @@ data_dir = join(smartPeak_directory, "tests/data", "")
 #                           ' required for testing')
 
 def runAllTests():
-    from tests.test_pyTOPP_MRMMapper import TestMRMMapper
-    test = TestMRMMapper()
-    test.test_algorithm()
-
     from tests.test_pyTOPP_OpenSwathFeatureXMLToTSV import TestOpenSwathFeatureXMLToTSV
     test = TestOpenSwathFeatureXMLToTSV()
     test.test_get_header()
@@ -51,10 +47,6 @@ def runAllTests():
     # from tests.test_pyTOPP_OpenSwathRTNormalizer import TestOpenSwathRTNormalizer
     # test = TestOpenSwathRTNormalizer()
     # test.test_algorithm()
-
-    from tests.test_pyTOPP_MRMFeatureFilter import TestMRMFeatureFilter
-    test = TestMRMFeatureFilter()
-    test.test_filter_MRMFeatures()
 
     from tests.test_pyTOPP_MRMFeatureSelector import TestMRMFeatureSelector
     test = TestMRMFeatureSelector()
@@ -85,3 +77,14 @@ def runAllTests():
     test.test_addSampleToSequence()
     test.test_getMetaValue()
     test.test_makeDataMatrixFromMetaValue()
+
+def runDeprecatedTests():
+    #DEPRECATED
+    from tests.test_pyTOPP_MRMMapper import TestMRMMapper
+    test = TestMRMMapper()
+    test.test_algorithm()
+
+    #DEPRECATED
+    from tests.test_pyTOPP_MRMFeatureFilter import TestMRMFeatureFilter
+    test = TestMRMFeatureFilter()
+    test.test_filter_MRMFeatures()
