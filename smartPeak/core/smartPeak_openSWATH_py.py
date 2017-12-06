@@ -174,7 +174,7 @@ class smartPeak_openSWATH_py():
             fh = pyopenms.FileHandler()
             fh.loadExperiment(mzML_feature_i.encode('utf-8'), chromatograms)
 
-        if extract_chromatograms_I and not extract_chromatograms_I is None and not self.targeted is None:  
+        if chromatogramExtractor_params_I and not chromatogramExtractor_params_I is None and not self.targeted is None:  
             # convert parameters
             smartpeak = smartPeak()
             chromatogramExtractor_params = {d['name']:smartpeak.castString(d['value'],d['type']) for d in chromatogramExtractor_params_I}

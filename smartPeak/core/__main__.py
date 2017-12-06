@@ -395,6 +395,30 @@ class __main__():
                 validate_peaks = workflow_parameters["validate_peaks"]
             if "check_peaks" in workflow_parameters:
                 check_peaks = workflow_parameters["check_peaks"]
+            if "quantify_peaks" in workflow_parameters:
+                quantify_peaks = workflow_parameters["quantify_peaks"]
+
+        # check for workflow parameters integrity
+        if not "MRMMapping" in params:
+            params["MRMMapping"] = []
+        if not "ChromatogramExtractor" in params:
+            params["ChromatogramExtractor"] = []
+        if not "MRMFeatureFinderScoring" in params:
+            params["MRMFeatureFinderScoring"] = []
+        if not "MRMFeatureFilter.filter_MRMFeatures" in params:
+            params["MRMFeatureFilter.filter_MRMFeatures"] = []
+        if not "MRMFeatureSelector.select_MRMFeatures_qmip" in params:
+            params["MRMFeatureSelector.select_MRMFeatures_qmip"] = []
+        if not "MRMFeatureSelector.schedule_MRMFeatures_qmip" in params:
+            params["MRMFeatureSelector.schedule_MRMFeatures_qmip"] = []
+        if not "MRMFeatureSelector.select_MRMFeatures_score" in params:
+            params["MRMFeatureSelector.select_MRMFeatures_score"] = []
+        if not "ReferenceDataMethods.getAndProcess_referenceData_samples" in params:
+            params["ReferenceDataMethods.getAndProcess_referenceData_samples"] = []
+        if not "MRMFeatureValidator.validate_MRMFeatures" in params:
+            params["MRMFeatureValidator.validate_MRMFeatures"] = []
+        if not "MRMFeatureFilter.filter_MRMFeatures.qc" in params:
+            params["MRMFeatureFilter.filter_MRMFeatures.qc"] = []
 
         for sample,v in filenames.items():
             print("processing sample "+ sample)
@@ -405,7 +429,7 @@ class __main__():
                 mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
                 traML_csv_i = '''%s/traML.csv'''%(data_dir)
                 trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
-                
+
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})

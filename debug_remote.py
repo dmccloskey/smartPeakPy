@@ -27,15 +27,19 @@ m = __main__()
 #     check_peaks = True,
 #     )
 
+# GCMS_SRM
 m.run_AbsoluteQuantitation_py(
-    filename_filenames='/home/user/openMS_MRMworkflow/GC-MS/filenames.csv',
-    filename_params='/home/user/openMS_MRMworkflow/GC-MS/MRMFeatureFinderScoring_params.csv',
+    filename_filenames='/home/user/openMS_MRMworkflow/GCMS_SRM/filenames.csv',
+    filename_params='/home/user/openMS_MRMworkflow/GCMS_SRM/MRMFeatureFinderScoring_params.csv',
     delimiter=',',
-    pick_peaks = True,
-    select_peaks = True,
-    validate_peaks = False,
-    quantify_peaks = False
     )
+
+# # GCMS_fullScan
+# m.run_AbsoluteQuantitation_py(
+#     filename_filenames='/home/user/openMS_MRMworkflow/GCMS_fullScan/filenames.csv',
+#     filename_params='/home/user/openMS_MRMworkflow/GCMS_fullScan/MRMFeatureFinderScoring_params.csv',
+#     delimiter=',',
+#     )
 
 # from tests import runAllTests
 # runAllTests()
