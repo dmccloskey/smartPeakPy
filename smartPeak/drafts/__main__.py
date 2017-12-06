@@ -5,7 +5,68 @@ from .smartPeak_o import smartPeak_o
 
 class __main__():
 
-    def main(
+    def run_PeakPickerMRM_py(
+            self,
+            filename_filenames,
+            filename_params,
+            delimiter = ','
+            ):
+        """Run the PeakPickerMRM python pipeline
+        
+        Args:
+            filename (str): name of the workflow parameter filename
+            verbose (bool): print command line statements to stdout
+            
+        Examples:
+            
+        """
+        from .smartPeak_PeakPickerMRM_py import smartPeak_PeakPickerMRM_py
+        PeakPickerMRM_py = smartPeak_PeakPickerMRM_py()
+        smartpeak_i = smartPeak_i()
+        smartpeak_i.read_pythonParams(filename_filenames,delimiter)
+        filenames = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        smartpeak_i.read_openMSParams(filename_params,delimiter)
+        params = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        for filename in filenames:
+            for sample,v in filename.items():
+                print("processing sample "+ sample)
+                PeakPickerMRM_py.PeakPickerMRM_py(v,params['PeakPickerMRM'])
+
+    def run_MRMTransitionGroupPicker_py(
+            self,
+            filename_filenames,
+            filename_params,
+            delimiter = ','
+            ):
+        """Run the MRMTransitionGroupPicker python pipeline
+        
+        Args:
+            filename (str): name of the workflow parameter filename
+            verbose (bool): print command line statements to stdout
+            
+        Examples:
+            
+        """
+        from .smartPeak_MRMTransitionGroupPicker_py import smartPeak_MRMTransitionGroupPicker_py
+        MRMTransitionGroupPicker_py = smartPeak_MRMTransitionGroupPicker_py()
+        smartpeak_i = smartPeak_i()
+        smartpeak_i.read_pythonParams(filename_filenames,delimiter)
+        filenames = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        smartpeak_i.read_openMSParams(filename_params,delimiter)
+        params = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+        for filename in filenames:
+            for sample,v in filename.items():
+                print("processing sample "+ sample)
+                MRMTransitionGroupPicker_py.MRMTransitionGroupPicker_py(
+                    v,params['MRMTransitionGroupPicker'],
+                    params['MRMFeatureFinderScoring']
+                    )
+                    
+    def run_AbsoluteQuantitation_py(
             self,
             filename_filenames,
             filename_params,
@@ -23,6 +84,9 @@ class __main__():
         Args:
             filename (str): name of the workflow parameter filename
             verbose (bool): print command line statements to stdout
+            
+        TODO:
+            remove run_openSWATH and run_openSWATH_validation
             
         """     
         # additional resources
@@ -65,19 +129,26 @@ class __main__():
                 quantify_peaks = workflow_parameters["quantify_peaks"]
 
         # check for workflow parameters integrity
-        required_parameters = ["MRMMapping",
-            "ChromatogramExtractor","MRMFeatureFinderScoring",
-            "MRMFeatureFilter.filter_MRMFeatures",
-            "MRMFeatureSelector.select_MRMFeatures_qmip",
-            "MRMFeatureSelector.schedule_MRMFeatures_qmip",
-            "MRMFeatureSelector.select_MRMFeatures_score",
-            "ReferenceDataMethods.getAndProcess_referenceData_samples",
-            "MRMFeatureValidator.validate_MRMFeatures",
-            "MRMFeatureFilter.filter_MRMFeatures.qc",
-        ]
-        for parameter in required_parameters:
-            if not parameter in params:
-                params[parameter] = []
+        if not "MRMMapping" in params:
+            params["MRMMapping"] = []
+        if not "ChromatogramExtractor" in params:
+            params["ChromatogramExtractor"] = []
+        if not "MRMFeatureFinderScoring" in params:
+            params["MRMFeatureFinderScoring"] = []
+        if not "MRMFeatureFilter.filter_MRMFeatures" in params:
+            params["MRMFeatureFilter.filter_MRMFeatures"] = []
+        if not "MRMFeatureSelector.select_MRMFeatures_qmip" in params:
+            params["MRMFeatureSelector.select_MRMFeatures_qmip"] = []
+        if not "MRMFeatureSelector.schedule_MRMFeatures_qmip" in params:
+            params["MRMFeatureSelector.schedule_MRMFeatures_qmip"] = []
+        if not "MRMFeatureSelector.select_MRMFeatures_score" in params:
+            params["MRMFeatureSelector.select_MRMFeatures_score"] = []
+        if not "ReferenceDataMethods.getAndProcess_referenceData_samples" in params:
+            params["ReferenceDataMethods.getAndProcess_referenceData_samples"] = []
+        if not "MRMFeatureValidator.validate_MRMFeatures" in params:
+            params["MRMFeatureValidator.validate_MRMFeatures"] = []
+        if not "MRMFeatureFilter.filter_MRMFeatures.qc" in params:
+            params["MRMFeatureFilter.filter_MRMFeatures.qc"] = []
 
         for sample,v in filenames.items():
             print("processing sample "+ sample)
