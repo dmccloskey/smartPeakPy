@@ -346,6 +346,8 @@ class __main__():
             validate_peaks = False,
             quantify_peaks = True,
             check_peaks = False,
+            *Args,
+            **Kwargs
             ):
         """Run the AbsoluteQuantitation python pipeline
         
@@ -356,48 +358,67 @@ class __main__():
         TODO:
             remove run_openSWATH and run_openSWATH_validation
             
-        """
+        """     
+        # additional resources
         from smartPeak.pyTOPP.SequenceHandler import SequenceHandler
-        seqhandler = SequenceHandler()
+        from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py
+        from smartPeak.core.smartPeak_AbsoluteQuantitation_py import smartPeak_AbsoluteQuantitation_py   
 
+        # internal variables
         skipped_samples = []
         output = []
         validation_metrics = []
 
-        from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py
-        from smartPeak.core.smartPeak_AbsoluteQuantitation_py import smartPeak_AbsoluteQuantitation_py
+        # class initializations        
+        seqhandler = SequenceHandler()
         AbsoluteQuantitation_py = smartPeak_AbsoluteQuantitation_py()
         openSWATH_py = smartPeak_openSWATH_py()
         smartpeak_i = smartPeak_i()
+
+        # read in the files
         smartpeak_i.read_pythonParams(filename_filenames,delimiter)
         filenames = smartpeak_i.getData()
         smartpeak_i.clear_data()
         smartpeak_i.read_openMSParams(filename_params,delimiter)
         params = smartpeak_i.getData()
         smartpeak_i.clear_data()
+
+        # check for updated workflow parameters
+        if "run_AbsoluteQuantitation_py" in params:
+            smartpeak = smartPeak()
+            workflow_parameters = {d['name']:smartpeak.castString(d['value'],d['type']) for d in params["run_AbsoluteQuantitation_py"]}
+            if "pick_peaks" in workflow_parameters:
+                pick_peaks = workflow_parameters["pick_peaks"]
+            if "select_peaks" in workflow_parameters:
+                select_peaks = workflow_parameters["select_peaks"]
+            if "validate_peaks" in workflow_parameters:
+                validate_peaks = workflow_parameters["validate_peaks"]
+            if "check_peaks" in workflow_parameters:
+                check_peaks = workflow_parameters["check_peaks"]
+
         for sample,v in filenames.items():
             print("processing sample "+ sample)
             try:
-                ## pick peaks with OpenSWATH
+                
                 # dynamically make the filenames
                 data_dir = v['data_dir']
                 mzML_i = '''%s/mzML/%s.mzML'''%(data_dir,sample)
                 traML_csv_i = '''%s/traML.csv'''%(data_dir)
                 trafo_csv_i = '''%s/trafo.csv'''%(data_dir)
+                
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
                 openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i},
-                    map_chromatograms_I = True,
                     MRMMapping_params_I = params['MRMMapping'],
-                    extract_chromatograms_I = True,
                     chromatogramExtractor_params_I = params['ChromatogramExtractor'])
                 openSWATH_py.extract_metaData()
                 openSWATH_py.meta_data['sample_type'] = 'Unknown'
                 openSWATH_py.load_Trafo( #skip transformation of RT
                     {},#{'trafo_csv_i':trafo_csv_i},
                     params['MRMFeatureFinderScoring'])
-                    
+
+                ## pick peaks with OpenSWATH
                 featureXML_o = '''%s/features_tmp/%s.featureXML'''%(data_dir,sample) 
                 feature_csv_o = '''%s/features_tmp/%s.csv'''%(data_dir,sample)
                 if pick_peaks:
@@ -531,8 +552,8 @@ class __main__():
         sequenceSummary_csv_i = '''%s/SequenceSummary.csv'''%(data_dir)
         seqhandler.exportDataMatrixFromMetaValue(
             filename = sequenceSummary_csv_i,
-            meta_values = ['calculated_concentration','RT','peak_apex_int','noise_background_level','leftWidth','rightWidth'],
-            # meta_values = ['calculated_concentration'],
+            # meta_values = ['calculated_concentration','RT','peak_apex_int','noise_background_level','leftWidth','rightWidth'],
+            meta_values = ['calculated_concentration'],
             sample_types = ['Unknown']
         )
         return output

@@ -58,7 +58,6 @@ class TestAbsoluteQuantitation_py():
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
                 openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i},
-                    map_chromatograms_I = True,
                     MRMMapping_params_I = params['MRMMapping'])
                 openSWATH_py.extract_metaData()
                 # load the quantitation method

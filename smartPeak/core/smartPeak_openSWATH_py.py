@@ -151,16 +151,15 @@ class smartPeak_openSWATH_py():
 
     def load_MSExperiment(self,
         filenames_I,
-        map_chromatograms_I = True,
         MRMMapping_params_I = {},
-        extract_chromatograms_I = False,
         chromatogramExtractor_params_I = {},
         ):
         """Load MzML into an MSExperiment
 
         Args:
             filenames_I (list): list of filename strings
-            map_chromatograms_I (boolean): map the chromatograms to the transitions (requires self.targeted)
+            MRMMapping_params_I (list): list of key:value parameters for OpenMS::MRMMapping
+            chromatogramExtractor_params_I (list): list of key:value parameters for OpenMS::ChromatogramExtractor
 
         Internals:
             msExperiment (TargetedExperiment)
@@ -175,7 +174,7 @@ class smartPeak_openSWATH_py():
             fh = pyopenms.FileHandler()
             fh.loadExperiment(mzML_feature_i.encode('utf-8'), chromatograms)
 
-        if extract_chromatograms_I and not self.targeted is None:  
+        if extract_chromatograms_I and not extract_chromatograms_I is None and not self.targeted is None:  
             # convert parameters
             smartpeak = smartPeak()
             chromatogramExtractor_params = {d['name']:smartpeak.castString(d['value'],d['type']) for d in chromatogramExtractor_params_I}
@@ -203,7 +202,7 @@ class smartPeak_openSWATH_py():
         self.msExperiment = chromatograms
 
         # map transitions to the chromatograms
-        if map_chromatograms_I and not self.targeted is None:        
+        if MRMMapping_params_I and not MRMMapping_params_I is None and not self.targeted is None:        
             # set up MRMMapping and
             # parse the MRMMapping params
             mrmmapper = pyopenms.MRMMapping()
