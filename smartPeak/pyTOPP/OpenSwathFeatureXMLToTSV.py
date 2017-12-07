@@ -83,7 +83,7 @@ class OpenSwathFeatureXMLToTSV():
         key_row = []
         for k in keys:
             value = feature.getMetaValue(k)
-            if value.isinstance(''.encode('utf-8')):
+            if isinstance(value, bytes):
                 value = feature.getMetaValue(k).decode('utf-8')
             key_row.append(value)
 
@@ -91,7 +91,7 @@ class OpenSwathFeatureXMLToTSV():
             key_subordinate_row = []
             for k in keys_subordinates:
                 value = subordinate.getMetaValue(k)
-                if value.isinstance(''.encode('utf-8')):
+                if isinstance(value, bytes):
                     value = subordinate.getMetaValue(k).decode('utf-8')
                 key_subordinate_row.append(value)
             transition = [

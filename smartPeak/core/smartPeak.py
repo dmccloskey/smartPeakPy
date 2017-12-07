@@ -51,7 +51,7 @@ class smartPeak():
         
         """
         string_O = None
-        if byte_I.isinstance(''.encode(encoding_I)): 
+        if isinstance(byte_I, ''.encode(encoding_I)): 
             string_O = byte_I.decode(encoding_I)
         else:
             print("input is not of type byte.")
@@ -70,7 +70,7 @@ class smartPeak():
         
         """
         byte_O = None
-        if string_I.isinstance(''): 
+        if isinstance(string_I, ''): 
             byte_O = string_I.encode(encoding_I)
         else:
             print("input is not of type str.")

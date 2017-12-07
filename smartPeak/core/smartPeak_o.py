@@ -28,7 +28,7 @@ class smartPeak_o():
 
     def write_dict2csv(self, filename, headers=None):
         # write dict to csv
-        with open(filename, 'w',newline='') as f:
+        with open(filename, 'w', newline='') as f:
             if headers: 
                 fieldname = headers
             else: 
