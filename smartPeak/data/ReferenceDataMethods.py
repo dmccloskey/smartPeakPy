@@ -139,9 +139,8 @@ class ReferenceDataMethods():
 
         """
         # DB settings
-        from DB_io import DB_io
-        
-        pg_settings = DB_io(settings_filename_I)
+        # # TODO: from SBaaS_base.postgresql_settings import postgresql_settings        
+        pg_settings = postgresql_settings(settings_filename_I)
         # # TODO: from SBaaS_base.postgresql_orm import postgresql_orm
         pg_settings.set_sessionFromSettings(pg_settings.database_settings)
         session = pg_settings.get_session()

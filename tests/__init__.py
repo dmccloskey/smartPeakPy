@@ -54,12 +54,11 @@ def runAllTests():
     # test.test_select_MRMFeatures_score()
     # test.test_schedule_MRMFeatures_qmip()
 
-    # TODO: broke
-    # #NOTE: requires database settings file
-    # from tests.test_data_ReferenceDataMethods import TestReferenceDataMethods
-    # test = TestReferenceDataMethods()
-    # test.test_getAndProcessReferenceDataSamples()
-    # test.test_getAndProcessReferenceDataCalibrators()
+    # NOTE: requires database settings file
+    from tests.test_data_ReferenceDataMethods import TestReferenceDataMethods
+    test = TestReferenceDataMethods()
+    test.test_getAndProcessReferenceDataSamples()
+    test.test_getAndProcessReferenceDataCalibrators()
 
     from tests.test_pyTOPP_MRMFeatureValidator import TestMRMFeatureValidator
     test = TestMRMFeatureValidator()
