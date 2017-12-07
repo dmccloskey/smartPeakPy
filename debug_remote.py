@@ -10,7 +10,7 @@ from smartPeak.core.__main__ import __main__
 m = __main__()
 
 
-# LCMS_MRM (TODO)
+# LCMS_MRM
 m.main(
     filename_filenames='/home/user/openMS_MRMworkflow/LCMS_MRM/filenames.csv',
     filename_params='/home/user/openMS_MRMworkflow/LCMS_MRM/MRMFeatureFinderScoring_params.csv',
