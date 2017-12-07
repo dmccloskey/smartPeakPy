@@ -139,13 +139,13 @@ class ReferenceDataMethods():
 
         """
         # DB settings
-        from SBaaS_base.postgresql_settings import postgresql_settings
-        from SBaaS_base.postgresql_orm import postgresql_orm
-        pg_settings = postgresql_settings(settings_filename_I)
-        pg_orm = postgresql_orm()
-        pg_orm.set_sessionFromSettings(pg_settings.database_settings)
-        session = pg_orm.get_session()
-        engine = pg_orm.get_engine()
+        from DB_io import DB_io
+        
+        pg_settings = DB_io(settings_filename_I)
+        # # TODO: from SBaaS_base.postgresql_orm import postgresql_orm
+        pg_settings.set_sessionFromSettings(pg_settings.database_settings)
+        session = pg_settings.get_session()
+        engine = pg_settings.get_engine()
         # query the reference data
         st = time.time()
         from .ReferenceData import ReferenceData
