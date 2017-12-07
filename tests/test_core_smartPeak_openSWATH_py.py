@@ -62,7 +62,6 @@ class TestSmartPeakOpenSWATH_py():
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_SWATHorDIA({})
                 openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i},
-                    True,
                     params['MRMMapping'])
                 openSWATH_py.extract_metaData()
                 if debug:

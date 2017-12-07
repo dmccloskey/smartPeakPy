@@ -76,7 +76,6 @@ class TestSequenceHandler():
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i':traML_csv_i})
                 openSWATH_py.load_MSExperiment({'mzML_feature_i':mzML_i},
-                    map_chromatograms_I = True,
                     MRMMapping_params_I = params['MRMMapping'])
                 openSWATH_py.extract_metaData()
                 openSWATH_py.meta_data['sample_type'] = 'Unknown'
