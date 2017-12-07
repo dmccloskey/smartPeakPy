@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-import csv,sys
+import csv
+import sys
 import copy
+
 
 class smartPeak_i():
     """a class to import data"""  
@@ -10,7 +12,7 @@ class smartPeak_i():
 
     def clear_data(self):
         """clear existing data"""
-        #del self.data[:]
+        # del self.data[:]
         self.data = []
 
     def getData(self):
@@ -22,7 +24,7 @@ class smartPeak_i():
         """
         return copy.copy(self.data)
 
-    def setData(self,data_I):
+    def setData(self, data_I):
         """set data
         Args
             data_I (list,dict)
@@ -49,14 +51,14 @@ class smartPeak_i():
 
         Args:
             data_I (list): e.g. [
-                {'function': 'ConvertTSVToTraML', 'name': '-in', 'value': 'IsolateA1.csv'},
-                {'function': 'ConvertTSVToTraML', 'name': '-out', 'value': 'IsolateA1.traML'},
-                {'function': 'MRMMapper', 'name': '-in', 'value': 'IsolateA1.mzML'},
-                {'function': 'MRMMapper', 'name': '-tr', 'value': 'IsolateA1.traML'},
-                {'function': 'MRMMapper', 'name': '-out', 'value': 'IsolateA1.csv'},
-                {'function': 'MRMMapper', 'name': '-precursor_tolerance','value':0.5},
-                {'function': 'MRMMapper', 'name': '-product_tolerance','value':0.5},
-                {'function': 'MRMMapper', 'name': '-no-strict','value':''},
+            {'function': 'ConvertTSVToTraML', 'name': '-in', 'value': 'IsolateA1.csv'},
+            {'function': 'ConvertTSVToTraML', 'name': '-out', 'value': 'IsolateA1.traML'},
+            {'function': 'MRMMapper', 'name': '-in', 'value': 'IsolateA1.mzML'},
+            {'function': 'MRMMapper', 'name': '-tr', 'value': 'IsolateA1.traML'},
+            {'function': 'MRMMapper', 'name': '-out', 'value': 'IsolateA1.csv'},
+            {'function': 'MRMMapper', 'name': '-precursor_tolerance','value':0.5},
+            {'function': 'MRMMapper', 'name': '-product_tolerance','value':0.5},
+            {'function': 'MRMMapper', 'name': '-no-strict','value':''},
             ]
 
         Returns:
@@ -74,51 +76,20 @@ class smartPeak_i():
                     {'name':'-no-strict','value':''}
                 ]}
         """
-        # data_I = self.getData()
-        # data_O = {}
-        # function_current = ''
-        # function_params = {}
-        # function_param = {}
-        # for i, d in enumerate(data_I):
-        #     #skip non-used lines
-        #     if not d['used_'] or d['used_'] == "FALSE":
-        #         continue
-        #     #update function_current
-        #     if d['function'] != function_current:
-        #         function_current = d['function']
-        #         if function_params:  #append only if list is not empty
-        #             data_O.update(function_params)
-        #         function_params = {function_current:[]}
-        #     #make the function parameter line
-        #     function_param = {}
-        #     function_param['name'] = d['name']
-        #     function_param['value'] = d['value']
-        #     if 'tags' in d.keys():
-        #         function_param['tags'] = d['tags']
-        #     if 'description' in d.keys():
-        #         function_param['description'] = d['description']
-        #     if 'type' in d.keys():
-        #         function_param['type'] = d['type']
-        #     function_params[function_current].append(function_param)
-        #     #add in the last value
-        #     if i==len(data_I)-1:
-        #         data_O.update(function_params)
-        # self.setData(data_O)
 
-        
         data_I = self.getData()
         data_O = {}
         function_current = ''
         function_params = {}
         for i, d in enumerate(data_I):
-            #skip non-used lines
+            # skip non-used lines
             if not d['used_'] or d['used_'] == "FALSE":
                 continue
-            #update function_current
+            # update function_current
             function_current = d['function']
-            if not function_current in data_O.keys():
+            if function_current not in data_O.keys():
                 data_O[function_current] = []
-            #make the function parameter line
+            # make the function parameter line
             function_param = {}
             function_param['name'] = d['name']
             function_param['value'] = d['value']
@@ -156,14 +127,14 @@ class smartPeak_i():
 
         Args:
             data_I (list): e.g. [
-                {'function': 'ConvertTSVToTraML', 'name': '-in', 'value': 'IsolateA1.csv'},
-                {'function': 'ConvertTSVToTraML', 'name': '-out', 'value': 'IsolateA1.traML'},
-                {'function': 'MRMMapper', 'name': '-in', 'value': 'IsolateA1.mzML'},
-                {'function': 'MRMMapper', 'name': '-tr', 'value': 'IsolateA1.traML'},
-                {'function': 'MRMMapper', 'name': '-out', 'value': 'IsolateA1.csv'},
-                {'function': 'MRMMapper', 'name': '-precursor_tolerance','value':0.5},
-                {'function': 'MRMMapper', 'name': '-product_tolerance','value':0.5},
-                {'function': 'MRMMapper', 'name': '-no-strict','value':''},
+            {'function': 'ConvertTSVToTraML', 'name': '-in', 'value': 'IsolateA1.csv'},
+            {'function': 'ConvertTSVToTraML', 'name': '-out', 'value': 'IsolateA1.traML'},
+            {'function': 'MRMMapper', 'name': '-in', 'value': 'IsolateA1.mzML'},
+            {'function': 'MRMMapper', 'name': '-tr', 'value': 'IsolateA1.traML'},
+            {'function': 'MRMMapper', 'name': '-out', 'value': 'IsolateA1.csv'},
+            {'function': 'MRMMapper', 'name': '-precursor_tolerance','value':0.5},
+            {'function': 'MRMMapper', 'name': '-product_tolerance','value':0.5},
+            {'function': 'MRMMapper', 'name': '-no-strict','value':''},
             ]
 
         Returns:
@@ -185,14 +156,14 @@ class smartPeak_i():
         data_I = self.getData()
         data_O = {}
         for i, d in enumerate(data_I):
-            #skip non-used lines
+            # skip non-used lines
             if not d['used_'] or d['used_'] == "FALSE":
                 continue
-            #update function_current
+            # update function_current
             function_current = d['function']
-            if not function_current in data_O.keys():
+            if function_current not in data_O.keys():
                 data_O[function_current] = {}
-            #make the function parameter line
+            # make the function parameter line
             function_param = {}
             function_param[d['name']] = d['value']
             data_O[function_current].update(function_param)

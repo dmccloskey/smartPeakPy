@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 
+
 class smartPeak():
     """Class for smartPeak python methods"""
     # # Definitions
@@ -33,7 +34,8 @@ class smartPeak():
             
         
         """
-        if verbose_I: print(cmd_I)
+        if verbose_I: 
+            print(cmd_I)
         os.system("%s" % (cmd_I))
 
     @staticmethod
@@ -49,7 +51,7 @@ class smartPeak():
         
         """
         string_O = None
-        if type(byte_I)==type(''.encode(encoding_I)): 
+        if byte_I.isinstance(''.encode(encoding_I)): 
             string_O = byte_I.decode(encoding_I)
         else:
             print("input is not of type byte.")
@@ -68,13 +70,13 @@ class smartPeak():
         
         """
         byte_O = None
-        if type(string_I)==type(''): 
+        if string_I.isinstance(''): 
             byte_O = string_I.encode(encoding_I)
         else:
             print("input is not of type str.")
         return byte_O
 
-    def convert_MQQMethod2Feature(self,MQQMethod_I):
+    def convert_MQQMethod2Feature(self, MQQMethod_I):
         """Convert MultiQuant QMethod.csv file to feature.csv file
         
         Args:
@@ -85,40 +87,41 @@ class smartPeak():
         
         """
         FeatureXML_O = []
-        #create header map:
+        # create header map:
         header_map = {
-            'ProteinName':'Group Name',
-            'transition_group_id':'Group Name',
-            'transition_name':'Name',
-            'Tr_recalibrated':'Expected RT',
-            'RetentionTime':'Expected RT',
-            'PrecursorMz':'Q1 Mass - 1',
-            'ProductMz':'Q3 Mass - 1'
+            'ProteinName': 'Group Name',
+            'transition_group_id': 'Group Name',
+            'transition_name': 'Name',
+            'Tr_recalibrated': 'Expected RT',
+            'RetentionTime': 'Expected RT',
+            'PrecursorMz': 'Q1 Mass - 1',
+            'ProductMz': 'Q3 Mass - 1'
         }
-        #create defaults:
+        # create defaults:
         feature_defaults = {
-            'FullPeptideName':'',
-            'Annotation':'',
-            'MS1 Res':'Unit',
-            'MS2 Res':'Unit',
-            'Dwell':'',
-            'Fragmentor':'',
-            'Collision Energy':'',
-            'Cell Accelerator Voltage':'',
-            'LibraryIntensity':'1',
-            'decoy':'0',
-            'PeptideSequence':'',
-            'PrecursorCharge':'1',
-            'FragmentCharge':'1',
-            'FragmentType':''
+            'FullPeptideName': '',
+            'Annotation': '',
+            'MS1 Res': 'Unit',
+            'MS2 Res': 'Unit',
+            'Dwell': '',
+            'Fragmentor': '',
+            'Collision Energy': '',
+            'Cell Accelerator Voltage': '',
+            'LibraryIntensity': '1',
+            'decoy': '0',
+            'PeptideSequence': '',
+            'PrecursorCharge': '1',
+            'FragmentCharge': '1',
+            'FragmentType': ''
         }
         for row in MQQMethod_I:
             tmp = {}
-            for h1,h2 in header_map.items():
-                tmp[h1]=row[h2]
-            component_group_name,quantifier,label_type = self.parse_MQTransitionName(row['Name'])
-            tmp['FragmentSeriesNumber']=quantifier
-            tmp['LabelType']=label_type
+            for h1, h2 in header_map.items():
+                tmp[h1] = row[h2]
+            component_group_name, quantifier, label_type = self.parse_MQTransitionName(
+                row['Name'])
+            tmp['FragmentSeriesNumber'] = quantifier
+            tmp['LabelType'] = label_type
             tmp.update(feature_defaults)
             FeatureXML_O.append(tmp)
         return FeatureXML_O
@@ -141,9 +144,9 @@ class smartPeak():
         quantifier_O = int(name_lst[1].split('_')[-1])
         label_type_O = name_lst[2]
 
-        return component_group_name_O,quantifier_O,label_type_O
+        return component_group_name_O, quantifier_O, label_type_O
 
-    def updateParameters(self,Param_IO,parameters_I):
+    def updateParameters(self, Param_IO, parameters_I):
         """Update a Param object
         Args:
             Param_IO (pyopenms.Param): Param object to update
@@ -158,14 +161,14 @@ class smartPeak():
             # #test:
             # if name == 'rt_extraction_window'.encode('utf-8'):
             #     print('check')
-            #check if the param exists
+            # check if the param exists
             if not Param_IO.exists(name):
                 print("parameter not found: " + param['name'])
                 continue
-            #check supplied user parameters
+            # check supplied user parameters
             if 'value' in param.keys() and param['value']:
                 if 'type' in param.keys() and param['type']:
-                    value = self.castString(param['value'],param['type'])
+                    value = self.castString(param['value'], param['type'])
                 else:
                     value = self.parseString(param['value'])
                 # if not self.checkParameterValue(value):
@@ -180,14 +183,15 @@ class smartPeak():
                 tags = param['tags'].encode('utf-8')
             else:
                 tags = Param_IO.getTags(name)
-            #update the params
-            Param_IO.setValue(name,
+            # update the params
+            Param_IO.setValue(
+                name,
                 value,
                 description,
                 tags)
         return Param_IO
 
-    def setParameters(self,parameters_I,Param_O):
+    def setParameters(self, parameters_I, Param_O):
         """set a Param object
         Args:
             parameters_I (list): list of parameters to update
@@ -198,7 +202,7 @@ class smartPeak():
         """
         for param in parameters_I:
             name = param['name'].encode('utf-8')
-            #check supplied user parameters
+            # check supplied user parameters
             if 'value' in param.keys() and param['value']:
                 if 'type' in param.keys() and param['type']:
                     value = self.castString(param['value'], param['type'])
@@ -210,15 +214,15 @@ class smartPeak():
                 description = param['description'].encode('utf-8')
             else:
                 description = ''.encode('utf-8')
-            if 'tags' in param.keys() and param['tags']:
-                tags = param['tags'].encode('utf-8')
-            else:
-                tags = ''.encode('utf-8')
-            #update the params
-            Param_O.setValue(name,
+            # if 'tags' in param.keys() and param['tags']:
+            #     tags = param['tags'].encode('utf-8')
+            # else:
+            #     tags = ''.encode('utf-8')
+            # update the params
+            Param_O.setValue(
+                name,
                 value,
-                description)
-                # tags) #setValue does not accept "tag"
+                description)  # tags) #setValue does not accept "tag"
         return Param_O
 
     @staticmethod
@@ -238,7 +242,7 @@ class smartPeak():
         return valid_O
 
     @staticmethod
-    def castString(str_I,type_I):
+    def castString(str_I, type_I):
         """Cast a string to the desired type 
         and return the eval
         
@@ -267,14 +271,14 @@ class smartPeak():
             elif type_I == 'string':
                 str_O = str_I.encode('utf-8')
             else:
-                print(type_I+ ' type not supported')
+                print(type_I + ' type not supported')
                 str_O = str_I.encode('utf-8')
         except Exception as e:
             print(e)
         return str_O
 
-    #@staticmethod
-    def parseString(self,str_I,encode_str_I = True):
+    # @staticmethod
+    def parseString(self, str_I, encode_str_I=True):
         """Parse string and return the eval
         
         Args:
@@ -292,14 +296,13 @@ class smartPeak():
             isfloat_o = True
             try:
                 float(str_i)
-            except Exception:
-            # except ValueError:
+            except Exception:  # except ValueError:
                 isfloat_o = False
             return isfloat_o
 
         def isBool(str_I):
             isbool_O = False
-            if str_I in ['True','False']:
+            if str_I in ['True', 'False']:
                 isbool_O = True
             return isbool_O
 
@@ -307,7 +310,7 @@ class smartPeak():
         try:
             if str_I.isdigit():
                 str_O = int(str_I)
-            elif str_I[0]=='-' and str_I[1:].isdigit():
+            elif str_I[0] == '-' and str_I[1:].isdigit():
                 str_O = int(str_I)
             elif isfloat(str_I):
                 str_O = float(str_I)
@@ -317,18 +320,18 @@ class smartPeak():
             #     str_O = float(str_I)
             elif isBool(str_I):
                 str_O = eval(str_I)
-            elif str_I[0]=='[' and str_I[-1]==']':
+            elif str_I[0] == '[' and str_I[-1] == ']':
                 str_O = []
-                f= StringIO(str_I[1:-1])
+                f = StringIO(str_I[1:-1])
                 reader = csv.reader(f, delimiter=',')
                 for row in reader:
                     for item in row:
-                        str_O.append(self.parseString(item,encode_str_I = encode_str_I))
-            elif str_I[0]=='{' and str_I[-1]=='}':
+                        str_O.append(self.parseString(item, encode_str_I=encode_str_I))
+            elif str_I[0] == '{' and str_I[-1] == '}':
                 str_O = dict(str_I[1:-1])
-            elif str_I[0]=='(' and str_I[-1]==')':
+            elif str_I[0] == '(' and str_I[-1] == ')':
                 str_O = tuple(str_I[1:-1])
-            elif str_I[0] in ["'",'"'] and str_I[-1] in ["'",'"']:
+            elif str_I[0] in ["'", '"'] and str_I[-1] in ["'", '"']:
                 str_O = eval(str_I)
                 if encode_str_I:
                     str_O = str_I.encode('utf-8')
@@ -340,7 +343,7 @@ class smartPeak():
         return str_O
 
     @staticmethod
-    def compareValues(value_1_I,value_2_I,comparator_I):
+    def compareValues(value_1_I, value_2_I, comparator_I):
         """Compare two values
         
         Args:
@@ -352,12 +355,13 @@ class smartPeak():
             bool: pass_O
             
         """
-        #check comparator support
-        supported_comparators = ["<", ">", "<=", ">=",
-            "<abs","<=abs",">abs",">=abs"]
-        if not comparator_I in supported_comparators:
+        # check comparator support
+        supported_comparators = [
+            "<", ">", "<=", ">=",
+            "<abs", "<=abs", ">abs", ">=abs"]
+        if comparator_I not in supported_comparators:
             print('comparator ' + comparator_I + ' is not recognized.')
-        #compare values
+        # compare values
         pass_O = True
         if comparator_I == '<' and not value_1_I < value_2_I:
             pass_O = False

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#modules
+# modules
 from .smartPeak import smartPeak
 from .smartPeak_i import smartPeak_i
 # from smartPeak.pyTOPP.MRMMapper import MRMMapper
@@ -10,13 +10,14 @@ from smartPeak.pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
 from smartPeak.pyTOPP.MRMFeatureSelector import MRMFeatureSelector
 from smartPeak.pyTOPP.MRMFeatureValidator import MRMFeatureValidator
 from smartPeak.data.ReferenceDataMethods import ReferenceDataMethods
-#external
+# external
 import copy
-#3rd part libraries
+# 3rd part libraries
 try:
     import pyopenms
 except ImportError as e:
     print(e)
+
 
 class smartPeak_openSWATH_py():
     def __init__(self):
@@ -42,8 +43,7 @@ class smartPeak_openSWATH_py():
         self.reference_data = None
         self.meta_data = None
 
-    def load_quantitationMethods(self,
-        filenames_I):
+    def load_quantitationMethods(self, filenames_I):
         """Load AbsoluteQuantitationMethods
 
         Args:
@@ -54,15 +54,15 @@ class smartPeak_openSWATH_py():
 
         """
         quantitationMethods_csv_i = None
-        if 'quantitationMethods_csv_i'in filenames_I.keys(): quantitationMethods_csv_i = filenames_I['quantitationMethods_csv_i']
+        if 'quantitationMethods_csv_i'in filenames_I.keys():
+            quantitationMethods_csv_i = filenames_I['quantitationMethods_csv_i']
 
         quantitationMethods = []
         aqmf = pyopenms.AbsoluteQuantitationMethodFile()
         aqmf.load(quantitationMethods_csv_i, quantitationMethods)
         self.quantitationMethods = quantitationMethods
 
-    def load_TraML(self,
-        filenames_I):
+    def load_TraML(self, filenames_I):
         """Load TraML file
 
         Args:
@@ -72,25 +72,29 @@ class smartPeak_openSWATH_py():
             targeted (TargetedExperiment)
 
         """
-        traML_csv_i,traML_i = None,None
-        if 'traML_csv_i'in filenames_I.keys(): traML_csv_i = filenames_I['traML_csv_i']
-        if 'traML_i'in filenames_I.keys(): traML_i = filenames_I['traML_i']
+        traML_csv_i, traML_i = None, None
+        if 'traML_csv_i'in filenames_I.keys():
+            traML_csv_i = filenames_I['traML_csv_i']
+        if 'traML_i'in filenames_I.keys():
+            traML_i = filenames_I['traML_i']
 
         # load and make the transition file
-        targeted = pyopenms.TargetedExperiment() #must use "PeptideSequence"
-        if not traML_csv_i is None:
+        targeted = pyopenms.TargetedExperiment()  # must use "PeptideSequence"
+        if traML_csv_i is not None:
             tramlfile = pyopenms.TransitionTSVReader()
-            tramlfile.convertTSVToTargetedExperiment(traML_csv_i.encode('utf-8'),21,targeted)
-        elif not traML_i is None:
+            tramlfile.convertTSVToTargetedExperiment(
+                traML_csv_i.encode('utf-8'), 21, targeted)
+        elif traML_i is not None:
             targeted = pyopenms.TargetedExperiment()
             tramlfile = pyopenms.TraMLFile()
             tramlfile.load(traML_i.encode('utf-8'), targeted)
         self.targeted = targeted
 
-    def load_Trafo(self,
+    def load_Trafo(
+        self,
         filenames_I,
-        MRMFeatureFinderScoring_params_I={},
-        ):
+        MRMFeatureFinderScoring_params_I={}
+    ):
         """Load Trafo file
 
         Args:
@@ -103,7 +107,8 @@ class smartPeak_openSWATH_py():
         
         """
         trafo_csv_i = None
-        if 'trafo_csv_i'in filenames_I.keys(): trafo_csv_i = filenames_I['trafo_csv_i']
+        if 'trafo_csv_i'in filenames_I.keys(): 
+            trafo_csv_i = filenames_I['trafo_csv_i']
         MRMFeatureFinderScoring_params = MRMFeatureFinderScoring_params_I
         
         # set up MRMFeatureFinderScoring (featurefinder) and
@@ -118,19 +123,20 @@ class smartPeak_openSWATH_py():
         featurefinder.setParameters(parameters)     
 
         # # prepare the model parameters for RTNormalization (interpolation)
-        # model_params_list = [{'name':'interpolation_type','value':'linear','type':'string'},
-        #     {'name':'extrapolation_type','value':'two-point-linear','type':'string'},
+        # model_params_list = [
+        #   {'name':'interpolation_type','value': 'linear','type': 'string'},
+        #     {'name':' extrapolation_type','value': 'two-point-linear','type': 'string'},
         # ]
         # model_params = pyopenms.Param()
         # model_params = smartpeak.setParameters(model_params_list,model_params)
 
         trafo = pyopenms.TransformationDescription()
-        if not trafo_csv_i is None:
+        if trafo_csv_i is not None:
             # load and make the transition file for RTNormalization 
             targeted_rt_norm = pyopenms.TargetedExperiment()
             tramlfile = pyopenms.TransitionTSVReader()
             tramlfile.convertTSVToTargetedExperiment(
-                trafo_csv_i.encode('utf-8'),21,targeted_rt_norm
+                trafo_csv_i.encode('utf-8'), 21, targeted_rt_norm
                 )
             # Normalize the RTs
             # NOTE: same MRMFeatureFinderScoring params will be used to pickPeaks
@@ -149,36 +155,45 @@ class smartPeak_openSWATH_py():
                 )
         self.trafo = trafo
 
-    def load_MSExperiment(self,
+    def load_MSExperiment(
+        self,
         filenames_I,
-        MRMMapping_params_I = {},
-        chromatogramExtractor_params_I = {},
-        ):
+        MRMMapping_params_I={},
+        chromatogramExtractor_params_I={}
+    ):
         """Load MzML into an MSExperiment
 
         Args:
             filenames_I (list): list of filename strings
-            MRMMapping_params_I (list): list of key:value parameters for OpenMS::MRMMapping
-            chromatogramExtractor_params_I (list): list of key:value parameters for OpenMS::ChromatogramExtractor
+            MRMMapping_params_I (list): 
+                list of key:value parameters for OpenMS::MRMMapping
+            chromatogramExtractor_params_I (list): 
+                list of key:value parameters for OpenMS::ChromatogramExtractor
 
         Internals:
             msExperiment (TargetedExperiment)
         
         """
         mzML_feature_i = None
-        if 'mzML_feature_i'in filenames_I.keys(): mzML_feature_i = filenames_I['mzML_feature_i']      
+        if 'mzML_feature_i'in filenames_I.keys():
+            mzML_feature_i = filenames_I['mzML_feature_i']      
 
         # load chromatograms
         chromatograms = pyopenms.MSExperiment()
-        if not mzML_feature_i is None:
+        if mzML_feature_i is not None:
             fh = pyopenms.FileHandler()
             fh.loadExperiment(mzML_feature_i.encode('utf-8'), chromatograms)
 
-        if chromatogramExtractor_params_I and not chromatogramExtractor_params_I is None and not self.targeted is None:  
+        if chromatogramExtractor_params_I and \
+            chromatogramExtractor_params_I is not None and \
+            self.targeted is not None:
             # convert parameters
             smartpeak = smartPeak()
-            chromatogramExtractor_params = {d['name']:smartpeak.castString(d['value'],d['type']) for d in chromatogramExtractor_params_I}
-            # chromatogramExtractor_params = {d['name']:smartpeak.parseString(d['value']) for d in chromatogramExtractor_params_I}
+            chromatogramExtractor_params = {d['name']: smartpeak.castString(
+                d['value'], 
+                d['type']) for d in chromatogramExtractor_params_I}
+            # chromatogramExtractor_params = {d['name']:smartpeak.parseString(d['value']) 
+            #   for d in chromatogramExtractor_params_I}
             # exctract chromatograms
             chromatograms_copy = copy.copy(chromatograms)
             chromatograms.clear(True)
@@ -192,17 +207,19 @@ class smartPeak_openSWATH_py():
                 chromatograms_copy,
                 chromatograms, 
                 self.targeted,
-                chromatogramExtractor_params['extract_window'], #0.05,
-                chromatogramExtractor_params['ppm'], #False,
+                chromatogramExtractor_params['extract_window'],
+                chromatogramExtractor_params['ppm'],
                 pyopenms.TransformationDescription(),
-                chromatogramExtractor_params['rt_extraction_window'], #-1,
-                chromatogramExtractor_params['filter'], #"tophat"
+                chromatogramExtractor_params['rt_extraction_window'],
+                chromatogramExtractor_params['filter'],
                 )
 
         self.msExperiment = chromatograms
 
         # map transitions to the chromatograms
-        if MRMMapping_params_I and not MRMMapping_params_I is None and not self.targeted is None:        
+        if MRMMapping_params_I and \
+            MRMMapping_params_I is not None and \
+            self.targeted is not None:        
             # set up MRMMapping and
             # parse the MRMMapping params
             mrmmapper = pyopenms.MRMMapping()
@@ -228,9 +245,10 @@ class smartPeak_openSWATH_py():
             mrmmapper.mapExperiment(chromatograms, self.targeted, chromatogram_map)
         self.chromatogram_map = chromatogram_map
 
-    def load_SWATHorDIA(self,
+    def load_SWATHorDIA(
+        self,
         filenames_I,
-        ):
+    ):
         """Load SWATH or DIA into an MSExperiment
 
         Args:
@@ -241,15 +259,16 @@ class smartPeak_openSWATH_py():
         
         """
         dia_csv_i = None
-        if 'dia_csv_i'in filenames_I.keys(): dia_csv_i = filenames_I['dia_csv_i']
+        if 'dia_csv_i'in filenames_I.keys():
+            dia_csv_i = filenames_I['dia_csv_i']
 
         # load in the DIA data
         swath = pyopenms.MSExperiment()
-        if not dia_csv_i is None:
+        if dia_csv_i is not None:
             chromatogramExtractor = OpenSwathChromatogramExtractor()
-            #read in the DIA data files:
-            #dia_files_i = ...(dia_csv_i)
-            empty_swath=chromatogramExtractor.main(
+            # read in the DIA data files:
+            # dia_files_i = ...(dia_csv_i)
+            swath = chromatogramExtractor.main(
                 infiles=[],
                 targeted=self.targeted,
                 extraction_window=0.05,
@@ -261,9 +280,10 @@ class smartPeak_openSWATH_py():
             )
         self.swath = swath
 
-    def openSWATH_py(self,
+    def openSWATH_py(
+        self,
         MRMFeatureFinderScoring_params_I={},
-        ):
+    ):
         """Run the openSWATH workflow for a single sample
         
         Args:
@@ -272,12 +292,12 @@ class smartPeak_openSWATH_py():
                 names, values, descriptions, and tags
                 
         """
-        #helper classes
+        # helper classes
         smartpeak = smartPeak()
 
-        #make the decoys
-        #MRMDecoy
-        #How are the decoys added into the experiment?
+        # make the decoys
+        # MRMDecoy
+        # How are the decoys added into the experiment?
 
         # Create empty output
         output = pyopenms.FeatureMap()
@@ -303,12 +323,13 @@ class smartPeak_openSWATH_py():
         
         self.featureMap = output
 
-    def filterAndSelect_py(self,
+    def filterAndSelect_py(
+        self,
         filenames_I,
         MRMFeatureFilter_filter_params_I={},
         MRMFeatureSelector_select_params_I={},
         MRMFeatureSelector_schedule_params_I={},
-        ):
+    ):
         """Run the openSWATH post processing filtering workflow for a single sample
         
         Args:
@@ -352,39 +373,32 @@ class smartPeak_openSWATH_py():
             # read in the parameters for the MRMFeatureQC
             featureQC = pyopenms.MRMFeatureQC()
             featureQCFile = pyopenms.MRMFeatureQCFile()
-            featureQCFile.load(mrmfeatureqcs_csv_i.encode('utf-8'),featureQC)  
+            featureQCFile.load(mrmfeatureqcs_csv_i.encode('utf-8'), featureQC)  
 
             output_filtered = copy.copy(self.featureMap)
             featureFilter.FilterFeatureMap(
                 output_filtered,
                 featureQC,
-                self.targeted)  
-
-            ##Deprecated
-            # featureFilter = MRMFeatureFilter()
-            # output_filtered = featureFilter.filter_MRMFeatures(
-            #     self.featureMap,
-            #     self.targeted,
-            #     MRMFeatureFilter_filter_params_I) 
+                self.targeted)
         else:
             output_filtered = self.featureMap
 
         # select features
         featureSelector = MRMFeatureSelector()
-        if not calibrators_csv_i is None:
+        if calibrators_csv_i is not None:
             smartpeak_i = smartPeak_i()
-            smartpeak_i.read_csv(calibrators_csv_i,delimiter=',')
+            smartpeak_i.read_csv(calibrators_csv_i, delimiter=',')
             calibrators = smartpeak_i.getData()
             smartpeak_i.clear_data()
         else: 
             calibrators = []
         if MRMFeatureSelector_schedule_params_I:
             output_selected = featureSelector.schedule_MRMFeatures_qmip(
-                features = output_filtered,
-                tr_expected = calibrators,    
-                targeted = self.targeted,
-                schedule_criteria = MRMFeatureSelector_schedule_params_I,                
-                score_weights = MRMFeatureSelector_select_params_I
+                features=output_filtered,
+                tr_expected=calibrators,    
+                targeted=self.targeted,
+                schedule_criteria=MRMFeatureSelector_schedule_params_I,                
+                score_weights=MRMFeatureSelector_select_params_I
             )
         elif MRMFeatureSelector_select_params_I:
             output_selected = featureSelector.select_MRMFeatures_score(
@@ -400,9 +414,10 @@ class smartPeak_openSWATH_py():
 
         self.featureMap = output_selected
 
-    def load_featureMap(self,
-        filenames_I = {},
-        ):
+    def load_featureMap(
+        self,
+        filenames_I={},
+    ):
         """Load a FeatureMap
         
         Args:
@@ -411,12 +426,13 @@ class smartPeak_openSWATH_py():
         """
         # Handle the filenames
         featureXML_i = None
-        if 'featureXML_i'in filenames_I.keys(): featureXML_i = filenames_I['featureXML_i']        
+        if 'featureXML_i'in filenames_I.keys():
+            featureXML_i = filenames_I['featureXML_i']        
 
         # Store outfile as featureXML    
         featurexml = pyopenms.FeatureXMLFile()
         output = pyopenms.FeatureMap()
-        if not featureXML_i is None:
+        if featureXML_i is not None:
             featurexml.load(featureXML_i.encode('utf-8'), output)
 
         self.featureMap = output
@@ -432,67 +448,71 @@ class smartPeak_openSWATH_py():
 
         # filename
         loaded_file_path = self.chromatogram_map.getLoadedFilePath()
-        if not loaded_file_path is None:
-            filename = loaded_file_path.decode('utf-8').replace('file://','')
+        if loaded_file_path is not None:
+            filename = loaded_file_path.decode('utf-8').replace('file://', '')
         # filename = '''%s/%s''' %(
         #     chromatograms_mapped.getSourceFiles()[0].getPathToFile().decode('utf-8').replace('file://',''),
         #     chromatograms_mapped.getSourceFiles()[0].getNameOfFile().decode('utf-8'))
 
         # sample name
         mzml_id = self.chromatogram_map.getMetaValue(b'mzml_id')
-        if not mzml_id is None:
+        if mzml_id is not None:
             samplename_list = mzml_id.decode('utf-8').split('-')
             samplename = '-'.join(samplename_list[1:])   
 
         # instrument
         instrument_name = self.chromatogram_map.getInstrument().getName()
-        if not instrument_name is None:
+        if instrument_name is not None:
             instrument = instrument_name.decode('utf-8')
             # software
             software_name = self.chromatogram_map.getInstrument().getSoftware().getName()
-            if not software_name is None:
+            if software_name is not None:
                 software = software_name.decode('utf-8')
 
         self.meta_data = {
-            "filename":filename,
-            "sample_name":samplename,
-            "instrument":instrument,
-            "software":software
+            "filename": filename,
+            "sample_name": samplename,
+            "instrument": instrument,
+            "software": software
         }
 
-    def store_featureMap(self,
-        filenames_I = {},
+    def store_featureMap(
+        self,
+        filenames_I={},
         # feature_csv_o = None,
         # featureXML_o = None
-        ):
+    ):
         """Store FeatureMap as .xml and .csv
         
         Args:
             filenames_I (list): list of filename strings
         """
         # Handle the filenames
-        featureXML_o,feature_csv_o = None,None
-        if 'featureXML_o'in filenames_I.keys(): featureXML_o = filenames_I['featureXML_o']
-        if 'feature_csv_o'in filenames_I.keys(): feature_csv_o = filenames_I['feature_csv_o']
-        
+        featureXML_o, feature_csv_o = None, None
+        if 'featureXML_o'in filenames_I.keys():
+            featureXML_o = filenames_I['featureXML_o']
+        if 'feature_csv_o'in filenames_I.keys():
+            feature_csv_o = filenames_I['feature_csv_o']
 
         # Store outfile as featureXML    
         featurexml = pyopenms.FeatureXMLFile()
-        if not featureXML_o is None:
+        if featureXML_o is not None:
             featurexml.store(featureXML_o.encode('utf-8'), self.featureMap)
         
         # Store the outfile as csv     
         featurescsv = OpenSwathFeatureXMLToTSV()  
-        if not feature_csv_o is None:
-            featurescsv.store(feature_csv_o, self.featureMap, self.targeted,
-                run_id = self.meta_data['sample_name'],
-                filename = self.meta_data['filename']
+        if feature_csv_o is not None:
+            featurescsv.store(
+                feature_csv_o, self.featureMap, self.targeted,
+                run_id=self.meta_data['sample_name'],
+                filename=self.meta_data['filename']
                 )
 
-    def load_validationData(self,
+    def load_validationData(
+        self,
         filenames_I,
-        ReferenceDataMethods_params_I = {}
-        ):
+        ReferenceDataMethods_params_I={}
+    ):
         """Load the validation data from file or from a database
         
         Args:
@@ -503,12 +523,15 @@ class smartPeak_openSWATH_py():
         smartpeak = smartPeak()
 
         # Handle the filenames
-        referenceData_csv_i,db_ini_i = None,None
-        if 'referenceData_csv_i'in filenames_I.keys(): referenceData_csv_i = filenames_I['referenceData_csv_i']
-        if 'db_ini_i'in filenames_I.keys(): db_ini_i = filenames_I['db_ini_i']
+        referenceData_csv_i, db_ini_i = None, None
+        if 'referenceData_csv_i'in filenames_I.keys(): 
+            referenceData_csv_i = filenames_I['referenceData_csv_i']
+        if 'db_ini_i'in filenames_I.keys(): 
+            db_ini_i = filenames_I['db_ini_i']
 
         # Parse the input parameters
-        ReferenceDataMethods_dict = {d['name']:smartpeak.parseString(d['value'],encode_str_I = False) for d in ReferenceDataMethods_params_I}
+        ReferenceDataMethods_dict = {d['name']: smartpeak.parseString(
+            d['value'], encode_str_I=False) for d in ReferenceDataMethods_params_I}
         experiment_ids_I = [],
         sample_names_I = [],
         sample_types_I = [],
@@ -520,8 +543,8 @@ class smartPeak_openSWATH_py():
         used__I = True,
         experiment_limit_I = 10000,
         mqresultstable_limit_I = 1000000,
-        settings_filename_I = 'settings.ini',
-        data_filename_O = ''
+        # settings_filename_I = 'settings.ini',
+        # data_filename_O = ''
         if "experiment_ids_I" in ReferenceDataMethods_dict.keys():
             experiment_ids_I = ReferenceDataMethods_dict["experiment_ids_I"]
         if "sample_names_I" in ReferenceDataMethods_dict.keys():
@@ -531,7 +554,8 @@ class smartPeak_openSWATH_py():
         if "acquisition_methods_I" in ReferenceDataMethods_dict.keys():
             acquisition_methods_I = ReferenceDataMethods_dict["acquisition_methods_I"]
         if "quantitation_method_ids_I" in ReferenceDataMethods_dict.keys():
-            quantitation_method_ids_I = ReferenceDataMethods_dict["quantitation_method_ids_I"]  
+            quantitation_method_ids_I = ReferenceDataMethods_dict[
+                "quantitation_method_ids_I"]  
         if "component_names_I" in ReferenceDataMethods_dict.keys():
             component_names_I = ReferenceDataMethods_dict["component_names_I"]   
         if "component_group_names_I" in ReferenceDataMethods_dict.keys():
@@ -544,19 +568,19 @@ class smartPeak_openSWATH_py():
             experiment_limit_I = ReferenceDataMethods_dict["experiment_limit_I"]
         if "mqresultstable_limit_I" in ReferenceDataMethods_dict.keys():
             mqresultstable_limit_I = ReferenceDataMethods_dict["mqresultstable_limit_I"]
-        if "settings_filename_I" in ReferenceDataMethods_dict.keys():
-            settings_filename_I = ReferenceDataMethods_dict["settings_filename_I"]
-        if "data_filename_O" in ReferenceDataMethods_dict.keys():
-            data_filename_O = ReferenceDataMethods_dict["data_filename_O"]
+        # if "settings_filename_I" in ReferenceDataMethods_dict.keys():
+        #     settings_filename_I = ReferenceDataMethods_dict["settings_filename_I"]
+        # if "data_filename_O" in ReferenceDataMethods_dict.keys():
+        #     data_filename_O = ReferenceDataMethods_dict["data_filename_O"]
 
         # read in the reference data
         reference_data = []
-        if not referenceData_csv_i is None:            
+        if referenceData_csv_i is not None:            
             smartpeak_i = smartPeak_i()
             smartpeak_i.read_csv(referenceData_csv_i)
             reference_data = smartpeak_i.getData()
             smartpeak_i.clear_data()
-        elif not db_ini_i is None:
+        elif db_ini_i is not None:
             referenceDataMethods = ReferenceDataMethods()
             reference_data = referenceDataMethods.getAndProcess_referenceData_samples(
                 experiment_ids_I=experiment_ids_I,
@@ -570,23 +594,24 @@ class smartPeak_openSWATH_py():
                 used__I=used__I,
                 experiment_limit_I=experiment_limit_I,
                 mqresultstable_limit_I=mqresultstable_limit_I,
-                settings_filename_I = db_ini_i,
-                data_filename_O = ''
+                settings_filename_I=db_ini_i,
+                data_filename_O=''
             )
         self.reference_data = reference_data
 
-    def validate_py(self,
-        MRMRFeatureValidator_params_I ={}
-        ):
+    def validate_py(
+        self,
+        MRMRFeatureValidator_params_I={}
+    ):
         """Validate the selected peaks agains reference data
         """
         # map the reference data
         if MRMRFeatureValidator_params_I:
-            featureValidator= MRMFeatureValidator()
-            features_mapped,validation_metrics = featureValidator.validate_MRMFeatures(
-                reference_data = self.reference_data,
-                features = self.featureMap,
-                Tr_window = float(MRMRFeatureValidator_params_I[0]['value'])
+            featureValidator = MRMFeatureValidator()
+            features_mapped, validation_metrics = featureValidator.validate_MRMFeatures(
+                reference_data=self.reference_data,
+                features=self.featureMap,
+                Tr_window=float(MRMRFeatureValidator_params_I[0]['value'])
                 )
             self.featureMap = features_mapped
             self.validation_metrics = validation_metrics
