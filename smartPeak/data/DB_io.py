@@ -76,9 +76,9 @@ class DB_io():
             string: string_O
         '''
         string_O = ''
-        if list_I.isinstance([]):
+        if isinstance(list_I, list):
             string_O = deliminator_I.join(list_I)
-        elif list_I.isinstance(''):
+        elif isinstance(list_I, str):
             string_O = list_I
         else:
             print('type of list_I is not supported.')

@@ -139,16 +139,17 @@ class ReferenceDataMethods():
 
         """
         # DB settings
-        # # TODO: from SBaaS_base.postgresql_settings import postgresql_settings        
-        pg_settings = postgresql_settings(settings_filename_I)
-        # # TODO: from SBaaS_base.postgresql_orm import postgresql_orm
-        pg_settings.set_sessionFromSettings(pg_settings.database_settings)
-        session = pg_settings.get_session()
-        engine = pg_settings.get_engine()
+        from .DB_settings import DB_settings
+        from .DB_orm import DB_orm
+        pg_settings = DB_settings(settings_filename_I)
+        pg_orm = DB_orm()
+        pg_orm.set_sessionFromSettings(pg_settings.database_settings)
+        session = pg_orm.get_session()
+        engine = pg_orm.get_engine()
         # query the reference data
         st = time.time()
         from .ReferenceData import ReferenceData
-        referenceData = ReferenceData(session, engine, pg_settings.datadir_settings)
+        referenceData = ReferenceData(session, engine)
         if verbose_I: 
             print("query the reference data")
         data_ref = referenceData.get_referenceData(
