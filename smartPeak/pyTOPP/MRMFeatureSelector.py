@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # utilities
 import copy
+from math import log, log10, sqrt
 # modules
 from smartPeak.core.smartPeak import smartPeak
 # 3rd part libraries
@@ -857,7 +858,9 @@ class MRMFeatureSelector():
         for score_weight in score_weights:
             try:
                 weight_func = eval(score_weight['value'])  # check for valid lambda string
-                score_1 *= weight_func(tr_dict_row[score_weight['name']])
+                value = weight_func(tr_dict_row[score_weight['name']])
+                if not isinstance(value, complex) and value > 0.0:
+                    score_1 *= value
             except Exception as e:
                 print(e)
         return score_1
