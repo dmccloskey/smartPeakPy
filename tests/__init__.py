@@ -77,14 +77,3 @@ def runAllTests():
     test.test_addSampleToSequence()
     test.test_getMetaValue()
     test.test_makeDataMatrixFromMetaValue()
-
-def runDeprecatedTests():
-    #DEPRECATED
-    from tests.test_pyTOPP_MRMMapper import TestMRMMapper
-    test = TestMRMMapper()
-    test.test_algorithm()
-
-    #DEPRECATED
-    from tests.test_pyTOPP_MRMFeatureFilter import TestMRMFeatureFilter
-    test = TestMRMFeatureFilter()
-    test.test_filter_MRMFeatures()

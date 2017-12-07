@@ -6,6 +6,8 @@ except ImportError as e:
 
 """
 """
+
+
 class OpenSwathChromatogramExtractor():
     """Extract chromatograms (XIC) from a MS2 map file.
 
@@ -22,18 +24,21 @@ class OpenSwathChromatogramExtractor():
         is_swath=False,
         rt_extraction_window=-1,
         extraction_function="tophat"
-        ):
+    ):
         """Extract chromatograms (XIC) from a MS2 map file.
 
         Args:
             infiles (list, str): An input file containing spectra
             targeted: TraML input file containt the transitions
             extraction_window (float): default=0.05, Extraction window in Th
-            min_upper_edge_dist (float): default=0.0, Minimal distance to the edge to still consider a precursor, in Thomson (for Swath)
+            min_upper_edge_dist (float): default=0.0, 
+                Minimal distance to the edge to still consider a precursor, 
+                in Thomson (for Swath)
             ppm (bool): default=False, use ppm instead of Th
             is_swath (bool): default=False, The input file is a SWATH file
             rt_extraction_window (float): default=-1, Extraction window in RT
-            extraction_function (str): default="tophat", Extraction function (tophat or bartlett)
+            extraction_function (str): default="tophat", 
+                Extraction function (tophat or bartlett)
 
         Returns:        
             MSChromatogram: output: Output chrom.mzML file with chromatograms
@@ -56,7 +61,9 @@ class OpenSwathChromatogramExtractor():
 
             do_continue = True
             if is_swath:
-                do_continue = pyopenms.OpenSwathHelper().checkSwathMapAndSelectTransitions(exp, targeted, transition_exp_used, min_upper_edge_dist)
+                do_continue = \
+                    pyopenms.OpenSwathHelper().checkSwathMapAndSelectTransitions(
+                        exp, targeted, transition_exp_used, min_upper_edge_dist)
             else:
                 transition_exp_used = targeted
 
@@ -64,7 +71,9 @@ class OpenSwathChromatogramExtractor():
                 # set up extractor and run
                 tmp_out = pyopenms.MSExperiment()
                 extractor = pyopenms.ChromatogramExtractor()
-                extractor.extractChromatograms(exp, tmp_out, targeted, extraction_window, ppm, trafo, rt_extraction_window, extraction_function)
+                extractor.extractChromatograms(
+                    exp, tmp_out, targeted, extraction_window, ppm, 
+                    trafo, rt_extraction_window, extraction_function)
                 # add all chromatograms to the output
                 for chrom in tmp_out.getChromatograms():
                     output.addChromatogram(chrom)
