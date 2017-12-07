@@ -3,11 +3,12 @@ from smartPeak.core.smartPeak import smartPeak
 from smartPeak.core.smartPeak_i import smartPeak_i
 from . import data_dir
 from smartPeak.pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
-#3rd part libraries
+# 3rd part libraries
 try:
     import pyopenms
 except ImportError as e:
     print(e)
+
 
 class TestOpenSwathFeatureXMLToTSV():
     """TODO:
@@ -16,30 +17,32 @@ class TestOpenSwathFeatureXMLToTSV():
     2. add assertions
     """
     
-    def load_data(self,
-        featureXML_i = "features/150601_0_BloodProject01_PLT_QC_Broth-1.featureXML",
-        traML_csv_i = "BloodProject01_SWATH.csv"):
+    def load_data(
+        self,
+        featureXML_i="features/150601_0_BloodProject01_PLT_QC_Broth-1.featureXML",
+        traML_csv_i="BloodProject01_SWATH.csv"
+    ):
         """load the test data"""        
 
         # load targeted experiment
         traML_csv_i = data_dir + "/" + traML_csv_i
-        self.targeted = pyopenms.TargetedExperiment() #must use "PeptideSequence"
-        if not traML_csv_i is None:
+        self.targeted = pyopenms.TargetedExperiment()  # must use "PeptideSequence"
+        if traML_csv_i is not None:
             tramlfile = pyopenms.TransitionTSVReader()
-            tramlfile.convertTSVToTargetedExperiment(traML_csv_i.encode('utf-8'),21,self.targeted)
+            tramlfile.convertTSVToTargetedExperiment(
+                traML_csv_i.encode('utf-8'), 21, self.targeted)
 
         # load the featureMap
         featureXML_i = data_dir + "/" + featureXML_i     
         featurexml = pyopenms.FeatureXMLFile()
         self.featureMap = pyopenms.FeatureMap()
-        if not featureXML_i is None:
+        if featureXML_i is not None:
             featurexml.load(featureXML_i.encode('utf-8'), self.featureMap)
     
-    def test_get_header(self,
-        ):
+    def test_get_header(self):
         self.load_data()
         featurescsv = OpenSwathFeatureXMLToTSV()
-        header,keys,keys_subordinates = featurescsv.get_header(self.featureMap)
+        header, keys, keys_subordinates = featurescsv.get_header(self.featureMap)
         assert(header[0] == 'transition_group_id')
         # assert(header[17] == 'peak_apices_sum')
         assert(keys[0] == b'potentialOutlier')
@@ -47,12 +50,11 @@ class TestOpenSwathFeatureXMLToTSV():
         assert(keys_subordinates[0] == b'MZ')
         # assert(keys_subordinates[len(keys_subordinates)-1] == b'FeatureLevel')
     
-    def test_convert_FeatureXMLToTSV(self,
-        ):
+    def test_convert_FeatureXMLToTSV(self):
         self.load_data()
         featurescsv = OpenSwathFeatureXMLToTSV()
-        header,rows_O = featurescsv.convert_FeatureXMLToTSV(
-            self.featureMap, self.targeted, run_id = 'run0', filename = 'run0.FeatureXML')
+        header, rows_O = featurescsv.convert_FeatureXMLToTSV(
+            self.featureMap, self.targeted, run_id='run0', filename='run0.FeatureXML')
         assert(header[0] == 'transition_group_id')
         assert(header[17] == 'peak_apices_sum')
         assert(rows_O[0]['PeptideRef'] == '23dpg')

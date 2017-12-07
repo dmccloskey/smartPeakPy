@@ -3,6 +3,7 @@ from smartPeak.core.smartPeak_i import smartPeak_i
 from smartPeak.core.smartPeak import smartPeak
 import pytest
 
+
 class testSmartPeak_i():
     """tests for smartPeak_i
     
@@ -12,22 +13,22 @@ class testSmartPeak_i():
     3. test
     """
 
-    def test_parse_openMSParams(self,verbose_I=False):
+    def test_parse_openMSParams(self, verbose_I=False):
         """tests for parse_openMSParams function
         """
         pass
         
-    def test_read_openMSParams(self,verbose_I=False):
+    def test_read_openMSParams(self, verbose_I=False):
         """tests for read_openMSParams function
         """
         pass
         
-    def test_parse_pythonParams(self,verbose_I=False):
+    def test_parse_pythonParams(self, verbose_I=False):
         """tests for parse_pythonParams function
         """
         pass
         
-    def test_read_pythonParams(self,verbose_I=False):
+    def test_read_pythonParams(self, verbose_I=False):
         """tests for read_pythonParams function
         """
         pass

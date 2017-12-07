@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-#utilities
+# utilities
 import copy
-#modules
+# modules
 from smartPeak.core.smartPeak import smartPeak
 from smartPeak.core.smartPeak_i import smartPeak_i
 from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py
@@ -15,12 +15,13 @@ from smartPeak.pyTOPP.MRMFeatureSelector import MRMFeatureSelector
 from smartPeak.pyTOPP.MRMFeatureValidator import MRMFeatureValidator
 from smartPeak.data.ReferenceDataMethods import ReferenceDataMethods
 from . import data_dir
-#3rd part libraries
+# 3rd part libraries
 try:
     import pyopenms
 except ImportError as e:
     print(e)
 import pytest
+
 
 class test_smartPeak_openSWATH_cmd():
     """tests for smartPeak_openSWATH_cmd"""
@@ -38,7 +39,8 @@ class test_smartPeak_openSWATH_cmd():
         Eamples:        
             from smartPeak.__main__ import __main__
             m = __main__()    
-            filename='C:/Users/domccl/Dropbox (UCSD SBRG)/Project_FastPeak/openMS_MRMworkflow/openSWATH_cmd_params.csv',
+            filename='C:/Users/domccl/Dropbox (UCSD SBRG)/
+                Project_FastPeak/openMS_MRMworkflow/openSWATH_cmd_params.csv',
             filename='/home/user/openMS_MRMworkflow/openSWATH_cmd_params.csv'
             m.run_openSWATH_cmd(filename);
             
@@ -51,7 +53,8 @@ class test_smartPeak_openSWATH_cmd():
         """Test openSWATH_cmd"""
 
         # filename='/home/user/openMS_MRMworkflow/openSWATH_cmd_params_QC1.csv'
-        filename='/home/user/openMS_MRMworkflow/openSWATH_cmd_params_QC1_FeatureXML2TSV.csv'
+        filename = '''/home/user/openMS_MRMworkflow/\
+            openSWATH_cmd_params_QC1_FeatureXML2TSV.csv'''
         self.run_openSWATH_cmd(filename)
 
         # TODO: read in resulting file and compare to test file
