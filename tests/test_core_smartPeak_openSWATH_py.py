@@ -10,6 +10,18 @@ class TestSmartPeakOpenSWATH_py():
     """tests for smartPeak_openSWATH_py
     """
 
+    def load_data(
+        self,
+        filename_filenames="BloodProject01_SWATH_filenames.csv",
+        filename_params="BloodProject01_MRMFeatureFinderScoring_params.csv",
+        delimiter=','
+    ):
+        filename_params = data_dir + "/" + filename_params
+        smartpeak_i = smartPeak_i()
+        smartpeak_i.read_openMSParams(filename_params, delimiter)
+        self.params = smartpeak_i.getData()
+        smartpeak_i.clear_data()
+
     def test_openSWATH_py(
             self,
             filename_filenames="BloodProject01_SWATH_filenames.csv",

@@ -73,7 +73,7 @@ class smartPeak_openSWATH_py():
 
         """
         if verbose_I:
-            print("loading TraML")
+            print("Loading TraML")
 
         traML_csv_i, traML_i = None, None
         if 'traML_csv_i'in filenames_I.keys():
@@ -111,7 +111,7 @@ class smartPeak_openSWATH_py():
         
         """
         if verbose_I:
-            print("loading Trafo")
+            print("Loading Trafo")
 
         trafo_csv_i = None
         if 'trafo_csv_i'in filenames_I.keys(): 
@@ -183,7 +183,7 @@ class smartPeak_openSWATH_py():
         
         """
         if verbose_I:
-            print("loading mzML")
+            print("Loading mzML")
 
         mzML_feature_i = None
         if 'mzML_feature_i'in filenames_I.keys():
@@ -256,6 +256,43 @@ class smartPeak_openSWATH_py():
             mrmmapper.mapExperiment(chromatograms, self.targeted, chromatogram_map)
         self.chromatogram_map = chromatogram_map
 
+    def load_SWATHorDIA(
+        self,
+        filenames_I,
+        verbose_I=False
+    ):
+        """Load SWATH or DIA into an MSExperiment
+        Args:
+            filenames_I (list): list of filename strings
+        Internals:
+            msExperiment (TargetedExperiment)
+        
+        """
+        if verbose_I:
+            print("Loading SWATH/DIA files")
+
+        dia_csv_i = None
+        if 'dia_csv_i'in filenames_I.keys(): 
+            dia_csv_i = filenames_I['dia_csv_i']
+
+        # load in the DIA data
+        swath = pyopenms.MSExperiment()
+        if dia_csv_i is not None:
+            chromatogramExtractor = OpenSwathChromatogramExtractor()
+            # read in the DIA data files:
+            # dia_files_i = ...(dia_csv_i)
+            swath = chromatogramExtractor.main(
+                infiles=[],
+                targeted=self.targeted,
+                extraction_window=0.05,
+                min_upper_edge_dist=0.0,
+                ppm=False,
+                is_swath=False,
+                rt_extraction_window=-1,
+                extraction_function="tophat"
+            )
+        self.swath = swath
+
     def openSWATH_py(
         self,
         MRMFeatureFinderScoring_params_I={},
@@ -270,7 +307,7 @@ class smartPeak_openSWATH_py():
                 
         """
         if verbose_I:
-            print("picking peaks using OpenSWATH")
+            print("Picking peaks using OpenSWATH")
 
         # helper classes
         smartpeak = smartPeak()

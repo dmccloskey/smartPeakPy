@@ -68,6 +68,8 @@ class __main__():
                 check_peaks = workflow_parameters["check_peaks"]
             if "quantify_peaks" in workflow_parameters:
                 quantify_peaks = workflow_parameters["quantify_peaks"]
+            if "verbose_I" in workflow_parameters:
+                verbose_I = workflow_parameters["verbose_I"]
 
         # check for workflow parameters integrity
         required_parameters = [
@@ -97,7 +99,8 @@ class __main__():
                 db_ini_i = '''%s/settings.ini''' % (data_dir)
 
                 # load in the files
-                openSWATH_py.load_TraML({'traML_csv_i': traML_csv_i}, verbose_I=verbose_I)
+                openSWATH_py.load_TraML({'traML_csv_i': traML_csv_i}, verbose_I=verbose_I)                
+                openSWATH_py.load_SWATHorDIA({})
                 openSWATH_py.load_MSExperiment(
                     {'mzML_feature_i': mzML_i},
                     MRMMapping_params_I=params['MRMMapping'],
@@ -217,7 +220,7 @@ class __main__():
                         verbose_I=verbose_I)
                     # quantify the components
                     AbsoluteQuantitation_py.setUnknowns(openSWATH_py.featureMap)
-                    AbsoluteQuantitation_py.quantifyComponents()
+                    AbsoluteQuantitation_py.quantifyComponents(verbose_I=verbose_I)
                     # store
                     openSWATH_py.featureMap = AbsoluteQuantitation_py.getUnknowns()
                     openSWATH_py.store_featureMap({
