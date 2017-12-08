@@ -11,12 +11,12 @@ from smartPeak.core.__main__ import __main__
 m = __main__()
 
 
-# LCMS_MRM
-m.main(
-    filename_filenames='/home/user/openMS_MRMworkflow/LCMS_MRM/filenames.csv',
-    filename_params='/home/user/openMS_MRMworkflow/LCMS_MRM/MRMFeatureFinderScoring_params.csv',
-    delimiter=',',
-    )
+# # LCMS_MRM
+# m.main(
+#     filename_filenames='/home/user/openMS_MRMworkflow/LCMS_MRM/filenames.csv',
+#     filename_params='/home/user/openMS_MRMworkflow/LCMS_MRM/MRMFeatureFinderScoring_params.csv',
+#     delimiter=',',
+#     )
 
 # # GCMS_SRM
 # m.main(
@@ -32,5 +32,5 @@ m.main(
 #     delimiter=',',
 #     )
 
-# from tests import runAllTests
-# runAllTests()
+from tests import runAllTests
+runAllTests()

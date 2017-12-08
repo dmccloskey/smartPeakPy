@@ -66,12 +66,19 @@ def runAllTests():
 
     from tests.test_core_smartPeak_openSWATH_py import TestSmartPeakOpenSWATH_py
     test = TestSmartPeakOpenSWATH_py()
-    test.test_openSWATH_py(debug = True)
-    test.test_validate_openSWATH(debug = True)
+    test.test_load_traML()
+    test.test_load_MSExperiment()
+    test.test_extract_metaData()
+    test.test_load_Trafo()
+    test.test_openSWATH_py()
+    test.test_load_featureMap()
+    test.test_filterAndSelect()
+    test.test_validate_py()
 
     from tests.test_core_smartPeak_AbsoluteQuantitation_py import TestAbsoluteQuantitation_py
     test = TestAbsoluteQuantitation_py()
-    test.test_QuantifyComponents(debug = True)
+    test.test_load_quantitationMethods()
+    test.test_quantifyComponents()
 
     from tests.test_pyTOPP_SequenceHandler import TestSequenceHandler
     test = TestSequenceHandler()
