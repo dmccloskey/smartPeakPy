@@ -62,7 +62,7 @@ class smartPeak_openSWATH_py():
         aqmf.load(quantitationMethods_csv_i, quantitationMethods)
         self.quantitationMethods = quantitationMethods
 
-    def load_TraML(self, filenames_I):
+    def load_TraML(self, filenames_I, verbose_I=False):
         """Load TraML file
 
         Args:
@@ -72,6 +72,9 @@ class smartPeak_openSWATH_py():
             targeted (TargetedExperiment)
 
         """
+        if verbose_I:
+            print("loading TraML")
+
         traML_csv_i, traML_i = None, None
         if 'traML_csv_i'in filenames_I.keys():
             traML_csv_i = filenames_I['traML_csv_i']
@@ -93,7 +96,8 @@ class smartPeak_openSWATH_py():
     def load_Trafo(
         self,
         filenames_I,
-        MRMFeatureFinderScoring_params_I={}
+        MRMFeatureFinderScoring_params_I={},
+        verbose_I=False
     ):
         """Load Trafo file
 
@@ -106,6 +110,9 @@ class smartPeak_openSWATH_py():
             targeted (TargetedExperiment)
         
         """
+        if verbose_I:
+            print("loading Trafo")
+
         trafo_csv_i = None
         if 'trafo_csv_i'in filenames_I.keys(): 
             trafo_csv_i = filenames_I['trafo_csv_i']
@@ -159,7 +166,8 @@ class smartPeak_openSWATH_py():
         self,
         filenames_I,
         MRMMapping_params_I={},
-        chromatogramExtractor_params_I={}
+        chromatogramExtractor_params_I={},
+        verbose_I=False
     ):
         """Load MzML into an MSExperiment
 
@@ -174,6 +182,9 @@ class smartPeak_openSWATH_py():
             msExperiment (TargetedExperiment)
         
         """
+        if verbose_I:
+            print("loading mzML")
+
         mzML_feature_i = None
         if 'mzML_feature_i'in filenames_I.keys():
             mzML_feature_i = filenames_I['mzML_feature_i']      
@@ -245,44 +256,10 @@ class smartPeak_openSWATH_py():
             mrmmapper.mapExperiment(chromatograms, self.targeted, chromatogram_map)
         self.chromatogram_map = chromatogram_map
 
-    def load_SWATHorDIA(
-        self,
-        filenames_I,
-    ):
-        """Load SWATH or DIA into an MSExperiment
-
-        Args:
-            filenames_I (list): list of filename strings
-
-        Internals:
-            msExperiment (TargetedExperiment)
-        
-        """
-        dia_csv_i = None
-        if 'dia_csv_i'in filenames_I.keys():
-            dia_csv_i = filenames_I['dia_csv_i']
-
-        # load in the DIA data
-        swath = pyopenms.MSExperiment()
-        if dia_csv_i is not None:
-            chromatogramExtractor = OpenSwathChromatogramExtractor()
-            # read in the DIA data files:
-            # dia_files_i = ...(dia_csv_i)
-            swath = chromatogramExtractor.main(
-                infiles=[],
-                targeted=self.targeted,
-                extraction_window=0.05,
-                min_upper_edge_dist=0.0,
-                ppm=False,
-                is_swath=False,
-                rt_extraction_window=-1,
-                extraction_function="tophat"
-            )
-        self.swath = swath
-
     def openSWATH_py(
         self,
         MRMFeatureFinderScoring_params_I={},
+        verbose_I=False
     ):
         """Run the openSWATH workflow for a single sample
         
@@ -292,6 +269,9 @@ class smartPeak_openSWATH_py():
                 names, values, descriptions, and tags
                 
         """
+        if verbose_I:
+            print("picking peaks using OpenSWATH")
+
         # helper classes
         smartpeak = smartPeak()
 
@@ -329,6 +309,7 @@ class smartPeak_openSWATH_py():
         MRMFeatureFilter_filter_params_I={},
         MRMFeatureSelector_select_params_I={},
         MRMFeatureSelector_schedule_params_I={},
+        verbose_I=False
     ):
         """Run the openSWATH post processing filtering workflow for a single sample
         
@@ -359,6 +340,8 @@ class smartPeak_openSWATH_py():
             mrmfeatureqcs_csv_i = filenames_I['mrmfeatureqcs_csv_i']
 
         # filter features
+        if verbose_I:
+            print("Filtering picked features")
         if MRMFeatureFilter_filter_params_I:   
             # set up MRMFeatureFilter and parse the MRMFeatureFilter params
             featureFilter = pyopenms.MRMFeatureFilter()
@@ -384,6 +367,8 @@ class smartPeak_openSWATH_py():
             output_filtered = self.featureMap
 
         # select features
+        if verbose_I:
+            print("Selecting picked features")
         featureSelector = MRMFeatureSelector()
         if calibrators_csv_i is not None:
             smartpeak_i = smartPeak_i()
@@ -417,13 +402,17 @@ class smartPeak_openSWATH_py():
     def load_featureMap(
         self,
         filenames_I={},
+        verbose_I=False
     ):
         """Load a FeatureMap
         
         Args:
             filenames_I (list): list of filename strings
             
-        """
+        """        
+        if verbose_I:
+            print("Loading FeatureMap")
+
         # Handle the filenames
         featureXML_i = None
         if 'featureXML_i'in filenames_I.keys():
@@ -437,9 +426,12 @@ class smartPeak_openSWATH_py():
 
         self.featureMap = output
 
-    def extract_metaData(self):
+    def extract_metaData(self, verbose_I=False):
         """Extracts metadata from the chromatogram
         """
+        if verbose_I:
+            print("Extracting metadata")
+
         # initialize output variables
         filename = ''
         samplename = ''
@@ -479,14 +471,16 @@ class smartPeak_openSWATH_py():
     def store_featureMap(
         self,
         filenames_I={},
-        # feature_csv_o = None,
-        # featureXML_o = None
+        verbose_I=False
     ):
         """Store FeatureMap as .xml and .csv
         
         Args:
             filenames_I (list): list of filename strings
         """
+        if verbose_I:
+            print("Storing FeatureMap")
+
         # Handle the filenames
         featureXML_o, feature_csv_o = None, None
         if 'featureXML_o'in filenames_I.keys():
@@ -511,7 +505,8 @@ class smartPeak_openSWATH_py():
     def load_validationData(
         self,
         filenames_I,
-        ReferenceDataMethods_params_I={}
+        ReferenceDataMethods_params_I={},
+        verbose_I=False
     ):
         """Load the validation data from file or from a database
         
@@ -520,6 +515,9 @@ class smartPeak_openSWATH_py():
             ReferenceDataMethods_params_I (dict): dictionary of DB query parameters
         
         """
+        if verbose_I:
+            print("Loading validation data")
+
         smartpeak = smartPeak()
 
         # Handle the filenames
@@ -601,10 +599,14 @@ class smartPeak_openSWATH_py():
 
     def validate_py(
         self,
-        MRMRFeatureValidator_params_I={}
+        MRMRFeatureValidator_params_I={},
+        verbose_I=False
     ):
         """Validate the selected peaks agains reference data
         """
+        if verbose_I:
+            print("Validating features")
+
         # map the reference data
         if MRMRFeatureValidator_params_I:
             featureValidator = MRMFeatureValidator()

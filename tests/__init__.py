@@ -48,11 +48,11 @@ def runAllTests():
     # test = TestOpenSwathRTNormalizer()
     # test.test_algorithm()
 
-    # TODO:
-    from tests.test_pyTOPP_MRMFeatureSelector import TestMRMFeatureSelector
-    test = TestMRMFeatureSelector()
-    test.test_select_MRMFeatures_score()
-    test.test_schedule_MRMFeatures_qmip()
+    # # TODO:
+    # from tests.test_pyTOPP_MRMFeatureSelector import TestMRMFeatureSelector
+    # test = TestMRMFeatureSelector()
+    # test.test_select_MRMFeatures_score()
+    # test.test_schedule_MRMFeatures_qmip()
 
     # # NOTE: requires database settings file
     # from tests.test_data_ReferenceDataMethods import TestReferenceDataMethods

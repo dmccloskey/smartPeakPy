@@ -20,7 +20,8 @@ class smartPeak_AbsoluteQuantitation_py():
 
     def load_quantitationMethods(
         self,
-        filenames_I
+        filenames_I,
+        verbose_I=False
     ):
         """Load AbsoluteQuantitationMethods
 
@@ -31,6 +32,9 @@ class smartPeak_AbsoluteQuantitation_py():
             quantitationMethods (list): list of AbsoluteQuantitationMethod objects
 
         """
+        if verbose_I:
+            print("loading quantitation methods")
+
         quantitationMethods_csv_i = None
         if 'quantitationMethods_csv_i'in filenames_I.keys():
             quantitationMethods_csv_i = filenames_I['quantitationMethods_csv_i']
@@ -64,13 +68,16 @@ class smartPeak_AbsoluteQuantitation_py():
         if 'quantitationStandards_csv_i'in filenames_I.keys():
             quantitationStandards_csv_i = filenames_I['quantitationStandards_csv_i']
 
-    def quantifyComponents(self):
+    def quantifyComponents(self, verbose_I=False):
         """Quantify all unknown samples based on the quantitationMethod
         
         Args:
             unknowns (list): list of FeatureMaps to quantify
             
-        """
+        """        
+        if verbose_I:
+            print("Quantifying features")
+
         aq = pyopenms.AbsoluteQuantitation()
         aq.setQuantMethods(self.quantitationMethods)
         aq.quantifyComponents(self.unknowns)

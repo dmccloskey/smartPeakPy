@@ -16,6 +16,7 @@ class __main__():
             validate_peaks=False,
             quantify_peaks=True,
             check_peaks=False,
+            verbose_I=False,
             *Args,
             **Kwargs
             ):
@@ -96,17 +97,18 @@ class __main__():
                 db_ini_i = '''%s/settings.ini''' % (data_dir)
 
                 # load in the files
-                openSWATH_py.load_TraML({'traML_csv_i': traML_csv_i})
-                openSWATH_py.load_SWATHorDIA({})
+                openSWATH_py.load_TraML({'traML_csv_i': traML_csv_i}, verbose_I=verbose_I)
                 openSWATH_py.load_MSExperiment(
                     {'mzML_feature_i': mzML_i},
                     MRMMapping_params_I=params['MRMMapping'],
-                    chromatogramExtractor_params_I=params['ChromatogramExtractor'])
-                openSWATH_py.extract_metaData()
+                    chromatogramExtractor_params_I=params['ChromatogramExtractor'],
+                    verbose_I=verbose_I)
+                openSWATH_py.extract_metaData(verbose_I=verbose_I)
                 openSWATH_py.meta_data['sample_type'] = 'Unknown'
                 openSWATH_py.load_Trafo(  # skip transformation of RT
                     {},  # {'trafo_csv_i':trafo_csv_i},
-                    params['MRMFeatureFinderScoring'])
+                    params['MRMFeatureFinderScoring'],
+                    verbose_I=verbose_I)
 
                 # pick peaks with OpenSWATH
                 featureXML_o = '''%s/features_tmp/%s.featureXML''' % (data_dir, sample) 
@@ -114,14 +116,18 @@ class __main__():
                 if pick_peaks:
                     # run the openSWATH workflow for metabolomics
                     openSWATH_py.openSWATH_py(
-                        params['MRMFeatureFinderScoring'])
+                        params['MRMFeatureFinderScoring'],
+                        verbose_I=verbose_I)
                     # store
                     openSWATH_py.store_featureMap({
                         'featureXML_o': featureXML_o,
-                        'feature_csv_o': feature_csv_o})
+                        'feature_csv_o': feature_csv_o},
+                        verbose_I=verbose_I)
                 elif select_peaks or validate_peaks or quantify_peaks or check_peaks:
                     try:
-                        openSWATH_py.load_featureMap({'featureXML_i': featureXML_o})
+                        openSWATH_py.load_featureMap(
+                            {'featureXML_i': featureXML_o},
+                            verbose_I=verbose_I)
                     except Exception as e:
                         print(e)
 
@@ -138,18 +144,22 @@ class __main__():
                         MRMFeatureSelector_select_params_I=params[
                             'MRMFeatureSelector.select_MRMFeatures_qmip'],
                         MRMFeatureSelector_schedule_params_I=params[
-                            'MRMFeatureSelector.schedule_MRMFeatures_qmip']
+                            'MRMFeatureSelector.schedule_MRMFeatures_qmip'],
                         # score algorithm
                         # MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_score'],
                         # MRMFeatureSelector_schedule_params_I={}
+                        verbose_I=verbose_I
                     )
                     # store
                     openSWATH_py.store_featureMap({
                         'featureXML_o': featureXML_o,
-                        'feature_csv_o': feature_csv_o})
+                        'feature_csv_o': feature_csv_o},
+                        verbose_I=verbose_I)
                 elif validate_peaks or quantify_peaks or check_peaks:        
                     try:
-                        openSWATH_py.load_featureMap({'featureXML_i': featureXML_o})
+                        openSWATH_py.load_featureMap(
+                            {'featureXML_i': featureXML_o},
+                            verbose_I=verbose_I)
                     except Exception as e:
                         print(e)
 
@@ -170,7 +180,8 @@ class __main__():
                         'type': 'list', 'value': sample_names_I})
                     openSWATH_py.load_validationData(
                         {'db_ini_i': db_ini_i},
-                        ReferenceDataMethods_params_I
+                        ReferenceDataMethods_params_I,
+                        verbose_I=verbose_I
                         )
                     if not openSWATH_py.reference_data:
                         skipped_samples.append({
@@ -180,13 +191,17 @@ class __main__():
                         continue
                     # validate the data
                     openSWATH_py.validate_py(
-                        params['MRMFeatureValidator.validate_MRMFeatures'])
+                        params['MRMFeatureValidator.validate_MRMFeatures'],
+                        verbose_I=verbose_I)
                     openSWATH_py.store_featureMap({
                         'featureXML_o': featureXML_o,
-                        'feature_csv_o': feature_csv_o})
+                        'feature_csv_o': feature_csv_o},
+                        verbose_I=verbose_I)
                 elif quantify_peaks or check_peaks:                   
                     try:
-                        openSWATH_py.load_featureMap({'featureXML_i': featureXML_o})
+                        openSWATH_py.load_featureMap(
+                            {'featureXML_i': featureXML_o},
+                            verbose_I=verbose_I)
                     except Exception as e:
                         print(e)
 
@@ -198,7 +213,8 @@ class __main__():
                 if quantify_peaks:
                     # load the quantitation method
                     AbsoluteQuantitation_py.load_quantitationMethods(
-                        {'quantitationMethods_csv_i': quantitationMethods_csv_i})
+                        {'quantitationMethods_csv_i': quantitationMethods_csv_i},
+                        verbose_I=verbose_I)
                     # quantify the components
                     AbsoluteQuantitation_py.setUnknowns(openSWATH_py.featureMap)
                     AbsoluteQuantitation_py.quantifyComponents()
@@ -206,7 +222,8 @@ class __main__():
                     openSWATH_py.featureMap = AbsoluteQuantitation_py.getUnknowns()
                     openSWATH_py.store_featureMap({
                         'featureXML_o': featureXML_o,
-                        'feature_csv_o': feature_csv_o})
+                        'feature_csv_o': feature_csv_o},
+                        verbose_I=verbose_I)
                 elif check_peaks: 
                     try:
                         openSWATH_py.load_featureMap({'featureXML_i': featureXML_o})
@@ -214,7 +231,9 @@ class __main__():
                         # Peaks have not been quantified, try opening picked peaks
                         featureXML_o = '''%s/features/%s.featureXML''' % (
                             data_dir, sample)
-                        openSWATH_py.load_featureMap({'featureXML_i': featureXML_o})
+                        openSWATH_py.load_featureMap(
+                            {'featureXML_i': featureXML_o},
+                            verbose_I=verbose_I)
 
                 # QC the peaks
                 mrmfeatureqcs_csv_i = '''%s/FeatureQCs.csv''' % (data_dir)
@@ -227,12 +246,14 @@ class __main__():
                             'MRMFeatureFilter.filter_MRMFeatures.qc'],
                         # no selection
                         MRMFeatureSelector_select_params_I={},
-                        MRMFeatureSelector_schedule_params_I={}
+                        MRMFeatureSelector_schedule_params_I={},
+                        verbose_I=verbose_I
                     )
                     # store
                     openSWATH_py.store_featureMap({
                         'featureXML_o': featureXML_o,
-                        'feature_csv_o': feature_csv_o})
+                        'feature_csv_o': feature_csv_o},
+                        verbose_I=verbose_I)
 
                 # record features
                 seqhandler.addSampleToSequence(
