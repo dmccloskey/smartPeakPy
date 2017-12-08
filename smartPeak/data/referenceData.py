@@ -4,6 +4,7 @@ from .DB_io import DB_io
 
 """
 
+
 class ReferenceData(DB_io):
     """
     Select reference data
@@ -11,17 +12,18 @@ class ReferenceData(DB_io):
 
     def get_referenceData(
         self,
-        experiment_ids_I = [],
-        sample_names_I = [],
-        sample_types_I = [],
-        acquisition_methods_I = [],
-        quantitation_method_ids_I = [],
-        component_names_I = [],
-        component_group_names_I = [],
-        where_clause_I = '',
-        used__I = True,
-        experiment_limit_I = 10000,
-        mqresultstable_limit_I = 1000000):
+        experiment_ids_I=[],
+        sample_names_I=[],
+        sample_types_I=[],
+        acquisition_methods_I=[],
+        quantitation_method_ids_I=[],
+        component_names_I=[],
+        component_group_names_I=[],
+        where_clause_I='',
+        used__I=True,
+        experiment_limit_I=10000,
+        mqresultstable_limit_I=1000000
+    ):
         """Select reference data
 
         Args:
@@ -34,7 +36,7 @@ class ReferenceData(DB_io):
 
         """
         data_O = []       
-        #subquery 1: experiment
+        # subquery 1: experiment
         subquery1 = '''SELECT "experiment"."id" AS experiment_id,
                 "experiment"."sample_name", 
                 "experiment"."acquisition_method_id", 
@@ -45,16 +47,20 @@ class ReferenceData(DB_io):
         subquery1 += '''WHERE exp_type_id = 4 
             '''
         if experiment_ids_I:
-            cmd_q = '''AND "experiment"."id" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(experiment_ids_I))
+            cmd_q = '''AND "experiment"."id" =ANY ('{%s}'::text[]) ''' % (
+                self.convert_list2string(experiment_ids_I))
             subquery1 += cmd_q
         if sample_names_I:
-            cmd_q = '''AND "experiment"."sample_name" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(sample_names_I))
+            cmd_q = '''AND "experiment"."sample_name" =ANY ('{%s}'::text[]) ''' % (
+                self.convert_list2string(sample_names_I))
             subquery1 += cmd_q
         if acquisition_methods_I:
-            cmd_q = '''AND "experiment"."acquisition_method_id" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(acquisition_methods_I))
+            cmd_q = '''AND "experiment"."acquisition_method_id" =ANY ('{%s}'::text[]) '''\
+                % (self.convert_list2string(acquisition_methods_I))
             subquery1 += cmd_q
         if quantitation_method_ids_I:
-            cmd_q = '''AND "experiment"."quantitation_method_id" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(quantitation_method_ids_I))
+            cmd_q = '''AND "experiment"."quantitation_method_id" =ANY('{%s}'::text[]) '''\
+                % (self.convert_list2string(quantitation_method_ids_I))
             subquery1 += cmd_q
         subquery1 += '''GROUP BY "experiment"."id",
                 "experiment"."sample_name", 
@@ -68,7 +74,7 @@ class ReferenceData(DB_io):
             '''
         subquery1 += '''LIMIT %s
             ''' % experiment_limit_I
-        #subquery 2: mqresultstable
+        # subquery 2: mqresultstable
         subquery2 = '''SELECT "data_stage01_quantification_mqresultstable"."id",
             "data_stage01_quantification_mqresultstable"."index_",
             "data_stage01_quantification_mqresultstable"."sample_index",
@@ -164,17 +170,21 @@ class ReferenceData(DB_io):
         '''
         subquery2 += '''FROM "data_stage01_quantification_mqresultstable",
             (%s) AS subquery1 
-        ''' %subquery1
-        subquery2 += '''WHERE "data_stage01_quantification_mqresultstable"."sample_name" = "subquery1"."sample_name" 
+        ''' % subquery1
+        subquery2 += '''WHERE "data_stage01_quantification_mqresultstable"."sample_name" = 
+            "subquery1"."sample_name" 
         '''
         if component_names_I:
-            cmd_q = '''AND "data_stage01_quantification_mqresultstable"."component_name" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(component_names_I))
+            cmd_q = '''AND "data_stage01_quantification_mqresultstable"."component_name" =ANY 
+                ('{%s}'::text[]) ''' % (self.convert_list2string(component_names_I))
             subquery2 += cmd_q
         if sample_types_I:
-            cmd_q = '''AND "data_stage01_quantification_mqresultstable"."sample_type" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(sample_types_I))
+            cmd_q = '''AND "data_stage01_quantification_mqresultstable"."sample_type" =ANY 
+                ('{%s}'::text[]) ''' % (self.convert_list2string(sample_types_I))
             subquery2 += cmd_q
         if component_group_names_I:
-            cmd_q = '''AND "data_stage01_quantification_mqresultstable"."component_group_name" =ANY ('{%s}'::text[]) ''' %(self.convert_list2string(component_group_names_I))
+            cmd_q = '''AND "data_stage01_quantification_mqresultstable"."component_group_name" =ANY 
+            ('{%s}'::text[]) ''' % (self.convert_list2string(component_group_names_I))
             subquery2 += cmd_q
         if used__I:
             subquery2 += '''AND used_ '''
@@ -188,16 +198,18 @@ class ReferenceData(DB_io):
             '''
         subquery2 += '''LIMIT %s
             ''' % mqresultstable_limit_I
-        #final query
-        query_cmd = '''%s; ''' %subquery2
+        # final query
+        query_cmd = '''%s; ''' % subquery2
         try:
             data_O = [dict(d) for d in self.execute_select(query_cmd)]
         except Exception as e:
             print(e)
         return data_O
 
-    def process_referenceData(self,
-        data_I):
+    def process_referenceData(
+        self,
+        data_I
+    ):
         """Process the reference data
         1. remove all internal standards that are not referenced by an analyte
         2. integrity check of pertinent data
@@ -209,13 +221,15 @@ class ReferenceData(DB_io):
             list: data_O: list of dictionaries
         """
         # list out all referenced IS
-        is_names = list(set([(d['experiment_id'],d['sample_name'],d['is_name']) for d in data_I if not d['is_name'] is None]))
+        is_names = list(set([
+            (d['experiment_id'], d['sample_name'], d['is_name'])
+            for d in data_I if not d['is_name'] is None]))
         data_O = []
         for row in data_I:
             # trim the filename
             row['original_filename'] = row['original_filename'].split(' (sample ')[0]
             # pull out referenced IS
-            if (row['experiment_id'],row['sample_name'],row['component_name']) in is_names and row['is_']:
+            if (row['experiment_id'], row['sample_name'], row['component_name']) in is_names and row['is_']:
                 data_O.append(row)
             elif not row['is_']:
                 data_O.append(row)

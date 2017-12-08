@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-import csv, sys
-try:
-    import pyopenms
-except ImportError as e:
-    print(e)
+import csv
+import sys
+
 
 class OpenSwathFeatureXMLToTSV():
     """Converts a featureXML to a mProphet tsv
@@ -12,7 +10,7 @@ class OpenSwathFeatureXMLToTSV():
         https://github.com/sneumann/OpenMS/blob/master/pyOpenMS/pyTOPP/OpenSwathFeatureXMLToTSV.py
      """
 
-    def convert_to_row(self,feature, targ, run_id, keys, keys_subordinates, filename):
+    def convert_to_row(self, feature, targ, run_id, keys, keys_subordinates, filename):
         """Convert Feature into a row for csv outpout
 
         Args:
@@ -34,23 +32,32 @@ class OpenSwathFeatureXMLToTSV():
         full_peptide_name = "NA"
         # if (pep.metaValueExists("full_peptide_name")):
         #     full_peptide_name = pep.getMetaValue("full_peptide_name")
-        # # AttributeError: 'pyopenms.pyopenms.LightCompound' object has no attribute 'metaValueExists'
+        # # AttributeError: 
+        # 'pyopenms.pyopenms.LightCompound' object has no attribute 'metaValueExists'
 
         decoy = "0"
-        peptidetransitions = [t for t in targ.getTransitions() if t.getPeptideRef() == peptide_ref]
+        peptidetransitions = [
+            t for t in targ.getTransitions() if t.getPeptideRef() == peptide_ref]
         # if len(peptidetransitions) > 0:
-        #     if peptidetransitions[0].getDecoyTransitionType() == pyopenms.DecoyTransitionType().DECOY:
+        #     if peptidetransitions[0].getDecoyTransitionType() == 
+        #       pyopenms.DecoyTransitionType().DECOY:
         #         decoy = "1"
-        #     elif peptidetransitions[0].getDecoyTransitionType() == pyopenms.DecoyTransitionType().TARGET:
+        #     elif peptidetransitions[0].getDecoyTransitionType() == 
+        #       pyopenms.DecoyTransitionType().TARGET:
         #         decoy = "0"
-        # # AttributeError: 'pyopenms.pyopenms.LightTransition' object has no attribute 'getDecoyTransitionType'
+        # # AttributeError: 
+        # 'pyopenms.pyopenms.LightTransition' 
+        # object has no attribute 'getDecoyTransitionType'
 
         protein_name = "NA"
         if len(pep.protein_refs) > 0:
             protein_name = pep.protein_refs[0]
 
         # fragment_annotation = "NA"
-        # fragment = [t for t in peptidetransitions if t.getPrecursorMZ()==feature.getMetaValue("PrecursorMZ") and t.getProductMZ()==feature.getMetaValue("ProductMZ")]
+        # fragment = [
+        #   t for t in peptidetransitions if t.getPrecursorMZ() == 
+        #       feature.getMetaValue("PrecursorMZ") and t.getProductMZ() == 
+        #       feature.getMetaValue("ProductMZ")]
         # if len(fragment) == 1:
         #     fragment_annotation = fragment[0].getName()
         # if (pep.metaValueExists("native_id")):
@@ -76,7 +83,7 @@ class OpenSwathFeatureXMLToTSV():
         key_row = []
         for k in keys:
             value = feature.getMetaValue(k)
-            if type(value)==type(''.encode('utf-8')):
+            if isinstance(value, bytes):
                 value = feature.getMetaValue(k).decode('utf-8')
             key_row.append(value)
 
@@ -84,11 +91,13 @@ class OpenSwathFeatureXMLToTSV():
             key_subordinate_row = []
             for k in keys_subordinates:
                 value = subordinate.getMetaValue(k)
-                if type(value)==type(''.encode('utf-8')):
+                if isinstance(value, bytes):
                     value = subordinate.getMetaValue(k).decode('utf-8')
                 key_subordinate_row.append(value)
-            transition = [t for t in peptidetransitions if t.getNativeID()==subordinate.getMetaValue("native_id")][0]
-            key_subordinate_row.append(transition.getPrecursorMZ()) #include quant, qual, detecting, identifying, etc.,
+            transition = [
+                t for t in peptidetransitions if t.getNativeID() ==
+                subordinate.getMetaValue("native_id")][0]
+            key_subordinate_row.append(transition.getPrecursorMZ())
             key_subordinate_row.append(subordinate.getIntensity())
             rows_O.append(header_row + key_row + key_subordinate_row)
 
@@ -106,7 +115,8 @@ class OpenSwathFeatureXMLToTSV():
         # get feature keys
         keys = []
         features[0].getKeys(keys)
-        keys.remove("PrecursorMZ".encode('utf-8')) #transition group precursorMZ is not the same for all transitions!
+        # transition group precursorMZ is not the same for all transitions!
+        keys.remove("PrecursorMZ".encode('utf-8'))
         # get subordinate keys
         keys_subordinates = []
         features[0].getSubordinates()[0].getKeys(keys_subordinates)
@@ -131,10 +141,13 @@ class OpenSwathFeatureXMLToTSV():
         header.extend(keys1)
         keys_subordinates1 = [k.decode('utf-8') for k in keys_subordinates]
         header.extend(keys_subordinates1)
-        header.extend(["PrecursorMZ","peak_area"]) #different percursorMZ for each transition
-        return header,keys,keys_subordinates
+        # different percursorMZ for each transition
+        header.extend(["PrecursorMZ", "peak_area"]) 
+        return header, keys, keys_subordinates
 
-    def convert_FeatureXMLToTSV(self, features, targ, run_id = 'run0', filename = 'run0.FeatureXML'):
+    def convert_FeatureXMLToTSV(
+        self, features, targ, run_id='run0', filename='run0.FeatureXML'
+    ):
         """Converts a featureXML to a mProphet tsv
 
         Args:
@@ -148,22 +161,26 @@ class OpenSwathFeatureXMLToTSV():
         
         """
         rows_O = []
-        header,keys,keys_subordinates = self.get_header(features)
+        header, keys, keys_subordinates = self.get_header(features)
         for feature in features:
-            rows = self.convert_to_row(feature, targ, run_id, keys, keys_subordinates, filename)
+            rows = self.convert_to_row(
+                feature, targ, run_id, keys, keys_subordinates, filename)
             for row in rows:
-                rows_O.append(dict(zip(header,row)))
-        return header,rows_O
+                rows_O.append(dict(zip(header, row)))
+        return header, rows_O
 
-    def store(self, filename_O, output, targeted, run_id = 'run0', filename = 'run0.FeatureXML'):
+    def store(
+        self, filename_O, output, targeted, run_id='run0', filename='run0.FeatureXML'
+    ):
         """Writes a featureXML to a mProphet tsv
         """
         # convert to dicts
-        header,rows = self.convert_FeatureXMLToTSV(output, targeted, run_id = run_id, filename = filename)
+        header, rows = self.convert_FeatureXMLToTSV(
+            output, targeted, run_id=run_id, filename=filename)
 
         # write dict to csv
-        with open(filename_O, 'w',newline='') as f:
-            writer = csv.DictWriter(f, fieldnames = header)
+        with open(filename_O, 'w', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=header)
             try:
                 writer.writeheader()
                 writer.writerows(rows)
