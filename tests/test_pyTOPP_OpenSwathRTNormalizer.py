@@ -15,10 +15,10 @@ class TestOpenSwathRTNormalizer():
     
     def load_data(
         self,
-        mzML_feature_i="mzML/150601_0_BloodProject01_PLT_QC_Broth-1.mzML",
-        trafo_csv_i="BloodProject01_SWATH_trafo.csv",
-        traML_csv_i="BloodProject01_SWATH.csv",
-        filename_params="BloodProject01_MRMFeatureFinderScoring_params.csv"
+        mzML_feature_i="mzML/mzML_1.mzML",
+        trafo_csv_i="trafo_1.csv",
+        traML_csv_i="traML_1.csv",
+        filename_params="params_1.csv"
     ):
         """load the test data"""            
 

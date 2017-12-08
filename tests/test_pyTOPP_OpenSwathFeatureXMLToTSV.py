@@ -19,8 +19,8 @@ class TestOpenSwathFeatureXMLToTSV():
     
     def load_data(
         self,
-        featureXML_i="features/150601_0_BloodProject01_PLT_QC_Broth-1.featureXML",
-        traML_csv_i="BloodProject01_SWATH.csv"
+        featureXML_i="features/test_1.featureXML",
+        traML_csv_i="traML_1.csv"
     ):
         """load the test data"""        
 
@@ -59,5 +59,3 @@ class TestOpenSwathFeatureXMLToTSV():
         assert(header[17] == 'peak_apices_sum')
         assert(rows_O[0]['PeptideRef'] == '23dpg')
         assert(rows_O[0]['native_id'] == '23dpg.23dpg_1.Heavy')
-        assert(rows_O[50]['PeptideRef'] == 'camp')
-        assert(rows_O[50]['native_id'] == 'camp.camp_2.Light')

@@ -17,7 +17,10 @@ class TestAbsoluteQuantitation_py():
             data_dir, "quantitationMethods_1.csv")
         AbsoluteQuantitation_py.load_quantitationMethods(
             {'quantitationMethods_csv_i': quantitationMethods_csv_i})
-        assert(AbsoluteQuantitation_py.quantitationMethods[0].getLLOQ() == 0.0)
+        assert(AbsoluteQuantitation_py.quantitationMethods[0].getLLOQ() == 0.25)
+        assert(AbsoluteQuantitation_py.quantitationMethods[0].getULOQ() == 2.5)
+        assert(AbsoluteQuantitation_py.quantitationMethods[
+            0].getComponentName() == b'23dpg.23dpg_1.Light')
 
     def test_quantifyComponents(self):
         openSWATH_py = smartPeak_openSWATH_py()
@@ -39,12 +42,6 @@ class TestAbsoluteQuantitation_py():
         assert(AbsoluteQuantitation_py.unknowns[0].getSubordinates()[
                 1].getMetaValue("native_id") == b'23dpg.23dpg_1.Light')
         assert(AbsoluteQuantitation_py.unknowns[0].getSubordinates()[
-            1].getMetaValue("calculated_concentration") == 0.4422842478400926) 
+            1].getMetaValue("calculated_concentration") == 0.44335812456518986) 
         assert(AbsoluteQuantitation_py.unknowns[0].getSubordinates()[
-            1].getMetaValue("concentration_units") == b'uM')
-        assert(AbsoluteQuantitation_py.unknowns[15].getSubordinates()[
-            1].getMetaValue("native_id") == b'amp.amp_1.Light')
-        assert(AbsoluteQuantitation_py.unknowns[15].getSubordinates()[
-            1].getMetaValue("calculated_concentration") == 5.516940577368133)
-        assert(AbsoluteQuantitation_py.unknowns[15].getSubordinates()[
             1].getMetaValue("concentration_units") == b'uM')

@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-#utilities
+# utilities
 import copy
-#modules
-from smartPeak.core.smartPeak import smartPeak
-#3rd part libraries
+# 3rd part libraries
 try:
     import pyopenms
 except ImportError as e:
     print(e)
+
 
 class MRMFeatureValidator():
     """MRMFeatureFilter performs validation on features (FeatureMap)
@@ -17,7 +16,7 @@ class MRMFeatureValidator():
         self,
         reference_data,
         features,
-        Tr_window = 1.0
+        Tr_window=1.0
         ):
         """Map reference data to FeatureMap
         
@@ -31,14 +30,19 @@ class MRMFeatureValidator():
 
         Potential code optimizations
             identify True Negatives and False Negatives 
-                (can be problematic due to selection of peaks not in the quantification target list...)
+                (can be problematic due to selection of peaks not in
+                the quantification target list...)
             add in plots and other visualizations
         """
-        #reformat reference_data into a dict by unique key
-        # TODO: need to add in the experiment_id and acquisition_method_id to feature or as a parameter
-        # reference_data_dict = {(d['experiment_id'],d['acquisition_method_id'],d['quantitation_method_id'],d['sample_name'],d['component_name']):d for d in reference_data}
-        reference_data_dict = {(d['component_name']):d for d in reference_data}
-        #intialize y_true,y_pred
+        # reformat reference_data into a dict by unique key
+        # TODO: need to add in the experiment_id and acquisition_method_id
+        # to feature or as a parameter
+        # reference_data_dict = {
+        # (d['experiment_id'],d['acquisition_method_id'],
+        # d['quantitation_method_id'],d['sample_name'],d['component_name']):d 
+        # for d in reference_data}
+        reference_data_dict = {(d['component_name']): d for d in reference_data}
+        # intialize y_true,y_pred
         y_true, y_pred = [], []
         # #TESTING FN:
         # reference_data_keys = []
@@ -47,7 +51,7 @@ class MRMFeatureValidator():
             subordinates_tmp = []
             for subordinate in feature.getSubordinates():
                 fc_pass = False
-                #make the reference_data_dict key
+                # make the reference_data_dict key
                 reference_data_key = (subordinate.getMetaValue('native_id').decode('utf-8'))
                 # #TESTING FN:
                 # reference_data_keys.append(reference_data_key)

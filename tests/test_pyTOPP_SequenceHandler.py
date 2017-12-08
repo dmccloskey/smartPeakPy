@@ -69,7 +69,7 @@ class TestSequenceHandler():
                 # pick peaks with OpenSWATH
                 # dynamically make the filenames
                 mzML_i = '''%s/mzML/%s.mzML''' % (data_dir, sample)
-                traML_csv_i = '''%s/YeastProject01_traML.csv''' % (data_dir)
+                traML_csv_i = '''%s/traML_1.csv''' % (data_dir)
                 # load in the files
                 openSWATH_py.load_TraML({'traML_csv_i': traML_csv_i})
                 openSWATH_py.load_MSExperiment({

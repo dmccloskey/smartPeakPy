@@ -159,17 +159,17 @@ class TestSmartPeakOpenSWATH_py():
         openSWATH_py.openSWATH_py(
             self.params_1['MRMFeatureFinderScoring'])
         assert(openSWATH_py.featureMap[0].getSubordinates()[
-            0].getMetaValue("peak_apex_int") == 262623.5)
+            0].getMetaValue("peak_apex_int") == 266403.0)
         assert(openSWATH_py.featureMap[0].getSubordinates()[
             0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
         assert(openSWATH_py.featureMap[0].getSubordinates()[
             0].getRT() == 15.894456338119507)  # refactor to use pytest.approx
         assert(openSWATH_py.featureMap[50].getSubordinates()[
-            0].getMetaValue("peak_apex_int") == 50.5)
+            0].getMetaValue("peak_apex_int") == 0.0)
         assert(openSWATH_py.featureMap[50].getSubordinates()[
-            0].getMetaValue("native_id") == b'actp.actp_1.Heavy')
+            0].getMetaValue("native_id") == b'acon-C.acon-C_1.Heavy')
         assert(openSWATH_py.featureMap[50].getSubordinates()[
-            0].getRT() == 12.430290568542478)
+            0].getRT() == 14.034880456034344)
 
         # store
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
@@ -180,35 +180,36 @@ class TestSmartPeakOpenSWATH_py():
 
     def test_load_featureMap(self):
         openSWATH_py = smartPeak_openSWATH_py()
-        
-        # load traML
-        traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        openSWATH_py.load_TraML({'traML_csv_i': traML_csv_i})
-
-        # load MSExperiment
-        mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        openSWATH_py.load_MSExperiment({
-            'mzML_feature_i': mzML_i},
-            MRMMapping_params_I=self.params_1['MRMMapping'])
-        
-        openSWATH_py.extract_metaData()
 
         # load featureMap
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
         openSWATH_py.load_featureMap({'featureXML_i': featureXML_o})
 
         assert(openSWATH_py.featureMap[0].getSubordinates()[
-            0].getMetaValue("peak_apex_int") == 262623.5)
+            0].getMetaValue("peak_apex_int") == 266403.0)
         assert(openSWATH_py.featureMap[0].getSubordinates()[
             0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
         assert(openSWATH_py.featureMap[0].getSubordinates()[
             0].getRT() == 15.8944563381195)  # refactor to use pytest.approx
         assert(openSWATH_py.featureMap[50].getSubordinates()[
-            0].getMetaValue("peak_apex_int") == 50.5)
+            0].getMetaValue("peak_apex_int") == 0.0)
         assert(openSWATH_py.featureMap[50].getSubordinates()[
-            0].getMetaValue("native_id") == b'actp.actp_1.Heavy')
+            0].getMetaValue("native_id") == b'acon-C.acon-C_1.Heavy')
         assert(openSWATH_py.featureMap[50].getSubordinates()[
-            0].getRT() == 12.4302905685425)
+            0].getRT() == 14.0348804560343)
+
+        # assert(openSWATH_py.featureMap[0].getSubordinates()[
+        #     0].getMetaValue("peak_apex_int") == 262623.5)
+        # assert(openSWATH_py.featureMap[0].getSubordinates()[
+        #     0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
+        # assert(openSWATH_py.featureMap[0].getSubordinates()[
+        #     0].getRT() == 15.8944563381195)  # refactor to use pytest.approx
+        # assert(openSWATH_py.featureMap[50].getSubordinates()[
+        #     0].getMetaValue("peak_apex_int") == 50.5)
+        # assert(openSWATH_py.featureMap[50].getSubordinates()[
+        #     0].getMetaValue("native_id") == b'actp.actp_1.Heavy')
+        # assert(openSWATH_py.featureMap[50].getSubordinates()[
+        #     0].getRT() == 12.4302905685425)
 
     def test_filterAndSelect(self):
         self.load_data()
@@ -238,23 +239,17 @@ class TestSmartPeakOpenSWATH_py():
             self.params_1['MRMFeatureSelector.select_MRMFeatures_qmip'],
             self.params_1['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
         assert(openSWATH_py.featureMap[0].getSubordinates()[
-            0].getMetaValue("peak_apex_int") == 262623.5)
+            0].getMetaValue("peak_apex_int") == 266403.0)
         assert(openSWATH_py.featureMap[0].getSubordinates()[
             0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
         assert(openSWATH_py.featureMap[0].getSubordinates()[
             0].getRT() == 15.8944563381195)  # refactor to use pytest.approx
         assert(openSWATH_py.featureMap[50].getSubordinates()[
-            0].getMetaValue("peak_apex_int") == 92638.0)
+            0].getMetaValue("peak_apex_int") == 198161.0)
         assert(openSWATH_py.featureMap[50].getSubordinates()[
-            0].getMetaValue("native_id") == b'thr-L.thr-L_1.Heavy')
+            0].getMetaValue("native_id") == b'glutacon.glutacon_1.Heavy')
         assert(openSWATH_py.featureMap[50].getSubordinates()[
-            0].getRT() == 1.0136314956665)
-        # assert(openSWATH_py.featureMap[50].getSubordinates()[
-        #     0].getMetaValue("peak_apex_int") == 1080.0)
-        # assert(openSWATH_py.featureMap[50].getSubordinates()[
-        #     0].getMetaValue("native_id") == b'oxa.oxa_1.Heavy')
-        # assert(openSWATH_py.featureMap[50].getSubordinates()[
-        #     0].getRT() == 13.4963475631714)
+            0].getRT() == 12.546641343689)
 
         # store
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_2") 
@@ -288,4 +283,4 @@ class TestSmartPeakOpenSWATH_py():
         # validate the data
         openSWATH_py.validate_py(self.params_1[
             'MRMFeatureValidator.validate_MRMFeatures'])
-        assert(openSWATH_py.validation_metrics["accuracy"] == 0.977941176471)
+        assert(openSWATH_py.validation_metrics["accuracy"] == 0.98709677419354835)

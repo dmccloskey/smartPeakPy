@@ -49,54 +49,15 @@ class testSmartPeak():
         str_test = 'a'.encode('utf-8')
         assert(smartPeak.convert_string2Byte('a', encoding_I='utf-8') == str_test)
 
-    def test_convert_MQQMethod2Feature(self, verbose_I=False):
-        """Test convert_MQQMethod2Feature function
-        """
+    # def test_convert_MQQMethod2Feature(self, verbose_I=False):
+    #     """Test convert_MQQMethod2Feature function
+    #     """
         
-        filename_I = '/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_qmethod.csv'
-        filename_O = '/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_SWATH_feature.csv'     
-        self.convert_MQQMethod2Feature(filename_I, filename_O) 
+    #     filename_I = '/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_qmethod.csv'
+    #     filename_O = '/home/user/openMS_MRMworkflow/BloodProject01/BloodProject01_SWATH_feature.csv'     
+    #     self.convert_MQQMethod2Feature(filename_I, filename_O) 
 
-        # TODO: re-read in resulting file and compare to test file
-
-    def convert_MQQMethod2Feature(self, filename_I, filename_O):
-        """Convert MultiQuant QMethod file to feature.csv file
-        
-        """
-        smartpeak_i = smartPeak_i()
-        smartpeak_i.read_csv(filename_I, delimiter=',')
-        MQQMethod = smartpeak_i.getData()
-        smartpeak_i.clear_data()
-
-        smartpeak = smartPeak()
-        features = smartpeak.convert_MQQMethod2Feature(MQQMethod)
-        headers = [
-            'ProteinName',
-            'FullPeptideName',
-            'transition_group_id',
-            'transition_name',
-            'Tr_recalibrated',
-            'Annotation',
-            'RetentionTime',
-            'PrecursorMz',
-            'MS1 Res',
-            'ProductMz',
-            'MS2 Res',
-            'Dwell',
-            'Fragmentor',
-            'Collision Energy',
-            'Cell Accelerator Voltage',
-            'LibraryIntensity',
-            'decoy',
-            'PeptideSequence',
-            'LabelType',
-            'PrecursorCharge',
-            'FragmentCharge',
-            'FragmentType',
-            'FragmentSeriesNumber'
-            ]
-        smartpeak_o = smartPeak_o(features)
-        smartpeak_o.write_dict2csv(filename_O, headers=headers)
+    #     # TODO: re-read in resulting file and compare to test file
 
     def test_parse_MQTransitionName(self, verbose_I=False):
         """Test parse_MQTransitionName function
@@ -124,12 +85,12 @@ class testSmartPeak():
         assert(smartpeak.parseString('1.0') == 1.0)
         assert(smartpeak.parseString('0.005') == 0.005)
         assert(smartpeak.parseString('-1.0') == -1.0)
-        assert(smartpeak.parseString('[1]') == list('1'))
-        assert(smartpeak.parseString('(1)') == tuple('1'))
-        assert(smartpeak.parseString('{1}') == dict('1'))
+        assert(smartpeak.parseString('[1]') == [1])
+        assert(smartpeak.parseString('(1)') == ('1',))
+        # assert(smartpeak.parseString('{"a":1}') == {"a": 1})
         assert(smartpeak.parseString('a') == 'a'.encode('utf-8'))
-        assert(smartpeak.parseString('a', encode_str_I=False) == 'a')
-        assert(smartpeak.parseString("'a'") == 'a'.encode('utf-8'))
+        assert(smartpeak.parseString("'a'", encode_str_I=False) == 'a')
+        assert(smartpeak.parseString("'a'") == "'a'".encode('utf-8'))
         assert(smartpeak.parseString(
             "['a','b','c']", encode_str_I=False) == ['a', 'b', 'c'])
         assert(smartpeak.parseString("[1.0,2.0,3.0]") == [1.0, 2.0, 3.0])

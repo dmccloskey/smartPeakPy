@@ -36,14 +36,25 @@ data_dir = join(smartPeak_directory, "tests/data", "")
 #                           ' required for testing')
 
 def runAllTests():
+    from tests.test_core_smartPeak import testSmartPeak
+    test = testSmartPeak()
+    test.test_castString()
+    test.test_convert_byte2String()
+    # test.test_convert_MQQMethod2Feature()
+    test.test_convert_string2Byte()
+    test.test_make_osCmd()
+    test.test_parse_MQTransitionName()
+    test.test_parseString()
+    test.test_setParameters()
+
     from tests.test_pyTOPP_OpenSwathFeatureXMLToTSV import TestOpenSwathFeatureXMLToTSV
     test = TestOpenSwathFeatureXMLToTSV()
     test.test_get_header()
     test.test_convert_FeatureXMLToTSV()
 
-    ##TODO: update to new pyopenms interface (potential bug?)
-    ## File "pyopenms/pyopenms_2.pyx", line 6748, in pyopenms.pyopenms_2.TransformationDescription.setDataPoints (pyopenms/pyopenms_2.cpp:143629)
-    ## AssertionError: arg data wrong type
+    # # TODO: update to new pyopenms interface (potential bug?)
+    # # File "pyopenms/pyopenms_2.pyx", line 6748, in pyopenms.pyopenms_2.TransformationDescription.setDataPoints (pyopenms/pyopenms_2.cpp:143629)
+    # # AssertionError: arg data wrong type
     # from tests.test_pyTOPP_OpenSwathRTNormalizer import TestOpenSwathRTNormalizer
     # test = TestOpenSwathRTNormalizer()
     # test.test_algorithm()
