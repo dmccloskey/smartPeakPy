@@ -54,8 +54,8 @@ class TestSequenceHandler():
         filename_params = data_dir + '/test_pyTOPP_SequenceHandler_params.csv'
         delimiter = ','
 
-        from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py
-        openSWATH_py = smartPeak_openSWATH_py()
+        from smartPeak.core.smartPeak_openSWATH import smartPeak_openSWATH
+        openSWATH = smartPeak_openSWATH()
         smartpeak_i = smartPeak_i()
         smartpeak_i.read_pythonParams(filename_filenames, delimiter)
         filenames = smartpeak_i.getData()
@@ -71,24 +71,24 @@ class TestSequenceHandler():
                 mzML_i = '''%s/mzML/%s.mzML''' % (data_dir, sample)
                 traML_csv_i = '''%s/traML_1.csv''' % (data_dir)
                 # load in the files
-                openSWATH_py.load_TraML({'traML_csv_i': traML_csv_i})
-                openSWATH_py.load_MSExperiment({
+                openSWATH.load_TraML({'traML_csv_i': traML_csv_i})
+                openSWATH.load_MSExperiment({
                     'mzML_feature_i': mzML_i},
                     MRMMapping_params_I=params['MRMMapping'])
-                openSWATH_py.extract_metaData()
-                openSWATH_py.meta_data['sample_type'] = 'Unknown'
+                openSWATH.extract_metaData()
+                openSWATH.meta_data['sample_type'] = 'Unknown'
                 # dynamically make the filenames
                 featureXML_o = '''%s/quantitation/%s.featureXML''' % (data_dir, sample) 
                 feature_csv_o = '''%s/quantitation/%s.csv''' % (data_dir, sample)
-                openSWATH_py.load_featureMap({'featureXML_i': featureXML_o})
+                openSWATH.load_featureMap({'featureXML_i': featureXML_o})
 
                 # record features
                 seqhandler.addSampleToSequence(
-                    openSWATH_py.meta_data, openSWATH_py.featureMap)
+                    openSWATH.meta_data, openSWATH.featureMap)
             except Exception as e:
                 print(e)
             # manual clear data for the next iteration
-            openSWATH_py.clear_data()
+            openSWATH.clear_data()
 
         # Test:
         columns, rows, data = seqhandler.makeDataMatrixFromMetaValue(

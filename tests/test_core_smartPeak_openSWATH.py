@@ -2,7 +2,7 @@
 # modules
 from smartPeak.core.smartPeak_i import smartPeak_i
 from smartPeak.core.smartPeak_o import smartPeak_o
-from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py
+from smartPeak.core.smartPeak_openSWATH import smartPeak_openSWATH
 from . import data_dir
 # 3rd part libraries
 try:
@@ -11,8 +11,8 @@ except ImportError as e:
     print(e)
 
 
-class TestSmartPeakOpenSWATH_py():
-    """tests for smartPeak_openSWATH_py
+class TestSmartPeakOpenSWATH():
+    """tests for smartPeak_openSWATH
     """
 
     def load_data(self):
@@ -27,48 +27,48 @@ class TestSmartPeakOpenSWATH_py():
         smartpeak_i.clear_data()
 
     def test_load_traML(self):
-        openSWATH_py = smartPeak_openSWATH_py()
+        openSWATH = smartPeak_openSWATH()
 
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        openSWATH_py.load_TraML({'traML_csv_i': traML_csv_i})
-        assert(openSWATH_py.targeted.getTransitions()[0].getPeptideRef() == b'arg-L')
-        assert(openSWATH_py.targeted.getTransitions()[0].getPrecursorMZ() == 179.0)
-        assert(openSWATH_py.targeted.getTransitions()[0].getProductMZ() == 136.0)
-        assert(openSWATH_py.targeted.getTransitions()[50].getPeptideRef() == b'ins')
-        assert(openSWATH_py.targeted.getTransitions()[50].getPrecursorMZ() == 267.0)
-        assert(openSWATH_py.targeted.getTransitions()[50].getProductMZ() == 108.0)
+        openSWATH.load_TraML({'traML_csv_i': traML_csv_i})
+        assert(openSWATH.targeted.getTransitions()[0].getPeptideRef() == b'arg-L')
+        assert(openSWATH.targeted.getTransitions()[0].getPrecursorMZ() == 179.0)
+        assert(openSWATH.targeted.getTransitions()[0].getProductMZ() == 136.0)
+        assert(openSWATH.targeted.getTransitions()[50].getPeptideRef() == b'ins')
+        assert(openSWATH.targeted.getTransitions()[50].getPrecursorMZ() == 267.0)
+        assert(openSWATH.targeted.getTransitions()[50].getProductMZ() == 108.0)
 
     def test_load_MSExperiment(self):
         self.load_data()
-        openSWATH_py = smartPeak_openSWATH_py()
+        openSWATH = smartPeak_openSWATH()
         
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        openSWATH_py.load_TraML({'traML_csv_i': traML_csv_i})
+        openSWATH.load_TraML({'traML_csv_i': traML_csv_i})
 
         # load MSExperiment
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        openSWATH_py.load_MSExperiment({
+        openSWATH.load_MSExperiment({
             'mzML_feature_i': mzML_i},
             MRMMapping_params_I=self.params_1['MRMMapping'])
-        assert(openSWATH_py.msExperiment.getChromatograms()[
+        assert(openSWATH.msExperiment.getChromatograms()[
             0].getProduct().getMZ() == 0.0)
-        assert(openSWATH_py.msExperiment.getChromatograms()[
+        assert(openSWATH.msExperiment.getChromatograms()[
             0].getPrecursor().getMZ() == 0.0)
-        assert(openSWATH_py.msExperiment.getChromatograms()[
+        assert(openSWATH.msExperiment.getChromatograms()[
             0].getNativeID() == b'TIC')
-        assert(openSWATH_py.chromatogram_map.getChromatograms()[
+        assert(openSWATH.chromatogram_map.getChromatograms()[
             0].getProduct().getMZ() == 136.0)
-        assert(openSWATH_py.chromatogram_map.getChromatograms()[
+        assert(openSWATH.chromatogram_map.getChromatograms()[
             0].getPrecursor().getMZ() == 179.0)
-        assert(openSWATH_py.chromatogram_map.getChromatograms()[
+        assert(openSWATH.chromatogram_map.getChromatograms()[
             0].getNativeID() == b'arg-L.arg-L_1.Heavy')
 
         # # Precursor chromatogramExtraction
         # # load traML
         # traML_csv_i = '''%s%s''' % (data_dir, "traML_2.csv")
-        # openSWATH_py.load_TraML({'traML_csv_i': traML_csv_i})
+        # openSWATH.load_TraML({'traML_csv_i': traML_csv_i})
 
         # # load MSExperiment
         # mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_2.mzML")
@@ -79,7 +79,7 @@ class TestSmartPeakOpenSWATH_py():
         # #     "filter": "tophat",
         # #     "extract_precursors": True
         # # }
-        # openSWATH_py.load_MSExperiment({
+        # openSWATH.load_MSExperiment({
         #     'mzML_feature_i': mzML_i},
         #     MRMMapping_params_I=self.params_2['MRMMapping'],
         #     chromatogramExtractor_params_I=self.params_2['ChromatogramExtractor'])
@@ -88,183 +88,183 @@ class TestSmartPeakOpenSWATH_py():
 
     def test_extract_metaData(self):
         self.load_data()
-        openSWATH_py = smartPeak_openSWATH_py()
+        openSWATH = smartPeak_openSWATH()
         
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        openSWATH_py.load_TraML({'traML_csv_i': traML_csv_i})
+        openSWATH.load_TraML({'traML_csv_i': traML_csv_i})
 
         # load MSExperiment
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        openSWATH_py.load_MSExperiment({
+        openSWATH.load_MSExperiment({
             'mzML_feature_i': mzML_i},
             MRMMapping_params_I=self.params_1['MRMMapping'])
         
-        openSWATH_py.extract_metaData()
+        openSWATH.extract_metaData()
         assert(
-            openSWATH_py.meta_data['filename'] ==
+            openSWATH.meta_data['filename'] ==
             '''/home/user/code/tests/data//mzML/mzML_1.mzML''')
         assert(
-            openSWATH_py.meta_data['sample_name'] ==
+            openSWATH.meta_data['sample_name'] ==
             '150601_0_BloodProject01_PLT_QC_Broth-1')
 
     def test_load_Trafo(self):
         self.load_data()
-        openSWATH_py = smartPeak_openSWATH_py()
+        openSWATH = smartPeak_openSWATH()
         
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        openSWATH_py.load_TraML({'traML_csv_i': traML_csv_i})
+        openSWATH.load_TraML({'traML_csv_i': traML_csv_i})
 
         # load MSExperiment
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        openSWATH_py.load_MSExperiment({
+        openSWATH.load_MSExperiment({
             'mzML_feature_i': mzML_i},
             MRMMapping_params_I=self.params_1['MRMMapping'])
         
-        openSWATH_py.extract_metaData()
+        openSWATH.extract_metaData()
 
         # load trafo
-        openSWATH_py.load_Trafo(
+        openSWATH.load_Trafo(
             {},  # {'trafo_csv_i':trafo_csv_i},
             self.params_1['MRMFeatureFinderScoring'])
-        assert(isinstance(openSWATH_py.trafo, pyopenms.TransformationDescription))
+        assert(isinstance(openSWATH.trafo, pyopenms.TransformationDescription))
 
-    def test_openSWATH_py(self):
+    def test_openSWATH(self):
         self.load_data()
-        openSWATH_py = smartPeak_openSWATH_py()
+        openSWATH = smartPeak_openSWATH()
         
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        openSWATH_py.load_TraML({'traML_csv_i': traML_csv_i})
+        openSWATH.load_TraML({'traML_csv_i': traML_csv_i})
 
         # load MSExperiment
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        openSWATH_py.load_MSExperiment({
+        openSWATH.load_MSExperiment({
             'mzML_feature_i': mzML_i},
             MRMMapping_params_I=self.params_1['MRMMapping'])
         
-        openSWATH_py.extract_metaData()
+        openSWATH.extract_metaData()
 
         # load trafo
         # trafo_csv_i = '''%s%s''' % (data_dir, "trafo_1")
-        openSWATH_py.load_Trafo(
+        openSWATH.load_Trafo(
             {},  # {'trafo_csv_i':trafo_csv_i},
             self.params_1['MRMFeatureFinderScoring'])
 
         # load SWATH
-        openSWATH_py.load_SWATHorDIA({})
+        openSWATH.load_SWATHorDIA({})
 
         # run OpenSWATH
-        openSWATH_py.openSWATH_py(
+        openSWATH.openSWATH(
             self.params_1['MRMFeatureFinderScoring'])
-        assert(openSWATH_py.featureMap[0].getSubordinates()[
+        assert(openSWATH.featureMap[0].getSubordinates()[
             0].getMetaValue("peak_apex_int") == 266403.0)
-        assert(openSWATH_py.featureMap[0].getSubordinates()[
+        assert(openSWATH.featureMap[0].getSubordinates()[
             0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
-        assert(openSWATH_py.featureMap[0].getSubordinates()[
+        assert(openSWATH.featureMap[0].getSubordinates()[
             0].getRT() == 15.894456338119507)  # refactor to use pytest.approx
-        assert(openSWATH_py.featureMap[50].getSubordinates()[
+        assert(openSWATH.featureMap[50].getSubordinates()[
             0].getMetaValue("peak_apex_int") == 0.0)
-        assert(openSWATH_py.featureMap[50].getSubordinates()[
+        assert(openSWATH.featureMap[50].getSubordinates()[
             0].getMetaValue("native_id") == b'acon-C.acon-C_1.Heavy')
-        assert(openSWATH_py.featureMap[50].getSubordinates()[
+        assert(openSWATH.featureMap[50].getSubordinates()[
             0].getRT() == 14.034880456034344)
 
         # store
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
         feature_csv_o = '''%s/features/%s.csv''' % (data_dir, "test_1")
-        openSWATH_py.store_featureMap({
+        openSWATH.store_featureMap({
             'featureXML_o': featureXML_o,
             'feature_csv_o': feature_csv_o})
 
     def test_load_featureMap(self):
-        openSWATH_py = smartPeak_openSWATH_py()
+        openSWATH = smartPeak_openSWATH()
 
         # load featureMap
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
-        openSWATH_py.load_featureMap({'featureXML_i': featureXML_o})
+        openSWATH.load_featureMap({'featureXML_i': featureXML_o})
 
-        assert(openSWATH_py.featureMap[0].getSubordinates()[
+        assert(openSWATH.featureMap[0].getSubordinates()[
             0].getMetaValue("peak_apex_int") == 266403.0)
-        assert(openSWATH_py.featureMap[0].getSubordinates()[
+        assert(openSWATH.featureMap[0].getSubordinates()[
             0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
-        assert(openSWATH_py.featureMap[0].getSubordinates()[
+        assert(openSWATH.featureMap[0].getSubordinates()[
             0].getRT() == 15.8944563381195)  # refactor to use pytest.approx
-        assert(openSWATH_py.featureMap[50].getSubordinates()[
+        assert(openSWATH.featureMap[50].getSubordinates()[
             0].getMetaValue("peak_apex_int") == 0.0)
-        assert(openSWATH_py.featureMap[50].getSubordinates()[
+        assert(openSWATH.featureMap[50].getSubordinates()[
             0].getMetaValue("native_id") == b'acon-C.acon-C_1.Heavy')
-        assert(openSWATH_py.featureMap[50].getSubordinates()[
+        assert(openSWATH.featureMap[50].getSubordinates()[
             0].getRT() == 14.0348804560343)
 
-        # assert(openSWATH_py.featureMap[0].getSubordinates()[
+        # assert(openSWATH.featureMap[0].getSubordinates()[
         #     0].getMetaValue("peak_apex_int") == 262623.5)
-        # assert(openSWATH_py.featureMap[0].getSubordinates()[
+        # assert(openSWATH.featureMap[0].getSubordinates()[
         #     0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
-        # assert(openSWATH_py.featureMap[0].getSubordinates()[
+        # assert(openSWATH.featureMap[0].getSubordinates()[
         #     0].getRT() == 15.8944563381195)  # refactor to use pytest.approx
-        # assert(openSWATH_py.featureMap[50].getSubordinates()[
+        # assert(openSWATH.featureMap[50].getSubordinates()[
         #     0].getMetaValue("peak_apex_int") == 50.5)
-        # assert(openSWATH_py.featureMap[50].getSubordinates()[
+        # assert(openSWATH.featureMap[50].getSubordinates()[
         #     0].getMetaValue("native_id") == b'actp.actp_1.Heavy')
-        # assert(openSWATH_py.featureMap[50].getSubordinates()[
+        # assert(openSWATH.featureMap[50].getSubordinates()[
         #     0].getRT() == 12.4302905685425)
 
     def test_filterAndSelect(self):
         self.load_data()
-        openSWATH_py = smartPeak_openSWATH_py()
+        openSWATH = smartPeak_openSWATH()
         
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        openSWATH_py.load_TraML({'traML_csv_i': traML_csv_i})
+        openSWATH.load_TraML({'traML_csv_i': traML_csv_i})
 
         # load MSExperiment
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        openSWATH_py.load_MSExperiment({
+        openSWATH.load_MSExperiment({
             'mzML_feature_i': mzML_i},
             MRMMapping_params_I=self.params_1['MRMMapping'])
         
-        openSWATH_py.extract_metaData()
+        openSWATH.extract_metaData()
 
         # load featureMap
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
-        openSWATH_py.load_featureMap({'featureXML_i': featureXML_o})
+        openSWATH.load_featureMap({'featureXML_i': featureXML_o})
 
         # filter and select
         mrmfeatureqcs_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
-        openSWATH_py.filterAndSelect_py(
+        openSWATH.filterAndSelect_py(
             {'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i},
             self.params_1['MRMFeatureFilter.filter_MRMFeatures'],
             self.params_1['MRMFeatureSelector.select_MRMFeatures_qmip'],
             self.params_1['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
-        assert(openSWATH_py.featureMap[0].getSubordinates()[
+        assert(openSWATH.featureMap[0].getSubordinates()[
             0].getMetaValue("peak_apex_int") == 266403.0)
-        assert(openSWATH_py.featureMap[0].getSubordinates()[
+        assert(openSWATH.featureMap[0].getSubordinates()[
             0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
-        assert(openSWATH_py.featureMap[0].getSubordinates()[
+        assert(openSWATH.featureMap[0].getSubordinates()[
             0].getRT() == 15.8944563381195)  # refactor to use pytest.approx
-        assert(openSWATH_py.featureMap[50].getSubordinates()[
+        assert(openSWATH.featureMap[50].getSubordinates()[
             0].getMetaValue("peak_apex_int") == 198161.0)
-        assert(openSWATH_py.featureMap[50].getSubordinates()[
+        assert(openSWATH.featureMap[50].getSubordinates()[
             0].getMetaValue("native_id") == b'glutacon.glutacon_1.Heavy')
-        assert(openSWATH_py.featureMap[50].getSubordinates()[
+        assert(openSWATH.featureMap[50].getSubordinates()[
             0].getRT() == 12.546641343689)
 
         # store
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_2") 
         feature_csv_o = '''%s/features/%s.csv''' % (data_dir, "test_2")
-        openSWATH_py.store_featureMap({
+        openSWATH.store_featureMap({
             'featureXML_o': featureXML_o,
             'feature_csv_o': feature_csv_o})
 
     def test_validate_py(self):        
         self.load_data()
-        openSWATH_py = smartPeak_openSWATH_py()
+        openSWATH = smartPeak_openSWATH()
 
         # load featureMap
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_2")
-        openSWATH_py.load_featureMap({'featureXML_i': featureXML_o})
+        openSWATH.load_featureMap({'featureXML_i': featureXML_o})
         
         # load in the validation data 
         referenceData_csv_i = '''%s%s''' % (data_dir, "referenceData_1.csv")
@@ -275,12 +275,12 @@ class TestSmartPeakOpenSWATH_py():
         ReferenceDataMethods_params_I.append({
             'description': '', 'name': 'sample_names_I', 
             'type': 'list', 'value': sample_names_I})
-        openSWATH_py.load_validationData(
+        openSWATH.load_validationData(
             {'referenceData_csv_i': referenceData_csv_i},
             ReferenceDataMethods_params_I
             )
 
         # validate the data
-        openSWATH_py.validate_py(self.params_1[
+        openSWATH.validate_py(self.params_1[
             'MRMFeatureValidator.validate_MRMFeatures'])
-        assert(openSWATH_py.validation_metrics["accuracy"] == 0.98709677419354835)
+        assert(openSWATH.validation_metrics["accuracy"] == 0.98709677419354835)

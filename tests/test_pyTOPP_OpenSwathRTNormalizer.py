@@ -3,7 +3,6 @@ from smartPeak.core.smartPeak import smartPeak
 from smartPeak.core.smartPeak_i import smartPeak_i
 from . import data_dir
 from smartPeak.pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
-from smartPeak.pyTOPP.MRMMapper import MRMMapper
 # 3rd part libraries
 try:
     import pyopenms
@@ -45,16 +44,17 @@ class TestOpenSwathRTNormalizer():
             fh = pyopenms.FileHandler()
             fh.loadExperiment(mzML_feature_i.encode('utf-8'), self.chromatograms)
 
-        # map transitions to the chromatograms
-        mrmmapper = MRMMapper()
-        self.chromatogram_map = mrmmapper.algorithm(
-            chromatogram_map=self.chromatograms,
-            targeted=self.targeted, 
-            precursor_tolerance=0.0009,  # hard-coded for now
-            product_tolerance=0.0009,  # hard-coded for now
-            allow_unmapped=True,
-            allow_double_mappings=True
-        )
+        # TODO: update to pyopenms.MRMMapping
+        # # map transitions to the chromatograms
+        # mrmmapper = MRMMapper()
+        # self.chromatogram_map = mrmmapper.algorithm(
+        #     chromatogram_map=self.chromatograms,
+        #     targeted=self.targeted, 
+        #     precursor_tolerance=0.0009,  # hard-coded for now
+        #     product_tolerance=0.0009,  # hard-coded for now
+        #     allow_unmapped=True,
+        #     allow_double_mappings=True
+        # )
         
         # load the parameters
         filename_params = data_dir + "/" + filename_params
