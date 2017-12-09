@@ -134,10 +134,10 @@ class __main__():
                         print(e)
 
                 # Filter and select features
-                mrmfeaturefilter_csv_i = '''%s/FeatureFilters.csv''' % (data_dir)
                 featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, sample) 
                 feature_csv_o = '''%s/features/%s.csv''' % (data_dir, sample)
                 if select_peaks:
+                    mrmfeaturefilter_csv_i = '''%s/FeatureFilters.csv''' % (data_dir)
                     openSWATH.filterAndSelect_py(
                         filenames_I={'mrmfeatureqcs_csv_i': mrmfeaturefilter_csv_i},
                         MRMFeatureFilter_filter_params_I=params[
@@ -209,10 +209,11 @@ class __main__():
 
                 # Quantify peaks
                 # dynamically make the filenames
-                quantitationMethods_csv_i = '''%s/quantitationMethods.csv''' % (data_dir)
                 featureXML_o = '''%s/quantitation/%s.featureXML''' % (data_dir, sample) 
                 feature_csv_o = '''%s/quantitation/%s.csv''' % (data_dir, sample)
                 if quantify_peaks:
+                    quantitationMethods_csv_i = '''%s/quantitationMethods.csv''' % (
+                        data_dir)
                     # load the quantitation method
                     AbsoluteQuantitation.load_quantitationMethods(
                         {'quantitationMethods_csv_i': quantitationMethods_csv_i},
@@ -238,10 +239,10 @@ class __main__():
                             verbose_I=verbose_I)
 
                 # QC the peaks
-                mrmfeatureqcs_csv_i = '''%s/FeatureQCs.csv''' % (data_dir)
                 featureXML_o = '''%s/quantitation/%s.featureXML''' % (data_dir, sample) 
                 feature_csv_o = '''%s/quantitation/%s.csv''' % (data_dir, sample)
                 if check_peaks:
+                    mrmfeatureqcs_csv_i = '''%s/FeatureQCs.csv''' % (data_dir)
                     openSWATH.filterAndSelect_py(
                         filenames_I={'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i},
                         MRMFeatureFilter_filter_params_I=params[

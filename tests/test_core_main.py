@@ -83,17 +83,17 @@ class testMain():
         openSWATH.load_featureMap({
             'featureXML_i': 
             example_dir + 
-            'GCMS_SRM/features/GCMS_SIM.featureXML'})
+            'GCMS_SRM/features/GCMS_SIM_test.featureXML'})
         fm2 = openSWATH.featureMap
         assert(
-            fm1[30].getSubordinates()[0].getMetaValue("native_id") == 
-            fm2[30].getSubordinates()[0].getMetaValue("native_id"))
+            fm1[15].getSubordinates()[0].getMetaValue("native_id") == 
+            fm2[15].getSubordinates()[0].getMetaValue("native_id"))
         assert(
-            fm1[30].getSubordinates()[0].getMetaValue("peak_apex_int") == 
-            fm2[30].getSubordinates()[0].getMetaValue("peak_apex_int"))
+            fm1[15].getSubordinates()[0].getMetaValue("peak_apex_int") == 
+            fm2[15].getSubordinates()[0].getMetaValue("peak_apex_int"))
         assert(
-            fm1[30].getSubordinates()[0].getRT() == 
-            fm2[30].getSubordinates()[0].getRT())
+            fm1[15].getSubordinates()[0].getRT() == 
+            fm2[15].getSubordinates()[0].getRT())
         
         # # TODO: why is this not working?
         # assert(filecmp.cmp(
