@@ -2,11 +2,9 @@
 # modules
 from .smartPeak import smartPeak
 from .smartPeak_i import smartPeak_i
-# from smartPeak.pyTOPP.MRMMapper import MRMMapper
 from smartPeak.pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor
 from smartPeak.pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
 from smartPeak.pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
-# from smartPeak.pyTOPP.MRMFeatureFilter import MRMFeatureFilter
 from smartPeak.pyTOPP.MRMFeatureSelector import MRMFeatureSelector
 from smartPeak.pyTOPP.MRMFeatureValidator import MRMFeatureValidator
 from smartPeak.data.ReferenceDataMethods import ReferenceDataMethods
@@ -19,7 +17,7 @@ except ImportError as e:
     print(e)
 
 
-class smartPeak_openSWATH_py():
+class smartPeak_openSWATH():
     def __init__(self):
         self.featureMap = None
         self.chromatogram_map = None
@@ -42,25 +40,6 @@ class smartPeak_openSWATH_py():
         self.swath = None
         self.reference_data = None
         self.meta_data = None
-
-    def load_quantitationMethods(self, filenames_I):
-        """Load AbsoluteQuantitationMethods
-
-        Args:
-            filenames_I (dict): dictionary of filename strings
-
-        Internals:
-            quantitationMethods (list): list of AbsoluteQuantitationMethod objects
-
-        """
-        quantitationMethods_csv_i = None
-        if 'quantitationMethods_csv_i'in filenames_I.keys():
-            quantitationMethods_csv_i = filenames_I['quantitationMethods_csv_i']
-
-        quantitationMethods = []
-        aqmf = pyopenms.AbsoluteQuantitationMethodFile()
-        aqmf.load(quantitationMethods_csv_i, quantitationMethods)
-        self.quantitationMethods = quantitationMethods
 
     def load_TraML(self, filenames_I, verbose_I=False):
         """Load TraML file
@@ -293,7 +272,7 @@ class smartPeak_openSWATH_py():
             )
         self.swath = swath
 
-    def openSWATH_py(
+    def openSWATH(
         self,
         MRMFeatureFinderScoring_params_I={},
         verbose_I=False

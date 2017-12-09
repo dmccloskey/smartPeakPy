@@ -2,12 +2,12 @@
 # modules
 from smartPeak.core.smartPeak_i import smartPeak_i
 from smartPeak.core.smartPeak_o import smartPeak_o
-from smartPeak.core.smartPeak_openSWATH_py import smartPeak_openSWATH_py
+from smartPeak.core.smartPeak_openSWATH import smartPeak_openSWATH
 from . import data_dir
 
 
-class TestSmartPeakOpenSWATH_py():
-    """tests for smartPeak_openSWATH_py
+class TestSmartPeakOpenSWATH():
+    """tests for smartPeak_openSWATH
     """
 
     def load_data(
@@ -22,7 +22,7 @@ class TestSmartPeakOpenSWATH_py():
         self.params = smartpeak_i.getData()
         smartpeak_i.clear_data()
 
-    def test_openSWATH_py(
+    def test_openSWATH(
             self,
             filename_filenames="BloodProject01_SWATH_filenames.csv",
             filename_params="BloodProject01_MRMFeatureFinderScoring_params.csv",
@@ -39,7 +39,7 @@ class TestSmartPeakOpenSWATH_py():
 
         skipped_samples = []
 
-        openSWATH_py = smartPeak_openSWATH_py()
+        openSWATH = smartPeak_openSWATH()
         smartpeak_i = smartPeak_i()
         smartpeak_i.read_pythonParams(filename_filenames, delimiter)
         filenames = smartpeak_i.getData()
@@ -57,60 +57,60 @@ class TestSmartPeakOpenSWATH_py():
                 featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, sample) 
                 feature_csv_o = '''%s/features/%s.csv''' % (data_dir, sample)
                 # load in the files
-                openSWATH_py.load_TraML({'traML_csv_i': traML_csv_i})
-                openSWATH_py.load_SWATHorDIA({})
-                openSWATH_py.load_MSExperiment({
+                openSWATH.load_TraML({'traML_csv_i': traML_csv_i})
+                openSWATH.load_SWATHorDIA({})
+                openSWATH.load_MSExperiment({
                     'mzML_feature_i': mzML_i},
                     params['MRMMapping'])
-                openSWATH_py.extract_metaData()
+                openSWATH.extract_metaData()
                 if debug:
                     assert(
-                        openSWATH_py.meta_data['filename'] ==
+                        openSWATH.meta_data['filename'] ==
                         '''/home/user/code/tests/data/mzML/\
                         150601_0_BloodProject01_PLT_QC_Broth-1.mzML''')
                     assert(
-                        openSWATH_py.meta_data['sample_name'] == 
+                        openSWATH.meta_data['sample_name'] == 
                         '150601_0_BloodProject01_PLT_QC_Broth-1')
-                openSWATH_py.load_Trafo(
+                openSWATH.load_Trafo(
                     {},  # {'trafo_csv_i':trafo_csv_i},
                     params['MRMFeatureFinderScoring'])
                 # run the openSWATH workflow for metabolomics
-                openSWATH_py.openSWATH_py(
+                openSWATH.openSWATH(
                     params['MRMFeatureFinderScoring'])
                 if debug:
-                    assert(openSWATH_py.featureMap[0].getSubordinates()[
+                    assert(openSWATH.featureMap[0].getSubordinates()[
                         0].getMetaValue("peak_apex_int") == 262623.5)
-                    assert(openSWATH_py.featureMap[0].getSubordinates()[
+                    assert(openSWATH.featureMap[0].getSubordinates()[
                         0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
-                    assert(openSWATH_py.featureMap[0].getSubordinates()[
+                    assert(openSWATH.featureMap[0].getSubordinates()[
                         0].getRT() == 15.894456338119507)  # refactor to use pytest.approx
-                    assert(openSWATH_py.featureMap[50].getSubordinates()[
+                    assert(openSWATH.featureMap[50].getSubordinates()[
                         0].getMetaValue("peak_apex_int") == 50.5)
-                    assert(openSWATH_py.featureMap[50].getSubordinates()[
+                    assert(openSWATH.featureMap[50].getSubordinates()[
                         0].getMetaValue("native_id") == b'actp.actp_1.Heavy')
-                    assert(openSWATH_py.featureMap[50].getSubordinates()[
+                    assert(openSWATH.featureMap[50].getSubordinates()[
                         0].getRT() == 12.430290568542478)
-                openSWATH_py.filterAndSelect_py(
+                openSWATH.filterAndSelect_py(
                     {'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i},
                     params['MRMFeatureFilter.filter_MRMFeatures'],
                     params['MRMFeatureSelector.select_MRMFeatures_qmip'],
                     params['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
                 if debug:
-                    assert(openSWATH_py.featureMap[0].getSubordinates()[
+                    assert(openSWATH.featureMap[0].getSubordinates()[
                         0].getMetaValue("peak_apex_int") == 262623.5)
-                    assert(openSWATH_py.featureMap[0].getSubordinates()[
+                    assert(openSWATH.featureMap[0].getSubordinates()[
                         0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
-                    assert(openSWATH_py.featureMap[0].getSubordinates()[
+                    assert(openSWATH.featureMap[0].getSubordinates()[
                         0].getRT() == 15.894456338119507)  # refactor to use pytest.approx
-                    assert(openSWATH_py.featureMap[50].getSubordinates()[
+                    assert(openSWATH.featureMap[50].getSubordinates()[
                         0].getMetaValue("peak_apex_int") == 1080.0)
-                    assert(openSWATH_py.featureMap[50].getSubordinates()[
+                    assert(openSWATH.featureMap[50].getSubordinates()[
                         0].getMetaValue("native_id") == b'oxa.oxa_1.Heavy')
-                    assert(openSWATH_py.featureMap[50].getSubordinates()[
+                    assert(openSWATH.featureMap[50].getSubordinates()[
                         0].getRT() == 13.4963475631714)
                 else:
                     # store
-                    openSWATH_py.store_featureMap({
+                    openSWATH.store_featureMap({
                         'featureXML_o': featureXML_o,
                         'feature_csv_o': feature_csv_o})
             except Exception as e:
@@ -119,13 +119,13 @@ class TestSmartPeakOpenSWATH_py():
                     'sample_name': sample,
                     'error_message': e})
             # manual clear data for the next iteration
-            openSWATH_py.clear_data()
+            openSWATH.clear_data()
         if not debug:
             if skipped_samples:
                 smartpeak_o = smartPeak_o(skipped_samples)
                 skippedSamples_csv_i = '''%s/mzML/skippedSamples.csv''' % (data_dir)
                 smartpeak_o.write_dict2csv(skippedSamples_csv_i)
-        
+
     def test_validate_openSWATH(
         self,
         filename_filenames="BloodProject01_SWATH_filenames.csv",
@@ -145,7 +145,7 @@ class TestSmartPeakOpenSWATH_py():
 
         validation_metrics = []
         skipped_samples = []
-        openSWATH_py = smartPeak_openSWATH_py()
+        openSWATH = smartPeak_openSWATH()
 
         smartpeak_i = smartPeak_i()
         smartpeak_i.read_pythonParams(filename_filenames, delimiter)
@@ -160,7 +160,8 @@ class TestSmartPeakOpenSWATH_py():
             try:
                 # dynamically make the filenames
                 mzML_I = '''/mzML/%s.mzML''' % (sample)
-                referenceData_csv_i = '''%s/%s''' % (data_dir, v["referenceData_csv_i"])
+                referenceData_csv_i = '''%s/%s''' % (
+                    data_dir, v["referenceData_csv_i"])
                 # db_ini_i = '''%s/settings_metabolomics.ini''' % (data_dir)
                 featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, sample) 
                 feature_csv_o = '''%s/features/%s.csv''' % (data_dir, sample)
@@ -173,30 +174,30 @@ class TestSmartPeakOpenSWATH_py():
                 ReferenceDataMethods_params_I.append({
                     'description': '', 'name': 'sample_names_I', 
                     'type': 'list', 'value': sample_names_I})
-                openSWATH_py.load_validationData(
+                openSWATH.load_validationData(
                     {'referenceData_csv_i': referenceData_csv_i},
                     # {'db_ini_i':db_ini_i},
                     ReferenceDataMethods_params_I
                     )
-                if not openSWATH_py.reference_data:
+                if not openSWATH.reference_data:
                     skipped_samples.append({
                         'sample_name': sample,
                         'error_message': 'no reference data found'})
                     print('Reference data not found for sample ' + sample + '.')
                     continue
                 # validate the data
-                openSWATH_py.load_featureMap({'featureXML_i': featureXML_o})
-                openSWATH_py.validate_py(params[
+                openSWATH.load_featureMap({'featureXML_i': featureXML_o})
+                openSWATH.validate_py(params[
                     'MRMFeatureValidator.validate_MRMFeatures'])
                 # store
                 if debug:
-                    assert(openSWATH_py.validation_metrics["accuracy"] == 0.977941176471)
+                    assert(openSWATH.validation_metrics["accuracy"] == 0.977941176471)
                 else:
-                    openSWATH_py.store_featureMap({
+                    openSWATH.store_featureMap({
                         'featureXML_o': featureXML_o,
                         'feature_csv_o': feature_csv_o})
                 tmp = {}
-                tmp.update(openSWATH_py.validation_metrics)
+                tmp.update(openSWATH.validation_metrics)
                 tmp.update({'sample_name': sample})
                 validation_metrics.append(tmp)
             except Exception as e:
@@ -205,7 +206,7 @@ class TestSmartPeakOpenSWATH_py():
                     'sample_name': sample,
                     'error_message': e})
             # manual clear data for the next iteration
-            openSWATH_py.clear_data()
+            openSWATH.clear_data()
         if not debug:
             if validation_metrics:
                 smartpeak_o = smartPeak_o(validation_metrics)

@@ -7,7 +7,7 @@ try:
 except ImportError as e:
     print(e)
 
-class smartPeak_AbsoluteQuantitation_py():
+class smartPeak_AbsoluteQuantitation():
     def __init__(self):
         self.unknowns = None
         self.quantitationMethods = None
