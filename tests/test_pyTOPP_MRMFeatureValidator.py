@@ -14,8 +14,8 @@ class TestMRMFeatureValidator():
     
     def load_data(
         self,
-        featureXML_i="features/150601_0_BloodProject01_PLT_QC_Broth-1.featureXML",
-        referenceData_csv_i="150601_0_BloodProject01_PLT_QC_Broth-1_referenceData.csv",
+        featureXML_i="features/test_2.featureXML",
+        referenceData_csv_i="referenceData_1.csv",
         filename_params="test_pyTOPP_MRMFeatureValidator_params.csv"
     ):
         """load the test data"""                   
@@ -53,4 +53,4 @@ class TestMRMFeatureValidator():
                 'MRMFeatureValidator.validate_MRMFeatures'][0]['value'])
             )
         # refactor to us pytest.approx
-        assert(validation_metrics["accuracy"] == 0.9779411764705882)
+        assert(validation_metrics["accuracy"] == 0.98709677419354835)

@@ -336,6 +336,7 @@ class smartPeak():
                 if encode_str_I:
                     str_O = str_I.encode('utf-8')
             else:
+                str_O = str_I
                 if encode_str_I:
                     str_O = str_I.encode('utf-8')
         except Exception as e:

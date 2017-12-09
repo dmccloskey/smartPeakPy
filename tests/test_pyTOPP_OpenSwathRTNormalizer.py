@@ -3,7 +3,6 @@ from smartPeak.core.smartPeak import smartPeak
 from smartPeak.core.smartPeak_i import smartPeak_i
 from . import data_dir
 from smartPeak.pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
-from smartPeak.pyTOPP.MRMMapper import MRMMapper
 # 3rd part libraries
 try:
     import pyopenms
@@ -15,10 +14,10 @@ class TestOpenSwathRTNormalizer():
     
     def load_data(
         self,
-        mzML_feature_i="mzML/150601_0_BloodProject01_PLT_QC_Broth-1.mzML",
-        trafo_csv_i="BloodProject01_SWATH_trafo.csv",
-        traML_csv_i="BloodProject01_SWATH.csv",
-        filename_params="BloodProject01_MRMFeatureFinderScoring_params.csv"
+        mzML_feature_i="mzML/mzML_1.mzML",
+        trafo_csv_i="trafo_1.csv",
+        traML_csv_i="traML_1.csv",
+        filename_params="params_1.csv"
     ):
         """load the test data"""            
 
@@ -45,16 +44,17 @@ class TestOpenSwathRTNormalizer():
             fh = pyopenms.FileHandler()
             fh.loadExperiment(mzML_feature_i.encode('utf-8'), self.chromatograms)
 
-        # map transitions to the chromatograms
-        mrmmapper = MRMMapper()
-        self.chromatogram_map = mrmmapper.algorithm(
-            chromatogram_map=self.chromatograms,
-            targeted=self.targeted, 
-            precursor_tolerance=0.0009,  # hard-coded for now
-            product_tolerance=0.0009,  # hard-coded for now
-            allow_unmapped=True,
-            allow_double_mappings=True
-        )
+        # TODO: update to pyopenms.MRMMapping
+        # # map transitions to the chromatograms
+        # mrmmapper = MRMMapper()
+        # self.chromatogram_map = mrmmapper.algorithm(
+        #     chromatogram_map=self.chromatograms,
+        #     targeted=self.targeted, 
+        #     precursor_tolerance=0.0009,  # hard-coded for now
+        #     product_tolerance=0.0009,  # hard-coded for now
+        #     allow_unmapped=True,
+        #     allow_double_mappings=True
+        # )
         
         # load the parameters
         filename_params = data_dir + "/" + filename_params

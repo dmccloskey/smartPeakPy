@@ -10,27 +10,26 @@ ptvsd.wait_for_attach()
 from smartPeak.core.__main__ import __main__
 m = __main__()
 
-
-# LCMS_MRM
-m.main(
-    filename_filenames='/home/user/openMS_MRMworkflow/LCMS_MRM/filenames.csv',
-    filename_params='/home/user/openMS_MRMworkflow/LCMS_MRM/MRMFeatureFinderScoring_params.csv',
-    delimiter=',',
-    )
+# # LCMS_MRM
+# m.main(
+#     filename_filenames='/home/user/Data/LCMS_MRM/filenames.csv',
+#     filename_params='/home/user/Data/LCMS_MRM/MRMFeatureFinderScoring_params.csv',
+#     delimiter=',',
+#     )
 
 # # GCMS_SRM
 # m.main(
-#     filename_filenames='/home/user/openMS_MRMworkflow/GCMS_SRM/filenames.csv',
-#     filename_params='/home/user/openMS_MRMworkflow/GCMS_SRM/MRMFeatureFinderScoring_params.csv',
+#     filename_filenames='/home/user/Data/GCMS_SRM/filenames.csv',
+#     filename_params='/home/user/Data/GCMS_SRM/MRMFeatureFinderScoring_params.csv',
 #     delimiter=',',
 #     )
 
 # # GCMS_fullScan
 # m.main(
-#     filename_filenames='/home/user/openMS_MRMworkflow/GCMS_fullScan/filenames.csv',
-#     filename_params='/home/user/openMS_MRMworkflow/GCMS_fullScan/MRMFeatureFinderScoring_params.csv',
+#     filename_filenames='/home/user/Data/GCMS_fullScan/filenames.csv',
+#     filename_params='/home/user/Data/GCMS_fullScan/MRMFeatureFinderScoring_params.csv',
 #     delimiter=',',
 #     )
 
-# from tests import runAllTests
-# runAllTests()
+from tests import runAllTests
+runAllTests()

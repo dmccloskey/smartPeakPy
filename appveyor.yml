@@ -42,7 +42,7 @@ init:
 
 install:
   - "%PYTHON%/Scripts/easy_install -U pip"
-  - "%PYTHON%/Scripts/pip install -U setuptools wheel tox twine scipy numpy optlang"
+  - "%PYTHON%/Scripts/pip install -U setuptools wheel tox twine scipy numpy optlang sqlalchemy pyopenms"
 
 build: false
 
