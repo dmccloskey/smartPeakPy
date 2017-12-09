@@ -10,7 +10,6 @@ ptvsd.wait_for_attach()
 from smartPeak.core.__main__ import __main__
 m = __main__()
 
-
 # # LCMS_MRM
 # m.main(
 #     filename_filenames='/home/user/Data/LCMS_MRM/filenames.csv',
@@ -31,10 +30,6 @@ m = __main__()
 #     filename_params='/home/user/Data/GCMS_fullScan/MRMFeatureFinderScoring_params.csv',
 #     delimiter=',',
 #     )
-
-from tests.test_core_main import testMain
-test = testMain()
-test.test_core_main_GCMS_SRM()
 
 from tests import runAllTests
 runAllTests()
