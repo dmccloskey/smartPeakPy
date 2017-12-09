@@ -21,6 +21,7 @@ except ImportError:
 smartPeak_directory = abspath(join(dirname(abspath(__file__)), ".."))
 smartPeak_location = abspath(join(smartPeak_directory, "smartPeak"))
 data_dir = join(smartPeak_directory, "tests/data", "")
+example_dir = join(smartPeak_directory, "examples", "")
 
 # def test_all(args=None):
 #     """ alias for running all unit-tests on installed smartPeak
@@ -40,7 +41,7 @@ def runAllTests():
     test = testSmartPeak()
     test.test_castString()
     test.test_convert_byte2String()
-    # test.test_convert_MQQMethod2Feature()
+    # test.test_convert_MQQMethod2Feature() # TODO
     test.test_convert_string2Byte()
     test.test_make_osCmd()
     test.test_parse_MQTransitionName()
@@ -59,7 +60,7 @@ def runAllTests():
     # test = TestOpenSwathRTNormalizer()
     # test.test_algorithm()
 
-    # # TODO:
+    # # TODO: refactor to C++
     # from tests.test_pyTOPP_MRMFeatureSelector import TestMRMFeatureSelector
     # test = TestMRMFeatureSelector()
     # test.test_select_MRMFeatures_score()
@@ -96,3 +97,8 @@ def runAllTests():
     test.test_addSampleToSequence()
     test.test_getMetaValue()
     test.test_makeDataMatrixFromMetaValue()
+
+    from tests.test_core_main import testMain
+    test = testMain()
+    test.test_core_main_LCMS_MRM()
+    test.test_core_main_GCMS_SRM()

@@ -35,7 +35,6 @@ class __main__():
 
         # internal variables
         skipped_samples = []
-        output = []
         validation_metrics = []
 
         # class initializations        
@@ -287,4 +286,3 @@ class __main__():
             meta_values=['calculated_concentration'],
             sample_types=['Unknown']
         )
-        return output
