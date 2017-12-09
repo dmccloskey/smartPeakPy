@@ -613,7 +613,7 @@ class smartPeak_openSWATH():
             )
         self.reference_data = reference_data
 
-    def validate_py(
+    def validate(
         self,
         MRMRFeatureValidator_params_I={},
         verbose_I=False

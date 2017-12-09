@@ -258,7 +258,7 @@ class TestSmartPeakOpenSWATH():
             'featureXML_o': featureXML_o,
             'feature_csv_o': feature_csv_o})
 
-    def test_validate_py(self):        
+    def test_validate(self):        
         self.load_data()
         openSWATH = smartPeak_openSWATH()
 
@@ -281,6 +281,6 @@ class TestSmartPeakOpenSWATH():
             )
 
         # validate the data
-        openSWATH.validate_py(self.params_1[
+        openSWATH.validate(self.params_1[
             'MRMFeatureValidator.validate_MRMFeatures'])
         assert(openSWATH.validation_metrics["accuracy"] == 0.98709677419354835)

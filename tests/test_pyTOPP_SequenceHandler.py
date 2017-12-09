@@ -50,20 +50,23 @@ class TestSequenceHandler():
         seqhandler = SequenceHandler()
 
         # load the data
-        filename_filenames = data_dir + '/YeastProject01_filenames.csv'
         filename_params = data_dir + '/test_pyTOPP_SequenceHandler_params.csv'
         delimiter = ','
 
         from smartPeak.core.smartPeak_openSWATH import smartPeak_openSWATH
         openSWATH = smartPeak_openSWATH()
         smartpeak_i = smartPeak_i()
-        smartpeak_i.read_pythonParams(filename_filenames, delimiter)
-        filenames = smartpeak_i.getData()
-        smartpeak_i.clear_data()
         smartpeak_i.read_openMSParams(filename_params, delimiter)
         params = smartpeak_i.getData()
         smartpeak_i.clear_data()
-        for sample, v in filenames.items():
+        sample_names = [
+            "170808_Jonathan_yeast_Sacc1_1x",
+            "170808_Jonathan_yeast_Sacc2_1x",
+            "170808_Jonathan_yeast_Sacc3_1x",
+            "170808_Jonathan_yeast_Yarr1_1x",
+            "170808_Jonathan_yeast_Yarr2_1x",
+            "170808_Jonathan_yeast_Yarr3_1x"]
+        for sample in sample_names:
             print("processing sample " + sample)
             try:
                 # pick peaks with OpenSWATH

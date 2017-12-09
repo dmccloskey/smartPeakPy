@@ -75,19 +75,19 @@ def runAllTests():
     test = TestMRMFeatureValidator()
     test.test_validate_MRMFeatures()
 
-    from tests.test_core_smartPeak_openSWATH_py import TestSmartPeakOpenSWATH_py
-    test = TestSmartPeakOpenSWATH_py()
+    from tests.test_core_smartPeak_openSWATH import TestSmartPeakOpenSWATH
+    test = TestSmartPeakOpenSWATH()
     test.test_load_traML()
     test.test_load_MSExperiment()
     test.test_extract_metaData()
     test.test_load_Trafo()
-    test.test_openSWATH_py()
+    test.test_openSWATH()
     test.test_load_featureMap()
     test.test_filterAndSelect()
-    test.test_validate_py()
+    test.test_validate()
 
-    from tests.test_core_smartPeak_AbsoluteQuantitation_py import TestAbsoluteQuantitation_py
-    test = TestAbsoluteQuantitation_py()
+    from tests.test_core_smartPeak_AbsoluteQuantitation import TestAbsoluteQuantitation
+    test = TestAbsoluteQuantitation()
     test.test_load_quantitationMethods()
     test.test_quantifyComponents()
 
