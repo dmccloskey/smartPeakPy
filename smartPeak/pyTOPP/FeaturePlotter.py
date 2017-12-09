@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # 3rd part libraries
 try:
+    import matplotlib
+    matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     from matplotlib.backends.backend_pdf import PdfPages
 except ImportError as e:
@@ -36,40 +38,44 @@ class FeaturePlotter():
         if verbose_I:
             print("Ploting peaks with features")
 
-        fig = plt.figure()
-        pp = PdfPages(filename_I)
-
         # main loop
         for feature in features:
-            for subordinate in feature.getSubordinates():
+            component_group_name = feature.getMetaValue("PeptideRef").decode("utf-8")
+            pp = PdfPages(filename_I + "_" + component_group_name + ".pdf")
+            n_plots = len(feature.getSubordinates())
+            for sub_cnt, subordinate in enumerate(feature.getSubordinates()):
                 component_name = subordinate.getMetaValue("native_id")
                 chrom = [
                     c for c in chromatograms.getChromatograms()
                     if c.getNativeID() == component_name]
-                ax1 = fig.add_subplot(111)
+
+                fig = plt.figure(num=sub_cnt)
+                # ax1 = fig.add_subplot(1, n_plots, sub_cnt + 1)
+                ax1 = fig.add_subplot(1, 1, 1)
 
                 # raw points
                 ax1.scatter(
                     chrom[0].get_peaks()[0],
                     chrom[0].get_peaks()[1], 
-                    s=10, c='b', marker="s", label='points'
+                    s=10, c='b', marker=".", label='points'
                     )
-                feature_rt = [
-                    p for p in chrom[0].get_peaks()[0]
-                    if p >= subordinate.getMetaValue("leftWidth") and
-                    p <= subordinate.getMetaValue("rightWidth")
-                    ]
-                feature_int = [
-                    p for p in chrom[0].get_peaks()[1]
-                    if p >= subordinate.getMetaValue("leftWidth") and
-                    p <= subordinate.getMetaValue("rightWidth")
-                    ]
+
                 # features
+                feature_rt = []
+                feature_int = []
+                for i, p in enumerate(chrom[0].get_peaks()[0]):
+                    if p >= feature.getMetaValue("leftWidth") and\
+                    p <= feature.getMetaValue("rightWidth"):
+                        feature_rt.append(p)
+                        feature_int.append(chrom[0].get_peaks()[1][i])
                 ax1.scatter(
                     feature_rt, feature_int, s=10, c='r', 
                     marker="o", label='selected peak')
-                plt.legend(loc='upper left')
-                plt.show()
+                
+                ax1.set_title(component_name.decode("utf-8"))
 
-                fig.savefig(pp, format='pdf')
-        pp.close()
+                # plt.legend(loc='upper left')
+                # fig.savefig(filename_I + "_" + component_name.decode("utf-8") + ".pdf")
+                pp.savefig(fig)
+                plt.close(fig)
+            pp.close()
