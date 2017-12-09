@@ -193,7 +193,7 @@ class __main__():
                         print('Reference data not found for sample ' + sample + '.')
                         continue
                     # validate the data
-                    openSWATH.validate_py(
+                    openSWATH.validate(
                         params['MRMFeatureValidator.validate_MRMFeatures'],
                         verbose_I=verbose_I)
                     openSWATH.store_featureMap({
