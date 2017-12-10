@@ -16,6 +16,7 @@ class __main__():
             validate_peaks=False,
             quantify_peaks=True,
             check_peaks=False,
+            plot_peaks=False,
             verbose_I=False,
             *Args,
             **Kwargs
@@ -67,6 +68,8 @@ class __main__():
                 check_peaks = workflow_parameters["check_peaks"]
             if "quantify_peaks" in workflow_parameters:
                 quantify_peaks = workflow_parameters["quantify_peaks"]
+            if "plot_peaks" in workflow_parameters:
+                plot_peaks = workflow_parameters["plot_peaks"]
             if "verbose_I" in workflow_parameters:
                 verbose_I = workflow_parameters["verbose_I"]
 
@@ -137,7 +140,7 @@ class __main__():
                 featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, sample) 
                 feature_csv_o = '''%s/features/%s.csv''' % (data_dir, sample)
                 if select_peaks:
-                    mrmfeaturefilter_csv_i = '''%s/FeatureFilters.csv''' % (data_dir)
+                    mrmfeaturefilter_csv_i = '''%s/featureFilters.csv''' % (data_dir)
                     openSWATH.filterAndSelect_py(
                         filenames_I={'mrmfeatureqcs_csv_i': mrmfeaturefilter_csv_i},
                         MRMFeatureFilter_filter_params_I=params[
@@ -148,8 +151,9 @@ class __main__():
                         MRMFeatureSelector_schedule_params_I=params[
                             'MRMFeatureSelector.schedule_MRMFeatures_qmip'],
                         # score algorithm
-                        # MRMFeatureSelector_select_params_I=params['MRMFeatureSelector.select_MRMFeatures_score'],
-                        # MRMFeatureSelector_schedule_params_I={}
+                        # MRMFeatureSelector_select_params_I=params[
+                        #     'MRMFeatureSelector.select_MRMFeatures_score'],
+                        # MRMFeatureSelector_schedule_params_I={},
                         verbose_I=verbose_I
                     )
                     # store
@@ -157,13 +161,23 @@ class __main__():
                         'featureXML_o': featureXML_o,
                         'feature_csv_o': feature_csv_o},
                         verbose_I=verbose_I)
-                elif validate_peaks or quantify_peaks or check_peaks:        
+                elif plot_peaks or validate_peaks or quantify_peaks or check_peaks:        
                     try:
                         openSWATH.load_featureMap(
                             {'featureXML_i': featureXML_o},
                             verbose_I=verbose_I)
                     except Exception as e:
                         print(e)
+
+                # Plot peaks and features
+                if plot_peaks:
+                    # export diagnostic plots
+                    features_pdf_o = '''%s/features/%s''' % (data_dir, sample) 
+                    openSWATH.export_featurePlots(
+                        filenames_I={'features_pdf_o': features_pdf_o},
+                        FeaturePlotter_params_I=params[
+                            'FeaturePlotter'],
+                        verbose_I=verbose_I)
 
                 # Validate peaks
                 # dynamically make the filenames
@@ -242,7 +256,7 @@ class __main__():
                 featureXML_o = '''%s/quantitation/%s.featureXML''' % (data_dir, sample) 
                 feature_csv_o = '''%s/quantitation/%s.csv''' % (data_dir, sample)
                 if check_peaks:
-                    mrmfeatureqcs_csv_i = '''%s/FeatureQCs.csv''' % (data_dir)
+                    mrmfeatureqcs_csv_i = '''%s/featureQCs.csv''' % (data_dir)
                     openSWATH.filterAndSelect_py(
                         filenames_I={'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i},
                         MRMFeatureFilter_filter_params_I=params[

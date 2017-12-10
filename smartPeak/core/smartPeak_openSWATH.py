@@ -7,6 +7,7 @@ from smartPeak.pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
 from smartPeak.pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
 from smartPeak.pyTOPP.MRMFeatureSelector import MRMFeatureSelector
 from smartPeak.pyTOPP.MRMFeatureValidator import MRMFeatureValidator
+from smartPeak.pyTOPP.FeaturePlotter import FeaturePlotter
 from smartPeak.data.ReferenceDataMethods import ReferenceDataMethods
 # external
 import copy
@@ -633,3 +634,30 @@ class smartPeak_openSWATH():
                 )
             self.featureMap = features_mapped
             self.validation_metrics = validation_metrics
+
+    def export_featurePlots(
+        self,        
+        filenames_I,
+        FeaturePlotter_params_I={},
+        verbose_I=False
+    ):
+        """Export plots of peaks with features annotated
+        """
+        if verbose_I:
+            print("Plotting peaks with features")
+        
+        # Handle the filenames
+        features_pdf_o = None
+        if 'features_pdf_o'in filenames_I.keys():
+            features_pdf_o = filenames_I['features_pdf_o']  
+
+        # export diagnostic plots
+        if FeaturePlotter_params_I:
+            featurePlotter = FeaturePlotter()
+            featurePlotter.setParameters(FeaturePlotter_params_I)
+            featurePlotter.plot_peaks(
+                filename_I=features_pdf_o,
+                transitions=self.targeted,
+                chromatograms=self.chromatogram_map,
+                features=self.featureMap
+            )

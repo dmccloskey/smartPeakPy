@@ -13,7 +13,7 @@ class testMain():
 
         m.main(
             filename_filenames=example_dir + 'LCMS_MRM/filenames.csv',
-            filename_params=example_dir + 'LCMS_MRM/MRMFeatureFinderScoring_params.csv',
+            filename_params=example_dir + 'LCMS_MRM/parameters.csv',
             delimiter=',',
             )
         assert(~os.path.isfile(example_dir + 'LCMS_MRM/mzML/skippedSamples.csv'))
@@ -68,7 +68,7 @@ class testMain():
 
         m.main(
             filename_filenames=example_dir + 'GCMS_SRM/filenames.csv',
-            filename_params=example_dir + 'GCMS_SRM/MRMFeatureFinderScoring_params.csv',
+            filename_params=example_dir + 'GCMS_SRM/parameters.csv',
             delimiter=',',
             )
         assert(~os.path.isfile(example_dir + 'GCMS_SRM/mzML/skippedSamples.csv'))
