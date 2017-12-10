@@ -38,4 +38,6 @@ Step 6: Specify the filenames to run through the workflow
 Step 7: Run the workflow
 ------------------------
 1. Ensure all files are saved
-2. 
+2. Start up Docker
+3. Navigate the directory
+4. Run the following command: `docker-compose up`
