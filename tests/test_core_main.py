@@ -62,28 +62,28 @@ class testMain():
         #     shallow=False
         #     ))
 
-    def test_core_main_GCMS_SRM(self):
-        """Test GCMS SRM example"""
+    def test_core_main_GCMS_SIM(self):
+        """Test GCMS SIM example"""
         m = __main__()
 
         m.main(
-            filename_filenames=example_dir + 'GCMS_SRM/filenames.csv',
-            filename_params=example_dir + 'GCMS_SRM/parameters.csv',
+            filename_filenames=example_dir + 'GCMS_SIM/filenames.csv',
+            filename_params=example_dir + 'GCMS_SIM/parameters.csv',
             delimiter=',',
             )
-        assert(~os.path.isfile(example_dir + 'GCMS_SRM/mzML/skippedSamples.csv'))
+        assert(~os.path.isfile(example_dir + 'GCMS_SIM/mzML/skippedSamples.csv'))
 
         from smartPeak.core.smartPeak_openSWATH import smartPeak_openSWATH
         openSWATH = smartPeak_openSWATH()
         openSWATH.load_featureMap({
             'featureXML_i': 
             example_dir + 
-            'GCMS_SRM/features/GCMS_SIM.featureXML'})
+            'GCMS_SIM/features/GCMS_SIM.featureXML'})
         fm1 = openSWATH.featureMap
         openSWATH.load_featureMap({
             'featureXML_i': 
             example_dir + 
-            'GCMS_SRM/features/GCMS_SIM_test.featureXML'})
+            'GCMS_SIM/features/GCMS_SIM_test.featureXML'})
         fm2 = openSWATH.featureMap
         assert(
             fm1[15].getSubordinates()[0].getMetaValue("native_id") == 
@@ -97,17 +97,17 @@ class testMain():
         
         # # TODO: why is this not working?
         # assert(filecmp.cmp(
-        #     example_dir + 'GCMS_SRM/features/GCMS_SIM.featureXML',
-        #     example_dir + 'GCMS_SRM/features/GCMS_SIM_test.featureXML',
+        #     example_dir + 'GCMS_SIM/features/GCMS_SIM.featureXML',
+        #     example_dir + 'GCMS_SIM/features/GCMS_SIM_test.featureXML',
         #     shallow=False
         #     ))
         # assert(filecmp.cmp(
-        #     example_dir + 'GCMS_SRM/features_tmp/GCMS_SIM.featureXML',
-        #     example_dir + 'GCMS_SRM/features_tmp/GCMS_SIM_test.featureXML',
+        #     example_dir + 'GCMS_SIM/features_tmp/GCMS_SIM.featureXML',
+        #     example_dir + 'GCMS_SIM/features_tmp/GCMS_SIM_test.featureXML',
         #     shallow=False
         #     ))
         # assert(filecmp.cmp(
-        #     example_dir + 'GCMS_SRM/SequenceSummary.csv',
-        #     example_dir + 'GCMS_SRM/SequenceSummary_test.csv',
+        #     example_dir + 'GCMS_SIM/SequenceSummary.csv',
+        #     example_dir + 'GCMS_SIM/SequenceSummary_test.csv',
         #     shallow=False
         #     ))

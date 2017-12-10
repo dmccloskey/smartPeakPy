@@ -101,4 +101,4 @@ def runAllTests():
     from tests.test_core_main import testMain
     test = testMain()
     test.test_core_main_LCMS_MRM()
-    test.test_core_main_GCMS_SRM()
+    test.test_core_main_GCMS_SIM()

@@ -12,10 +12,10 @@ smartPeak.core.smartPeak module
     :undoc-members:
     :show-inheritance:
 
-smartPeak.core.smartPeak_AbsoluteQuantitation_py module
--------------------------------------------------------
+smartPeak.core.smartPeak_AbsoluteQuantitation module
+----------------------------------------------------
 
-.. automodule:: smartPeak.core.smartPeak_AbsoluteQuantitation_py
+.. automodule:: smartPeak.core.smartPeak_AbsoluteQuantitation
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,10 +44,10 @@ smartPeak.core.smartPeak_openSWATH_cmd module
     :undoc-members:
     :show-inheritance:
 
-smartPeak.core.smartPeak_openSWATH_py module
---------------------------------------------
+smartPeak.core.smartPeak_openSWATH module
+-----------------------------------------
 
-.. automodule:: smartPeak.core.smartPeak_openSWATH_py
+.. automodule:: smartPeak.core.smartPeak_openSWATH
     :members:
     :undoc-members:
     :show-inheritance:
