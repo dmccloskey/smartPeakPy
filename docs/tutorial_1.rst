@@ -34,3 +34,8 @@ Step 5: Define workflow and peak picking and selecting parameters
 Step 6: Specify the filenames to run through the workflow
 ---------------------------------------------------------
 1. Add filenames to run through the workflow to the file "filenames.csv"
+
+Step 7: Run the workflow
+------------------------
+1. Ensure all files are saved
+2. 
