@@ -30,12 +30,16 @@ Features
 ========
 
 * Automated peak picking and peak selection
+
 - Advanced peak smoothing and picking
 - User defined peak filtering and quality control checking
 - Multi-stage, adaptive optimization algorithm for peak selection
+
 * Automated calibration curve fitting
+
 - Outlier detection with bias and R-squared optimization
 - User defined calibration model and acceptance criteria
+
 * Advanced peak integration and baseline detection models
 
 Getting Started
