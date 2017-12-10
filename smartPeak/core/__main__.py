@@ -29,7 +29,6 @@ class __main__():
         """
         # additional resources
         from smartPeak.pyTOPP.SequenceHandler import SequenceHandler
-        from smartPeak.pyTOPP.FeaturePlotter import FeaturePlotter
         from smartPeak.core.smartPeak_openSWATH import smartPeak_openSWATH
         from smartPeak.core.smartPeak_AbsoluteQuantitation import \
             smartPeak_AbsoluteQuantitation
@@ -40,7 +39,6 @@ class __main__():
 
         # class initializations        
         seqhandler = SequenceHandler()
-        featurePlotter = FeaturePlotter()
         AbsoluteQuantitation = smartPeak_AbsoluteQuantitation()
         openSWATH = smartPeak_openSWATH()
         smartpeak_i = smartPeak_i()
@@ -145,25 +143,23 @@ class __main__():
                         MRMFeatureFilter_filter_params_I=params[
                             'MRMFeatureFilter.filter_MRMFeatures'],
                         # qmip algorithm
-                        # MRMFeatureSelector_select_params_I=params[
-                        #     'MRMFeatureSelector.select_MRMFeatures_qmip'],
-                        # MRMFeatureSelector_schedule_params_I=params[
-                        #     'MRMFeatureSelector.schedule_MRMFeatures_qmip'],
-                        # score algorithm
                         MRMFeatureSelector_select_params_I=params[
-                            'MRMFeatureSelector.select_MRMFeatures_score'],
-                        MRMFeatureSelector_schedule_params_I={},
+                            'MRMFeatureSelector.select_MRMFeatures_qmip'],
+                        MRMFeatureSelector_schedule_params_I=params[
+                            'MRMFeatureSelector.schedule_MRMFeatures_qmip'],
+                        # score algorithm
+                        # MRMFeatureSelector_select_params_I=params[
+                        #     'MRMFeatureSelector.select_MRMFeatures_score'],
+                        # MRMFeatureSelector_schedule_params_I={},
                         verbose_I=verbose_I
                     )
                     # export diagnostic plots
                     features_pdf_o = '''%s/features/%s''' % (data_dir, sample) 
-                    featurePlotter.plot_peaks(
-                        filename_I=features_pdf_o,
-                        chromatograms=openSWATH.chromatogram_map,
-                        features=openSWATH.featureMap,
-                        plot_params={},
-                        verbose_I=verbose_I
-                    )
+                    openSWATH.export_featurePlots(
+                        filenames_I={'features_pdf_o': features_pdf_o},
+                        FeaturePlotter_params_I=params[
+                            'FeaturePlotter'],
+                        verbose_I=False)
                     # store
                     openSWATH.store_featureMap({
                         'featureXML_o': featureXML_o,
