@@ -1,85 +1,69 @@
-smartPeak.data package
+smartPeak.pyTOPP package
 ==================
 
 Submodules
 ----------
 
-smartPeak.data.MRMFeatureFilter module
+smartPeak.pyTOPP.FeaturePlotter module
 -------------------------------------------------------
 
-.. automodule:: smartPeak.data.MRMFeatureFilter
+.. automodule:: smartPeak.pyTOPP.FeaturePlotter
     :members:
     :undoc-members:
     :show-inheritance:
 
-smartPeak.data.MRMFeatureQC module
+smartPeak.pyTOPP.MRMFeatureSelector module
 -------------------------------------------------------
 
-.. automodule:: smartPeak.data.MRMFeatureQC
+.. automodule:: smartPeak.pyTOPP.MRMFeatureSelector
     :members:
     :undoc-members:
     :show-inheritance:
 
-smartPeak.data.MRMFeatureSelector module
+smartPeak.pyTOPP.MRMFeatureValidator module
 -------------------------------------------------------
 
-.. automodule:: smartPeak.data.MRMFeatureSelector
+.. automodule:: smartPeak.pyTOPP.MRMFeatureValidator
     :members:
     :undoc-members:
     :show-inheritance:
 
-smartPeak.data.MRMFeatureValidator module
+smartPeak.pyTOPP.MRMMapper module
 -------------------------------------------------------
 
-.. automodule:: smartPeak.data.MRMFeatureValidator
+.. automodule:: smartPeak.pyTOPP.MRMTransitionGroupPicker
     :members:
     :undoc-members:
     :show-inheritance:
 
-smartPeak.data.MRMMapper module
+smartPeak.pyTOPP.OpenSwathChromatogramExtractor module
 -------------------------------------------------------
 
-.. automodule:: smartPeak.data.MRMMapper
+.. automodule:: smartPeak.pyTOPP.OpenSwathChromatogramExtractor
     :members:
     :undoc-members:
     :show-inheritance:
 
-smartPeak.data.MRMTransitionGroupPicker module
+smartPeak.pyTOPP.OpenSwathFeatureXMLToTSV module
 -------------------------------------------------------
 
-.. automodule:: smartPeak.data.MRMTransitionGroupPicker
+.. automodule:: smartPeak.pyTOPP.OpenSwathFeatureXMLToTSV
     :members:
     :undoc-members:
     :show-inheritance:
 
-smartPeak.data.OpenSwathChromatogramExtractor module
+smartPeak.pyTOPP.OpenSwathRTNormalizer module
 -------------------------------------------------------
 
-.. automodule:: smartPeak.data.OpenSwathChromatogramExtractor
+.. automodule:: smartPeak.pyTOPP.OpenSwathRTNormalizer
     :members:
     :undoc-members:
     :show-inheritance:
 
-smartPeak.data.OpenSwathFeatureXMLToTSV module
+smartPeak.pyTOPP.SequenceHandler module
 -------------------------------------------------------
 
-.. automodule:: smartPeak.data.OpenSwathFeatureXMLToTSV
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-smartPeak.data.OpenSwathRTNormalizer module
--------------------------------------------------------
-
-.. automodule:: smartPeak.data.OpenSwathRTNormalizer
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-smartPeak.data.SequenceHandler module
--------------------------------------------------------
-
-.. automodule:: smartPeak.data.SequenceHandler
+.. automodule:: smartPeak.pyTOPP.SequenceHandler
     :members:
     :undoc-members:
     :show-inheritance:
@@ -87,7 +71,7 @@ smartPeak.data.SequenceHandler module
 Module contents
 ---------------
 
-.. automodule:: smartPeak.data
+.. automodule:: smartPeak.pyTOPP
     :members:
     :undoc-members:
     :show-inheritance:
