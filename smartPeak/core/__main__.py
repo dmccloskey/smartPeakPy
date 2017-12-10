@@ -140,7 +140,7 @@ class __main__():
                 featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, sample) 
                 feature_csv_o = '''%s/features/%s.csv''' % (data_dir, sample)
                 if select_peaks:
-                    mrmfeaturefilter_csv_i = '''%s/FeatureFilters.csv''' % (data_dir)
+                    mrmfeaturefilter_csv_i = '''%s/featureFilters.csv''' % (data_dir)
                     openSWATH.filterAndSelect_py(
                         filenames_I={'mrmfeatureqcs_csv_i': mrmfeaturefilter_csv_i},
                         MRMFeatureFilter_filter_params_I=params[
@@ -256,7 +256,7 @@ class __main__():
                 featureXML_o = '''%s/quantitation/%s.featureXML''' % (data_dir, sample) 
                 feature_csv_o = '''%s/quantitation/%s.csv''' % (data_dir, sample)
                 if check_peaks:
-                    mrmfeatureqcs_csv_i = '''%s/FeatureQCs.csv''' % (data_dir)
+                    mrmfeatureqcs_csv_i = '''%s/featureQCs.csv''' % (data_dir)
                     openSWATH.filterAndSelect_py(
                         filenames_I={'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i},
                         MRMFeatureFilter_filter_params_I=params[

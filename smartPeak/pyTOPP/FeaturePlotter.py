@@ -168,6 +168,7 @@ class FeaturePlotter():
 
                     # features
                     if subordinate:
+                        # hull_points = subordinate.getConvexHull().getHullPoints()
                         feature_rt = []
                         feature_int = []
                         for i, p in enumerate(chrom[0].get_peaks()[0]):
