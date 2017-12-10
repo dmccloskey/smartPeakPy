@@ -654,9 +654,10 @@ class smartPeak_openSWATH():
         # export diagnostic plots
         if FeaturePlotter_params_I:
             featurePlotter = FeaturePlotter()
-            featurePlotter.plot_features(
+            featurePlotter.setParameters(FeaturePlotter_params_I)
+            featurePlotter.plot_peaks(
                 filename_I=features_pdf_o,
+                transitions=self.targeted,
                 chromatograms=self.chromatogram_map,
-                features=self.featureMap,
-                plot_params=FeaturePlotter_params_I
+                features=self.featureMap
             )
