@@ -170,8 +170,9 @@ class TestSequenceHandler():
         seqhandler.addSampleToSequence(meta_data3, featuremap3)
         seqhandler.addFeatureMapToSequence("sample2", "DummyFeatureMap")
 
-        assert(seqhandler.sequence[
-            seqhandler.sample_to_index['sample2']]["featurMap"] == "DummyFeatureMap")
+        injection = seqhandler.sequence[
+            seqhandler.sample_to_index['sample2']]
+        assert(injection["featureMap"] == "DummyFeatureMap")
 
     def test_read_sequenceFile(self):
         """No test"""

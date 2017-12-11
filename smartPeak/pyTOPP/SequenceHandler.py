@@ -23,6 +23,10 @@ class SequenceHandler():
         self.index_to_sample = {}
         self.sample_to_index = {}
 
+    def getSequence(self):
+        """Return sequence"""
+        return self.sequence
+
     def addSampleToSequence(self, meta_data, featureMap):
         """add meta_data and featureMap to a sequence list
 

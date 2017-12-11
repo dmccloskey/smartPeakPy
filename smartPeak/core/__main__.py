@@ -8,7 +8,7 @@ class __main__():
 
     def main(
             self,
-            filename_filenames,
+            filename_sequence,
             filename_params,
             delimiter=',',
             pick_peaks=True,
@@ -45,9 +45,7 @@ class __main__():
         smartpeak_i = smartPeak_i()
 
         # read in the files
-        smartpeak_i.read_pythonParams(filename_filenames, delimiter)
-        filenames = smartpeak_i.getData()
-        smartpeak_i.clear_data()
+        seqhandler.read_sequenceFile(filename_sequence, delimiter)
         smartpeak_i.read_openMSParams(filename_params, delimiter)
         params = smartpeak_i.getData()
         smartpeak_i.clear_data()
@@ -89,16 +87,17 @@ class __main__():
             if parameter not in params:
                 params[parameter] = []
 
-        for sample, v in filenames.items():
-            print("processing sample " + sample)
+        for sequence in seqhandler.getSequence():
+            print("processing sample " + sequence["meta_data"]["sample_name"])
             try:
                 
                 # dynamically make the filenames
-                data_dir = v['data_dir']
-                mzML_i = '''%s/mzML/%s.mzML''' % (data_dir, sample)
-                traML_csv_i = '''%s/traML.csv''' % (data_dir)
+                mzML_i = '''%s/mzML/%s''' % (
+                    sequence["meta_data"]["data_dir"],
+                    sequence["meta_data"]["filename"])
+                traML_csv_i = '''%s/traML.csv''' % (sequence["meta_data"]["data_dir"])
                 # trafo_csv_i = '''%s/trafo.csv''' % (data_dir)
-                db_ini_i = '''%s/settings.ini''' % (data_dir)
+                db_ini_i = '''%s/settings.ini''' % (sequence["meta_data"]["data_dir"])
 
                 # load in the files
                 openSWATH.load_TraML({'traML_csv_i': traML_csv_i}, verbose_I=verbose_I)                
@@ -116,8 +115,12 @@ class __main__():
                     verbose_I=verbose_I)
 
                 # pick peaks with OpenSWATH
-                featureXML_o = '''%s/features_tmp/%s.featureXML''' % (data_dir, sample) 
-                feature_csv_o = '''%s/features_tmp/%s.csv''' % (data_dir, sample)
+                featureXML_o = '''%s/features_tmp/%s.featureXML''' % (
+                    sequence["meta_data"]["data_dir"],
+                    sequence["meta_data"]["sample_name"]) 
+                feature_csv_o = '''%s/features_tmp/%s.csv''' % (
+                    sequence["meta_data"]["data_dir"],
+                    sequence["meta_data"]["sample_name"])
                 if pick_peaks:
                     # run the openSWATH workflow for metabolomics
                     openSWATH.openSWATH(
@@ -137,10 +140,15 @@ class __main__():
                         print(e)
 
                 # Filter and select features
-                featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, sample) 
-                feature_csv_o = '''%s/features/%s.csv''' % (data_dir, sample)
+                featureXML_o = '''%s/features/%s.featureXML''' % (
+                    sequence["meta_data"]["data_dir"],
+                    sequence["meta_data"]["sample_name"]) 
+                feature_csv_o = '''%s/features/%s.csv''' % (
+                    sequence["meta_data"]["data_dir"],
+                    sequence["meta_data"]["sample_name"])
                 if select_peaks:
-                    mrmfeaturefilter_csv_i = '''%s/featureFilters.csv''' % (data_dir)
+                    mrmfeaturefilter_csv_i = '''%s/featureFilters.csv''' % (
+                        sequence["meta_data"]["data_dir"])
                     openSWATH.filterAndSelect_py(
                         filenames_I={'mrmfeatureqcs_csv_i': mrmfeaturefilter_csv_i},
                         MRMFeatureFilter_filter_params_I=params[
@@ -172,7 +180,9 @@ class __main__():
                 # Plot peaks and features
                 if plot_peaks:
                     # export diagnostic plots
-                    features_pdf_o = '''%s/features/%s''' % (data_dir, sample) 
+                    features_pdf_o = '''%s/features/%s''' % (
+                        sequence["meta_data"]["data_dir"],
+                        sequence["meta_data"]["sample_name"]) 
                     openSWATH.export_featurePlots(
                         filenames_I={'features_pdf_o': features_pdf_o},
                         FeaturePlotter_params_I=params[
@@ -181,8 +191,12 @@ class __main__():
 
                 # Validate peaks
                 # dynamically make the filenames
-                featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, sample) 
-                feature_csv_o = '''%s/features/%s.csv''' % (data_dir, sample)
+                featureXML_o = '''%s/features/%s.featureXML''' % (
+                    sequence["meta_data"]["data_dir"],
+                    sequence["meta_data"]["sample_name"]) 
+                feature_csv_o = '''%s/features/%s.csv''' % (
+                    sequence["meta_data"]["data_dir"],
+                    sequence["meta_data"]["sample_name"])
                 if validate_peaks:
                     # load in the validation data 
                     # (if no data is found, continue to the next sample)
@@ -190,7 +204,7 @@ class __main__():
                     ReferenceDataMethods_params_I.extend(
                         params['ReferenceDataMethods.getAndProcess_referenceData_samples']
                         )
-                    sample_names_I = '''['%s']''' % (sample)
+                    sample_names_I = '''['%s']''' % (sequence["meta_data"]["sample_name"])
                     ReferenceDataMethods_params_I.append({
                         'description': '', 'name': 'sample_names_I', 
                         'type': 'list', 'value': sample_names_I})
@@ -201,9 +215,11 @@ class __main__():
                         )
                     if not openSWATH.reference_data:
                         skipped_samples.append({
-                            'sample_name': sample,
+                            'sample_name': sequence["meta_data"]["sample_name"],
                             'error_message': 'no reference data found'})
-                        print('Reference data not found for sample ' + sample + '.')
+                        print(
+                            'Reference data not found for sample ' +
+                            sequence["meta_data"]["sample_name"] + '.')
                         continue
                     # validate the data
                     openSWATH.validate(
@@ -223,11 +239,15 @@ class __main__():
 
                 # Quantify peaks
                 # dynamically make the filenames
-                featureXML_o = '''%s/quantitation/%s.featureXML''' % (data_dir, sample) 
-                feature_csv_o = '''%s/quantitation/%s.csv''' % (data_dir, sample)
+                featureXML_o = '''%s/quantitation/%s.featureXML''' % (
+                    sequence["meta_data"]["data_dir"],
+                    sequence["meta_data"]["sample_name"]) 
+                feature_csv_o = '''%s/quantitation/%s.csv''' % (
+                    sequence["meta_data"]["data_dir"],
+                    sequence["meta_data"]["sample_name"])
                 if quantify_peaks:
                     quantitationMethods_csv_i = '''%s/quantitationMethods.csv''' % (
-                        data_dir)
+                        sequence["meta_data"]["data_dir"])
                     # load the quantitation method
                     AbsoluteQuantitation.load_quantitationMethods(
                         {'quantitationMethods_csv_i': quantitationMethods_csv_i},
@@ -247,16 +267,22 @@ class __main__():
                     except Exception as e:
                         # Peaks have not been quantified, try opening picked peaks
                         featureXML_o = '''%s/features/%s.featureXML''' % (
-                            data_dir, sample)
+                            sequence["meta_data"]["data_dir"],
+                            sequence["meta_data"]["sample_name"])
                         openSWATH.load_featureMap(
                             {'featureXML_i': featureXML_o},
                             verbose_I=verbose_I)
 
                 # QC the peaks
-                featureXML_o = '''%s/quantitation/%s.featureXML''' % (data_dir, sample) 
-                feature_csv_o = '''%s/quantitation/%s.csv''' % (data_dir, sample)
+                featureXML_o = '''%s/quantitation/%s.featureXML''' % (
+                    sequence["meta_data"]["data_dir"],
+                    sequence["meta_data"]["sample_name"]) 
+                feature_csv_o = '''%s/quantitation/%s.csv''' % (
+                    sequence["meta_data"]["data_dir"],
+                    sequence["meta_data"]["sample_name"])
                 if check_peaks:
-                    mrmfeatureqcs_csv_i = '''%s/featureQCs.csv''' % (data_dir)
+                    mrmfeatureqcs_csv_i = '''%s/featureQCs.csv''' % (
+                        sequence["meta_data"]["data_dir"])
                     openSWATH.filterAndSelect_py(
                         filenames_I={'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i},
                         MRMFeatureFilter_filter_params_I=params[
@@ -278,21 +304,24 @@ class __main__():
             except Exception as e:
                 print(e)
                 skipped_samples.append({
-                    'sample_name': sample,
+                    'sample_name': sequence["meta_data"]["sample_name"],
                     'error_message': e})
             # manual clear data for the next iteration
             openSWATH.clear_data()
         # export results
         if skipped_samples:
             smartpeak_o = smartPeak_o(skipped_samples)
-            skippedSamples_csv_i = '''%s/mzML/skippedSamples.csv''' % (data_dir)
+            skippedSamples_csv_i = '''%s/mzML/skippedSamples.csv''' % (
+                sequence["meta_data"]["data_dir"]
+            )
             smartpeak_o.write_dict2csv(skippedSamples_csv_i)
         if validation_metrics:
             smartpeak_o = smartPeak_o(validation_metrics)
             validationMetrics_csv_i = '''%s/validation/validationMetrics.csv''' % (
-                data_dir)
+                sequence["meta_data"]["data_dir"])
             smartpeak_o.write_dict2csv(validationMetrics_csv_i)
-        sequenceSummary_csv_i = '''%s/SequenceSummary.csv''' % (data_dir)
+        sequenceSummary_csv_i = '''%s/SequenceSummary.csv''' % (
+            sequence["meta_data"]["data_dir"])
         seqhandler.exportDataMatrixFromMetaValue(
             filename=sequenceSummary_csv_i,
             # meta_values=[
