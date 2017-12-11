@@ -21,7 +21,8 @@ class SequenceHandler():
         """
         self.sequence_file = []
         self.sequence = []
-        self.sequence_index = {}
+        self.index_to_sample = {}
+        self.sample_to_index = {}
 
     def addSampleToSequence(self, meta_data, featureMap):
         """add meta_data and featureMap to a sequence list
@@ -44,7 +45,8 @@ class SequenceHandler():
         }
 
         self.sequence.append(injection)
-        self.sequence_index[len(self.sequence)-1] = sample_name
+        self.index_to_sample[len(self.sequence)-1] = sample_name
+        self.sample_to_index[sample_name] = len(self.sequence)-1
 
     def makeDataMatrixFromMetaValue(
         self,
@@ -155,24 +157,25 @@ class SequenceHandler():
                 datum = subordinate.getMetaValue(meta_value)
         return datum
 
-    def importSequenceFile(self, filename, delimiter=','):
+    def read_sequenceFile(self, filename, delimiter=','):
         """Import a sequence file"""
 
         # read in the data
         smartpeak_i = smartPeak_i()
         smartpeak_i.read_csv(filename, delimiter)
-        self.setSequenceFile(self.parseSequenceFile(smartpeak_i.getData()))
+        self.parse_sequenceFile(smartpeak_i.getData())
         smartpeak_i.clear_data()
 
-    def parseSequenceFile(self, sequence_file):
+    def parse_metaData(self, meta_data):
         """Parse a sequence file to ensure all headers are present
         
         Args:
-            sequenceFile (list): list of dictionaries of sequence information
+            meta_data (dict): a dictionary of sample information
 
         Returns:
-            list: sequenceFile
+            dict: meta_data
         """
+
         # # MultiQuant Example
         # required_headers = [
         #     "SampleName","SampleID",
@@ -193,36 +196,59 @@ class SequenceHandler():
         sample_types = ["Unknown", "Standard", "QC", "Blank", "Double Blank", "Solvent"]
         sample_types_str = ",".join(sample_types)
 
-        for inj in sequence_file:
+        # check for required headers
+        for header in required_headers:
+            if header not in meta_data:
+                print(
+                    "Warning: required header in sequence list " +
+                    header + " not found.")
+                raise NameError('sequenceFile header')
+                # meta_data[header] = None  # not needed
+            
+        # check for correctness of headers
+        if meta_data["sample_type"] is not None:
+            if meta_data["sample_type"] not in sample_types:
+                print(
+                    "Warning: sample_type for sample_name " +
+                    meta_data["sample_name"] + " is not correct.")
+                print(
+                    "Supported samples types are the following: " +
+                    sample_types_str)
+                raise NameError('sample type')
 
-            # check for required headers
-            for header in required_headers:
-                if header not in inj:
-                    print(
-                        "Warning: required header in sequence list " +
-                        header + " not found.")
-                    raise NameError('sequenceFile header')
-                    # inj[header] = None  # not needed
-                
-            # check for correctness of headers
-            if inj["sample_type"] is not None:
-                if inj["sample_type"] not in sample_types:
-                    print(
-                        "Warning: sample_type for sample_name " +
-                        inj["sample_name"] + " is not correct.")
-                    print(
-                        "Supported samples types are the following: " +
-                        sample_types_str)
-                    raise NameError('sample type')
+        # other checks...
 
-        return sequence_file
+        return meta_data
 
-    def setSequenceFile(self, sequence_file):
-        """Set sequence file
-
+    def parse_sequenceFile(self, sequence_file):
+        """Parse a sequence file to ensure all headers are present
+        
         Args:
             sequenceFile (list): list of dictionaries of sequence information
-        
+
+        Returns:
+            list: sequenceFile
         """
-        self.sequence_file = sequence_file
+
+        for seq in sequence_file:
+            seq = self.parse_metaData(seq)
+            self.addSampleToSequence(seq, None)
+
+    def addFeatureMapToSequence(self, sample_name, featureMap):
+        """add a featureMap to an existing sequence
+
+        Args:
+            sample_name (str): name of the sample (must be unique!)
+            featureMap (FeatureMap): processed data in a FeatureMap
+
+        Returns:
+            dict: injection: dictionary of meta_data and FeatureMap
+        """
+
+        if sample_name not in self.sample_to_index.keys():
+            print(
+                "Sample name " + sample_name + " not found in sequence.")
+            raise NameError("sample_name")
+        else:
+            self.sequence[self.sample_to_index[sample_name]]["featureMap"] = featureMap
 
