@@ -19,6 +19,7 @@ class SequenceHandler():
     def __init__(self):
         """
         """
+        self.sequence_file = []
         self.sequence = []
         self.sequence_index = {}
 
@@ -153,3 +154,75 @@ class SequenceHandler():
             if datum is None:
                 datum = subordinate.getMetaValue(meta_value)
         return datum
+
+    def importSequenceFile(self, filename, delimiter=','):
+        """Import a sequence file"""
+
+        # read in the data
+        smartpeak_i = smartPeak_i()
+        smartpeak_i.read_csv(filename, delimiter)
+        self.setSequenceFile(self.parseSequenceFile(smartpeak_i.getData()))
+        smartpeak_i.clear_data()
+
+    def parseSequenceFile(self, sequence_file):
+        """Parse a sequence file to ensure all headers are present
+        
+        Args:
+            sequenceFile (list): list of dictionaries of sequence information
+
+        Returns:
+            list: sequenceFile
+        """
+        # # MultiQuant Example
+        # required_headers = [
+        #     "SampleName","SampleID",
+        #     "Comments","AcqMethod",
+        #     "ProcMethod","RackCode","PlateCode","VialPos","SmplInjVol",
+        #     "DilutFact","WghtToVol","Type","RackPos","PlatePos",
+        #     "SetName","OutputFile"
+        #     ]
+
+        required_headers = [
+            "sample_name", "sample_type",
+            "comments", "acquisition_method", "processing_method",
+            "rack_code", "plate_code", "vial_position", "rack_position", "plate_position"
+            "injection_volume", "dilution_factor", "weight_to_volume",
+            "set_name", "filename"
+            ]
+
+        sample_types = ["Unknown", "Standard", "QC", "Blank", "Double Blank", "Solvent"]
+        sample_types_str = ",".join(sample_types)
+
+        for inj in sequence_file:
+
+            # check for required headers
+            for header in required_headers:
+                if header not in inj:
+                    print(
+                        "Warning: required header in sequence list " +
+                        header + " not found.")
+                    raise NameError('sequenceFile header')
+                    # inj[header] = None  # not needed
+                
+            # check for correctness of headers
+            if inj["sample_type"] is not None:
+                if inj["sample_type"] not in sample_types:
+                    print(
+                        "Warning: sample_type for sample_name " +
+                        inj["sample_name"] + " is not correct.")
+                    print(
+                        "Supported samples types are the following: " +
+                        sample_types_str)
+                    raise NameError('sample type')
+
+        return sequence_file
+
+    def setSequenceFile(self, sequence_file):
+        """Set sequence file
+
+        Args:
+            sequenceFile (list): list of dictionaries of sequence information
+        
+        """
+        self.sequence_file = sequence_file
+
