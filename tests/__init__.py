@@ -97,6 +97,7 @@ def runAllTests():
     test.test_addSampleToSequence()
     test.test_getMetaValue()
     test.test_makeDataMatrixFromMetaValue()
+    test.test_parse_metaData()
 
     from tests.test_core_main import testMain
     test = testMain()

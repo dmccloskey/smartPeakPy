@@ -19,7 +19,6 @@ class SequenceHandler():
     def __init__(self):
         """
         """
-        self.sequence_file = []
         self.sequence = []
         self.index_to_sample = {}
         self.sample_to_index = {}
@@ -40,7 +39,7 @@ class SequenceHandler():
             sample_name = meta_data['sample_name']
 
         injection = {
-            'meta_data': meta_data,
+            'meta_data': self.parse_metaData(meta_data),
             'featureMap': featureMap
         }
 
@@ -166,15 +165,8 @@ class SequenceHandler():
         self.parse_sequenceFile(smartpeak_i.getData())
         smartpeak_i.clear_data()
 
-    def parse_metaData(self, meta_data):
-        """Parse a sequence file to ensure all headers are present
-        
-        Args:
-            meta_data (dict): a dictionary of sample information
-
-        Returns:
-            dict: meta_data
-        """
+    def getRequiredHeaders(self):
+        """Return required headers in a sequence file"""
 
         # # MultiQuant Example
         # required_headers = [
@@ -188,16 +180,28 @@ class SequenceHandler():
         required_headers = [
             "sample_name", "sample_type",
             "comments", "acquisition_method", "processing_method",
-            "rack_code", "plate_code", "vial_position", "rack_position", "plate_position"
+            "rack_code", "plate_code", "vial_position", "rack_position", "plate_position",
             "injection_volume", "dilution_factor", "weight_to_volume",
             "set_name", "filename"
             ]
+
+        return required_headers
+
+    def parse_metaData(self, meta_data):
+        """Parse a sequence file to ensure all headers are present
+        
+        Args:
+            meta_data (dict): a dictionary of sample information
+
+        Returns:
+            dict: meta_data
+        """
 
         sample_types = ["Unknown", "Standard", "QC", "Blank", "Double Blank", "Solvent"]
         sample_types_str = ",".join(sample_types)
 
         # check for required headers
-        for header in required_headers:
+        for header in self.getRequiredHeaders():
             if header not in meta_data:
                 print(
                     "Warning: required header in sequence list " +
@@ -205,16 +209,25 @@ class SequenceHandler():
                 raise NameError('sequenceFile header')
                 # meta_data[header] = None  # not needed
             
-        # check for correctness of headers
-        if meta_data["sample_type"] is not None:
-            if meta_data["sample_type"] not in sample_types:
-                print(
-                    "Warning: sample_type for sample_name " +
-                    meta_data["sample_name"] + " is not correct.")
-                print(
-                    "Supported samples types are the following: " +
-                    sample_types_str)
-                raise NameError('sample type')
+        # check for correctness of data
+        if meta_data["sample_name"] is None:
+            print(
+                "Warning: sample_name must be specified.")
+            raise NameError('sample name')
+        if meta_data["filename"] is None:
+            print(
+                "Warning: filename must be specified.")
+            raise NameError('filename name')
+
+        if meta_data["sample_type"] is None or\
+            meta_data["sample_type"] not in sample_types:
+            print(
+                "Warning: sample_type for sample_name " +
+                meta_data["sample_name"] + " is not correct.")
+            print(
+                "Supported samples types are the following: " +
+                sample_types_str)
+            raise NameError('sample type')
 
         # other checks...
 
@@ -225,13 +238,9 @@ class SequenceHandler():
         
         Args:
             sequenceFile (list): list of dictionaries of sequence information
-
-        Returns:
-            list: sequenceFile
         """
 
         for seq in sequence_file:
-            seq = self.parse_metaData(seq)
             self.addSampleToSequence(seq, None)
 
     def addFeatureMapToSequence(self, sample_name, featureMap):
