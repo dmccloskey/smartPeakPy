@@ -114,7 +114,7 @@ class FeaturePlotter():
             filename_I (string): name of the file
             chromatograms (pyopenms.MSExperiment): mapped chromatograms
             transitions (pyopenms.TargetedExperiment): list of transitions
-            featureMap (pyopenms.FeatureMap): mapped features
+            features (pyopenms.FeatureMap): mapped features
 
         """
         # organize transitions by transition group

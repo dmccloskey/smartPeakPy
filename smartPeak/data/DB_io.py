@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 try:
-    from sqlalchemy.dialects import postgresql
     from sqlalchemy.exc import SQLAlchemyError
 except ImportError as e:
     print(e)

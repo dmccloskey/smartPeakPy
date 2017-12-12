@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from configparser import SafeConfigParser
-from os.path import split as __split, join as __join, abspath as __abspath, \
-    isfile as __isfile
 
 
 class DB_settings():
