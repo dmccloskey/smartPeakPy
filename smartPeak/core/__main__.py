@@ -108,7 +108,6 @@ class __main__():
                     chromatogramExtractor_params_I=params['ChromatogramExtractor'],
                     verbose_I=verbose_I)
                 openSWATH.extract_metaData(verbose_I=verbose_I)
-                openSWATH.meta_data['sample_type'] = 'Unknown'
                 openSWATH.load_Trafo(  # skip transformation of RT
                     {},  # {'trafo_csv_i':trafo_csv_i},
                     params['MRMFeatureFinderScoring'],
@@ -299,8 +298,8 @@ class __main__():
                         verbose_I=verbose_I)
 
                 # record features
-                seqhandler.addSampleToSequence(
-                    openSWATH.meta_data, openSWATH.featureMap)
+                seqhandler.addFeatureMapToSequence(
+                    sequence["meta_data"]["sample_name"], openSWATH.featureMap)
             except Exception as e:
                 print(e)
                 skipped_samples.append({

@@ -208,25 +208,25 @@ class SequenceHandler():
         for header in self.getRequiredHeaders():
             if header not in meta_data:
                 print(
-                    "Warning: required header in sequence list " +
-                    header + " not found.")
+                    'SequenceFile Error: required header in sequence list "' +
+                    header + '" not found.')
                 raise NameError('sequenceFile header')
                 # meta_data[header] = None  # not needed
             
         # check for correctness of data
         if meta_data["sample_name"] is None:
             print(
-                "Warning: sample_name must be specified.")
+                "SequenceFile Error: sample_name must be specified.")
             raise NameError('sample name')
         if meta_data["filename"] is None:
             print(
-                "Warning: filename must be specified.")
+                "SequenceFile Error: filename must be specified.")
             raise NameError('filename name')
 
         if meta_data["sample_type"] is None or\
             meta_data["sample_type"] not in sample_types:
             print(
-                "Warning: sample_type for sample_name " +
+                "SequenceFile Error: sample_type for sample_name " +
                 meta_data["sample_name"] + " is not correct.")
             print(
                 "Supported samples types are the following: " +

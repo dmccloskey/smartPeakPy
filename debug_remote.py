@@ -17,10 +17,7 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-from tests.test_pyTOPP_SequenceHandler import TestSequenceHandler
-test = TestSequenceHandler()
-test.test_addSampleToSequence()
-test.test_getMetaValue()
-test.test_makeDataMatrixFromMetaValue()
-test.test_parse_metaData()
-test.test_addFeatureMapToSequence()
+from tests.test_core_main import testMain
+test = testMain()
+test.test_core_main_LCMS_MRM()
+test.test_core_main_GCMS_SIM()
