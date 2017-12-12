@@ -66,20 +66,30 @@
             ]
         },
         {
-            "name": "Attach (Remote Debug)",
+            "name": "Attach (Remote Debug 1)",
             "type": "python",
             "request": "attach",
-            "localRoot": "C:/Users/Documents/dmccloskey/GitHub/smartPeak/py/",
+            "localRoot": "C:/Users/domccl/GitHub/smartPeak/py/",
             "remoteRoot": "/home/user/code/",
             "port": 3000,
             "secret": "my_secret",
             "host": "localhost"
         },
         {
+            "name": "Attach (Remote Debug 2)",
+            "type": "python",
+            "request": "attach",
+            "localRoot": "C:/Users/Documents/dmccloskey/GitHub/smartPeak/py/",
+            "remoteRoot": "/home/user/code/",
+            "port": 3000,
+            "secret": "my_secret",
+            "host": "systemsbiochemistry.ucsd.edu"
+        },
+        {
             "name": "Attach (Server)",
             "type": "python",
             "request": "attach",
-            "localRoot": "C:/Users/domccl/GitHub/smartPeak/py/",
+            "localRoot": "C:/Users/Documents/dmccloskey/GitHub/smartPeak/py/",
             "remoteRoot": "/home/user/code/",
             "port": 3000,
             "secret": "my_secret",

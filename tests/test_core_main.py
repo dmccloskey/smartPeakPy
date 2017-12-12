@@ -12,7 +12,7 @@ class testMain():
         m = __main__()
 
         m.main(
-            filename_filenames=example_dir + 'LCMS_MRM/filenames.csv',
+            filename_sequence=example_dir + 'LCMS_MRM/sequence.csv',
             filename_params=example_dir + 'LCMS_MRM/parameters.csv',
             delimiter=',',
             )
@@ -67,7 +67,7 @@ class testMain():
         m = __main__()
 
         m.main(
-            filename_filenames=example_dir + 'GCMS_SIM/filenames.csv',
+            filename_sequence=example_dir + 'GCMS_SIM/sequence.csv',
             filename_params=example_dir + 'GCMS_SIM/parameters.csv',
             delimiter=',',
             )
