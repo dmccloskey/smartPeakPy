@@ -3,7 +3,7 @@ MRMFeatureFinderScoring,stop_report_after_feature,int,-1,-1,,"Stop reporting aft
 MRMFeatureFinderScoring,rt_extraction_window,float,-1,-1,,Only extract RT around this value (-1 means extract over the whole range; a value of 500 means to extract around +/- 500 s of the expected elution). For this to work; the TraML input file needs to contain normalized RT values.,TRUE,,
 MRMFeatureFinderScoring,rt_normalization_factor,float,100,1,,The normalized RT is expected to be between 0 and 1. If your normalized RT has a different range; pass this here (e.g. it goes from 0 to 100; set this value to 100),TRUE,,
 MRMFeatureFinderScoring,quantification_cutoff,float,0,0,min: 0,Cutoff in m/z below which peaks should not be used for quantification any more,TRUE,,
-MRMFeatureFinderScoring,write_convex_hull,string,FALSE,FALSE,true; false,Whether to write out all points of all features into the featureXML,TRUE,,
+MRMFeatureFinderScoring,write_convex_hull,string,TRUE,FALSE,true; false,Whether to write out all points of all features into the featureXML,TRUE,,
 MRMFeatureFinderScoring,add_up_spectra,int,1,1,min: 1,Add up spectra around the peak apex (needs to be a non-even integer),TRUE,,
 MRMFeatureFinderScoring,spacing_for_spectra_resampling,float,0.005,0.005,min: 0,If spectra are to be added; use this spacing to add them up,TRUE,,
 MRMFeatureFinderScoring,uis_threshold_sn,int,-1,-1,,S/N threshold to consider identification transition (set to -1 to consider all),TRUE,,
