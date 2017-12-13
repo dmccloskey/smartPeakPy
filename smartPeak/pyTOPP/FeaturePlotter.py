@@ -114,7 +114,7 @@ class FeaturePlotter():
             filename_I (string): name of the file
             chromatograms (pyopenms.MSExperiment): mapped chromatograms
             transitions (pyopenms.TargetedExperiment): list of transitions
-            featureMap (pyopenms.FeatureMap): mapped features
+            features (pyopenms.FeatureMap): mapped features
 
         """
         # organize transitions by transition group
@@ -168,17 +168,24 @@ class FeaturePlotter():
 
                     # features
                     if subordinate:
-                        # hull_points = subordinate.getConvexHull().getHullPoints()
-                        feature_rt = []
-                        feature_int = []
-                        for i, p in enumerate(chrom[0].get_peaks()[0]):
-                            if p >= feature.getMetaValue("leftWidth") and\
-                            p <= feature.getMetaValue("rightWidth"):
-                                feature_rt.append(p)
-                                feature_int.append(chrom[0].get_peaks()[1][i])
-                        ax1.scatter(
-                            feature_rt, feature_int, s=10, c='r', 
-                            marker="o", label='selected peak')
+                        hull_points = subordinate.getConvexHull().getHullPoints()
+                        if hull_points is not None:
+                            feature_rt = [hp[0] for hp in hull_points]
+                            feature_int = [hp[1] for hp in hull_points]
+                            ax1.scatter(
+                                feature_rt, feature_int, s=10, c='r', 
+                                marker="o", label='selected peak')
+                        else:
+                            feature_rt = []
+                            feature_int = []
+                            for i, p in enumerate(chrom[0].get_peaks()[0]):
+                                if p >= feature.getMetaValue("leftWidth") and\
+                                p <= feature.getMetaValue("rightWidth"):
+                                    feature_rt.append(p)
+                                    feature_int.append(chrom[0].get_peaks()[1][i])
+                            ax1.scatter(
+                                feature_rt, feature_int, s=10, c='r', 
+                                marker="x", label='selected peak')
                     
                     ax1.set_title(component_name.decode("utf-8"))
 

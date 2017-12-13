@@ -7,6 +7,7 @@ TODO:
 4. test
 """
 
+
 class RetentionComponents():
     """
     Select and normalize retention components
@@ -16,9 +17,9 @@ class RetentionComponents():
         self,
         sample_names,
         component_names,
-        used_ = True,
-        thresholds_query = ''
-        ):
+        used_=True,
+        thresholds_query=''
+    ):
         """Select retention components from data base
         
         Args:
@@ -40,7 +41,7 @@ class RetentionComponents():
             '''
         query_cmd += '''WHERE sample_name =ANY ('{%s}'::TEXT[]) 
                 AND component_name =ANY ('{%s}'::TEXT[]) 
-            ''' %(sample_names,component_names)
+            ''' % (sample_names, component_names)
         if used_:
             query_cmd += '''AND used_ 
             '''
