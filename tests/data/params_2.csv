@@ -16,6 +16,7 @@ MRMFeatureFinderScoring,uis_threshold_peak_area,int,0,0,,Peak area threshold to 
 MRMFeatureFinderScoring,TransitionGroupPicker:stop_after_feature,int,5,-1,,"Stop finding after feature (ordered by intensity, -1 means do not stop).",TRUE,,
 MRMFeatureFinderScoring,TransitionGroupPicker:stop_after_intensity_ratio,float,0.0001,0.0001,,Stop after reaching intensity ratio,TRUE,,
 MRMFeatureFinderScoring,TransitionGroupPicker:min_peak_width,float,-1,-1,,Minimal peak width (s); discard all peaks below this value (-1 means no action).,TRUE,,
+MRMFeatureFinderScoring,TransitionGroupPicker:peak_integration,string,original,none,original;smoothed,,TRUE,,
 MRMFeatureFinderScoring,TransitionGroupPicker:background_subtraction,string,none,none,none; smoothed_exact;smoothed_average; original_average;original_exact,Try to apply a background subtraction to the peak (experimental). The background is estimated at the peak boundaries; either the smoothed or the raw chromatogram data can be used for that.,TRUE,,
 MRMFeatureFinderScoring,TransitionGroupPicker:recalculate_peaks,string,FALSE,FALSE,,Tries to get better peak picking by looking at peak consistency of all picked peaks. Tries to use the consensus (median) peak border if theof variation within the picked peaks is too large.,TRUE,,
 MRMFeatureFinderScoring,TransitionGroupPicker:use_precursors,string,FALSE,FALSE,true; false,Use precursor chromatogram for peak picking,TRUE,,
