@@ -20,7 +20,7 @@ smartPeak
 fast and intelligent processing of GC and LC MS data, and HPLC data.  Supported workflows include the following:
 
 1. metabolomic- and proteomic-based absolute quantitation by SIM, MRM, DDA, DIA, or full scan.
-2. targetted isotopomer extraction for fluxomics by SIM, MRM, DDA, DIA, or full scan.
+2. targeted isotopomer extraction for fluxomics by SIM, MRM, DDA, DIA, or full scan.
 
 
 * Free software: MIT License
@@ -32,7 +32,7 @@ Features
 * Automated peak picking and peak selection
 
     - Advanced peak smoothing and picking
-    - User defined peak filtering and quality control checking
+    - User defined thresholds for peak filtering
     - Multi-stage, adaptive optimization algorithm for peak selection
 
 * Automated calibration curve fitting
@@ -41,6 +41,12 @@ Features
     - User defined calibration model and acceptance criteria
 
 * Advanced peak integration and baseline detection models
+
+* Flexible, user-defined peak, run, or batch quality control reporting
+
+	- Peak QCs:	Tailing, shouldering, points across the peak, l/ulod, l/uloq, ion ratio, etc.,
+	- Run QCs: Resolution between isomers
+	- Batch QCs: %RSD between QCs, %carryover, SST
 
 Getting Started
 ===============
