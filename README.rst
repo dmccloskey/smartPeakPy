@@ -35,6 +35,10 @@ Features
     - User defined thresholds for peak filtering
     - Multi-stage, adaptive optimization algorithm for peak selection
 
+* External calibration curve application
+
+	- Back calculation of sample concentration with or without IS
+
 * Automated calibration curve fitting
 
     - Outlier detection with bias and R-squared optimization
@@ -42,11 +46,14 @@ Features
 
 * Advanced peak integration and baseline detection models
 
+	- Trapezoid, simpson, and gaussian-based peak integration
+	- multiple baseline definitions
+
 * Flexible, user-defined peak, run, or batch quality control reporting
 
-	- Peak QCs:	Tailing, shouldering, points across the peak, l/ulod, l/uloq, ion ratio, etc.,
+	- Peak QCs: Tailing, shouldering, points across the peak, l/ulod, l/uloq, ion ratio, etc.,
 	- Run QCs: Resolution between isomers
-	- Batch QCs: %RSD between QCs, %carryover, SST
+	- Batch QCs: %RSD between QCs, %carryover, SST, etc.,
 
 Getting Started
 ===============
