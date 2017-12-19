@@ -355,6 +355,7 @@ referenceData.py	smartPeak/data/referenceData.py	1;"	kind:file	line:1
 release	docs/conf.py	/^release = smartPeak.__version__$/;"	kind:variable	line:83
 requirements	setup.py	/^requirements = [$/;"	kind:variable	line:12
 retentionComponents.py	smartPeak/data/retentionComponents.py	1;"	kind:file	line:1
+runAllTests	debug_remote.py	/^from tests import runAllTests$/;"	kind:namespace	line:20
 runAllTests	tests/__init__.py	/^def runAllTests():$/;"	kind:function	line:39
 run_osCmd	smartPeak/core/smartPeak.py	/^    def run_osCmd(cmd_I, verbose_I=False):$/;"	kind:member	line:29
 save_yaml_config	travis_pypi_setup.py	/^def save_yaml_config(filepath, config):$/;"	kind:function	line:91
@@ -448,8 +449,6 @@ sys	smartPeak/pyTOPP/OpenSwathFeatureXMLToTSV.py	/^import sys$/;"	kind:namespace
 sys	smartPeak/pyTOPP/SequenceHandler.py	/^import sys$/;"	kind:namespace	line:4
 sys	travis_pypi_setup.py	/^import sys$/;"	kind:namespace	line:10
 templates_path	docs/conf.py	/^templates_path = ['_templates']$/;"	kind:variable	line:61
-test	debug_remote.py	/^test = testMain()$/;"	kind:variable	line:24
-testMain	debug_remote.py	/^from tests.test_core_main import testMain$/;"	kind:namespace	line:23
 testMain	tests/__init__.py	/^    from tests.test_core_main import testMain$/;"	kind:namespace	line:103
 testMain	tests/test_core_main.py	/^class testMain():$/;"	kind:class	line:8
 testSmartPeak	tests/__init__.py	/^    from tests.test_core_smartPeak import testSmartPeak$/;"	kind:namespace	line:40
