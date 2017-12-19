@@ -1,16 +1,17 @@
 FROM dmccloskey/docker-openms:AbsoluteQuantitation
 USER root
 
-# install PTVS
 EXPOSE 3000
 RUN pip3 install --no-cache-dir \
-		ptvsd==3.0.0 \
 		optlang \
-	&&pip3 install --upgrade
+	&& pip3 install --upgrade && \
+	mkdir /home/user/code
+COPY smartPeak /home/user/code/smartPeak
+COPY tests /home/user/code/tests
+COPY main.py /home/user/code/main.py
 
 USER user
 
 # # RUN:
 # docker run -v //C/path_to_data/Data/:/home/user/Data/
-#  //C/path_to_repo/smartPeak/:/home/user/code/
-#  dmccloskey/docker-pyopenms-vscode:AbsoluteQuantitation python /home/user/code/debug_local.py
+#  dmccloskey/smartpeak:latest python /home/user/code/debug_local.py
