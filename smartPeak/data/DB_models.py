@@ -1,6 +1,10 @@
 from smartPeak.core.smartPeak_i import smartPeak_i
 from smartPeak.core.smartPeak_o import smartPeak_o
 
+############
+# DEPRECATED
+############
+
 
 class postgresql_models(object):
 

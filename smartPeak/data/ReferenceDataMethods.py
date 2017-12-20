@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from smartPeak.core.smartPeak_o import smartPeak_o
+import json
 import time as time
 from .DescriptiveStatistics import DescriptiveStatistics
 
@@ -139,11 +140,10 @@ class ReferenceDataMethods():
 
         """
         # DB settings
-        from .DB_settings import DB_settings
         from .DB_orm import DB_orm
-        pg_settings = DB_settings(settings_filename_I)
+        pg_settings = json.load(open(settings_filename_I))
         pg_orm = DB_orm()
-        pg_orm.set_sessionFromSettings(pg_settings.database_settings)
+        pg_orm.set_sessionFromSettings(pg_settings['database'])
         session = pg_orm.get_session()
         engine = pg_orm.get_engine()
         # query the reference data
