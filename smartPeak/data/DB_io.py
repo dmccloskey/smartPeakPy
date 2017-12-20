@@ -4,17 +4,18 @@ try:
 except ImportError as e:
     print(e)
 
+
 class DB_io():
-    def __init__(self, session_I=None, engine_I=None, settings_I={}, data_I=None):
+    def __init__(self, cursor_I=None, conn_I=None, settings_I={}, data_I=None):
         # base properties
-        if session_I: 
-            self.session = session_I
+        if cursor_I: 
+            self.cursor = cursor_I
         else: 
-            self.session = None
-        if engine_I: 
-            self.engine = engine_I
+            self.cursor = None
+        if conn_I: 
+            self.conn = conn_I
         else: 
-            self.engine = None
+            self.conn = None
         if settings_I: 
             self.settings = settings_I
         else: 
@@ -24,25 +25,25 @@ class DB_io():
         else: 
             self.data = []
 
-    def set_session(self, session_I):
-        '''set the session object'''
-        self.session = session_I
+    def set_cursor(self, cursor_I):
+        '''set the cursor object'''
+        self.cursor = cursor_I
 
-    def set_engine(self, engine_I):
-        '''set the engine object'''
-        self.engine = engine_I
+    def set_conn(self, conn_I):
+        '''set the conn object'''
+        self.conn = conn_I
 
     def set_settings(self, settings_I):
         '''set the settings object'''
         self.settings = settings_I
 
-    def get_session(self, session_I):
-        '''get the session object'''
-        self.session = session_I
+    def get_cursor(self, cursor_I):
+        '''get the cursor object'''
+        self.cursor = cursor_I
 
-    def get_engine(self, engine_I):
-        '''get the engine object'''
-        self.engine = engine_I
+    def get_conn(self, conn_I):
+        '''get the conn object'''
+        self.conn = conn_I
 
     def get_settings(self, settings_I):
         '''get the settings object'''
@@ -84,7 +85,7 @@ class DB_io():
         return string_O
 
     def execute_select(self, query_I, raise_I=False):
-        '''execute a raw sql query
+        '''execute a raw sql select
 
         Args:
             query_I (str): string or sqlalchemy text or sqlalchemy select
@@ -95,12 +96,39 @@ class DB_io():
         '''
         data_O = None
         try:
-            ans = self.session.execute(query_I)
-            data_O = ans.fetchall()  # TODO: export direction to listDict object
+            ans = self.cursor.execute(query_I)
+            data_O = ans.fetchall()
         except SQLAlchemyError as e:
-            self.session.rollback()
+            self.cursor.rollback()
             if raise_I:
                 raise
             else: 
                 print(e)
         return data_O
+
+    def execute_statement(self, query_I, raise_I=False):
+        '''execute a raw sql insert, update, or delete
+        
+        Args:
+            query_I (str): string or sqlalchemy text
+            raise_I (bool): boolean, raise error
+
+        '''
+        try:
+            ans = self.cursor.execute(query_I)
+            if ans == 0:
+                print("No rows changed.")
+            else:
+                self.cursor.commit()
+        except SQLAlchemyError as e:
+            self.cursor.rollback()
+            if raise_I: 
+                raise
+            else: 
+                print(e)
+        except Exception as e:
+            self.cursor.rollback()
+            if raise_I: 
+                raise
+            else: 
+                print(e)
