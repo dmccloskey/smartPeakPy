@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from configparser import SafeConfigParser
 
+############
+# DEPRECATED
+############
+
 
 class DB_settings():
     def __init__(self, filename_I=None):
