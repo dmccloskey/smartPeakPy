@@ -7,4 +7,19 @@ class DB_table(DB_io):
         pass
 
     def create_table(self):
-        table_cmd = """ """
+        pass
+
+    def add_row(self):
+        pass
+
+    def add_rows(self):
+        pass
+
+    def update_rows(self):
+        pass
+
+    def delete_rows(self):
+        pass
+
+    def select_rows(self):
+        pass
