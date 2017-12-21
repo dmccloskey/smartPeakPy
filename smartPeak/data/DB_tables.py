@@ -8,7 +8,7 @@ class DB_table_interface(DB_io):
     All DB table classes should inherit this object
     """
     def __init__(self, table_name):
-        self.table_name = table_name
+        self.table_name_ = table_name
 
     def create_table(self):
         pass
@@ -17,10 +17,20 @@ class DB_table_interface(DB_io):
         """Add a table row
         
         Args:
-            row (dict): key, value pair where key is the column name and value is the column value
+            row (dict): key, value pair where key is the column name and
+                value is the column value
         
         """
-        pass
+        insert_cols = ""
+        insert_vals = ""
+        for k, v in row.items():
+            insert_cols = '''"%s", ''' % (k)
+            insert_vals = '''%s, ''' % (v)
+        insert_cols = insert_cols[-2]
+        insert_vals = insert_vals[-2]
+        cmd = """INSERT INTO %s (%s) values (%s);""" % (
+            self.table_name_, insert_cols, insert_vals)
+        self.execute_statement(cmd)
 
     def add_rows(self, rows):
         """Add a table row
@@ -29,7 +39,8 @@ class DB_table_interface(DB_io):
             rows (list): list of key, value pairs
         
         """
-        pass
+        for row in rows:
+            self.add_row(row)
 
     def update_rows(self):
         """Update table rows"""
@@ -50,19 +61,19 @@ class DB_table_handler():
     All DB table objects should be called through this handler
     """
     def __init__(self, table_obj):
-        self.table_obj = table_obj
+        self.table_obj_ = table_obj
 
     def create_table(self):
-        self.table_obj.create_table()
+        self.table_obj_.create_table()
 
     def add_rows(self, rows):
-        self.table_obj.add_rows(rows)
+        self.table_obj_.add_rows(rows)
 
     def update_rows(self):
-        self.table_obj.update_rows()
+        self.table_obj_.update_rows()
 
     def delete_rows(self):
-        self.table_obj.delete_rows()
+        self.table_obj_.delete_rows()
 
     def select_rows(self):
-        self.table_obj.select_rows()
+        self.table_obj_.select_rows()
