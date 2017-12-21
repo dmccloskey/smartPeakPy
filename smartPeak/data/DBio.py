@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-class DB_io():
+class DBio():
     def __init__(self, cursor_I=None, conn_I=None, settings_I={}, data_I=None):
         # base properties
         if cursor_I: 
@@ -92,10 +92,10 @@ class DB_io():
         '''
         data_O = None
         try:
-            ans = self.cursor.execute(query_I)
-            data_O = ans.fetchall()
+            self.cursor.execute(query_I)
+            data_O = self.cursor.fetchall()
         except Exception as e:
-            self.cursor.rollback()
+            self.conn.rollback()
             if raise_I:
                 raise
             else: 
@@ -111,13 +111,13 @@ class DB_io():
 
         '''
         try:
-            ans = self.cursor.execute(query_I)
-            if ans == 0:
+            self.cursor.execute(query_I)
+            if self.cursor == 0:
                 print("No rows changed.")
             else:
                 self.cursor.commit()
         except Exception as e:
-            self.cursor.rollback()
+            self.conn.rollback()
             if raise_I: 
                 raise
             else: 

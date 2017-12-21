@@ -4,12 +4,12 @@ import psycopg2
 import psycopg2.extras
 
 
-class DB_orm():
+class DBConnection():
     def __init__(self):
         self.conn = None
         self.cursor = None
 
-    def set_connection(self, settings_I={}):
+    def set_conn(self, settings_I={}):
         '''Set connection to the database
 
         Args:
@@ -33,7 +33,7 @@ class DB_orm():
             exit(-1)
         self.conn = conn
 
-    def get_connection(self):
+    def get_conn(self):
         '''return connection to the database
         '''
         return self.conn
@@ -50,6 +50,7 @@ class DB_orm():
                 raise Exception('dialect not specified.')
             if settings_I["dialect"] == "postgresql":
                 cursor = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+                # cursor = self.conn.cursor()
             elif settings_I["dialect"] == "sqlite3":
                 cursor = self.conn.cursor()
         except Exception as e:

@@ -140,10 +140,11 @@ class ReferenceDataMethods():
 
         """
         # DB settings
-        from .DB_orm import DB_orm
+        from .DBConnection import DBConnection
         pg_settings = json.load(open(settings_filename_I))
-        pg_orm = DB_orm()
-        pg_orm.set_cursorFromSettings(pg_settings['database'])
+        pg_orm = DBConnection()
+        pg_orm.set_conn(pg_settings['database'])
+        pg_orm.set_cursor(pg_settings['database'])
         cursor = pg_orm.get_cursor()
         conn = pg_orm.get_conn()
         # query the reference data
