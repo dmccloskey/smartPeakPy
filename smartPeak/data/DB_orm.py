@@ -7,7 +7,7 @@ import psycopg2.extras
 class DB_orm():
     def __init__(self):
         self.conn = None
-        self.Session = None
+        self.cursor = None
 
     def set_connection(self, settings_I={}):
         '''Set connection to the database

@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-try:
-    from sqlalchemy.exc import SQLAlchemyError
-except ImportError as e:
-    print(e)
 
 
 class DB_io():
@@ -98,7 +94,7 @@ class DB_io():
         try:
             ans = self.cursor.execute(query_I)
             data_O = ans.fetchall()
-        except SQLAlchemyError as e:
+        except Exception as e:
             self.cursor.rollback()
             if raise_I:
                 raise
@@ -120,12 +116,6 @@ class DB_io():
                 print("No rows changed.")
             else:
                 self.cursor.commit()
-        except SQLAlchemyError as e:
-            self.cursor.rollback()
-            if raise_I: 
-                raise
-            else: 
-                print(e)
         except Exception as e:
             self.cursor.rollback()
             if raise_I: 

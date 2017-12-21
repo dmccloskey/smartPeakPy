@@ -143,13 +143,13 @@ class ReferenceDataMethods():
         from .DB_orm import DB_orm
         pg_settings = json.load(open(settings_filename_I))
         pg_orm = DB_orm()
-        pg_orm.set_sessionFromSettings(pg_settings['database'])
-        session = pg_orm.get_session()
-        engine = pg_orm.get_engine()
+        pg_orm.set_cursorFromSettings(pg_settings['database'])
+        cursor = pg_orm.get_cursor()
+        conn = pg_orm.get_conn()
         # query the reference data
         st = time.time()
         from .ReferenceData import ReferenceData
-        referenceData = ReferenceData(session, engine)
+        referenceData = ReferenceData(cursor, conn)
         if verbose_I: 
             print("query the reference data")
         data_ref = referenceData.get_referenceData(
@@ -168,7 +168,7 @@ class ReferenceDataMethods():
         elapsed_time = time.time() - st
         if verbose_I: 
             print("Elapsed time: %.2fs" % elapsed_time)
-        session.close()
+        cursor.close()
         # process the reference data
         if verbose_I: 
             print("process the reference data")
