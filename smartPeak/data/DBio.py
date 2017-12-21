@@ -80,18 +80,21 @@ class DBio():
             print('type of list_I is not supported.')
         return string_O
 
-    def execute_select(self, query_I, raise_I=False):
+    def execute_select(self, query_I, raise_I=False, verbose_I=False):
         '''execute a raw sql select
 
         Args:
             query_I (str): string or sqlalchemy text or sqlalchemy select
-            raise_I (boolean): boolean, raise error
+            raise_I (bool): boolean, raise error
+            raise_I (bool): boolean, print query statement
 
         Returns:
             tuple: data_O: keyed tuple sqlalchemy object
         '''
         data_O = None
         try:
+            if verbose_I:
+                print(query_I)
             self.cursor.execute(query_I)
             data_O = self.cursor.fetchall()
         except Exception as e:
@@ -102,15 +105,18 @@ class DBio():
                 print(e)
         return data_O
 
-    def execute_statement(self, query_I, raise_I=False):
+    def execute_statement(self, query_I, raise_I=False, verbose_I=False):
         '''execute a raw sql insert, update, or delete
         
         Args:
             query_I (str): string or sqlalchemy text
             raise_I (bool): boolean, raise error
+            raise_I (bool): boolean, print query statement
 
         '''
         try:
+            if verbose_I:
+                print(query_I)
             self.cursor.execute(query_I)
             if self.cursor == 0:
                 print("No rows changed.")

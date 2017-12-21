@@ -9,7 +9,7 @@ class DBTableInterface(DBio):
     """
     def __init__(
         self, dialect, table_name, schema_name, 
-        columns, data_types, constraints
+        columns, data_types, constraint_names, constraints
     ):
         """Initialize all attributes
         
@@ -19,6 +19,7 @@ class DBTableInterface(DBio):
             schema_name (str): name of the schema that the table belongs
             columns (list): list of column names
             data_types (list): list of data types that match the list of column names
+            constraint_names (list): list of constraint names
             constraints (list): list of sql text constraints
         """
         self.dialect_ = dialect
@@ -26,8 +27,11 @@ class DBTableInterface(DBio):
         self.schema_name_ = schema_name
         self.columns_ = columns
         self.data_types_ = data_types
-        self.constraints_ = constraints
         assert(len(self.columns_ == self.data_types_))
+        self.constraint_names_ = constraint_names
+        self.constraints_ = constraints
+        assert(len(self.constraint_names_ == self.constraints_))
+        self.pcol_ = "id"
 
     def get_tableName(self):
         """Return a table name"""
@@ -37,29 +41,34 @@ class DBTableInterface(DBio):
         table_name += '''"%s"''' % (self.table_name_)
         return table_name
 
-    def create_table(self, initialize_pkey_I=True, raise_I=False):
+    def create_table(self, raise_I=False):
         """Create a table"""
         try:
             # make the table
             col_type_stmt = ""
-            if initialize_pkey_I:
-                col_type_stmt += '''id INT NOT NULL CONSTRAINT 
-                "%s_pkey" PRIMARY KEY (id), ''' % (
-                    self.table_name_
-                ) 
+            col_type_stmt += '''%s INT NOT NULL CONSTRAINT 
+            "%s_pkey" PRIMARY KEY (id), ''' % (
+                self.pcol_, self.table_name_
+            ) 
             for i in range(len(self.columns_)):
                 col_type_stmt = '''"%s" %s, ''' % (
                     self.columns_[i], 
-                    self.data_types_[i], 
+                    self.data_types_[i]
                 )
             col_type_stmt = col_type_stmt[-2]
             cmd = """CREATE TABLE %s (%s)""" % (
                 self.get_tableName(), col_type_stmt)
-            self.execute_statement(cmd)
+            self.execute_statement(cmd, raise_I)
 
-            # make the indexes
+            # make the sequence
+            self.create_sequence(raise_I)
 
             # make the constraints
+            for i in range(len(self.constraints_)):
+                alter_stm = '''ADD CONSTRAINT "%s" %s''' % (
+                    self.constraint_names_[i], self.constraints_[i]
+                )
+                self.alter_table(alter_stm, raise_I)
 
         except Exception as e:
             if raise_I:
@@ -70,9 +79,20 @@ class DBTableInterface(DBio):
     def drop_table(self, raise_I=False):
         """Drop a table"""
         try:
+            # drop the constraints
+            for constraint_name in self.constraint_names_:
+                alter_stm = '''DROP CONSTRAINT IF EXISTS "%s"''' % (
+                    constraint_name
+                )
+                self.alter_table(alter_stm, raise_I)
+
+            # drop the sequence
+            self.drop_sequence(raise_I)
+
+            # drop the table
             cmd = """DROP TABLE %s;""" % (
                 self.get_tableName())
-            self.execute_statement(cmd)
+            self.execute_statement(cmd, raise_I)
         except Exception as e:
             if raise_I:
                 raise
@@ -89,24 +109,113 @@ class DBTableInterface(DBio):
         try:
             cmd = 'ALTER TABLE IF EXISTS %s %s' % (
                 self.get_tableName(), alter_stm)
-            self.execute_statement(cmd)
+            self.execute_statement(cmd, raise_I)
         except Exception as e:
             if raise_I:
                 raise
             else: 
                 print(e)
 
-    def create_index(self, raise_I=False):
-        """TODO"""
+    def create_sequence(self, raise_I=False):
+        """Create a sequence on a table"""
+        try:
+            cmd = '''CREATE SEQUENCE IF NOT EXISTS "%s_%s_seq" on %s.%s;''' % (
+                self.table_name_, self.pcol_, self.get_tableName(), self.pcol_
+            )
+            self.execute_statement(cmd, raise_I)
+        except Exception as e:
+            if raise_I:
+                raise
+            else: 
+                print(e)
 
-    def drop_index(self, raise_I=False):
-        """TODO"""
+    def drop_sequence(self, raise_I=False):
+        """Drop a sequence on a table"""
+        
+        try:
+            cmd = '''DROP SEQUENCE IF NOT EXISTS "%s_%s_seq";''' % (
+                self.table_name_, self.pcol_
+            )
+            self.execute_statement(cmd, raise_I)
+        except Exception as e:
+            if raise_I:
+                raise
+            else: 
+                print(e)
 
-    def create_trigger(self, raise_I=False):
-        """TODO"""
+    def create_trigger(
+        self, trigger_name, before_after_insteadOf, 
+        event, func_name, raise_I=False
+    ):
+        """Create a trigger on a table
 
-    def drop_drop(self, raise_I=False):
-        """TODO"""
+        Args:
+            ...
+            func_name (str): name of the function (postgresql); procedure (sqlite)
+        """
+        try:
+            if before_after_insteadOf not in ["BEFORE", "AFTER", "INSTEAD OF"]:
+                raise NameError("Invalid option given for before_after_insteadOf parameter.")
+            if event not in ["INSERT", "UPDATE", "DELETE", "TRUNCATE"]:
+                raise NameError("Invalid option given for even parameter.")
+            if self.dialect_ == "postgresql":
+                cmd = '''CREATE TRIGGER "%s" %s %s ON %s EXECUTE PROCEDURE "%s";''' % (
+                    trigger_name, before_after_insteadOf, event, self.get_tableName(),
+                    func_name
+                )
+            elif self.dialect_ == "sqlite":
+                cmd = '''CREATE TRIGGER "%s" %s %s ON %s BEGIN %s END;''' % (
+                    trigger_name, before_after_insteadOf, event, self.get_tableName(),
+                    func_name
+                )
+            self.execute_statement(cmd, raise_I)
+        except Exception as e:
+            if raise_I:
+                raise
+            else: 
+                print(e)
+
+    def drop_trigger(self, trigger_name, raise_I=False):
+        """Drop a trigger"""        
+        try:
+            cmd = '''DROP TRIGGER IF NOT EXISTS "%s" ON ;''' % (
+                trigger_name, self.get_tableName()
+            )
+            self.execute_statement(cmd, raise_I)
+        except Exception as e:
+            if raise_I:
+                raise
+            else: 
+                print(e)
+
+    def create_function(
+        self, func_name, argnames,
+        return_type, raise_I=False
+    ):
+        """Create function
+
+        NOTE: not available in sqlite
+        
+        """
+        try:
+            args = ""
+            cmd = '''CREATE OR REPLACE FUNCTION "%s" (%s) RETURNS %s AS $$ BEGIN %s END;''' % (
+                func_name, args, return_type,
+            )
+            self.execute_statement(cmd, raise_I)
+        except Exception as e:
+            if raise_I:
+                raise
+            else: 
+                print(e)
+
+    def drop_function(self, raise_I=False):
+        """Drop function
+
+        NOTE: not available in sqlite
+        
+        """
+        pass
 
     def add_row(self, col_val, raise_I=False):
         """Add a table row
@@ -126,7 +235,7 @@ class DBTableInterface(DBio):
             insert_vals = insert_vals[-2]
             cmd = """INSERT INTO %s (%s) VALUES (%s);""" % (
                 self.get_tableName(), insert_cols, insert_vals)
-            self.execute_statement(cmd)
+            self.execute_statement(cmd, raise_I)
         except Exception as e:
             if raise_I:
                 raise
@@ -165,7 +274,7 @@ class DBTableInterface(DBio):
             cmd = '''UPDATE %s SET %s WHERE %s;''' % (
                 self.get_tableName(), set_cmd, where_stm
             )
-            self.execute_statement(cmd)            
+            self.execute_statement(cmd, raise_I)            
         except Exception as e:
             if raise_I:
                 raise
@@ -182,7 +291,7 @@ class DBTableInterface(DBio):
             cmd = '''DELETE FROM %s WHERE %s''' % (
                 self.get_tableName(), where_stm
             )
-            self.execute_statement(cmd)            
+            self.execute_statement(cmd, raise_I)            
         except Exception as e:
             if raise_I:
                 raise
@@ -219,7 +328,7 @@ class DBTableInterface(DBio):
                 cmd += '''OFFSET %s ''' % (offset_stm)
             cmd = cmd[-1]
             cmd += ";"
-            data_O = self.execute_select(cmd)            
+            data_O = self.execute_select(cmd, raise_I)            
         except Exception as e:
             if raise_I:
                 raise
