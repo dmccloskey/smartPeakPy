@@ -49,8 +49,8 @@ class DBConnection():
             if "dialect" not in settings_I.keys():
                 raise Exception('dialect not specified.')
             if settings_I["dialect"] == "postgresql":
-                cursor = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-                # cursor = self.conn.cursor()
+                # cursor = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+                cursor = self.conn.cursor()
             elif settings_I["dialect"] == "sqlite3":
                 cursor = self.conn.cursor()
         except Exception as e:

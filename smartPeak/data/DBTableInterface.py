@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from .DBio import DBio
+import copy
 
 
 class DBTableInterface(DBio):
@@ -27,11 +28,12 @@ class DBTableInterface(DBio):
         self.schema_name_ = schema_name
         self.columns_ = columns
         self.data_types_ = data_types
-        assert(len(self.columns_ == self.data_types_))
+        assert(len(self.columns_) == len(self.data_types_))
         self.constraint_names_ = constraint_names
         self.constraints_ = constraints
-        assert(len(self.constraint_names_ == self.constraints_))
+        assert(len(self.constraint_names_) == len(self.constraints_))
         self.pcol_ = "id"
+        self.timestamp_ = "data_and_time"
 
     def get_tableName(self):
         """Return a table name"""
@@ -41,29 +43,51 @@ class DBTableInterface(DBio):
         table_name += '''"%s"''' % (self.table_name_)
         return table_name
 
+    def get_tableColumns(self):
+        """Return a list of table columns"""
+        columns = copy.copy(self.columns_)
+        columns.insert(0, self.pcol_)
+        return columns
+
+    def get_sequenceName(self):
+        """Return the sequence name"""
+        seq_name = '''"%s_%s_seq"''' % (self.table_name_, self.pcol_)
+        return seq_name
+
     def create_table(self, raise_I=False):
         """Create a table"""
         try:
-            # make the table
-            col_type_stmt = ""
-            col_type_stmt += '''%s INT NOT NULL CONSTRAINT 
-            "%s_pkey" PRIMARY KEY (id), ''' % (
-                self.pcol_, self.table_name_
-            ) 
-            for i in range(len(self.columns_)):
-                col_type_stmt = '''"%s" %s, ''' % (
-                    self.columns_[i], 
-                    self.data_types_[i]
-                )
-            col_type_stmt = col_type_stmt[-2]
-            cmd = """CREATE TABLE %s (%s)""" % (
-                self.get_tableName(), col_type_stmt)
-            self.execute_statement(cmd, raise_I)
-
             # make the sequence
             self.create_sequence(raise_I)
 
-            # make the constraints
+            # make the table
+            col_type_stmt = ""
+            col_type_stmt += '''%s INTEGER NOT NULL DEFAULT nextval('%s'), ''' % (
+                self.pcol_, self.get_sequenceName()
+            ) 
+            strftime = "%Y-%m-%d %H:%M:%S"
+            col_type_stmt += '''%s TEXT NOT NULL DEFAULT strftime('%s', 'now'), ''' % (
+                self.timestamp_, strftime
+            ) 
+            for i in range(len(self.columns_)):
+                col_type_stmt += '''"%s" %s, ''' % (
+                    self.columns_[i], 
+                    self.data_types_[i]
+                )
+            col_type_stmt = col_type_stmt[:-2]
+            cmd = """CREATE TABLE IF NOT EXISTS %s (%s);""" % (
+                self.get_tableName(), col_type_stmt)
+            self.execute_statement(cmd, raise_I)
+
+
+            # make the primary key constraint
+            alter_stm = '''ADD CONSTRAINT 
+            "%s_pkey" PRIMARY KEY (id)''' % (
+                self.pcol_, self.table_name_
+            ) 
+            self.alter_table(alter_stm, raise_I)
+
+            # make all other constraints
             for i in range(len(self.constraints_)):
                 alter_stm = '''ADD CONSTRAINT "%s" %s''' % (
                     self.constraint_names_[i], self.constraints_[i]
@@ -119,7 +143,7 @@ class DBTableInterface(DBio):
     def create_sequence(self, raise_I=False):
         """Create a sequence on a table"""
         try:
-            cmd = '''CREATE SEQUENCE IF NOT EXISTS "%s_%s_seq" on %s.%s;''' % (
+            cmd = '''CREATE SEQUENCE IF NOT EXISTS "%s_%s_seq" ON %s.%s;''' % (
                 self.table_name_, self.pcol_, self.get_tableName(), self.pcol_
             )
             self.execute_statement(cmd, raise_I)
@@ -219,8 +243,8 @@ class DBTableInterface(DBio):
         """
         pass
 
-    def add_row(self, col_val, raise_I=False):
-        """Add a table row
+    def insert_row(self, col_val, raise_I=False):
+        """insert a table row
         
         Args:
             col_val (dict): key, value pair where key is the column name and
@@ -244,8 +268,8 @@ class DBTableInterface(DBio):
             else: 
                 print(e)
 
-    def add_rows(self, rows, raise_I=False):
-        """Add a table row
+    def insert_rows(self, rows, raise_I=False):
+        """Insert table rows
         
         Args:
             rows (list): list of key, value pairs
@@ -253,7 +277,7 @@ class DBTableInterface(DBio):
         """
         try:
             for row in rows:
-                self.add_row(row)
+                self.insert_row(row)
         except Exception as e:
             if raise_I:
                 raise

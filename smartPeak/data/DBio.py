@@ -80,13 +80,29 @@ class DBio():
             print('type of list_I is not supported.')
         return string_O
 
-    def execute_select(self, query_I, raise_I=False, verbose_I=False):
+    def merge_keysAndListOfTuples(self, keys, list):
+        '''convert a list of tuple to a list of dicts
+
+        NOTE: order of keys and values must match!
+
+        Args:
+            keys (list): list of keys
+            list (list): list of tuples with values
+        
+        Returns:
+            list_O: list of dicts
+        '''
+        list_O = [dict(zip(keys, row)) for row in list]
+        return list_O
+
+    def execute_select(self, query_I, columns, raise_I=False, verbose_I=False):
         '''execute a raw sql select
 
         Args:
             query_I (str): string or sqlalchemy text or sqlalchemy select
+            columns (list): list of expected column names
             raise_I (bool): boolean, raise error
-            raise_I (bool): boolean, print query statement
+            verbose_I (bool): boolean, print query statement
 
         Returns:
             tuple: data_O: keyed tuple sqlalchemy object
@@ -96,7 +112,7 @@ class DBio():
             if verbose_I:
                 print(query_I)
             self.cursor.execute(query_I)
-            data_O = self.cursor.fetchall()
+            data_O = self.merge_keysAndListOfTuples(columns, self.cursor.fetchall())
         except Exception as e:
             self.conn.rollback()
             if raise_I:
@@ -111,7 +127,7 @@ class DBio():
         Args:
             query_I (str): string or sqlalchemy text
             raise_I (bool): boolean, raise error
-            raise_I (bool): boolean, print query statement
+            verbose_I (bool): boolean, print query statement
 
         '''
         try:
@@ -121,7 +137,7 @@ class DBio():
             if self.cursor == 0:
                 print("No rows changed.")
             else:
-                self.cursor.commit()
+                self.conn.commit()
         except Exception as e:
             self.conn.rollback()
             if raise_I: 

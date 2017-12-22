@@ -76,6 +76,12 @@ def runAllTests():
     test = TestDBConnection()
     test.test_DBConnection()
 
+    from tests.test_data_DBio import TestDBio
+    test = TestDBio()
+    test.test_convert_list2string()
+    test.test_merge_keysAndListOfTuplest()
+    test.test_execute_statement()
+
     from tests.test_pyTOPP_MRMFeatureValidator import TestMRMFeatureValidator
     test = TestMRMFeatureValidator()
     test.test_validate_MRMFeatures()
