@@ -17,9 +17,9 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-from tests.test_data_DBConnection import TestDBConnection
-test = TestDBConnection()
-test.test_DBConnection()
+from tests.test_data_DBio import TestDBio
+test = TestDBio()
+test.test_convert_list2string()
 
 # from tests import runAllTests
 # runAllTests()
