@@ -45,7 +45,7 @@ class TestDBTableInterface():
         assert(colnames[1] == "date_and_time") 
         assert(colnames[2] == "test")  
 
-    def tes_get_sequenceName(self):
+    def test_get_sequenceName(self):
         seqname = self.db_table_interface.get_sequenceName()
         assert(seqname == '"test1_id_seq"')
 
@@ -55,16 +55,20 @@ class TestDBTableInterface():
         Methods tested:
             create_table
             drop_table
-            alter_table
         """
+        self.db_table_interface.drop_table()
+
         # override default values
         self.db_table_interface.create_table()
         
-        query_I = '''INSERT INTO test1 (id, date_and_time, test) VALUES (0, "now", "a");'''
+        query_I = '''INSERT INTO test1 (id, date_and_time, test) \
+        VALUES (0, "now", "a");'''
         self.db_table_interface.execute_statement(query_I, raise_I=False, verbose_I=False)        
-        query_I = '''INSERT INTO test1 (id, date_and_time, test) VALUES (1, "now", "b");'''
+        query_I = '''INSERT INTO test1 (id, date_and_time, test) \
+        VALUES (1, "now", "b");'''
         self.db_table_interface.execute_statement(query_I, raise_I=False, verbose_I=False)       
-        query_I = '''INSERT INTO test1 (id, date_and_time, test) VALUES (2, "now", "c");'''
+        query_I = '''INSERT INTO test1 (id, date_and_time, test) \
+        VALUES (2, "now", "c");'''
         self.db_table_interface.execute_statement(query_I, raise_I=False, verbose_I=False)
 
         query_I = '''SELECT * FROM test1 ORDER BY id;'''
@@ -96,8 +100,8 @@ class TestDBTableInterface():
         assert(result[0]["test"] == "a")
         assert(result[1]["test"] == "b")
         assert(result[2]["test"] == "c")
-        assert(result[0]["id"] == 0)
-        assert(result[1]["id"] == 1)
-        assert(result[2]["id"] == 2)
+        assert(result[0]["id"] == 1)
+        assert(result[1]["id"] == 2)
+        assert(result[2]["id"] == 3)
 
         self.db_table_interface.drop_table()
