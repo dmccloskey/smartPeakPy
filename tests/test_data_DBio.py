@@ -93,3 +93,33 @@ class TestDBio():
         )
         result = db_io.execute_select(query_I, columns, raise_I=False, verbose_I=False)
         assert(result is None)
+
+    def test_execute_select(self):
+        # connect to the DB
+        pg_settings = {"database": {
+            "dialect": "sqlite3",
+            "host": data_dir + "sqlite_test.db",
+            "database": "",
+            "password": "",
+            "schema": "",
+            "user": ""
+        }}
+        db_connection = DBConnection()
+        db_connection.set_conn(pg_settings['database'])
+        conn = db_connection.get_conn()
+        db_connection.set_cursor(pg_settings['database'])
+        cursor = db_connection.get_cursor()
+
+        # query against the DB
+        db_io = DBio(cursor, conn)   
+
+        query_I = "SELECT date('now');"
+        result = db_io.execute_select(query_I, None, raise_I=False, verbose_I=False)
+        import time
+        from datetime import date
+        assert(result[0][0] == str(date.today()))
+
+        query_I = "SELECT 1 + 1;"
+        result = db_io.execute_select(query_I, None, raise_I=False, verbose_I=False)
+        assert(result[0][0] == 2)
+

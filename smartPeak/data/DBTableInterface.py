@@ -33,7 +33,7 @@ class DBTableInterface(DBio):
         self.constraints_ = constraints
         assert(len(self.constraint_names_) == len(self.constraints_))
         self.pcol_ = "id"
-        self.timestamp_ = "data_and_time"
+        self.timestamp_ = "date_and_time"
 
     def get_tableName(self):
         """Return a table name"""
@@ -46,6 +46,7 @@ class DBTableInterface(DBio):
     def get_tableColumns(self):
         """Return a list of table columns"""
         columns = copy.copy(self.columns_)
+        columns.insert(0, self.timestamp_)
         columns.insert(0, self.pcol_)
         return columns
 
@@ -57,42 +58,34 @@ class DBTableInterface(DBio):
     def create_table(self, raise_I=False):
         """Create a table"""
         try:
-            # make the sequence
-            self.create_sequence(raise_I)
+            # # make the sequence
+            # self.create_sequence(raise_I)
 
-            # make the table
+            # make the columns
             col_type_stmt = ""
-            col_type_stmt += '''%s INTEGER NOT NULL DEFAULT nextval('%s'), ''' % (
-                self.pcol_, self.get_sequenceName()
-            ) 
-            strftime = "%Y-%m-%d %H:%M:%S"
-            col_type_stmt += '''%s TEXT NOT NULL DEFAULT strftime('%s', 'now'), ''' % (
-                self.timestamp_, strftime
-            ) 
+            col_type_stmt += '''%s INTEGER NOT NULL CONSTRAINT "%s_pkey" PRIMARY KEY AUTOINCREMENT, 
+            ''' % (self.pcol_, self.table_name_)
+            col_type_stmt += '''%s TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, ''' % (
+                self.timestamp_) 
             for i in range(len(self.columns_)):
                 col_type_stmt += '''"%s" %s, ''' % (
                     self.columns_[i], 
                     self.data_types_[i]
                 )
             col_type_stmt = col_type_stmt[:-2]
-            cmd = """CREATE TABLE IF NOT EXISTS %s (%s);""" % (
-                self.get_tableName(), col_type_stmt)
-            self.execute_statement(cmd, raise_I)
 
-
-            # make the primary key constraint
-            alter_stm = '''ADD CONSTRAINT 
-            "%s_pkey" PRIMARY KEY (id)''' % (
-                self.pcol_, self.table_name_
-            ) 
-            self.alter_table(alter_stm, raise_I)
-
-            # make all other constraints
+            # make the table constraints
+            constraints_stmt = ", "
             for i in range(len(self.constraints_)):
-                alter_stm = '''ADD CONSTRAINT "%s" %s''' % (
+                constraints_stmt += '''CONSTRAINT "%s" %s, ''' % (
                     self.constraint_names_[i], self.constraints_[i]
                 )
-                self.alter_table(alter_stm, raise_I)
+            constraints_stmt = constraints_stmt[:-2]
+
+            # make the table
+            cmd = """CREATE TABLE IF NOT EXISTS %s (%s%s);""" % (
+                self.get_tableName(), col_type_stmt, constraints_stmt)
+            self.execute_statement(cmd, raise_I)
 
         except Exception as e:
             if raise_I:
@@ -103,15 +96,15 @@ class DBTableInterface(DBio):
     def drop_table(self, raise_I=False):
         """Drop a table"""
         try:
-            # drop the constraints
-            for constraint_name in self.constraint_names_:
-                alter_stm = '''DROP CONSTRAINT IF EXISTS "%s"''' % (
-                    constraint_name
-                )
-                self.alter_table(alter_stm, raise_I)
+            # # drop the constraints
+            # for constraint_name in self.constraint_names_:
+            #     alter_stm = '''DROP CONSTRAINT IF EXISTS "%s"''' % (
+            #         constraint_name
+            #     )
+            #     self.alter_table(alter_stm, raise_I)
 
-            # drop the sequence
-            self.drop_sequence(raise_I)
+            # # drop the sequence
+            # self.drop_sequence(raise_I)
 
             # drop the table
             cmd = """DROP TABLE %s;""" % (
@@ -131,7 +124,7 @@ class DBTableInterface(DBio):
         
         """
         try:
-            cmd = 'ALTER TABLE IF EXISTS %s %s' % (
+            cmd = 'ALTER TABLE %s %s' % (
                 self.get_tableName(), alter_stm)
             self.execute_statement(cmd, raise_I)
         except Exception as e:

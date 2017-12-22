@@ -21,7 +21,7 @@ from tests.test_data_DBTableInterface import TestDBTableInterface
 test = TestDBTableInterface()
 test.test_get_tableName()
 test.test_get_tableColumns()
-test.tes_get_sequenceName()
+test.test_get_sequenceName()
 test.test_createAndDropTable()
 
 # from tests import runAllTests

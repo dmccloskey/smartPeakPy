@@ -81,6 +81,7 @@ def runAllTests():
     test.test_convert_list2string()
     test.test_merge_keysAndListOfTuplest()
     test.test_execute_statement()
+    test.test_execute_select()
 
     from tests.test_pyTOPP_MRMFeatureValidator import TestMRMFeatureValidator
     test = TestMRMFeatureValidator()

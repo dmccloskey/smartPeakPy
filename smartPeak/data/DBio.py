@@ -95,12 +95,12 @@ class DBio():
         list_O = [dict(zip(keys, row)) for row in list]
         return list_O
 
-    def execute_select(self, query_I, columns, raise_I=False, verbose_I=False):
+    def execute_select(self, query_I, columns=None, raise_I=False, verbose_I=False):
         '''execute a raw sql select
 
         Args:
             query_I (str): string or sqlalchemy text or sqlalchemy select
-            columns (list): list of expected column names
+            columns (list): list of expected column names (if applicable)
             raise_I (bool): boolean, raise error
             verbose_I (bool): boolean, print query statement
 
@@ -112,7 +112,9 @@ class DBio():
             if verbose_I:
                 print(query_I)
             self.cursor.execute(query_I)
-            data_O = self.merge_keysAndListOfTuples(columns, self.cursor.fetchall())
+            data_O = self.cursor.fetchall()
+            if columns is not None:
+                data_O = self.merge_keysAndListOfTuples(columns, data_O)
         except Exception as e:
             self.conn.rollback()
             if raise_I:
