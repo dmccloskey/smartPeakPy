@@ -33,17 +33,17 @@ class DBio():
         '''set the settings object'''
         self.settings = settings_I
 
-    def get_cursor(self, cursor_I):
+    def get_cursor(self):
         '''get the cursor object'''
-        self.cursor = cursor_I
+        return self.cursor
 
-    def get_conn(self, conn_I):
+    def get_conn(self):
         '''get the conn object'''
-        self.conn = conn_I
+        return self.conn
 
-    def get_settings(self, settings_I):
+    def get_settings(self):
         '''get the settings object'''
-        self.settings = settings_I
+        return self.settings
 
     def clear_data(self):
         '''clear the data cache'''

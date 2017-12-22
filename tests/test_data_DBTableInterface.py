@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from smartPeak.data.DBTableInterface import DBTableInterface
 from smartPeak.data.DBConnection import DBConnection
+from smartPeak.data.DBio import DBio
 from . import data_dir
 
 
@@ -105,3 +106,126 @@ class TestDBTableInterface():
         assert(result[2]["id"] == 3)
 
         self.db_table_interface.drop_table()
+
+    def test_alter_table(self):
+        self.db_table_interface.drop_table()
+        query_I = '''DROP TABLE IF EXISTS test2;'''
+        self.db_table_interface.execute_statement(query_I, raise_I=False, verbose_I=False)
+        self.db_table_interface.create_table()
+        
+        query_I = '''INSERT INTO test1 (test) VALUES ("a");'''
+        self.db_table_interface.execute_statement(query_I, raise_I=False, verbose_I=False)
+
+        alter_stm = '''RENAME TO test2'''
+        self.db_table_interface.alter_table(
+            alter_stm, raise_I=False)
+
+        query_I = '''SELECT * FROM test2 ORDER BY id;'''
+        result = self.db_table_interface.execute_select(
+            query_I, 
+            self.db_table_interface.get_tableColumns(),
+            raise_I=False, verbose_I=False)
+        assert(result[0]["test"] == "a")
+
+        query_I = '''DROP TABLE test2;'''
+        self.db_table_interface.execute_statement(query_I, raise_I=False, verbose_I=False)
+
+    def test_createAndDropTrigger(self):
+        """Test methods for creating and dropping a trigger
+        
+        Methods tested:
+            create_trigger
+            drop_trigger
+        """
+        trigger_name = "test1_it"
+        self.db_table_interface.drop_trigger(trigger_name)
+        self.db_table_interface.drop_table()
+        query_I = '''DROP TABLE IF EXISTS undolog;'''
+        self.db_table_interface.execute_statement(query_I, raise_I=False, verbose_I=False)
+        self.db_table_interface.create_table()
+
+        # query against the DB
+        db_io = DBio(
+            self.db_table_interface.get_cursor(),
+            self.db_table_interface.get_conn())   
+        query_I = '''CREATE TABLE IF NOT EXISTS undolog (id INTEGER PRIMARY KEY, \
+        history TEXT);'''
+        db_io.execute_statement(query_I, raise_I=False, verbose_I=False)
+
+        func_name = '''INSERT INTO undolog VALUES(NULL,\
+        'DELETE FROM test1 WHERE id='||new.id);'''
+        self.db_table_interface.create_trigger(trigger_name, "AFTER", "INSERT", func_name)
+        
+        query_I = '''INSERT INTO test1 (test) VALUES ("a");'''
+        self.db_table_interface.execute_statement(query_I, raise_I=False, verbose_I=False)
+
+        query_I = '''SELECT * FROM undolog ORDER BY id;'''
+        result = self.db_table_interface.execute_select(
+            query_I, 
+            ["id", "history"],
+            raise_I=False, verbose_I=False)
+        assert(result[0]["history"] == "DELETE FROM test1 WHERE id=1")
+
+        self.db_table_interface.drop_trigger(trigger_name)
+        self.db_table_interface.drop_table()
+
+        query_I = '''DROP TABLE IF EXISTS undolog;'''
+        self.db_table_interface.execute_statement(query_I, raise_I=False, verbose_I=False)
+
+    def test_insert_row(self):
+        self.db_table_interface.drop_table()
+        self.db_table_interface.create_table()
+
+        col_val = {"test": '"a"'}
+        self.db_table_interface.insert_row(col_val, raise_I=False)
+
+        query_I = '''SELECT * FROM test1 ORDER BY id;'''
+        result = self.db_table_interface.execute_select(
+            query_I, 
+            self.db_table_interface.get_tableColumns(),
+            raise_I=False, verbose_I=False)
+        assert(result[0]["test"] == "a")
+
+        self.db_table_interface.drop_table()
+
+    def test_update_rows(self):
+        self.db_table_interface.drop_table()
+        self.db_table_interface.create_table()
+
+        col_val = {"test": '"a"'}
+        self.db_table_interface.insert_row(col_val, raise_I=False)
+
+        col_val = {"test": '"b"'}
+        where_stm = '''test = "a"'''
+        self.db_table_interface.update_rows(col_val, where_stm, raise_I=False)
+
+        query_I = '''SELECT * FROM test1 ORDER BY id;'''
+        result = self.db_table_interface.execute_select(
+            query_I, 
+            self.db_table_interface.get_tableColumns(),
+            raise_I=False, verbose_I=False)
+        assert(result[0]["test"] == "b")
+
+        self.db_table_interface.drop_table()
+
+    def test_select_rows(self):
+        self.db_table_interface.drop_table()
+        self.db_table_interface.create_table()
+
+        col_val = {"test": '"a"'}
+        self.db_table_interface.insert_row(col_val, raise_I=False)
+
+        result = self.db_table_interface.select_rows(
+            select_list=["id", "test"],
+            where_stm='''test = "a"''',
+            group_by_stm="",
+            having_stm="",
+            order_by_stm="id",
+            limit_stm="",
+            offset_stm="",
+            raise_I=False)
+        assert(result[0]["test"] == "a")
+
+        self.db_table_interface.drop_table()
+
+        

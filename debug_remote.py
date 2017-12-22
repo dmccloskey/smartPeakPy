@@ -23,6 +23,11 @@ test.test_get_tableName()
 test.test_get_tableColumns()
 test.test_get_sequenceName()
 test.test_createAndDropTable()
+test.test_alter_table()
+test.test_createAndDropTrigger()
+test.test_insert_row()
+test.test_update_rows()
+test.test_select_rows()
 
 # from tests import runAllTests
 # runAllTests()

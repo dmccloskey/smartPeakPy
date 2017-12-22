@@ -58,13 +58,18 @@ class DBTableInterface(DBio):
     def create_table(self, raise_I=False):
         """Create a table"""
         try:
-            # # make the sequence
-            # self.create_sequence(raise_I)
+            if self.dialect_ == "postgresql":
+                # make the sequence
+                self.create_sequence(raise_I)
 
             # make the columns
             col_type_stmt = ""
-            col_type_stmt += '''%s INTEGER NOT NULL CONSTRAINT "%s_pkey" PRIMARY KEY AUTOINCREMENT, 
-            ''' % (self.pcol_, self.table_name_)
+            if self.dialect_ == "postgresql":
+                col_type_stmt += '''%s INTEGER NOT NULL CONSTRAINT "%s_pkey" PRIMARY KEY DEFAULT nextval('%s'), 
+                ''' % (self.pcol_, self.table_name_, self.get_sequenceName())
+            elif self.dialect_ == "sqlite3":
+                col_type_stmt += '''%s INTEGER NOT NULL CONSTRAINT "%s_pkey" PRIMARY KEY AUTOINCREMENT, 
+                ''' % (self.pcol_, self.table_name_)
             col_type_stmt += '''%s TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, ''' % (
                 self.timestamp_) 
             for i in range(len(self.columns_)):
@@ -87,6 +92,11 @@ class DBTableInterface(DBio):
                 self.get_tableName(), col_type_stmt, constraints_stmt)
             self.execute_statement(cmd, raise_I)
 
+            if self.dialect_ == "postgresql":
+                alter_stmt = '''ALTER SEQUENCE %s OWNED BY %s."%s";''' % (
+                    self.get_sequenceName(), self.get_tableName, self.pcol_)
+                self.execute_statement(alter_stmt, raise_I)                
+
         except Exception as e:
             if raise_I:
                 raise
@@ -96,18 +106,24 @@ class DBTableInterface(DBio):
     def drop_table(self, raise_I=False):
         """Drop a table"""
         try:
-            # # drop the constraints
-            # for constraint_name in self.constraint_names_:
-            #     alter_stm = '''DROP CONSTRAINT IF EXISTS "%s"''' % (
-            #         constraint_name
-            #     )
-            #     self.alter_table(alter_stm, raise_I)
+            if self.dialect_ == "postgresql":
+                # drop the primar key constratin
+                alter_stm = '''DROP CONSTRAINT IF EXISTS "%s_pkey"''' % (
+                    self.table_name_)
+                self.alter_table(alter_stm, raise_I)
 
-            # # drop the sequence
-            # self.drop_sequence(raise_I)
+                # drop the constraints
+                for constraint_name in self.constraint_names_:
+                    alter_stm = '''DROP CONSTRAINT IF EXISTS "%s"''' % (
+                        constraint_name
+                    )
+                    self.alter_table(alter_stm, raise_I)
+
+                # drop the sequence
+                self.drop_sequence(raise_I)
 
             # drop the table
-            cmd = """DROP TABLE %s;""" % (
+            cmd = """DROP TABLE IF EXISTS %s;""" % (
                 self.get_tableName())
             self.execute_statement(cmd, raise_I)
         except Exception as e:
@@ -181,7 +197,7 @@ class DBTableInterface(DBio):
                     trigger_name, before_after_insteadOf, event, self.get_tableName(),
                     func_name
                 )
-            elif self.dialect_ == "sqlite":
+            elif self.dialect_ == "sqlite3":
                 cmd = '''CREATE TRIGGER "%s" %s %s ON %s BEGIN %s END;''' % (
                     trigger_name, before_after_insteadOf, event, self.get_tableName(),
                     func_name
@@ -196,9 +212,8 @@ class DBTableInterface(DBio):
     def drop_trigger(self, trigger_name, raise_I=False):
         """Drop a trigger"""        
         try:
-            cmd = '''DROP TRIGGER IF NOT EXISTS "%s" ON ;''' % (
-                trigger_name, self.get_tableName()
-            )
+            cmd = '''DROP TRIGGER IF EXISTS "%s";''' % (
+                trigger_name)
             self.execute_statement(cmd, raise_I)
         except Exception as e:
             if raise_I:
@@ -248,10 +263,10 @@ class DBTableInterface(DBio):
             insert_cols = ""
             insert_vals = ""
             for k, v in col_val.items():
-                insert_cols = '''"%s", ''' % (k)
-                insert_vals = '''%s, ''' % (v)
-            insert_cols = insert_cols[-2]
-            insert_vals = insert_vals[-2]
+                insert_cols += '''"%s", ''' % (k)
+                insert_vals += '''%s, ''' % (v)
+            insert_cols = insert_cols[:-2]
+            insert_vals = insert_vals[:-2]
             cmd = """INSERT INTO %s (%s) VALUES (%s);""" % (
                 self.get_tableName(), insert_cols, insert_vals)
             self.execute_statement(cmd, raise_I)
@@ -289,7 +304,7 @@ class DBTableInterface(DBio):
         try:
             set_cmd = ""
             for k, v in col_val.items():
-                set_cmd = '''"%s" = %s ''' % (k, v)
+                set_cmd += '''"%s" = %s ''' % (k, v)
             cmd = '''UPDATE %s SET %s WHERE %s;''' % (
                 self.get_tableName(), set_cmd, where_stm
             )
@@ -319,7 +334,7 @@ class DBTableInterface(DBio):
 
     def select_rows(
         self, 
-        select_stm="*",
+        select_list,
         where_stm="",
         group_by_stm="",
         having_stm="",
@@ -329,10 +344,20 @@ class DBTableInterface(DBio):
         raise_I=False
     ):
         """Select table rows
+
+        Args:
+            select_list (list): list of table columns to select
+            where_stm (str): WHERE clause
+            group_by_stm (str): GROUP BY clause
+            having_stm (str): HAVING clause
+            order_by_stm (str): ORDER BY clause
+            limit_stm (str): LIMIT clause
+            offset_stm (str): OFFSET clause
         """
         data_O = None
         try:
-            cmd = '''SELECT %s FROM %s ''' % (select_stm, self.get_tableName())
+            cmd = '''SELECT %s FROM %s ''' % (
+                self.convert_list2string(select_list), self.get_tableName())
             if where_stm:
                 cmd += '''WHERE %s ''' % (where_stm)
             if group_by_stm:
@@ -345,9 +370,9 @@ class DBTableInterface(DBio):
                 cmd += '''LIMIT %s ''' % (limit_stm)
             if offset_stm:
                 cmd += '''OFFSET %s ''' % (offset_stm)
-            cmd = cmd[-1]
+            cmd = cmd[:-1]
             cmd += ";"
-            data_O = self.execute_select(cmd, raise_I)            
+            data_O = self.execute_select(cmd, select_list, raise_I)            
         except Exception as e:
             if raise_I:
                 raise
