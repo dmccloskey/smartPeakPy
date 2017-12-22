@@ -2,7 +2,7 @@
 from smartPeak.data.DBio import DBio
 
 
-class testDBio():
+class TestDBio():
 
     def test_(self):
         db_io = DBio()

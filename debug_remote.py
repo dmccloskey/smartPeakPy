@@ -17,10 +17,9 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-from tests.test_data_ReferenceDataMethods import TestReferenceDataMethods
-test = TestReferenceDataMethods()
-test.test_getAndProcessReferenceDataSamples()
-test.test_getAndProcessReferenceDataCalibrators()
+from tests.test_data_DBConnection import TestDBConnection
+test = TestDBConnection()
+test.test_DBConnection()
 
 # from tests import runAllTests
 # runAllTests()

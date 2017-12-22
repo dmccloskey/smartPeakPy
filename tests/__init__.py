@@ -72,6 +72,10 @@ def runAllTests():
     # test.test_getAndProcessReferenceDataSamples()
     # test.test_getAndProcessReferenceDataCalibrators()
 
+    from tests.test_data_DBConnection import TestDBConnection
+    test = TestDBConnection()
+    test.test_DBConnection()
+
     from tests.test_pyTOPP_MRMFeatureValidator import TestMRMFeatureValidator
     test = TestMRMFeatureValidator()
     test.test_validate_MRMFeatures()

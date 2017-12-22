@@ -3,9 +3,10 @@ from smartPeak.data.DBConnection import DBConnection
 from . import data_dir
 
 
-class testDBConnection():
+class TestDBConnection():
 
-    def test_set_conn(self, test_postgresql=False, test_sqlite=True):
+    def test_DBConnection(self, test_postgresql=False, test_sqlite=True):
+        """Tests all methods in DBConnection"""
         db_connection = DBConnection()
 
         # test postgresql
@@ -19,15 +20,16 @@ class testDBConnection():
                 "user": "postgres"
             }}
             db_connection.set_conn(pg_settings['database'])
+            conn = db_connection.get_conn()
+            assert(conn is not None)
             db_connection.set_cursor(pg_settings['database'])
             cursor = db_connection.get_cursor()
-            conn = db_connection.get_conn()
             assert(cursor is not None)
-            assert(conn is not None)
 
         # sqlite
+        if test_sqlite:
             pg_settings = {"database": {
-                "dialect": "sqlite",
+                "dialect": "sqlite3",
                 "host": data_dir + "sqlite_test.db",
                 "database": "",
                 "password": "",
@@ -35,8 +37,8 @@ class testDBConnection():
                 "user": ""
             }}
             db_connection.set_conn(pg_settings['database'])
+            conn = db_connection.get_conn()
+            assert(conn is not None)
             db_connection.set_cursor(pg_settings['database'])
             cursor = db_connection.get_cursor()
-            conn = db_connection.get_conn()
             assert(cursor is not None)
-            assert(conn is not None)
