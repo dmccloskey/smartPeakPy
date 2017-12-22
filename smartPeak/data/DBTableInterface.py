@@ -155,7 +155,8 @@ class DBTableInterface(DBio):
         """
         try:
             if before_after_insteadOf not in ["BEFORE", "AFTER", "INSTEAD OF"]:
-                raise NameError("Invalid option given for before_after_insteadOf parameter.")
+                raise NameError("Invalid option given for before_after_insteadOf \
+                parameter.")
             if event not in ["INSERT", "UPDATE", "DELETE", "TRUNCATE"]:
                 raise NameError("Invalid option given for even parameter.")
             if self.dialect_ == "postgresql":
@@ -199,7 +200,8 @@ class DBTableInterface(DBio):
         """
         try:
             args = ""
-            cmd = '''CREATE OR REPLACE FUNCTION "%s" (%s) RETURNS %s AS $$ BEGIN %s END;''' % (
+            cmd = '''CREATE OR REPLACE FUNCTION "%s" (%s) RETURNS %s AS $$ BEGIN %s END;\
+            ''' % (
                 func_name, args, return_type,
             )
             self.execute_statement(cmd, raise_I)
