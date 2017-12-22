@@ -83,6 +83,18 @@ def runAllTests():
     test.test_execute_statement()
     test.test_execute_select()
 
+    from tests.test_data_DBTableInterface import TestDBTableInterface
+    test = TestDBTableInterface()
+    test.test_get_tableName()
+    test.test_get_tableColumns()
+    test.test_get_sequenceName()
+    test.test_createAndDropTable()
+    test.test_alter_table()
+    test.test_createAndDropTrigger()
+    test.test_insert_row()
+    test.test_update_rows()
+    test.test_select_rows()
+
     from tests.test_pyTOPP_MRMFeatureValidator import TestMRMFeatureValidator
     test = TestMRMFeatureValidator()
     test.test_validate_MRMFeatures()

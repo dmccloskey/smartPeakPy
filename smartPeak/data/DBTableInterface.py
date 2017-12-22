@@ -221,35 +221,35 @@ class DBTableInterface(DBio):
             else: 
                 print(e)
 
-    def create_function(
-        self, func_name, argnames,
-        return_type, raise_I=False
-    ):
-        """Create function
+    # def create_function(
+    #     self, func_name, argnames,
+    #     return_type, raise_I=False
+    # ):
+    #     """Create function
 
-        NOTE: not available in sqlite
+    #     NOTE: not available in sqlite
         
-        """
-        try:
-            args = ""
-            cmd = '''CREATE OR REPLACE FUNCTION "%s" (%s) RETURNS %s AS $$ BEGIN %s END;\
-            ''' % (
-                func_name, args, return_type,
-            )
-            self.execute_statement(cmd, raise_I)
-        except Exception as e:
-            if raise_I:
-                raise
-            else: 
-                print(e)
+    #     """
+    #     try:
+    #         args = ""
+    #         cmd = '''CREATE OR REPLACE FUNCTION "%s" (%s) RETURNS %s AS $$ BEGIN %s END;\
+    #         ''' % (
+    #             func_name, args, return_type,
+    #         )
+    #         self.execute_statement(cmd, raise_I)
+    #     except Exception as e:
+    #         if raise_I:
+    #             raise
+    #         else: 
+    #             print(e)
 
-    def drop_function(self, raise_I=False):
-        """Drop function
+    # def drop_function(self, raise_I=False):
+    #     """Drop function
 
-        NOTE: not available in sqlite
+    #     NOTE: not available in sqlite
         
-        """
-        pass
+    #     """
+    #     pass
 
     def insert_row(self, col_val, raise_I=False):
         """insert a table row
