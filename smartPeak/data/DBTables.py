@@ -155,12 +155,16 @@ class DBTables():
             None,
             None
         )
+
+        # TODO: update row names in OpenMS
         self.standards_concs = DBTableInterface(    
             settings["database"]["dialect"],
             "standards_concs",
             None,
-            ["history"],
-            ["TEXT"],
+            ["run_id", "component_id", "IS_component_id", "actual_concentration", 
+                "IS_actual_concentration", "concentration_units", "dilution_factor"],
+            ["TEXT", "TEXT", "TEXT", "REAL", 
+                "REAL", "TEXT", "REAL"],
             None,
             None
         )
