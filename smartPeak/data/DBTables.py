@@ -12,7 +12,7 @@ class DBTables():
         self.feature_filter = None
         self.feature_qc = None
         self.features = None
-        self.quant_methods = None
+        self.quantitation_methods = None
         self.standards_concs = None
         self.undolog = None
 
@@ -23,45 +23,36 @@ class DBTables():
             settings["database"]["dialect"],
             "sequence_file",
             None,
-            ["sample_name", "sample_type",
+            ["sequence_id", "sample_name", "sample_type",
                 "comments", "acquisition_method", "processing_method",
                 "rack_code", "plate_code", "vial_position", "rack_position",
                 "plate_position", "injection_volume", "dilution_factor", 
                 "weight_to_volume", "set_name", "filename"],
-            ["TEXT", "TEXT",
+            ["TEXT", "TEXT", "TEXT",
                 "TEXT", "TEXT", "TEXT",
                 "INTEGER", "INTEGER", "INTEGER", "INTEGER",
                 "INTEGER", "REAL", "REAL",
                 "REAL", "TEXT", "TEXT"],
-            None,
-            None
+            ["sequence_file_unique"],
+            ["UNIQUE(sequence_id, sample_name, filename)"]
         )
 
-        # TODO
         self.traml = DBTableInterface(    
             settings["database"]["dialect"],
             "traml",
             None,
-            ["sample_name", "sample_type",
-                "comments", "acquisition_method", "processing_method",
-                "rack_code", "plate_code", "vial_position", "rack_position",
-                "plate_position", "injection_volume", "dilution_factor", 
-                "weight_to_volume", "set_name", "filename"],
-            ["TEXT", "TEXT",
-                "TEXT", "TEXT", "TEXT",
-                "INTEGER", "INTEGER", "INTEGER", "INTEGER",
-                "INTEGER", "REAL", "REAL",
-                "REAL", "TEXT", "TEXT"],
-            None,
-            None
+            ["traml_id", "component_name", "component_group_name", "traml_data"],
+            ["TEXT", "TEXT", "TEXT", "TEXT"],
+            ["traml_unique"],
+            ["UNIQUE(traml_id, component_name)"]
         )
 
-        # TODO add in all metaValues
+        # NOTE: alternative: add in all metavalues
         self.feature_filter = DBTableInterface(    
             settings["database"]["dialect"],
             "feature_filter",
             None,
-            ["component_name", "component_group_name",
+            ["ff_id", "component_name", "component_group_name",
                 "n_heavy_l ", "n_heavy_u", "n_light_l", "n_light_u",
                 "n_detecting_l", "n_detecting_u", "n_quantifying_l",
                 "n_quantifying_u", "n_identifying_l", "n_identifying_u",
@@ -69,15 +60,8 @@ class DBTables():
                 "ion_ratio_pair_name_2", "ion_ratio_l", "ion_ratio_u",
                 "retention_time_l", "retention_time_u",
                 "intensity_l", "intensity_u", "overall_quality_l", "overall_quality_u",
-                "metaValue_peak_apex_int_l", "metaValue_peak_apex_int_u", 
-                "metaValue_logSN_l", "metaValue_logSN_u",
-                "metaValue_var_xcorr_coelution_l", "metaValue_var_xcorr_coelution_u",
-                "metaValue_var_xcorr_coelution_weighted_l", 
-                "metaValue_var_xcorr_coelution_weighted_u",
-                "metaValue_var_xcorr_shape_l", "metaValue_var_xcorr_shape_u",
-                "metaValue_var_xcorr_shape_weighted_l", 
-                "metaValue_var_xcorr_shape_weighted_u"],
-            ["TEXT", "TEXT",
+                "metaValue_limits"],
+            ["TEXT", "TEXT", "TEXT",
                 "INTEGER", "INTEGER", "INTEGER", "INTEGER",
                 "INTEGER", "INTEGER", "INTEGER",
                 "INTEGER", "INTEGER", "INTEGER",
@@ -85,52 +69,74 @@ class DBTables():
                 "TEXT", "REAL", "REAL",
                 "REAL", "REAL",
                 "REAL", "REAL", "REAL", "REAL",
-                "REAL", "REAL",
-                "REAL", "REAL",
-                "REAL", "REAL",
-                "REAL", "REAL",
-                "REAL", "REAL",
-                "REAL", "REAL"],
-            None,
-            None
+                "TEXT"],
+            ["feature_filter_unique"],
+            ["UNIQUE(ff_id, component_name)"]
         )
 
-        self.feature_qc = copy.copy(self.feature_filter)
+        self.feature_qc = DBTableInterface(    
+            settings["database"]["dialect"],
+            "feature_filter",
+            None,
+            ["fqc_id", "component_name", "component_group_name",
+                "n_heavy_l ", "n_heavy_u", "n_light_l", "n_light_u",
+                "n_detecting_l", "n_detecting_u", "n_quantifying_l",
+                "n_quantifying_u", "n_identifying_l", "n_identifying_u",
+                "n_transitions_l", "n_transitions_u", "ion_ratio_pair_name_1",
+                "ion_ratio_pair_name_2", "ion_ratio_l", "ion_ratio_u",
+                "retention_time_l", "retention_time_u",
+                "intensity_l", "intensity_u", "overall_quality_l", "overall_quality_u",
+                "metaValue_limits"],
+            ["TEXT", "TEXT", "TEXT",
+                "INTEGER", "INTEGER", "INTEGER", "INTEGER",
+                "INTEGER", "INTEGER", "INTEGER",
+                "INTEGER", "INTEGER", "INTEGER",
+                "INTEGER", "INTEGER", "TEXT",
+                "TEXT", "REAL", "REAL",
+                "REAL", "REAL",
+                "REAL", "REAL", "REAL", "REAL",
+                "TEXT"],
+            ["feature_qc_unique"],
+            ["UNIQUE(fqc_id, component_name)"]
+        )
 
-        # TODO
         self.features = DBTableInterface(    
             settings["database"]["dialect"],
             "features",
             None,
-            ["transition_group_id", "run_id", "filename", "RT", "id", 
-                "Sequence", "FullPeptideName", "Charge", "Intensity", 
-                "ProteinName", "decoy", "potentialOutlier", 
-                "initialPeakQuality", "PeptideRef", "leftWidth", 
-                "rightWidth", "total_xic", "peak_apices_sum", 
-                "var_xcorr_coelution", "var_xcorr_coelution_weighted", 
-                "var_xcorr_shape", "var_xcorr_shape_weighted", "delta_rt", 
-                "assay_rt", "norm_RT", "rt_score", "var_norm_rt_score", 
-                "var_intensity_score", "nr_peaks", "sn_ratio", 
-                "var_log_sn_score", "var_elution_model_fit_score", 
-                "main_var_xx_lda_prelim_score", "QC_transition_group_pass", 
-                "QC_transition_group_message", "MZ", "native_id", 
-                "peak_apex_int", "width_at_5", "width_at_10", "width_at_50", 
-                "start_time_at_10", "start_time_at_5", "end_time_at_10", 
-                "end_time_at_5", "total_width", "tailing_factor", "asymmetry_factor", 
-                "baseline_delta_2_height", "slope_of_baseline", "points_across_baseline", 
-                "points_across_half_height", "logSN", "FeatureLevel", 
-                "calculated_concentration", "concentration_units", "QC_transition_pass", 
-                "QC_transition_message", "PrecursorMZ", "peak_area"],
-            ["TEXT"],
-            None,
-            None
+            ["feature_map_id", "sample_name", "component_name", "component_group_name",
+                "feature_data"],
+                # "transition_group_id", "run_id", "filename", "RT", "id", 
+                # "Sequence", "FullPeptideName", "Charge", "Intensity", 
+                # "ProteinName", "decoy", "potentialOutlier", 
+                # "initialPeakQuality", "PeptideRef", "leftWidth", 
+                # "rightWidth", "total_xic", "peak_apices_sum", 
+                # "var_xcorr_coelution", "var_xcorr_coelution_weighted", 
+                # "var_xcorr_shape", "var_xcorr_shape_weighted", "delta_rt", 
+                # "assay_rt", "norm_RT", "rt_score", "var_norm_rt_score", 
+                # "var_intensity_score", "nr_peaks", "sn_ratio", 
+                # "var_log_sn_score", "var_elution_model_fit_score", 
+                # "main_var_xx_lda_prelim_score", "QC_transition_group_pass", 
+                # "QC_transition_group_message", "MZ", "native_id", 
+                # "peak_apex_int", "width_at_5", "width_at_10", "width_at_50", 
+                # "start_time_at_10", "start_time_at_5", "end_time_at_10", 
+                # "end_time_at_5", "total_width", "tailing_factor", "asymmetry_factor", 
+                # "baseline_delta_2_height", "slope_of_baseline", "points_across_baseline", 
+                # "points_across_half_height", "logSN", "FeatureLevel", 
+                # "calculated_concentration", "concentration_units", "QC_transition_pass", 
+                # "QC_transition_message", "PrecursorMZ", "peak_area"],
+            ["TEXT", "TEXT", "TEXT", "TEXT",
+                "TEXT"],
+            ["features_unique"],
+            ["UNIQUE(feature_map_id, sample_name, component_name)"]
         )
 
-        self.quant_methods = DBTableInterface(    
+        self.quantitation_methods = DBTableInterface(    
             settings["database"]["dialect"],
-            "quant_methods",
+            "quantitation_methods",
             None,
-            ["IS_name", "component_name", "feature_name", "concentration_units", 
+            ["quantitation_method_id",
+                "IS_name", "component_name", "feature_name", "concentration_units", 
                 "llod", "ulod", "lloq", "uloq", "correlation_coefficient", 
                 "n_points", "transformation_model", 
                 "transformation_model_param_slope", 
@@ -141,7 +147,8 @@ class DBTables():
                 "transformation_model_param_x_datum_max", 
                 "transformation_model_param_y_datum_min", 
                 "transformation_model_param_y_datum_max"],
-            ["TEXT", "TEXT", "TEXT", "TEXT", 
+            ["TEXT",
+                "TEXT", "TEXT", "TEXT", "TEXT", 
                 "REAL", "REAL", "REAL", "REAL", "REAL", 
                 "n_points", "TEXT", 
                 "REAL", 
@@ -152,8 +159,8 @@ class DBTables():
                 "REAL", 
                 "REAL", 
                 "REAL"],
-            None,
-            None
+            ["quantitation_methods_unique"],
+            ["UNIQUE(quantitation_method_id, component_name)"]
         )
 
         # TODO: update row names in OpenMS
@@ -193,7 +200,7 @@ class DBTables():
         self.feature_filter.set_conn(conn)
         self.feature_qc.set_conn(conn)
         self.features.set_conn(conn)
-        self.quant_methods.set_conn(conn)
+        self.quantitation_methods.set_conn(conn)
         self.standards_concs.set_conn(conn)
 
         self.sequence_file.set_cursor(cursor)
@@ -201,7 +208,7 @@ class DBTables():
         self.feature_filter.set_cursor(cursor)
         self.feature_qc.set_cursor(cursor)
         self.features.set_cursor(cursor)
-        self.quant_methods.set_cursor(cursor)
+        self.quantitation_methods.set_cursor(cursor)
         self.standards_concs.set_cursor(cursor)
     
     def create_tables(self):
@@ -212,7 +219,7 @@ class DBTables():
         self.feature_filter.create_table()
         self.feature_qc.create_table()
         self.features.create_table()
-        self.quant_methods.create_table()
+        self.quantitation_methods.create_table()
         self.standards_concs.create_table()
     
     def drop_tables(self):
@@ -223,5 +230,5 @@ class DBTables():
         self.feature_filter.drop_table()()
         self.feature_qc.drop_table()()
         self.features.drop_table()()
-        self.quant_methods.drop_table()()
+        self.quantitation_methods.drop_table()()
         self.standards_concs.drop_table()()
