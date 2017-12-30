@@ -75,4 +75,5 @@ class TestDBTableInterface():
                 table)
             result = dbtables.undolog.execute_select(query)
             assert(result == 1)
+            
         # test table constraints
