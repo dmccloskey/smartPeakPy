@@ -11,9 +11,9 @@ class DBTables():
         self.traml = None
         self.feature_filter = None
         self.feature_qc = None
-        self.features = None
+        self.feature_maps = None
         self.quantitation_methods = None
-        self.standards_concs = None
+        self.standards_concentrations = None
         self.undolog = None
 
     def set_tables(self, settings):
@@ -100,9 +100,9 @@ class DBTables():
             ["UNIQUE(fqc_id, component_name)"]
         )
 
-        self.features = DBTableInterface(    
+        self.feature_maps = DBTableInterface(    
             settings["database"]["dialect"],
-            "features",
+            "feature_maps",
             None,
             ["feature_map_id", "sample_name", "component_name", "component_group_name",
                 "feature_data"],
@@ -127,7 +127,7 @@ class DBTables():
                 # "QC_transition_message", "PrecursorMZ", "peak_area"],
             ["TEXT", "TEXT", "TEXT", "TEXT",
                 "TEXT"],
-            ["features_unique"],
+            ["feature_maps_unique"],
             ["UNIQUE(feature_map_id, sample_name, component_name)"]
         )
 
@@ -164,9 +164,9 @@ class DBTables():
         )
 
         # TODO: update row names in OpenMS
-        self.standards_concs = DBTableInterface(    
+        self.standards_concentrations = DBTableInterface(    
             settings["database"]["dialect"],
-            "standards_concs",
+            "standards_concentrations",
             None,
             ["run_id", "component_id", "IS_component_id", "actual_concentration", 
                 "IS_actual_concentration", "concentration_units", "dilution_factor"],
@@ -199,17 +199,17 @@ class DBTables():
         self.traml.set_conn(conn)
         self.feature_filter.set_conn(conn)
         self.feature_qc.set_conn(conn)
-        self.features.set_conn(conn)
+        self.feature_maps.set_conn(conn)
         self.quantitation_methods.set_conn(conn)
-        self.standards_concs.set_conn(conn)
+        self.standards_concentrations.set_conn(conn)
 
         self.sequence_file.set_cursor(cursor)
         self.traml.set_cursor(cursor)
         self.feature_filter.set_cursor(cursor)
         self.feature_qc.set_cursor(cursor)
-        self.features.set_cursor(cursor)
+        self.feature_maps.set_cursor(cursor)
         self.quantitation_methods.set_cursor(cursor)
-        self.standards_concs.set_cursor(cursor)
+        self.standards_concentrations.set_cursor(cursor)
     
     def create_tables(self):
         """Create all tables"""      
@@ -218,17 +218,17 @@ class DBTables():
         self.traml.create_table()
         self.feature_filter.create_table()
         self.feature_qc.create_table()
-        self.features.create_table()
+        self.feature_maps.create_table()
         self.quantitation_methods.create_table()
-        self.standards_concs.create_table()
+        self.standards_concentrations.create_table()
     
     def drop_tables(self):
         """Drop all tables"""      
 
-        self.sequence_file.drop_table()()
-        self.traml.drop_table()()
-        self.feature_filter.drop_table()()
-        self.feature_qc.drop_table()()
-        self.features.drop_table()()
-        self.quantitation_methods.drop_table()()
-        self.standards_concs.drop_table()()
+        self.sequence_file.drop_table()
+        self.traml.drop_table()
+        self.feature_filter.drop_table()
+        self.feature_qc.drop_table()
+        self.feature_maps.drop_table()
+        self.quantitation_methods.drop_table()
+        self.standards_concentrations.drop_table()
