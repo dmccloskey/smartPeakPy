@@ -95,6 +95,12 @@ def runAllTests():
     test.test_update_rows()
     test.test_select_rows()
 
+    from tests.test_data_DBTables import TestDBTables
+    test = TestDBTables()
+    test.test_set_tables()
+    test.test_connect_tables()
+    test.test_createAndDrop_tables()
+
     from tests.test_pyTOPP_MRMFeatureValidator import TestMRMFeatureValidator
     test = TestMRMFeatureValidator()
     test.test_validate_MRMFeatures()

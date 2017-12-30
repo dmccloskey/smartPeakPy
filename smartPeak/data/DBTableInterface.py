@@ -26,12 +26,35 @@ class DBTableInterface(DBio):
         self.dialect_ = dialect
         self.table_name_ = table_name
         self.schema_name_ = schema_name
+
         self.columns_ = columns
         self.data_types_ = data_types
-        assert(len(self.columns_) == len(self.data_types_))
+        if self.columns_ is not None and self.data_types_ is not None:
+            if len(self.columns_) != len(self.data_types_):
+                raise Exception("""The number of columns 
+                and the number of data types do not match.""")
+        elif self.columns_ is not None:
+            raise Exception("columns are not defined.")
+        elif self.data_types_ is not None:
+            raise Exception("data_types are not defined.")
+        else:
+            self.columns_ = []
+            self.data_types_ = []
+
         self.constraint_names_ = constraint_names
         self.constraints_ = constraints
-        assert(len(self.constraint_names_) == len(self.constraints_))
+        if self.constraint_names_ is not None and self.constraints_ is not None:
+            if len(self.constraint_names_) != len(self.constraints_):
+                raise Exception("""The number of constraints 
+                and the number of constraint_names do not match.""")
+        elif self.constraints_ is not None:
+            raise Exception("constraints are not defined.")
+        elif self.constraint_names_ is not None:
+            raise Exception("constraint_names are not defined.")
+        else:
+            self.constraint_names_ = []
+            self.constraints_ = []
+
         self.pcol_ = "id"
         self.timestamp_ = "date_and_time"
 

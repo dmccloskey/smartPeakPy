@@ -76,7 +76,7 @@ class DBTables():
 
         self.feature_qc = DBTableInterface(    
             settings["database"]["dialect"],
-            "feature_filter",
+            "feature_qc",
             None,
             ["fqc_id", "component_name", "component_group_name",
                 "n_heavy_l ", "n_heavy_u", "n_light_l", "n_light_u",
@@ -168,12 +168,16 @@ class DBTables():
             settings["database"]["dialect"],
             "standards_concentrations",
             None,
-            ["run_id", "component_id", "IS_component_id", "actual_concentration", 
+            ["standards_concentrations_id",
+                "run_id", "component_id", "IS_component_id", "actual_concentration", 
                 "IS_actual_concentration", "concentration_units", "dilution_factor"],
-            ["TEXT", "TEXT", "TEXT", "REAL", 
+            ["TEXT",
+                "TEXT", "TEXT", "TEXT", "REAL", 
                 "REAL", "TEXT", "REAL"],
-            None,
-            None
+            ["standards_concentrations_unique"],
+            ["""UNIQUE(standards_concentrations_id, run_id, component_id, 
+            IS_component_id, actual_concentration, IS_actual_concentration, 
+            concentration_units, dilution_factor)"""]
         )
 
         self.undolog = DBTableInterface(    
@@ -202,6 +206,7 @@ class DBTables():
         self.feature_maps.set_conn(conn)
         self.quantitation_methods.set_conn(conn)
         self.standards_concentrations.set_conn(conn)
+        self.undolog.set_conn(conn)
 
         self.sequence_file.set_cursor(cursor)
         self.traml.set_cursor(cursor)
@@ -210,6 +215,7 @@ class DBTables():
         self.feature_maps.set_cursor(cursor)
         self.quantitation_methods.set_cursor(cursor)
         self.standards_concentrations.set_cursor(cursor)
+        self.undolog.set_cursor(cursor)
     
     def create_tables(self):
         """Create all tables"""      
@@ -221,6 +227,7 @@ class DBTables():
         self.feature_maps.create_table()
         self.quantitation_methods.create_table()
         self.standards_concentrations.create_table()
+        self.undolog.create_table()
     
     def drop_tables(self):
         """Drop all tables"""      
@@ -232,3 +239,4 @@ class DBTables():
         self.feature_maps.drop_table()
         self.quantitation_methods.drop_table()
         self.standards_concentrations.drop_table()
+        self.undolog.drop_table()

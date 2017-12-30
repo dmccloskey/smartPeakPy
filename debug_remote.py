@@ -17,17 +17,11 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-from tests.test_data_DBTableInterface import TestDBTableInterface
-test = TestDBTableInterface()
-test.test_get_tableName()
-test.test_get_tableColumns()
-test.test_get_sequenceName()
-test.test_createAndDropTable()
-test.test_alter_table()
-test.test_createAndDropTrigger()
-test.test_insert_row()
-test.test_update_rows()
-test.test_select_rows()
+from tests.test_data_DBTables import TestDBTables
+test = TestDBTables()
+test.test_set_tables()
+test.test_connect_tables()
+test.test_createAndDrop_tables()
 
 # from tests import runAllTests
 # runAllTests()
