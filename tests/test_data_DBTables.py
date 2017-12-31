@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-from smartPeak.data.DBTableInterface import DBTableInterface
-from smartPeak.data.DBConnection import DBConnection
-from smartPeak.data.DBio import DBio
 from smartPeak.data.DBTables import DBTables
 from . import data_dir
 
