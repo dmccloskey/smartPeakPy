@@ -99,6 +99,7 @@ def runAllTests():
     from tests.test_data_DBTables import TestDBTables
     test = TestDBTables()
     test.test_set_tables()
+    test.test_get_table()
     test.test_connect_tables()
     test.test_createAndDrop_tables()
 
