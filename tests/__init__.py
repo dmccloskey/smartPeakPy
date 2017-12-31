@@ -87,6 +87,7 @@ def runAllTests():
     test = TestDBTableInterface()
     test.test_get_tableName()
     test.test_get_tableColumns()
+    test.test_get_tableDataTypes()
     test.test_get_sequenceName()
     test.test_createAndDropTable()
     test.test_alter_table()

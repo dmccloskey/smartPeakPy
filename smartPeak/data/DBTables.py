@@ -16,6 +16,37 @@ class DBTables():
         self.standards_concentrations = None
         self.undolog = None
 
+    def get_table(self, table_name):
+        """Return the DBTable object for the specified table
+
+        Args:
+            table_name (str): name of the table
+
+        Returns:
+            DBTableInterface
+
+        """
+        table = None
+        if table_name == "sequence_file":
+            table = self.sequence_file
+        elif table_name == "traml":
+            table = self.traml
+        elif table_name == "feature_filter":
+            table = self.feature_filter
+        elif table_name == "feature_qc":
+            table = self.feature_qc
+        elif table_name == "feature_maps":
+            table = self.feature_maps
+        elif table_name == "quantitation_methods":
+            table = self.quantitation_methods
+        elif table_name == "standards_concentrations":
+            table = self.standards_concentrations
+        elif table_name == "undolog":
+            table = self.undolog
+        else:
+            print("Table " + table_name + " is not a valid table.")
+        return table
+
     def set_tables(self, settings):
         """DB table for the sequence file format"""
 
@@ -150,7 +181,7 @@ class DBTables():
             ["TEXT",
                 "TEXT", "TEXT", "TEXT", "TEXT", 
                 "REAL", "REAL", "REAL", "REAL", "REAL", 
-                "n_points", "TEXT", 
+                "INTEGER", "TEXT", 
                 "REAL", 
                 "REAL", 
                 "REAL", 
@@ -169,14 +200,16 @@ class DBTables():
             "standards_concentrations",
             None,
             ["standards_concentrations_id",
-                "run_id", "component_id", "IS_component_id", "actual_concentration", 
+                "sample_name", "component_name", "IS_component_name", 
+                "actual_concentration", 
                 "IS_actual_concentration", "concentration_units", "dilution_factor"],
             ["TEXT",
-                "TEXT", "TEXT", "TEXT", "REAL", 
+                "TEXT", "TEXT", "TEXT", 
+                "REAL", 
                 "REAL", "TEXT", "REAL"],
             ["standards_concentrations_unique"],
-            ["""UNIQUE(standards_concentrations_id, run_id, component_id, 
-            IS_component_id, actual_concentration, IS_actual_concentration, 
+            ["""UNIQUE(standards_concentrations_id, sample_name, component_name, 
+            IS_component_name, actual_concentration, IS_actual_concentration, 
             concentration_units, dilution_factor)"""]
         )
 

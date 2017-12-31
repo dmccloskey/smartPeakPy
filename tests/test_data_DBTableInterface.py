@@ -46,6 +46,12 @@ class TestDBTableInterface():
         assert(colnames[1] == "date_and_time") 
         assert(colnames[2] == "test")  
 
+    def test_get_tableDataTypes(self):
+        colnames = self.db_table_interface.get_tableDataTypes()
+        assert(colnames[0] == "INTEGER")
+        assert(colnames[1] == "TEXT") 
+        assert(colnames[2] == "TEXT")  
+
     def test_get_sequenceName(self):
         seqname = self.db_table_interface.get_sequenceName()
         assert(seqname == '"test1_id_seq"')

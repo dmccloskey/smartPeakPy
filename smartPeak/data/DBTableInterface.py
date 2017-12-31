@@ -73,6 +73,13 @@ class DBTableInterface(DBio):
         columns.insert(0, self.pcol_)
         return columns
 
+    def get_tableDataTypes(self):
+        """Return a list of table columns"""
+        data_types = copy.copy(self.data_types_)
+        data_types.insert(0, "TEXT")
+        data_types.insert(0, "INTEGER")
+        return data_types
+
     def get_sequenceName(self):
         """Return the sequence name"""
         seq_name = '''"%s_%s_seq"''' % (self.table_name_, self.pcol_)
@@ -308,7 +315,7 @@ class DBTableInterface(DBio):
         """
         try:
             for row in rows:
-                self.insert_row(row)
+                self.insert_row(row, raise_I=raise_I)
         except Exception as e:
             if raise_I:
                 raise
