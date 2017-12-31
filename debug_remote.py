@@ -17,10 +17,12 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-from tests.test_data_ReferenceDataMethods import TestReferenceDataMethods
-test = TestReferenceDataMethods()
-test.test_getAndProcessReferenceDataSamples()
-test.test_getAndProcessReferenceDataCalibrators()
+from tests.test_data_DBTables import TestDBTables
+test = TestDBTables()
+test.test_set_tables()
+test.test_get_table()
+test.test_connect_tables()
+test.test_createAndDrop_tables()
 
 # from tests import runAllTests
 # runAllTests()

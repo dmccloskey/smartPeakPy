@@ -23,7 +23,7 @@ class TestReferenceDataMethods():
             sample_names_I=['150601_0_BloodProject01_PLT_QC_Broth-1'],
             acquisition_methods_I=['140718_McCloskey2013'],
             used__I=True,
-            settings_filename_I='/home/user/openMS_MRMworkflow/settings_metabolomics.ini',
+            settings_filename_I='/home/user/Data/settings_metabolomics.json',
             data_filename_O=None)
         assert(len(data_ref_processed) == 179)
         assert(data_ref_processed[0][
@@ -47,7 +47,7 @@ class TestReferenceDataMethods():
             sample_types_I=['Standard'],
             acquisition_methods_I=['140718_McCloskey2013'],
             used__I=True,
-            settings_filename_I='/home/user/openMS_MRMworkflow/settings_metabolomics.ini',
+            settings_filename_I='/home/user/Data/settings_metabolomics.json',
             data_filename_O=None)
         assert(len(data_ref_processed) == 193)
         assert(data_ref_processed[0]['sample_name'] == 'Calibrators')

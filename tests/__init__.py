@@ -72,6 +72,36 @@ def runAllTests():
     # test.test_getAndProcessReferenceDataSamples()
     # test.test_getAndProcessReferenceDataCalibrators()
 
+    from tests.test_data_DBConnection import TestDBConnection
+    test = TestDBConnection()
+    test.test_DBConnection()
+
+    from tests.test_data_DBio import TestDBio
+    test = TestDBio()
+    test.test_convert_list2string()
+    test.test_merge_keysAndListOfTuplest()
+    test.test_execute_statement()
+    test.test_execute_select()
+
+    from tests.test_data_DBTableInterface import TestDBTableInterface
+    test = TestDBTableInterface()
+    test.test_get_tableName()
+    test.test_get_tableColumns()
+    test.test_get_tableDataTypes()
+    test.test_get_sequenceName()
+    test.test_createAndDropTable()
+    test.test_alter_table()
+    test.test_createAndDropTrigger()
+    test.test_insert_row()
+    test.test_update_rows()
+    test.test_select_rows()
+
+    from tests.test_data_DBTables import TestDBTables
+    test = TestDBTables()
+    test.test_set_tables()
+    test.test_connect_tables()
+    test.test_createAndDrop_tables()
+
     from tests.test_pyTOPP_MRMFeatureValidator import TestMRMFeatureValidator
     test = TestMRMFeatureValidator()
     test.test_validate_MRMFeatures()
