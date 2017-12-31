@@ -7,6 +7,7 @@ try:
     import pyopenms
 except ImportError as e:
     print(e)
+    
 
 class smartPeak_o():
     """a class to export data"""

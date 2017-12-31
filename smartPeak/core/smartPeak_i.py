@@ -12,7 +12,6 @@ class smartPeak_i():
 
     def clear_data(self):
         """clear existing data"""
-        # del self.data[:]
         self.data = []
 
     def getData(self):
