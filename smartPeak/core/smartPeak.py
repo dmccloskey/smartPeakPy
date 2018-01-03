@@ -346,6 +346,8 @@ class smartPeak():
     @staticmethod
     def compareValues(value_1_I, value_2_I, comparator_I):
         """Compare two values
+
+        DEPRECATED
         
         Args:
             value_1_I (float)

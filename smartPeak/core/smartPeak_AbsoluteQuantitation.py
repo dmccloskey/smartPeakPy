@@ -6,6 +6,7 @@ try:
     import pyopenms
 except ImportError as e:
     print(e)
+    
 
 class smartPeak_AbsoluteQuantitation():
     def __init__(self):
