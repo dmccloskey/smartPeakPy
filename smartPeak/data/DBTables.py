@@ -14,6 +14,7 @@ class DBTables():
         self.feature_maps = None
         self.quantitation_methods = None
         self.standards_concentrations = None
+        self.parameters = None
         self.undolog = None
 
     def get_table(self, table_name):
@@ -41,6 +42,8 @@ class DBTables():
             table = self.quantitation_methods
         elif table_name == "standards_concentrations":
             table = self.standards_concentrations
+        elif table_name == "parameters":
+            table = self.parameters
         elif table_name == "undolog":
             table = self.undolog
         else:
@@ -194,7 +197,6 @@ class DBTables():
             ["UNIQUE(quantitation_method_id, component_name)"]
         )
 
-        # TODO: update row names in OpenMS
         self.standards_concentrations = DBTableInterface(    
             settings["database"]["dialect"],
             "standards_concentrations",
@@ -211,6 +213,16 @@ class DBTables():
             ["""UNIQUE(standards_concentrations_id, sample_name, component_name, 
             IS_component_name, actual_concentration, IS_actual_concentration, 
             concentration_units, dilution_factor)"""]
+        )
+
+        self.parameters = DBTableInterface(    
+            settings["database"]["dialect"],
+            "parameters",
+            None,
+            ["function", "name", "type", "value", "default", "restrictions", "description", "used_"],
+            ["TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT"],
+            ["parameters_unique"],
+            ["""UNIQUE(function, name)"""]
         )
 
         self.undolog = DBTableInterface(    
