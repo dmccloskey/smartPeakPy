@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from smartPeak.io.smartPeak_i import smartPeak_i
+from smartPeak.io.FileReader import FileReader
 from smartPeak.core.smartPeak import smartPeak
 import pytest
 
 
 class testSmartPeak_i():
-    """tests for smartPeak_i
+    """tests for FileReader
     
     TODO: 
     1. make test files

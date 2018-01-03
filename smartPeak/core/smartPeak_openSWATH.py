@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # modules
 from smartPeak.core.smartPeak import smartPeak
-from smartPeak.io.smartPeak_i import smartPeak_i
+from smartPeak.io.FileReader import FileReader
 from smartPeak.io.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
 from smartPeak.pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor
 from smartPeak.pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
@@ -388,7 +388,7 @@ class smartPeak_openSWATH():
             print("Selecting picked features")
         featureSelector = MRMFeatureSelector()
         if calibrators_csv_i is not None:
-            smartpeak_i = smartPeak_i()
+            smartpeak_i = FileReader()
             smartpeak_i.read_csv(calibrators_csv_i, delimiter=',')
             calibrators = smartpeak_i.getData()
             smartpeak_i.clear_data()
@@ -591,7 +591,7 @@ class smartPeak_openSWATH():
         # read in the reference data
         reference_data = []
         if referenceData_csv_i is not None:            
-            smartpeak_i = smartPeak_i()
+            smartpeak_i = FileReader()
             smartpeak_i.read_csv(referenceData_csv_i)
             reference_data = smartpeak_i.getData()
             smartpeak_i.clear_data()

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from smartPeak.core.smartPeak import smartPeak
-from smartPeak.io.smartPeak_i import smartPeak_i
+from smartPeak.io.FileReader import FileReader
 from . import data_dir
 from smartPeak.algorithm.MRMFeatureValidator import MRMFeatureValidator
 # 3rd part libraries
@@ -24,7 +24,7 @@ class TestMRMFeatureValidator():
         referenceData_csv_i = data_dir + "/" + referenceData_csv_i
         self.reference_data = []
         if referenceData_csv_i is not None:            
-            smartpeak_i = smartPeak_i()
+            smartpeak_i = FileReader()
             smartpeak_i.read_csv(referenceData_csv_i)
             self.reference_data = smartpeak_i.getData()
             smartpeak_i.clear_data()
@@ -38,7 +38,7 @@ class TestMRMFeatureValidator():
         
         # load the parameters
         filename_params = data_dir + "/" + filename_params
-        smartpeak_i = smartPeak_i()
+        smartpeak_i = FileReader()
         smartpeak_i.read_openMSParams(filename_params, ",")
         self.params = smartpeak_i.getData()
         smartpeak_i.clear_data()

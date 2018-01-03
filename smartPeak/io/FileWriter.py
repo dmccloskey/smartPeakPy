@@ -9,7 +9,7 @@ except ImportError as e:
     print(e)
     
 
-class smartPeak_o():
+class FileWriter():
     """a class to export data"""
 
     def __init__(self, data_I=[]):

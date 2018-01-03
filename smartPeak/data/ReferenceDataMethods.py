@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from smartPeak.io.smartPeak_o import smartPeak_o
+from smartPeak.io.FileWriter import FileWriter
 import json
 import time as time
 from .DescriptiveStatistics import DescriptiveStatistics
@@ -45,7 +45,7 @@ class ReferenceDataMethods():
             settings_filename_I=settings_filename_I,
         )
         if data_filename_O:
-            smartpeak_o = smartPeak_o(data_ref_processed)
+            smartpeak_o = FileWriter(data_ref_processed)
             smartpeak_o.write_dict2csv(filename=data_filename_O)
             return None
         else:
@@ -111,7 +111,7 @@ class ReferenceDataMethods():
             tmp['retention_time'] = tmp['mean']
             calibrators_rt_list.append(tmp)
         if data_filename_O:
-            smartpeak_o = smartPeak_o(calibrators_rt_list)
+            smartpeak_o = FileWriter(calibrators_rt_list)
             smartpeak_o.write_dict2csv(filename=data_filename_O)
             return None
         else:

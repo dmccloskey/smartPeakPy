@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from smartPeak.core.smartPeak import smartPeak
-from smartPeak.io.smartPeak_i import smartPeak_i
+from smartPeak.io.FileReader import FileReader
 from . import data_dir
 from smartPeak.algorithm.MRMFeatureSelector import MRMFeatureSelector
 import copy
@@ -39,7 +39,7 @@ class TestMRMFeatureSelector():
         
         # load the parameters
         filename_params = data_dir + "/" + filename_params
-        smartpeak_i = smartPeak_i()
+        smartpeak_i = FileReader()
         smartpeak_i.read_openMSParams(filename_params, ",")
         self.params = smartpeak_i.getData()
         smartpeak_i.clear_data()
