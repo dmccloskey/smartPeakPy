@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from smartPeak.core.__main__ import __main__
+from smartPeak.__main__ import __main__
 from . import example_dir
 import os
 import filecmp
@@ -7,7 +7,7 @@ import filecmp
 
 class testMain():
 
-    def test_core_main_LCMS_MRM(self):
+    def test_main_LCMS_MRM(self):
         """Test LCMS MRM example"""
         m = __main__()
 
@@ -62,7 +62,7 @@ class testMain():
         #     shallow=False
         #     ))
 
-    def test_core_main_GCMS_SIM(self):
+    def test_main_GCMS_SIM(self):
         """Test GCMS SIM example"""
         m = __main__()
 

@@ -7,7 +7,7 @@ ptvsd.enable_attach("my_secret", address=('0.0.0.0', 3000))
 ptvsd.wait_for_attach()
 ######
 
-from smartPeak.core.__main__ import __main__
+from smartPeak.__main__ import __main__
 m = __main__()
 
 # # GCMS_fullScan

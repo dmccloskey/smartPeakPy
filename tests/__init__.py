@@ -48,7 +48,7 @@ def runAllTests():
     test.test_parseString()
     test.test_setParameters()
 
-    from tests.test_pyTOPP_OpenSwathFeatureXMLToTSV import TestOpenSwathFeatureXMLToTSV
+    from tests.test_io_OpenSwathFeatureXMLToTSV import TestOpenSwathFeatureXMLToTSV
     test = TestOpenSwathFeatureXMLToTSV()
     test.test_get_header()
     test.test_convert_FeatureXMLToTSV()
@@ -61,7 +61,7 @@ def runAllTests():
     # test.test_algorithm()
 
     # # TODO: refactor to C++
-    # from tests.test_pyTOPP_MRMFeatureSelector import TestMRMFeatureSelector
+    # from tests.test_algorithm_MRMFeatureSelector import TestMRMFeatureSelector
     # test = TestMRMFeatureSelector()
     # test.test_select_MRMFeatures_score()
     # test.test_schedule_MRMFeatures_qmip()
@@ -103,7 +103,7 @@ def runAllTests():
     test.test_connect_tables()
     test.test_createAndDrop_tables()
 
-    from tests.test_pyTOPP_MRMFeatureValidator import TestMRMFeatureValidator
+    from tests.test_algorithm_MRMFeatureValidator import TestMRMFeatureValidator
     test = TestMRMFeatureValidator()
     test.test_validate_MRMFeatures()
 
@@ -123,7 +123,7 @@ def runAllTests():
     test.test_load_quantitationMethods()
     test.test_quantifyComponents()
 
-    from tests.test_pyTOPP_SequenceHandler import TestSequenceHandler
+    from tests.test_core_SequenceHandler import TestSequenceHandler
     test = TestSequenceHandler()
     test.test_addSampleToSequence()
     test.test_getMetaValue()
@@ -131,7 +131,7 @@ def runAllTests():
     test.test_parse_metaData()
     test.test_addFeatureMapToSequence()
 
-    from tests.test_core_main import testMain
+    from tests.test_main import testMain
     test = testMain()
-    test.test_core_main_LCMS_MRM()
-    test.test_core_main_GCMS_SIM()
+    test.test_main_LCMS_MRM()
+    test.test_main_GCMS_SIM()

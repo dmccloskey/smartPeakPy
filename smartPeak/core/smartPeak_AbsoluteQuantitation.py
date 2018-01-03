@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # #modules
-from smartPeak.pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
+from smartPeak.io.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
 # 3rd part libraries
 try:
     import pyopenms

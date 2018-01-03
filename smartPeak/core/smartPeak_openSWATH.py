@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 # modules
-from .smartPeak import smartPeak
-from .smartPeak_i import smartPeak_i
+from smartPeak.io.smartPeak import smartPeak
+from smartPeak.io.smartPeak_i import smartPeak_i
+from smartPeak.io.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
 from smartPeak.pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor
 from smartPeak.pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
-from smartPeak.pyTOPP.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
-from smartPeak.pyTOPP.MRMFeatureSelector import MRMFeatureSelector
-from smartPeak.pyTOPP.MRMFeatureValidator import MRMFeatureValidator
-from smartPeak.pyTOPP.FeaturePlotter import FeaturePlotter
+from smartPeak.algorithm.MRMFeatureSelector import MRMFeatureSelector
+from smartPeak.algorithm.MRMFeatureValidator import MRMFeatureValidator
+from smartPeak.ui.FeaturePlotter import FeaturePlotter
 from smartPeak.data.ReferenceDataMethods import ReferenceDataMethods
 # external
 import copy

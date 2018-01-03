@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from smartPeak.core.smartPeak_i import smartPeak_i
+from smartPeak.io.smartPeak_i import smartPeak_i
 from smartPeak.core.smartPeak import smartPeak
 import pytest
 

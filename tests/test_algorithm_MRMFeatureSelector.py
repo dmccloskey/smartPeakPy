@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from smartPeak.core.smartPeak import smartPeak
-from smartPeak.core.smartPeak_i import smartPeak_i
+from smartPeak.io.smartPeak_i import smartPeak_i
 from . import data_dir
-from smartPeak.pyTOPP.MRMFeatureSelector import MRMFeatureSelector
+from smartPeak.algorithm.MRMFeatureSelector import MRMFeatureSelector
 import copy
 # 3rd part libraries
 try:

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from .smartPeak import smartPeak
-from .smartPeak_i import smartPeak_i
-from .smartPeak_o import smartPeak_o
+from smartPeak.core.smartPeak import smartPeak
+from smartPeak.io.smartPeak_i import smartPeak_i
+from smartPeak.io.smartPeak_o import smartPeak_o
 
 
 class __main__():
@@ -29,7 +29,7 @@ class __main__():
             
         """
         # additional resources
-        from smartPeak.pyTOPP.SequenceHandler import SequenceHandler
+        from smartPeak.core.SequenceHandler import SequenceHandler
         from smartPeak.core.smartPeak_openSWATH import smartPeak_openSWATH
         from smartPeak.core.smartPeak_AbsoluteQuantitation import \
             smartPeak_AbsoluteQuantitation

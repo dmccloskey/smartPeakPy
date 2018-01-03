@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from smartPeak.core.smartPeak import smartPeak
-from smartPeak.core.smartPeak_i import smartPeak_i
+from smartPeak.io.smartPeak_i import smartPeak_i
 from . import data_dir
-from smartPeak.pyTOPP.MRMFeatureValidator import MRMFeatureValidator
+from smartPeak.algorithm.MRMFeatureValidator import MRMFeatureValidator
 # 3rd part libraries
 try:
     import pyopenms

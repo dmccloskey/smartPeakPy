@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from smartPeak.core.smartPeak import smartPeak
-from smartPeak.core.smartPeak_i import smartPeak_i
-from smartPeak.core.smartPeak_o import smartPeak_o
+from smartPeak.io.smartPeak_i import smartPeak_i
+from smartPeak.io.smartPeak_o import smartPeak_o
 # 3rd part libraries
 try:
     import pyopenms
@@ -10,7 +10,7 @@ except ImportError as e:
 
 
 class testSmartPeak():
-    """tests for fastPeak"""
+    """tests for smartPeak"""
 
     # tests for smartPeak_openSWATH_cmd
     def test_make_osCmd(self, verbose_I=False):
