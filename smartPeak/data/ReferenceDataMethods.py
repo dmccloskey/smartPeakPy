@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from smartPeak.core.smartPeak_o import smartPeak_o
+from smartPeak.io.smartPeak_o import smartPeak_o
 import json
 import time as time
 from .DescriptiveStatistics import DescriptiveStatistics

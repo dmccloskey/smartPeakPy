@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # modules
-from smartPeak.core.smartPeak_i import smartPeak_i
-from smartPeak.core.smartPeak_o import smartPeak_o
+from smartPeak.io.smartPeak_i import smartPeak_i
+from smartPeak.io.smartPeak_o import smartPeak_o
 from smartPeak.core.smartPeak_openSWATH import smartPeak_openSWATH
 from . import data_dir
 # 3rd part libraries

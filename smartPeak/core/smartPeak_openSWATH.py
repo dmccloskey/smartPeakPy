@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # modules
-from smartPeak.io.smartPeak import smartPeak
+from smartPeak.core.smartPeak import smartPeak
 from smartPeak.io.smartPeak_i import smartPeak_i
 from smartPeak.io.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
 from smartPeak.pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor

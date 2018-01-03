@@ -3,7 +3,7 @@
 import csv
 import sys
 # modules
-from smartPeak.core.smartPeak_i import smartPeak_i
+from smartPeak.io.smartPeak_i import smartPeak_i
 # 3rd part libraries
 try:
     import pyopenms
