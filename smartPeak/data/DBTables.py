@@ -14,6 +14,7 @@ class DBTables():
         self.feature_maps = None
         self.quantitation_methods = None
         self.standards_concentrations = None
+        self.parameters = None
         self.undolog = None
 
     def get_table(self, table_name):
@@ -41,6 +42,8 @@ class DBTables():
             table = self.quantitation_methods
         elif table_name == "standards_concentrations":
             table = self.standards_concentrations
+        elif table_name == "parameters":
+            table = self.parameters
         elif table_name == "undolog":
             table = self.undolog
         else:
@@ -194,7 +197,6 @@ class DBTables():
             ["UNIQUE(quantitation_method_id, component_name)"]
         )
 
-        # TODO: update row names in OpenMS
         self.standards_concentrations = DBTableInterface(    
             settings["database"]["dialect"],
             "standards_concentrations",
@@ -211,6 +213,16 @@ class DBTables():
             ["""UNIQUE(standards_concentrations_id, sample_name, component_name, 
             IS_component_name, actual_concentration, IS_actual_concentration, 
             concentration_units, dilution_factor)"""]
+        )
+
+        self.parameters = DBTableInterface(    
+            settings["database"]["dialect"],
+            "parameters",
+            None,
+            ["function", "name", "type", "value", "default", "restrictions", "description", "used_"],
+            ["TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT"],
+            ["parameters_unique"],
+            ["""UNIQUE(function, name)"""]
         )
 
         self.undolog = DBTableInterface(    
@@ -239,6 +251,7 @@ class DBTables():
         self.feature_maps.set_conn(conn)
         self.quantitation_methods.set_conn(conn)
         self.standards_concentrations.set_conn(conn)
+        self.parameters.set_conn(conn)
         self.undolog.set_conn(conn)
 
         self.sequence_file.set_cursor(cursor)
@@ -248,6 +261,7 @@ class DBTables():
         self.feature_maps.set_cursor(cursor)
         self.quantitation_methods.set_cursor(cursor)
         self.standards_concentrations.set_cursor(cursor)
+        self.parameters.set_cursor(cursor)
         self.undolog.set_cursor(cursor)
     
     def create_tables(self):
@@ -260,6 +274,7 @@ class DBTables():
         self.feature_maps.create_table()
         self.quantitation_methods.create_table()
         self.standards_concentrations.create_table()
+        self.parameters.create_table()
         self.undolog.create_table()
     
     def drop_tables(self):
@@ -272,4 +287,5 @@ class DBTables():
         self.feature_maps.drop_table()
         self.quantitation_methods.drop_table()
         self.standards_concentrations.drop_table()
+        self.parameters.drop_table()
         self.undolog.drop_table()
