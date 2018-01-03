@@ -251,6 +251,7 @@ class DBTables():
         self.feature_maps.set_conn(conn)
         self.quantitation_methods.set_conn(conn)
         self.standards_concentrations.set_conn(conn)
+        self.parameters.set_conn(conn)
         self.undolog.set_conn(conn)
 
         self.sequence_file.set_cursor(cursor)
@@ -260,6 +261,7 @@ class DBTables():
         self.feature_maps.set_cursor(cursor)
         self.quantitation_methods.set_cursor(cursor)
         self.standards_concentrations.set_cursor(cursor)
+        self.parameters.set_cursor(cursor)
         self.undolog.set_cursor(cursor)
     
     def create_tables(self):
@@ -272,6 +274,7 @@ class DBTables():
         self.feature_maps.create_table()
         self.quantitation_methods.create_table()
         self.standards_concentrations.create_table()
+        self.parameters.create_table()
         self.undolog.create_table()
     
     def drop_tables(self):
@@ -284,4 +287,5 @@ class DBTables():
         self.feature_maps.drop_table()
         self.quantitation_methods.drop_table()
         self.standards_concentrations.drop_table()
+        self.parameters.drop_table()
         self.undolog.drop_table()
