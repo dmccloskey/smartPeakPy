@@ -3,7 +3,7 @@
 import csv, sys
 #module
 from .smartPeak import smartPeak
-from .smartPeak_i import smartPeak_i
+from smartPeak.io.FileReader import FileReader
 
 
 class smartPeak_openSWATH_cmd():
@@ -111,7 +111,7 @@ class smartPeak_openSWATH_cmd():
             delimiiter (str): default = ','
 
         """
-        smartpeak_i = smartPeak_i()
+        smartpeak_i = FileReader()
         smartpeak_i.read_csv(filename,delimiter)
         data_csv = smartpeak_i.getData()
         smartpeak_i.clear_data()

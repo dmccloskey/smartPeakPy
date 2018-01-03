@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # modules
-from smartPeak.io.smartPeak_i import smartPeak_i
+from smartPeak.io.FileReader import FileReader
 from smartPeak.io.smartPeak_o import smartPeak_o
 from smartPeak.core.smartPeak_openSWATH import smartPeak_openSWATH
 from . import data_dir
@@ -16,7 +16,7 @@ class TestSmartPeakOpenSWATH():
     """
 
     def load_data(self):
-        smartpeak_i = smartPeak_i()
+        smartpeak_i = FileReader()
         filename_params = '''%s%s''' % (data_dir, "params_1.csv")
         smartpeak_i.read_openMSParams(filename_params, ",")
         self.params_1 = smartpeak_i.getData()

@@ -4,7 +4,7 @@ import sys
 import copy
 
 
-class smartPeak_i():
+class FileReader():
     """a class to import data"""  
 
     def __init__(self):

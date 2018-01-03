@@ -3,7 +3,7 @@
 import csv
 import sys
 # modules
-from smartPeak.io.smartPeak_i import smartPeak_i
+from smartPeak.io.FileReader import FileReader
 # 3rd part libraries
 try:
     import pyopenms
@@ -164,7 +164,7 @@ class SequenceHandler():
         """Import a sequence file"""
 
         # read in the data
-        smartpeak_i = smartPeak_i()
+        smartpeak_i = FileReader()
         smartpeak_i.read_csv(filename, delimiter)
         self.parse_sequenceFile(smartpeak_i.getData())
         smartpeak_i.clear_data()

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from smartPeak.io.smartPeak_i import smartPeak_i
+from smartPeak.io.FileReader import FileReader
 from . import data_dir
 from smartPeak.core.SequenceHandler import SequenceHandler
 import copy
@@ -57,8 +57,8 @@ class TestSequenceHandler():
 
     def test_makeDataMatrixFromMetaValue(self):  
         seqhandler = SequenceHandler()
-        from smartPeak.core.smartPeak_openSWATH import smartPeak_openSWATH
-        openSWATH = smartPeak_openSWATH()
+        from smartPeak.core.FileWriterpenSWATH import FileWriterpenSWATH
+        openSWATH = FileWriterpenSWATH()
 
         # make the data
         sample_names = [

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from smartPeak.core.smartPeak import smartPeak
-from smartPeak.io.smartPeak_i import smartPeak_i
+from smartPeak.io.FileReader import FileReader
 from smartPeak.io.smartPeak_o import smartPeak_o
 # 3rd part libraries
 try:

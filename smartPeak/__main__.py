@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from smartPeak.core.smartPeak import smartPeak
-from smartPeak.io.smartPeak_i import smartPeak_i
-from smartPeak.io.smartPeak_o import smartPeak_o
+from smartPeak.io.FileReader import FileReader
+from smartPeak.io.FileWriter import FileWriter
 
 
 class __main__():
@@ -30,7 +30,7 @@ class __main__():
         """
         # additional resources
         from smartPeak.core.SequenceHandler import SequenceHandler
-        from smartPeak.core.smartPeak_openSWATH import smartPeak_openSWATH
+        from smartPeak.core.FileWriterpenSWATH import FileWriterpenSWATH
         from smartPeak.core.smartPeak_AbsoluteQuantitation import \
             smartPeak_AbsoluteQuantitation
 
@@ -41,8 +41,8 @@ class __main__():
         # class initializations        
         seqhandler = SequenceHandler()
         AbsoluteQuantitation = smartPeak_AbsoluteQuantitation()
-        openSWATH = smartPeak_openSWATH()
-        smartpeak_i = smartPeak_i()
+        openSWATH = FileWriterpenSWATH()
+        smartpeak_i = FileReader()
 
         # read in the files
         seqhandler.read_sequenceFile(filename_sequence, delimiter)
@@ -309,13 +309,13 @@ class __main__():
             openSWATH.clear_data()
         # export results
         if skipped_samples:
-            smartpeak_o = smartPeak_o(skipped_samples)
+            smartpeak_o = FileWriter(skipped_samples)
             skippedSamples_csv_i = '''%s/mzML/skippedSamples.csv''' % (
                 sequence["meta_data"]["data_dir"]
             )
             smartpeak_o.write_dict2csv(skippedSamples_csv_i)
         if validation_metrics:
-            smartpeak_o = smartPeak_o(validation_metrics)
+            smartpeak_o = FileWriter(validation_metrics)
             validationMetrics_csv_i = '''%s/validation/validationMetrics.csv''' % (
                 sequence["meta_data"]["data_dir"])
             smartpeak_o.write_dict2csv(validationMetrics_csv_i)
