@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # modules
 from smartPeak.io.FileReader import FileReader
-from smartPeak.io.smartPeak_o import smartPeak_o
+from smartPeak.io.FileWriter import FileWriter
 from smartPeak.core.smartPeak_openSWATH import smartPeak_openSWATH
 from . import data_dir
 # 3rd part libraries
