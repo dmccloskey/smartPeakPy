@@ -1,15 +1,4 @@
 # -*- coding: utf-8 -*-
-# utilities
-import csv
-import sys
-# modules
-from smartPeak.io.FileReader import FileReader
-# 3rd part libraries
-try:
-    import pyopenms
-    import numpy as np
-except ImportError as e:
-    print(e)
 
 
 class SequenceHandler():
