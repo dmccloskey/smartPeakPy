@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from smartPeak.core.smartPeak import smartPeak
+from smartPeak.core.Utilities import Utilities
 from smartPeak.io.FileReader import FileReader
 from . import data_dir
 from smartPeak.algorithm.MRMFeatureSelector import MRMFeatureSelector
@@ -47,8 +47,8 @@ class TestMRMFeatureSelector():
         # set up MRMFeatureFilter and parse the MRMFeatureFilter params
         featureFilter = pyopenms.MRMFeatureFilter()
         parameters = featureFilter.getParameters()
-        smartpeak = smartPeak()
-        parameters = smartpeak.updateParameters(
+        utilities = Utilities()
+        parameters = utilities.updateParameters(
             parameters,
             self.params["MRMFeatureFilter.filter_MRMFeatures"],
             )

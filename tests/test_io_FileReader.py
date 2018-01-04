@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from smartPeak.io.FileReader import FileReader
-from smartPeak.core.smartPeak import smartPeak
 import pytest
 
 

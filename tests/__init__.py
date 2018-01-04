@@ -37,8 +37,8 @@ example_dir = join(smartPeak_directory, "examples", "")
 #                           ' required for testing')
 
 def runAllTests():
-    from tests.test_core_smartPeak import testSmartPeak
-    test = testSmartPeak()
+    from tests.test_core_Utilities import testUtilities
+    test = testUtilities()
     test.test_castString()
     test.test_convert_byte2String()
     # test.test_convert_MQQMethod2Feature() # TODO

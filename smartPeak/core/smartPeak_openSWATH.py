@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # modules
-from smartPeak.core.smartPeak import smartPeak
+from smartPeak.core.Utilities import Utilities
 from smartPeak.io.FileReader import FileReader
 from smartPeak.io.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
 from smartPeak.pyTOPP.OpenSwathChromatogramExtractor import OpenSwathChromatogramExtractor
@@ -102,8 +102,8 @@ class smartPeak_openSWATH():
         # parse the MRMFeatureFinderScoring params
         featurefinder = pyopenms.MRMFeatureFinderScoring()
         parameters = featurefinder.getParameters()
-        smartpeak = smartPeak()
-        parameters = smartpeak.updateParameters(
+        utilities = Utilities()
+        parameters = utilities.updateParameters(
             parameters,
             MRMFeatureFinderScoring_params,
             )
@@ -115,7 +115,7 @@ class smartPeak_openSWATH():
         #     {'name':' extrapolation_type','value': 'two-point-linear','type': 'string'},
         # ]
         # model_params = pyopenms.Param()
-        # model_params = smartpeak.setParameters(model_params_list,model_params)
+        # model_params = utilities.setParameters(model_params_list,model_params)
 
         trafo = pyopenms.TransformationDescription()
         if trafo_csv_i is not None:
@@ -179,11 +179,11 @@ class smartPeak_openSWATH():
             chromatogramExtractor_params_I is not None and \
             self.targeted is not None:
             # convert parameters
-            smartpeak = smartPeak()
-            chromatogramExtractor_params = {d['name']: smartpeak.castString(
+            utilities = Utilities()
+            chromatogramExtractor_params = {d['name']: utilities.castString(
                 d['value'], 
                 d['type']) for d in chromatogramExtractor_params_I}
-            # chromatogramExtractor_params = {d['name']:smartpeak.parseString(d['value']) 
+            # chromatogramExtractor_params = {d['name']:utilities.parseString(d['value']) 
             #   for d in chromatogramExtractor_params_I}
             # exctract chromatograms
             chromatograms_copy = copy.copy(chromatograms)
@@ -214,9 +214,9 @@ class smartPeak_openSWATH():
             # set up MRMMapping and
             # parse the MRMMapping params
             mrmmapper = pyopenms.MRMMapping()
-            smartpeak = smartPeak()
+            utilities = Utilities()
             parameters = mrmmapper.getParameters()
-            parameters = smartpeak.updateParameters(
+            parameters = utilities.updateParameters(
                 parameters,
                 MRMMapping_params_I,
                 )
@@ -290,7 +290,7 @@ class smartPeak_openSWATH():
             print("Picking peaks using OpenSWATH")
 
         # helper classes
-        smartpeak = smartPeak()
+        utilities = Utilities()
 
         # make the decoys
         # MRMDecoy
@@ -303,7 +303,7 @@ class smartPeak_openSWATH():
         # parse the MRMFeatureFinderScoring params
         featurefinder = pyopenms.MRMFeatureFinderScoring()
         parameters = featurefinder.getParameters()
-        parameters = smartpeak.updateParameters(
+        parameters = utilities.updateParameters(
             parameters,
             MRMFeatureFinderScoring_params_I,
             )
@@ -363,8 +363,8 @@ class smartPeak_openSWATH():
             # set up MRMFeatureFilter and parse the MRMFeatureFilter params
             featureFilter = pyopenms.MRMFeatureFilter()
             parameters = featureFilter.getParameters()
-            smartpeak = smartPeak()
-            parameters = smartpeak.updateParameters(
+            utilities = Utilities()
+            parameters = utilities.updateParameters(
                 parameters,
                 MRMFeatureFilter_filter_params_I,
                 )
@@ -535,7 +535,7 @@ class smartPeak_openSWATH():
         if verbose_I:
             print("Loading validation data")
 
-        smartpeak = smartPeak()
+        utilities = Utilities()
 
         # Handle the filenames
         referenceData_csv_i, db_ini_i = None, None
@@ -545,7 +545,7 @@ class smartPeak_openSWATH():
             db_ini_i = filenames_I['db_ini_i']
 
         # Parse the input parameters
-        ReferenceDataMethods_dict = {d['name']: smartpeak.parseString(
+        ReferenceDataMethods_dict = {d['name']: utilities.parseString(
             d['value'], encode_str_I=False) for d in ReferenceDataMethods_params_I}
         experiment_ids_I = [],
         sample_names_I = [],

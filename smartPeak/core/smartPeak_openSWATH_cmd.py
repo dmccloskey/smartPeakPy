@@ -2,7 +2,7 @@
 #system
 import csv, sys
 #module
-from .smartPeak import smartPeak
+from .Utilities import Utilities
 from smartPeak.io.FileReader import FileReader
 
 
@@ -28,11 +28,11 @@ class smartPeak_openSWATH_cmd():
         OpenSwathConfidenceScoring: score the picked peaks
         OpenSwathFeatureXMLToTSV: convert to csv
         """
-        smartpeak = smartPeak()
+        utilities = Utilities()
         for line in self.openSWATH_cmd_params:
             for fnc, params in line.items():
-                cmd = smartpeak.make_osCmd(params, fnc)
-                smartpeak.run_osCmd(cmd, verbose_I=verbose_I)
+                cmd = utilities.make_osCmd(params, fnc)
+                utilities.run_osCmd(cmd, verbose_I=verbose_I)
 
     def parse_openSWATH_cmd_params(self, data_I):
         """parse parameters from csv file

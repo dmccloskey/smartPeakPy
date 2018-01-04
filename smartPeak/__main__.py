@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from smartPeak.core.smartPeak import smartPeak
+from smartPeak.core.Utilities import Utilities
 from smartPeak.io.FileReader import FileReader
 from smartPeak.io.FileWriter import FileWriter
 
@@ -30,7 +30,7 @@ class __main__():
         """
         # additional resources
         from smartPeak.core.SequenceHandler import SequenceHandler
-        from smartPeak.core.FileWriterpenSWATH import FileWriterpenSWATH
+        from smartPeak.core.smartPeak_openSWATH import smartPeak_openSWATH
         from smartPeak.core.smartPeak_AbsoluteQuantitation import \
             smartPeak_AbsoluteQuantitation
 
@@ -41,7 +41,7 @@ class __main__():
         # class initializations        
         seqhandler = SequenceHandler()
         AbsoluteQuantitation = smartPeak_AbsoluteQuantitation()
-        openSWATH = FileWriterpenSWATH()
+        openSWATH = smartPeak_openSWATH()
         smartpeak_i = FileReader()
 
         # read in the files
@@ -52,9 +52,9 @@ class __main__():
 
         # check for updated workflow parameters
         if "run_AbsoluteQuantitation" in params:
-            smartpeak = smartPeak()
+            utilities = Utilities()
             workflow_parameters = {
-                d['name']: smartpeak.castString(d['value'], d['type'])
+                d['name']: utilities.castString(d['value'], d['type'])
                 for d in params["run_AbsoluteQuantitation"]}
             if "pick_peaks" in workflow_parameters:
                 pick_peaks = workflow_parameters["pick_peaks"]

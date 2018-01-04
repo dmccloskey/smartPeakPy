@@ -57,8 +57,8 @@ class TestSequenceHandler():
 
     def test_makeDataMatrixFromMetaValue(self):  
         seqhandler = SequenceHandler()
-        from smartPeak.core.FileWriterpenSWATH import FileWriterpenSWATH
-        openSWATH = FileWriterpenSWATH()
+        from smartPeak.core.smartPeak_openSWATH import smartPeak_openSWATH
+        openSWATH = smartPeak_openSWATH()
 
         # make the data
         sample_names = [

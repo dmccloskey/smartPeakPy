@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from smartPeak.io.FileReader import FileReader
 from smartPeak.io.FileWriter import FileWriter
-from smartPeak.core.FileWriterpenSWATH import FileWriterpenSWATH
+from smartPeak.core.smartPeak_openSWATH import smartPeak_openSWATH
 from smartPeak.core.smartPeak_AbsoluteQuantitation import \
     smartPeak_AbsoluteQuantitation
 from . import data_dir
@@ -23,7 +23,7 @@ class TestAbsoluteQuantitation():
             0].getComponentName() == b'23dpg.23dpg_1.Light')
 
     def test_quantifyComponents(self):
-        openSWATH = FileWriterpenSWATH()
+        openSWATH = smartPeak_openSWATH()
         AbsoluteQuantitation = smartPeak_AbsoluteQuantitation()
         
         # load the quantitation method

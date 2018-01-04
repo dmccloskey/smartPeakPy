@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from smartPeak.core.smartPeak import smartPeak
 from smartPeak.data.ReferenceDataMethods import ReferenceDataMethods
 # 3rd part libraries
 try:

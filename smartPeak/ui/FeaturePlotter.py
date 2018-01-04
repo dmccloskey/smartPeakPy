@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from smartPeak.core.smartPeak import smartPeak
+from smartPeak.core.Utilities import Utilities
 # 3rd part libraries
 try:
     import matplotlib
@@ -27,9 +27,9 @@ class FeaturePlotter():
     def setParameters(self, params):
         """Set plotting parameters"""
 
-        smartpeak = smartPeak()
+        utilities = Utilities()
         parameters = {
-            d['name']: smartpeak.castString(d['value'], d['type'])
+            d['name']: utilities.castString(d['value'], d['type'])
             for d in params}
         if "annotate_features" in parameters:
             self.annotate_features = parameters["annotate_features"]

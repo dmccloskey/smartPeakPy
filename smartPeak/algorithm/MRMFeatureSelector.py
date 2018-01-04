@@ -3,7 +3,7 @@
 import copy
 from math import log, log10, sqrt
 # modules
-from smartPeak.core.smartPeak import smartPeak
+from smartPeak.core.Utilities import Utilities
 # 3rd part libraries
 try:
     import pyopenms
@@ -496,11 +496,11 @@ class MRMFeatureSelector():
     ):
 
         import time as time
-        smartpeak = smartPeak()
+        utilities = Utilities()
         
         # Parse the input parameters
         select_criteria_dict = {
-            d['name']: smartpeak.parseString(
+            d['name']: utilities.parseString(
                 d['value'], encode_str_I=False) for d in schedule_criteria}
         nn_thresholds = [2, 4, 6, 4]
         locality_weights = [False, True, True, True]

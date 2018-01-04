@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from smartPeak.core.smartPeak import smartPeak
-from smartPeak.core.FileReader import FileReader
+from smartPeak.core.Utilities import Utilities
+from smartPeak.io.FileReader import FileReader
 from . import data_dir
 from smartPeak.pyTOPP.OpenSwathRTNormalizer import OpenSwathRTNormalizer
 # 3rd part libraries
@@ -70,8 +70,8 @@ class TestOpenSwathRTNormalizer():
         # parse the MRMFeatureFinderScoring params
         featurefinder = pyopenms.MRMFeatureFinderScoring()
         parameters = featurefinder.getParameters()
-        smartpeak = smartPeak()
-        parameters = smartpeak.updateParameters(
+        utilities = Utilities()
+        parameters = utilities.updateParameters(
             parameters,
             self.params["MRMFeatureFinderScoring"],
             )

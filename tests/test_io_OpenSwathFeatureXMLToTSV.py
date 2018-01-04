@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from smartPeak.core.smartPeak import smartPeak
 from smartPeak.io.FileReader import FileReader
 from . import data_dir
 from smartPeak.io.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
