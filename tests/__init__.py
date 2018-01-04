@@ -130,9 +130,17 @@ def runAllTests():
     test = TestSequenceHandler()
     test.test_addSampleToSequence()
     test.test_getMetaValue()
-    test.test_makeDataMatrixFromMetaValue()
     test.test_parse_metaData()
     test.test_addFeatureMapToSequence()
+
+    from tests.test_io_SequenceWriter import TestSequenceWriter
+    test = TestSequenceWriter()
+    test.test_makeDataMatrixFromMetaValue()
+
+    from tests.test_io_SequenceReader import TestSequenceReader
+    test = TestSequenceReader()
+    test.test_parse_sequenceFile()
+    test.test_read_sequenceFile()
 
     from tests.test_main import testMain
     test = testMain()

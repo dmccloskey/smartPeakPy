@@ -340,7 +340,7 @@ class __main__():
             smartpeak_o.write_dict2csv(validationMetrics_csv_i)
         sequenceSummary_csv_i = '''%s/SequenceSummary.csv''' % (
             sequence["meta_data"]["data_dir"])
-        seqhandler.exportDataMatrixFromMetaValue(
+        seqhandler.write_dataMatrixFromMetaValue(
             filename=sequenceSummary_csv_i,
             # meta_values=[
             # 'calculated_concentration','RT','peak_apex_int',

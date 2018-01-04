@@ -17,10 +17,5 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-from tests.test_main import testMain
-test = testMain()
-test.test_main_LCMS_MRM()
-test.test_main_GCMS_SIM()
-
-# from tests import runAllTests
-# runAllTests()
+from tests import runAllTests
+runAllTests()
