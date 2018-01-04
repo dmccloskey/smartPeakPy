@@ -24,14 +24,14 @@ class SampleProcessor():
 
     def openSWATH(
         self,
-        sample,
+        sample_IO,
         MRMFeatureFinderScoring_params_I={},
         verbose_I=False
     ):
         """Run the openSWATH workflow for a single sample
         
         Args:
-            sample (SampleHandler): sample class
+            sample_IO (SampleHandler): sample class
             MRMFeatureFinderScoring_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
                 
@@ -62,17 +62,17 @@ class SampleProcessor():
         # set up MRMFeatureFinderScoring (featurefinder) and 
         # run
         featurefinder.pickExperiment(
-            sample.chromatogram_map, 
+            sample_IO.chromatogram_map, 
             output, 
-            sample.targeted, 
-            sample.trafo,
-            sample.swath)
+            sample_IO.targeted, 
+            sample_IO.trafo,
+            sample_IO.swath)
         
-        sample.featureMap = output
+        sample_IO.featureMap = output
 
     def filterAndSelect_py(
         self,
-        sample,
+        sample_IO,
         filenames_I,
         MRMFeatureFilter_filter_params_I={},
         MRMFeatureSelector_select_params_I={},
@@ -82,7 +82,7 @@ class SampleProcessor():
         """Run the openSWATH post processing filtering workflow for a single sample
         
         Args:
-            sample (SampleHandler): sample class
+            sample_IO (SampleHandler): sample class
             filenames_I (list): list of filename strings
             MRMFeatureFilter_filter_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
@@ -127,13 +127,13 @@ class SampleProcessor():
             featureQCFile = pyopenms.MRMFeatureQCFile()
             featureQCFile.load(mrmfeatureqcs_csv_i.encode('utf-8'), featureQC)  
 
-            output_filtered = copy.copy(sample.featureMap)
+            output_filtered = copy.copy(sample_IO.featureMap)
             featureFilter.FilterFeatureMap(
                 output_filtered,
                 featureQC,
-                sample.targeted)
+                sample_IO.targeted)
         else:
-            output_filtered = sample.featureMap
+            output_filtered = sample_IO.featureMap
 
         # select features
         if verbose_I:
@@ -150,7 +150,7 @@ class SampleProcessor():
             output_selected = featureSelector.schedule_MRMFeatures_qmip(
                 features=output_filtered,
                 tr_expected=calibrators,    
-                targeted=sample.targeted,
+                targeted=sample_IO.targeted,
                 schedule_criteria=MRMFeatureSelector_schedule_params_I,                
                 score_weights=MRMFeatureSelector_select_params_I
             )
@@ -166,13 +166,13 @@ class SampleProcessor():
         else:
             output_selected = output_filtered
 
-        sample.featureMap = output_selected
+        sample_IO.featureMap = output_selected
 
-    def extract_metaData(self, sample, verbose_I=False):
+    def extract_metaData(self, sample_IO, verbose_I=False):
         """Extracts metadata from the chromatogram
 
         Args:        
-            sample (SampleHandler): sample class
+            sample_IO (SampleHandler): sample class
 
         """
         if verbose_I:
@@ -185,29 +185,29 @@ class SampleProcessor():
         software = ''
 
         # filename
-        loaded_file_path = sample.chromatogram_map.getLoadedFilePath()
+        loaded_file_path = sample_IO.chromatogram_map.getLoadedFilePath()
         if loaded_file_path is not None:
             filename = loaded_file_path.decode('utf-8').replace('file://', '')
         # filename = '''%s/%s''' %(
         #     chromatograms_mapped.getSourceFiles()[0].getPathToFile().decode('utf-8').replace('file://',''),
         #     chromatograms_mapped.getSourceFiles()[0].getNameOfFile().decode('utf-8'))
 
-        # sample name
-        mzml_id = sample.chromatogram_map.getMetaValue(b'mzml_id')
+        # sample_IO name
+        mzml_id = sample_IO.chromatogram_map.getMetaValue(b'mzml_id')
         if mzml_id is not None:
             samplename_list = mzml_id.decode('utf-8').split('-')
             samplename = '-'.join(samplename_list[1:])   
 
         # instrument
-        instrument_name = sample.chromatogram_map.getInstrument().getName()
+        instrument_name = sample_IO.chromatogram_map.getInstrument().getName()
         if instrument_name is not None:
             instrument = instrument_name.decode('utf-8')
             # software
-            software_name = sample.chromatogram_map.getInstrument().getSoftware().getName()
+            software_name = sample_IO.chromatogram_map.getInstrument().getSoftware().getName()
             if software_name is not None:
                 software = software_name.decode('utf-8')
 
-        sample.meta_data = {
+        sample_IO.meta_data = {
             "filename": filename,
             "sample_name": samplename,
             "instrument": instrument,
@@ -216,14 +216,14 @@ class SampleProcessor():
 
     def validate(
         self,
-        sample,
+        sample_IO,
         MRMRFeatureValidator_params_I={},
         verbose_I=False
     ):
         """Validate the selected peaks agains reference data
 
         Args:
-            sample (SampleHandler): sample class
+            sample_IO (SampleHandler): sample class
 
         """
         if verbose_I:
@@ -233,16 +233,16 @@ class SampleProcessor():
         if MRMRFeatureValidator_params_I:
             featureValidator = MRMFeatureValidator()
             features_mapped, validation_metrics = featureValidator.validate_MRMFeatures(
-                reference_data=sample.reference_data,
-                features=sample.featureMap,
+                reference_data=sample_IO.reference_data,
+                features=sample_IO.featureMap,
                 Tr_window=float(MRMRFeatureValidator_params_I[0]['value'])
                 )
-            sample.featureMap = features_mapped
-            sample.validation_metrics = validation_metrics
+            sample_IO.featureMap = features_mapped
+            sample_IO.validation_metrics = validation_metrics
 
     def export_featurePlots(
         self,     
-        sample,   
+        sample_IO,   
         filenames_I,
         FeaturePlotter_params_I={},
         verbose_I=False
@@ -250,7 +250,7 @@ class SampleProcessor():
         """Export plots of peaks with features annotated
 
         Args:
-            sample (SampleHandler): sample class
+            sample_IO (SampleHandler): sample class
 
         """
         if verbose_I:
@@ -267,21 +267,21 @@ class SampleProcessor():
             featurePlotter.setParameters(FeaturePlotter_params_I)
             featurePlotter.plot_peaks(
                 filename_I=features_pdf_o,
-                transitions=sample.targeted,
-                chromatograms=sample.chromatogram_map,
-                features=sample.featureMap
+                transitions=sample_IO.targeted,
+                chromatograms=sample_IO.chromatogram_map,
+                features=sample_IO.featureMap
             )
 
-    def quantifyComponents(self, sample, verbose_I=False):
+    def quantifyComponents(self, sample_IO, verbose_I=False):
         """Quantify all unknown samples based on the quantitationMethod
         
         Args:
-            sample (SampleHandler)
+            sample_IO (SampleHandler)
             
         """        
         if verbose_I:
             print("Quantifying features")
 
         aq = pyopenms.AbsoluteQuantitation()
-        aq.setQuantMethods(sample.quantitationMethods)
-        aq.quantifyComponents(sample.featureMap)
+        aq.setQuantMethods(sample_IO.quantitationMethods)
+        aq.quantifyComponents(sample_IO.featureMap)

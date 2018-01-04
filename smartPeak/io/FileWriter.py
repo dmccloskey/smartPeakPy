@@ -40,14 +40,3 @@ class FileWriter():
                 writer.writerows(self.data)
             except csv.Error as e:
                 sys.exit(e)
-
-    def store_mzML(self, out, output):
-        """
-        Store as mzML File
-
-        Args:
-            out (str): out filename
-            output (): chromatogram object
-        """
-
-        pyopenms.MzMLFile().store(out, output)

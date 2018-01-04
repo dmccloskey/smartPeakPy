@@ -107,21 +107,24 @@ def runAllTests():
     test = TestMRMFeatureValidator()
     test.test_validate_MRMFeatures()
 
-    from tests.test_core_smartPeak_openSWATH import TestSmartPeakOpenSWATH
-    test = TestSmartPeakOpenSWATH()
+    from tests.test_io_FileReaderOpenMS import TestFileReaderOpenMS
+    test = TestFileReaderOpenMS()
     test.test_load_traML()
     test.test_load_MSExperiment()
-    test.test_extract_metaData()
     test.test_load_Trafo()
-    test.test_openSWATH()
     test.test_load_featureMap()
+    test.test_load_quantitationMethods()
+
+    from tests.test_io_FileWriterOpenMS import TestFileWriterOpenMS
+    test = TestFileWriterOpenMS()
+    test.test_store_featureMap()
+
+    from tests.test_core_SampleProcessor import TestSampleProcessor
+    test = TestSampleProcessor()
+    test.test_extract_metaData()
+    test.test_openSWATH()
     test.test_filterAndSelect()
     test.test_validate()
-
-    from tests.test_core_smartPeak_AbsoluteQuantitation import TestAbsoluteQuantitation
-    test = TestAbsoluteQuantitation()
-    test.test_load_quantitationMethods()
-    test.test_quantifyComponents()
 
     from tests.test_core_SequenceHandler import TestSequenceHandler
     test = TestSequenceHandler()
@@ -131,7 +134,7 @@ def runAllTests():
     test.test_parse_metaData()
     test.test_addFeatureMapToSequence()
 
-    from tests.test_main import testMain
-    test = testMain()
-    test.test_main_LCMS_MRM()
-    test.test_main_GCMS_SIM()
+    # from tests.test_main import testMain
+    # test = testMain()
+    # test.test_main_LCMS_MRM()
+    # test.test_main_GCMS_SIM()

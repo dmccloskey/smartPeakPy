@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-# #modules
-from smartPeak.io.OpenSwathFeatureXMLToTSV import OpenSwathFeatureXMLToTSV
-# 3rd part libraries
 try:
     import pyopenms
 except ImportError as e:
