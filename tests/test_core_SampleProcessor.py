@@ -2,8 +2,8 @@
 # modules
 from smartPeak.io.FileReader import FileReader
 from smartPeak.io.FileReaderOpenMS import FileReaderOpenMS
-from smartPeak.core.SampleHandler import SampleHandler
 from smartPeak.io.FileWriterOpenMS import FileWriterOpenMS
+from smartPeak.core.SampleHandler import SampleHandler
 from smartPeak.core.SampleProcessor import SampleProcessor
 from . import data_dir
 # 3rd part libraries

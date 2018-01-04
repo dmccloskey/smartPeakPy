@@ -134,7 +134,7 @@ def runAllTests():
     test.test_parse_metaData()
     test.test_addFeatureMapToSequence()
 
-    # from tests.test_main import testMain
-    # test = testMain()
-    # test.test_main_LCMS_MRM()
-    # test.test_main_GCMS_SIM()
+    from tests.test_main import testMain
+    test = testMain()
+    test.test_main_LCMS_MRM()
+    test.test_main_GCMS_SIM()
