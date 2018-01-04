@@ -7,6 +7,8 @@ from smartPeak.io.FileWriterOpenMS import FileWriterOpenMS
 from smartPeak.core.SampleHandler import SampleHandler
 from smartPeak.core.SampleProcessor import SampleProcessor
 from smartPeak.core.SequenceHandler import SequenceHandler
+from smartPeak.io.SequenceReader import SequenceReader
+from smartPeak.io.SequenceWriter import SequenceWriter
 
 
 class __main__():
@@ -39,14 +41,17 @@ class __main__():
         validation_metrics = []
 
         # class initializations        
-        seqhandler = SequenceHandler()
+        seqHandler = SequenceHandler()
+        seqWriter = SequenceWriter()
+        seqReader = SequenceReader()
         sampleProcessor = SampleProcessor()
         fileReaderOpenMS = FileReaderOpenMS()
         fileWriterOpenMS = FileWriterOpenMS()
         fileReader = FileReader()
 
         # read in the files
-        seqhandler.read_sequenceFile(filename_sequence, delimiter)
+        seqReader.read_sequenceFile(
+            seqHandler, filename_sequence, delimiter)
         fileReader.read_openMSParams(filename_params, delimiter)
         params = fileReader.getData()
         fileReader.clear_data()
@@ -88,7 +93,7 @@ class __main__():
             if parameter not in params:
                 params[parameter] = []
 
-        for sequence in seqhandler.getSequence():
+        for sequence in seqHandler.getSequence():
             print("processing sample " + sequence["meta_data"]["sample_name"])
             try:
                 sampleHandler = SampleHandler()
@@ -317,7 +322,7 @@ class __main__():
                         verbose_I=verbose_I)
 
                 # record features
-                seqhandler.addFeatureMapToSequence(
+                seqHandler.addFeatureMapToSequence(
                     sequence["meta_data"]["sample_name"], sampleHandler.featureMap)
             except Exception as e:
                 print(e)
@@ -340,7 +345,8 @@ class __main__():
             smartpeak_o.write_dict2csv(validationMetrics_csv_i)
         sequenceSummary_csv_i = '''%s/SequenceSummary.csv''' % (
             sequence["meta_data"]["data_dir"])
-        seqhandler.write_dataMatrixFromMetaValue(
+        seqWriter.write_dataMatrixFromMetaValue(
+            seqHandler,
             filename=sequenceSummary_csv_i,
             # meta_values=[
             # 'calculated_concentration','RT','peak_apex_int',

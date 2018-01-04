@@ -2,7 +2,7 @@
 from smartPeak.io.FileReader import FileReader
 
 
-class SequenceHandler():
+class SequenceReader():
     """A class to write SequenceHandlers"""
 
     def read_sequenceFile(self, sequence_IO, filename, delimiter=','):
