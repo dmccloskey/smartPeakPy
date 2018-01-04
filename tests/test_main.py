@@ -2,7 +2,7 @@
 from smartPeak.__main__ import __main__
 from . import example_dir
 import os
-import filecmp
+# import filecmp
 from smartPeak.core.SampleHandler import SampleHandler
 from smartPeak.io.FileReaderOpenMS import FileReaderOpenMS
 
@@ -75,7 +75,7 @@ class testMain():
             delimiter=',',
             )
         assert(~os.path.isfile(example_dir + 'GCMS_SIM/mzML/skippedSamples.csv'))
-        
+
         sampleHandler = SampleHandler()
         fileReaderOpenMS = FileReaderOpenMS()
 
