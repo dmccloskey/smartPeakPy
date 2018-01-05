@@ -37,8 +37,8 @@ example_dir = join(smartPeak_directory, "examples", "")
 #                           ' required for testing')
 
 def runAllTests():
-    from tests.test_core_smartPeak import testSmartPeak
-    test = testSmartPeak()
+    from tests.test_core_Utilities import testUtilities
+    test = testUtilities()
     test.test_castString()
     test.test_convert_byte2String()
     # test.test_convert_MQQMethod2Feature() # TODO
@@ -48,7 +48,7 @@ def runAllTests():
     test.test_parseString()
     test.test_setParameters()
 
-    from tests.test_pyTOPP_OpenSwathFeatureXMLToTSV import TestOpenSwathFeatureXMLToTSV
+    from tests.test_io_OpenSwathFeatureXMLToTSV import TestOpenSwathFeatureXMLToTSV
     test = TestOpenSwathFeatureXMLToTSV()
     test.test_get_header()
     test.test_convert_FeatureXMLToTSV()
@@ -61,7 +61,7 @@ def runAllTests():
     # test.test_algorithm()
 
     # # TODO: refactor to C++
-    # from tests.test_pyTOPP_MRMFeatureSelector import TestMRMFeatureSelector
+    # from tests.test_algorithm_MRMFeatureSelector import TestMRMFeatureSelector
     # test = TestMRMFeatureSelector()
     # test.test_select_MRMFeatures_score()
     # test.test_schedule_MRMFeatures_qmip()
@@ -99,38 +99,51 @@ def runAllTests():
     from tests.test_data_DBTables import TestDBTables
     test = TestDBTables()
     test.test_set_tables()
+    test.test_get_table()
     test.test_connect_tables()
     test.test_createAndDrop_tables()
 
-    from tests.test_pyTOPP_MRMFeatureValidator import TestMRMFeatureValidator
+    from tests.test_algorithm_MRMFeatureValidator import TestMRMFeatureValidator
     test = TestMRMFeatureValidator()
     test.test_validate_MRMFeatures()
 
-    from tests.test_core_smartPeak_openSWATH import TestSmartPeakOpenSWATH
-    test = TestSmartPeakOpenSWATH()
+    from tests.test_io_FileReaderOpenMS import TestFileReaderOpenMS
+    test = TestFileReaderOpenMS()
     test.test_load_traML()
     test.test_load_MSExperiment()
-    test.test_extract_metaData()
     test.test_load_Trafo()
-    test.test_openSWATH()
     test.test_load_featureMap()
-    test.test_filterAndSelect()
-    test.test_validate()
-
-    from tests.test_core_smartPeak_AbsoluteQuantitation import TestAbsoluteQuantitation
-    test = TestAbsoluteQuantitation()
     test.test_load_quantitationMethods()
+
+    from tests.test_io_FileWriterOpenMS import TestFileWriterOpenMS
+    test = TestFileWriterOpenMS()
+    test.test_store_featureMap()
+
+    from tests.test_core_SampleProcessor import TestSampleProcessor
+    test = TestSampleProcessor()
+    test.test_extract_metaData()
+    test.test_pickFeatures()
+    test.test_filterAndSelect()
+    test.test_validateFeatures()
     test.test_quantifyComponents()
 
-    from tests.test_pyTOPP_SequenceHandler import TestSequenceHandler
+    from tests.test_core_SequenceHandler import TestSequenceHandler
     test = TestSequenceHandler()
     test.test_addSampleToSequence()
     test.test_getMetaValue()
-    test.test_makeDataMatrixFromMetaValue()
     test.test_parse_metaData()
     test.test_addFeatureMapToSequence()
 
-    from tests.test_core_main import testMain
+    from tests.test_io_SequenceWriter import TestSequenceWriter
+    test = TestSequenceWriter()
+    test.test_makeDataMatrixFromMetaValue()
+
+    from tests.test_io_SequenceReader import TestSequenceReader
+    test = TestSequenceReader()
+    test.test_parse_sequenceFile()
+    test.test_read_sequenceFile()
+
+    from tests.test_main import testMain
     test = testMain()
-    test.test_core_main_LCMS_MRM()
-    test.test_core_main_GCMS_SIM()
+    test.test_main_LCMS_MRM()
+    test.test_main_GCMS_SIM()

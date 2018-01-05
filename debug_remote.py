@@ -7,7 +7,7 @@ ptvsd.enable_attach("my_secret", address=('0.0.0.0', 3000))
 ptvsd.wait_for_attach()
 ######
 
-from smartPeak.core.__main__ import __main__
+from smartPeak.__main__ import __main__
 m = __main__()
 
 # # GCMS_fullScan
@@ -17,12 +17,5 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-from tests.test_data_DBTables import TestDBTables
-test = TestDBTables()
-test.test_set_tables()
-test.test_get_table()
-test.test_connect_tables()
-test.test_createAndDrop_tables()
-
-# from tests import runAllTests
-# runAllTests()
+from tests import runAllTests
+runAllTests()
