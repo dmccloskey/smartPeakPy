@@ -64,14 +64,16 @@ class __main__():
                 for d in params["run_AbsoluteQuantitation"]}
             if "pick_peaks" in workflow_parameters:
                 pick_peaks = workflow_parameters["pick_peaks"]
+            if "filter_peaks" in workflow_parameters:
+                filter_peaks = workflow_parameters["filter_peaks"]
             if "select_peaks" in workflow_parameters:
                 select_peaks = workflow_parameters["select_peaks"]
             if "validate_peaks" in workflow_parameters:
                 validate_peaks = workflow_parameters["validate_peaks"]
-            if "check_peaks" in workflow_parameters:
-                check_peaks = workflow_parameters["check_peaks"]
             if "quantify_peaks" in workflow_parameters:
                 quantify_peaks = workflow_parameters["quantify_peaks"]
+            if "check_peaks" in workflow_parameters:
+                check_peaks = workflow_parameters["check_peaks"]
             if "plot_peaks" in workflow_parameters:
                 plot_peaks = workflow_parameters["plot_peaks"]
             if "verbose_I" in workflow_parameters:
@@ -132,7 +134,7 @@ class __main__():
                     sequence["meta_data"]["sample_name"])
                 if pick_peaks:
                     # run the openSWATH workflow for metabolomics
-                    sampleProcessor.openSWATH(
+                    sampleProcessor.pickFeatures(
                         sampleHandler,
                         params['MRMFeatureFinderScoring'],
                         verbose_I=verbose_I)
@@ -142,7 +144,8 @@ class __main__():
                             'featureXML_o': featureXML_o,
                             'feature_csv_o': feature_csv_o},
                         verbose_I=verbose_I)
-                elif select_peaks or validate_peaks or quantify_peaks or check_peaks:
+                elif filter_peaks or select_peaks or plot_peaks or validate_peaks\
+                or quantify_peaks or check_peaks:
                     try:
                         fileReaderOpenMS.load_featureMap(
                             sampleHandler,
@@ -151,7 +154,49 @@ class __main__():
                     except Exception as e:
                         print(e)
 
-                # Filter and select features
+                # Filter features
+                featureXML_o = '''%s/features/%s.featureXML''' % (
+                    sequence["meta_data"]["data_dir"],
+                    sequence["meta_data"]["sample_name"]) 
+                feature_csv_o = '''%s/features/%s.csv''' % (
+                    sequence["meta_data"]["data_dir"],
+                    sequence["meta_data"]["sample_name"])
+                if filter_peaks:
+                    mrmfeaturefilter_csv_i = '''%s/featureFilters.csv''' % (
+                        sequence["meta_data"]["data_dir"])
+                    sampleProcessor.filterFeatures(
+                        sampleHandler,
+                        filenames_I={'mrmfeatureqcs_csv_i': mrmfeaturefilter_csv_i},
+                        MRMFeatureFilter_filter_params_I=params[
+                            'MRMFeatureFilter.filter_MRMFeatures'],
+                        verbose_I=verbose_I
+                    )
+                    # store
+                    fileWriterOpenMS.store_featureMap(
+                        sampleHandler, {
+                            'featureXML_o': featureXML_o,
+                            'feature_csv_o': feature_csv_o},
+                        verbose_I=verbose_I)
+                elif select_peaks or plot_peaks or validate_peaks or quantify_peaks\
+                or check_peaks:        
+                    try:
+                        fileReaderOpenMS.load_featureMap(
+                            sampleHandler,
+                            {'featureXML_i': featureXML_o},
+                            verbose_I=verbose_I)
+                    except Exception as e:
+                        try:  # in case features were not filtered previously
+                            featureXML_o = '''%s/features_tmp/%s.featureXML''' % (
+                                sequence["meta_data"]["data_dir"],
+                                sequence["meta_data"]["sample_name"]) 
+                            fileReaderOpenMS.load_featureMap(
+                                sampleHandler,
+                                {'featureXML_i': featureXML_o},
+                                verbose_I=verbose_I)
+                        except Exception as e:
+                            print(e)
+
+                # Select features
                 featureXML_o = '''%s/features/%s.featureXML''' % (
                     sequence["meta_data"]["data_dir"],
                     sequence["meta_data"]["sample_name"]) 
@@ -159,13 +204,9 @@ class __main__():
                     sequence["meta_data"]["data_dir"],
                     sequence["meta_data"]["sample_name"])
                 if select_peaks:
-                    mrmfeaturefilter_csv_i = '''%s/featureFilters.csv''' % (
-                        sequence["meta_data"]["data_dir"])
-                    sampleProcessor.filterAndSelect_py(
+                    sampleProcessor.selectFeatures(
                         sampleHandler,
-                        filenames_I={'mrmfeatureqcs_csv_i': mrmfeaturefilter_csv_i},
-                        MRMFeatureFilter_filter_params_I=params[
-                            'MRMFeatureFilter.filter_MRMFeatures'],
+                        filenames_I={},
                         # qmip algorithm
                         MRMFeatureSelector_select_params_I=params[
                             'MRMFeatureSelector.select_MRMFeatures_qmip'],
@@ -239,7 +280,7 @@ class __main__():
                             sequence["meta_data"]["sample_name"] + '.')
                         continue
                     # validate the data
-                    sampleProcessor.validate(
+                    sampleProcessor.validateFeatures(
                         sampleHandler,
                         params['MRMFeatureValidator.validate_MRMFeatures'],
                         verbose_I=verbose_I)
@@ -304,14 +345,11 @@ class __main__():
                 if check_peaks:
                     mrmfeatureqcs_csv_i = '''%s/featureQCs.csv''' % (
                         sequence["meta_data"]["data_dir"])
-                    sampleProcessor.filterAndSelect_py(
+                    sampleProcessor.filterFeatures(
                         sampleHandler,
                         filenames_I={'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i},
                         MRMFeatureFilter_filter_params_I=params[
                             'MRMFeatureFilter.filter_MRMFeatures.qc'],
-                        # no selection
-                        MRMFeatureSelector_select_params_I={},
-                        MRMFeatureSelector_schedule_params_I={},
                         verbose_I=verbose_I
                     )
                     # store

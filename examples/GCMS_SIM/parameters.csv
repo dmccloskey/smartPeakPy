@@ -1,6 +1,7 @@
 function,name,type,value,default,restrictions,description,used_,comment_,comparator
 run_AbsoluteQuantitation,pick_peaks,bool,TRUE,,,Pick peaks using OpenSWATH,TRUE,,
-run_AbsoluteQuantitation,select_peaks,bool,TRUE,,,Filter and Select peaks using OpenSWATH,TRUE,,
+run_AbsoluteQuantitation,filter_peaks,bool,TRUE,,,Filter peaks using OpenSWATH,TRUE,,
+run_AbsoluteQuantitation,select_peaks,bool,TRUE,,,Select peaks using OpenSWATH,TRUE,,
 run_AbsoluteQuantitation,validate_peaks,bool,FALSE,,,Validate peaks by checking against a reference database,TRUE,,
 run_AbsoluteQuantitation,quantify_peaks,bool,FALSE,,,Quantify peaks using IDMS,TRUE,,
 run_AbsoluteQuantitation,plot_peaks,bool,FALSE,,,Plot peaks with feature annotations,TRUE,,

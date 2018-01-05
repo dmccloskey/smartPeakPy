@@ -122,9 +122,10 @@ def runAllTests():
     from tests.test_core_SampleProcessor import TestSampleProcessor
     test = TestSampleProcessor()
     test.test_extract_metaData()
-    test.test_openSWATH()
+    test.test_pickFeatures()
     test.test_filterAndSelect()
-    test.test_validate()
+    test.test_validateFeatures()
+    test.test_quantifyComponents()
 
     from tests.test_core_SequenceHandler import TestSequenceHandler
     test = TestSequenceHandler()

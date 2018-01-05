@@ -22,7 +22,7 @@ class SampleProcessor():
         """Remove all data"""
         self.parameters = None
 
-    def openSWATH(
+    def pickFeatures(
         self,
         sample_IO,
         MRMFeatureFinderScoring_params_I={},
@@ -70,13 +70,11 @@ class SampleProcessor():
         
         sample_IO.featureMap = output
 
-    def filterAndSelect_py(
+    def filterFeatures(
         self,
         sample_IO,
         filenames_I,
         MRMFeatureFilter_filter_params_I={},
-        MRMFeatureSelector_select_params_I={},
-        MRMFeatureSelector_schedule_params_I={},
         verbose_I=False
     ):
         """Run the openSWATH post processing filtering workflow for a single sample
@@ -86,10 +84,6 @@ class SampleProcessor():
             filenames_I (list): list of filename strings
             MRMFeatureFilter_filter_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
-            MRMFeatureSelector_select_params_I (dict): dictionary of parameter
-                names, values, descriptions, and tags
-            MRMFeatureSelector_schedule_params_I (dict): dictionary of parameter
-                names, values, descriptions, and tags
 
         Internals:
             features (FeatureMap): output from SWATH workflow
@@ -97,14 +91,11 @@ class SampleProcessor():
             targeted (TargetedExperiment): 
 
         Returns:
-            output_selected (FeatureMap): filtered and/or selected features
+            output_filtered (FeatureMap): filtered features
                 
         """
         # variables
-        calibrators_csv_i = None
         mrmfeatureqcs_csv_i = None
-        if 'calibrators_csv_i'in filenames_I.keys():
-            calibrators_csv_i = filenames_I['calibrators_csv_i']
         if 'mrmfeatureqcs_csv_i'in filenames_I.keys():
             mrmfeatureqcs_csv_i = filenames_I['mrmfeatureqcs_csv_i']
 
@@ -132,8 +123,39 @@ class SampleProcessor():
                 output_filtered,
                 featureQC,
                 sample_IO.targeted)
-        else:
-            output_filtered = sample_IO.featureMap
+            sample_IO.featureMap = output_filtered
+
+    def selectFeatures(
+        self,
+        sample_IO,
+        filenames_I,
+        MRMFeatureSelector_select_params_I={},
+        MRMFeatureSelector_schedule_params_I={},
+        verbose_I=False
+    ):
+        """Run the openSWATH post processing filtering workflow for a single sample
+        
+        Args:
+            sample_IO (SampleHandler): sample class
+            filenames_I (list): list of filename strings
+            MRMFeatureSelector_select_params_I (dict): dictionary of parameter
+                names, values, descriptions, and tags
+            MRMFeatureSelector_schedule_params_I (dict): dictionary of parameter
+                names, values, descriptions, and tags
+
+        Internals:
+            features (FeatureMap): output from SWATH workflow
+            msExperiment (MSExperiment): 
+            targeted (TargetedExperiment): 
+
+        Returns:
+            output_selected (FeatureMap): selected features
+                
+        """
+        # variables
+        calibrators_csv_i = None
+        if 'calibrators_csv_i'in filenames_I.keys():
+            calibrators_csv_i = filenames_I['calibrators_csv_i']
 
         # select features
         if verbose_I:
@@ -146,27 +168,26 @@ class SampleProcessor():
             smartpeak_i.clear_data()
         else: 
             calibrators = []
+
         if MRMFeatureSelector_schedule_params_I:
             output_selected = featureSelector.schedule_MRMFeatures_qmip(
-                features=output_filtered,
+                features=sample_IO.featureMap,
                 tr_expected=calibrators,    
                 targeted=sample_IO.targeted,
                 schedule_criteria=MRMFeatureSelector_schedule_params_I,                
                 score_weights=MRMFeatureSelector_select_params_I
             )
+            sample_IO.featureMap = output_selected
         elif MRMFeatureSelector_select_params_I:
             output_selected = featureSelector.select_MRMFeatures_score(
-                output_filtered,
+                sample_IO.featureMap,
                 MRMFeatureSelector_select_params_I)
             # output_selected = featureSelector.select_MRMFeatures_qmip(
-            #     features = output_filtered,
+            #     features = sample_IO.featureMap,
             #     tr_expected = calibrators,    
             #     select_criteria = MRMFeatureSelector_select_params_I,     
             # )
-        else:
-            output_selected = output_filtered
-
-        sample_IO.featureMap = output_selected
+            sample_IO.featureMap = output_selected
 
     def extract_metaData(self, sample_IO, verbose_I=False):
         """Extracts metadata from the chromatogram
@@ -214,7 +235,7 @@ class SampleProcessor():
             "software": software
         }
 
-    def validate(
+    def validateFeatures(
         self,
         sample_IO,
         MRMRFeatureValidator_params_I={},

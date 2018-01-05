@@ -52,7 +52,7 @@ class TestSampleProcessor():
             sampleHandler.meta_data['sample_name'] ==
             '150601_0_BloodProject01_PLT_QC_Broth-1')
 
-    def test_openSWATH(self):
+    def test_pickFeatures(self):
         self.load_data()
         sampleHandler = SampleHandler()
         sampleProcessor = SampleProcessor()
@@ -82,7 +82,7 @@ class TestSampleProcessor():
         fileReaderOpenMS.load_SWATHorDIA(sampleHandler, {})
 
         # run OpenSWATH
-        sampleProcessor.openSWATH(
+        sampleProcessor.pickFeatures(
             sampleHandler,
             self.params_1['MRMFeatureFinderScoring'])
         assert(sampleHandler.featureMap[0].getSubordinates()[
@@ -130,10 +130,13 @@ class TestSampleProcessor():
 
         # filter and select
         mrmfeatureqcs_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
-        sampleProcessor.filterAndSelect_py(
+        sampleProcessor.filterFeatures(
             sampleHandler,
             {'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i},
-            self.params_1['MRMFeatureFilter.filter_MRMFeatures'],
+            self.params_1['MRMFeatureFilter.filter_MRMFeatures'])
+        sampleProcessor.selectFeatures(
+            sampleHandler,
+            {},
             self.params_1['MRMFeatureSelector.select_MRMFeatures_qmip'],
             self.params_1['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
         assert(sampleHandler.featureMap[0].getSubordinates()[
@@ -156,7 +159,7 @@ class TestSampleProcessor():
             'featureXML_o': featureXML_o,
             'feature_csv_o': feature_csv_o})
 
-    def test_validate(self):        
+    def test_validateFeatures(self):        
         self.load_data()
         sampleHandler = SampleHandler()
         sampleProcessor = SampleProcessor()
@@ -182,7 +185,7 @@ class TestSampleProcessor():
             )
 
         # validate the data
-        sampleProcessor.validate(
+        sampleProcessor.validateFeatures(
             sampleHandler, self.params_1[
                 'MRMFeatureValidator.validate_MRMFeatures'])
         assert(sampleHandler.validation_metrics["accuracy"] == 0.98709677419354835)

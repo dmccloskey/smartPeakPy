@@ -22,13 +22,12 @@ class testMain():
 
         sampleHandler = SampleHandler()
         fileReaderOpenMS = FileReaderOpenMS()
-        fileReaderOpenMS.load_featureMap(
-            sampleHandler, {
-                'featureXML_i': 
-                example_dir + 
-                'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x.featureXML'})
+        fileReaderOpenMS.load_featureMap(sampleHandler, {
+            'featureXML_i': 
+            example_dir + 
+            'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x.featureXML'})
         fm1 = sampleHandler.featureMap
-        fileReaderOpenMS.load_featureMap({
+        fileReaderOpenMS.load_featureMap(sampleHandler, {
             'featureXML_i': 
             example_dir + 
             'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x_test.featureXML'})
