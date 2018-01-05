@@ -14,7 +14,7 @@ class DBTables():
         self.feature_maps = None
         self.quantitation_methods = None
         self.standards_concentrations = None
-        self.parameters = None
+        self.algorithm_parameters = None
         self.undolog = None
 
     def get_table(self, table_name):
@@ -42,8 +42,8 @@ class DBTables():
             table = self.quantitation_methods
         elif table_name == "standards_concentrations":
             table = self.standards_concentrations
-        elif table_name == "parameters":
-            table = self.parameters
+        elif table_name == "algorithm_parameters":
+            table = self.algorithm_parameters
         elif table_name == "undolog":
             table = self.undolog
         else:
@@ -57,16 +57,10 @@ class DBTables():
             settings["database"]["dialect"],
             "sequence_file",
             None,
-            ["sequence_id", "sample_name", "sample_type",
-                "comments", "acquisition_method", "processing_method",
-                "rack_code", "plate_code", "vial_position", "rack_position",
-                "plate_position", "injection_volume", "dilution_factor", 
-                "weight_to_volume", "set_name", "filename"],
-            ["TEXT", "TEXT", "TEXT",
-                "TEXT", "TEXT", "TEXT",
-                "INTEGER", "INTEGER", "INTEGER", "INTEGER",
-                "INTEGER", "REAL", "REAL",
-                "REAL", "TEXT", "TEXT"],
+            ["sequence_id", "sample_name", "sample_type", "filename",
+                "used_"],
+            ["TEXT", "TEXT", "TEXT", "TEXT",
+                "INTEGER"],
             ["sequence_file_unique"],
             ["UNIQUE(sequence_id, sample_name, filename)"]
         )
@@ -75,8 +69,10 @@ class DBTables():
             settings["database"]["dialect"],
             "traml",
             None,
-            ["traml_id", "component_name", "component_group_name", "traml_data"],
-            ["TEXT", "TEXT", "TEXT", "TEXT"],
+            ["traml_id", "component_name", "component_group_name", "traml_data", 
+                "used_"],
+            ["TEXT", "TEXT", "TEXT", "TEXT",
+                "INTEGER"],
             ["traml_unique"],
             ["UNIQUE(traml_id, component_name)"]
         )
@@ -94,7 +90,8 @@ class DBTables():
                 "ion_ratio_pair_name_2", "ion_ratio_l", "ion_ratio_u",
                 "retention_time_l", "retention_time_u",
                 "intensity_l", "intensity_u", "overall_quality_l", "overall_quality_u",
-                "metaValue_limits"],
+                "metaValue_limits",
+                "used_"],
             ["TEXT", "TEXT", "TEXT",
                 "INTEGER", "INTEGER", "INTEGER", "INTEGER",
                 "INTEGER", "INTEGER", "INTEGER",
@@ -103,7 +100,8 @@ class DBTables():
                 "TEXT", "REAL", "REAL",
                 "REAL", "REAL",
                 "REAL", "REAL", "REAL", "REAL",
-                "TEXT"],
+                "TEXT",
+                "INTEGER"],
             ["feature_filter_unique"],
             ["UNIQUE(ff_id, component_name)"]
         )
@@ -120,7 +118,8 @@ class DBTables():
                 "ion_ratio_pair_name_2", "ion_ratio_l", "ion_ratio_u",
                 "retention_time_l", "retention_time_u",
                 "intensity_l", "intensity_u", "overall_quality_l", "overall_quality_u",
-                "metaValue_limits"],
+                "metaValue_limits",
+                "used_"],
             ["TEXT", "TEXT", "TEXT",
                 "INTEGER", "INTEGER", "INTEGER", "INTEGER",
                 "INTEGER", "INTEGER", "INTEGER",
@@ -129,7 +128,8 @@ class DBTables():
                 "TEXT", "REAL", "REAL",
                 "REAL", "REAL",
                 "REAL", "REAL", "REAL", "REAL",
-                "TEXT"],
+                "TEXT",
+                "INTEGER"],
             ["feature_qc_unique"],
             ["UNIQUE(fqc_id, component_name)"]
         )
@@ -139,7 +139,8 @@ class DBTables():
             "feature_maps",
             None,
             ["feature_map_id", "sample_name", "component_name", "component_group_name",
-                "feature_data"],
+                "feature_data", "subordinate_data",
+                "used_"],
                 # "transition_group_id", "run_id", "filename", "RT", "id", 
                 # "Sequence", "FullPeptideName", "Charge", "Intensity", 
                 # "ProteinName", "decoy", "potentialOutlier", 
@@ -160,7 +161,8 @@ class DBTables():
                 # "calculated_concentration", "concentration_units", "QC_transition_pass", 
                 # "QC_transition_message", "PrecursorMZ", "peak_area"],
             ["TEXT", "TEXT", "TEXT", "TEXT",
-                "TEXT"],
+                "BLOB", "BLOB",
+                "INTEGER"],
             ["feature_maps_unique"],
             ["UNIQUE(feature_map_id, sample_name, component_name)"]
         )
@@ -180,7 +182,8 @@ class DBTables():
                 "transformation_model_param_x_datum_min", 
                 "transformation_model_param_x_datum_max", 
                 "transformation_model_param_y_datum_min", 
-                "transformation_model_param_y_datum_max"],
+                "transformation_model_param_y_datum_max",
+                "used_"],
             ["TEXT",
                 "TEXT", "TEXT", "TEXT", "TEXT", 
                 "REAL", "REAL", "REAL", "REAL", "REAL", 
@@ -192,7 +195,8 @@ class DBTables():
                 "REAL", 
                 "REAL", 
                 "REAL", 
-                "REAL"],
+                "REAL",
+                "INTEGER"],
             ["quantitation_methods_unique"],
             ["UNIQUE(quantitation_method_id, component_name)"]
         )
@@ -204,24 +208,29 @@ class DBTables():
             ["standards_concentrations_id",
                 "sample_name", "component_name", "IS_component_name", 
                 "actual_concentration", 
-                "IS_actual_concentration", "concentration_units", "dilution_factor"],
+                "IS_actual_concentration", "concentration_units", "dilution_factor",
+                "used_"],
             ["TEXT",
                 "TEXT", "TEXT", "TEXT", 
                 "REAL", 
-                "REAL", "TEXT", "REAL"],
+                "REAL", "TEXT", "REAL",
+                "INTEGER"],
             ["standards_concentrations_unique"],
             ["""UNIQUE(standards_concentrations_id, sample_name, component_name, 
             IS_component_name, actual_concentration, IS_actual_concentration, 
             concentration_units, dilution_factor)"""]
         )
 
-        self.parameters = DBTableInterface(    
+        self.algorithm_parameters = DBTableInterface(    
             settings["database"]["dialect"],
-            "parameters",
+            "algorithm_parameters",
             None,
-            ["function", "name", "type", "value", "default", "restrictions", "description", "used_"],
-            ["TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT"],
-            ["parameters_unique"],
+            ["function", "name", "type", "value", "default",
+                "restrictions", "description",
+                "used_"],
+            ["TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT",
+                "INTEGER"],
+            ["algorithm_parameters_unique"],
             ["""UNIQUE(function, name)"""]
         )
 
@@ -251,7 +260,7 @@ class DBTables():
         self.feature_maps.set_conn(conn)
         self.quantitation_methods.set_conn(conn)
         self.standards_concentrations.set_conn(conn)
-        self.parameters.set_conn(conn)
+        self.algorithm_parameters.set_conn(conn)
         self.undolog.set_conn(conn)
 
         self.sequence_file.set_cursor(cursor)
@@ -261,7 +270,7 @@ class DBTables():
         self.feature_maps.set_cursor(cursor)
         self.quantitation_methods.set_cursor(cursor)
         self.standards_concentrations.set_cursor(cursor)
-        self.parameters.set_cursor(cursor)
+        self.algorithm_parameters.set_cursor(cursor)
         self.undolog.set_cursor(cursor)
     
     def create_tables(self):
@@ -274,7 +283,7 @@ class DBTables():
         self.feature_maps.create_table()
         self.quantitation_methods.create_table()
         self.standards_concentrations.create_table()
-        self.parameters.create_table()
+        self.algorithm_parameters.create_table()
         self.undolog.create_table()
     
     def drop_tables(self):
@@ -287,5 +296,5 @@ class DBTables():
         self.feature_maps.drop_table()
         self.quantitation_methods.drop_table()
         self.standards_concentrations.drop_table()
-        self.parameters.drop_table()
+        self.algorithm_parameters.drop_table()
         self.undolog.drop_table()

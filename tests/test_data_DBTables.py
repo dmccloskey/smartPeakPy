@@ -41,8 +41,8 @@ class TestDBTables():
         tbname = dbtables.standards_concentrations.get_tableName()
         assert(tbname == '"standards_concentrations"')
 
-        tbname = dbtables.parameters.get_tableName()
-        assert(tbname == '"parameters"')
+        tbname = dbtables.algorithm_parameters.get_tableName()
+        assert(tbname == '"algorithm_parameters"')
 
         tbname = dbtables.undolog.get_tableName()
         assert(tbname == '"undolog"')
@@ -84,8 +84,8 @@ class TestDBTables():
         tbname = dbtables.get_table("standards_concentrations").get_tableName()
         assert(tbname == '"standards_concentrations"')
 
-        tbname = dbtables.get_table("parameters").get_tableName()
-        assert(tbname == '"parameters"')
+        tbname = dbtables.get_table("algorithm_parameters").get_tableName()
+        assert(tbname == '"algorithm_parameters"')
 
         tbname = dbtables.get_table("undolog").get_tableName()
         assert(tbname == '"undolog"')
@@ -129,7 +129,7 @@ class TestDBTables():
         conn = dbtables.standards_concentrations.get_conn()
         assert(conn is not None)
 
-        conn = dbtables.parameters.get_conn()
+        conn = dbtables.algorithm_parameters.get_conn()
         assert(conn is not None)
 
         conn = dbtables.undolog.get_conn()
@@ -157,7 +157,7 @@ class TestDBTables():
         cursor = dbtables.standards_concentrations.get_cursor()
         assert(cursor is not None)
 
-        cursor = dbtables.parameters.get_cursor()
+        cursor = dbtables.algorithm_parameters.get_cursor()
         assert(cursor is not None)
 
         cursor = dbtables.undolog.get_cursor()
@@ -192,7 +192,7 @@ class TestDBTables():
         tables = [
             "sequence_file", "traml", "feature_filter", 
             "feature_qc", "feature_maps", "quantitation_methods", 
-            "standards_concentrations", "parameters", "undolog"]
+            "standards_concentrations", "algorithm_parameters", "undolog"]
         for table in tables:
             print("Testing existance of table " + table)
             query = """SELECT COUNT(*) from sqlite_master
@@ -206,7 +206,7 @@ class TestDBTables():
         tables1 = [
             "sequence_file", "traml", "feature_filter", 
             "feature_qc", "feature_maps", "quantitation_methods", 
-            "standards_concentrations", "parameters"]
+            "standards_concentrations", "algorithm_parameters"]
         for table in tables1:
             print("Testing constraints for table " + table)
             columns = dbtables.get_table(table).get_tableColumns()[2:]
@@ -239,7 +239,7 @@ class TestDBTables():
         tables = [
             "sequence_file", "traml", "feature_filter", 
             "feature_qc", "feature_maps", "quantitation_methods", 
-            "standards_concentrations", "parameters", "undolog"]
+            "standards_concentrations", "algorithm_parameters", "undolog"]
         for table in tables:
             print("Dropping table " + table)
             query = """SELECT COUNT(*) from sqlite_master

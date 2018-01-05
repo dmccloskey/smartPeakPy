@@ -72,12 +72,15 @@ class SequenceHandler():
         #     "SetName","OutputFile"
         #     ]
 
+        # optional_headers = [
+        #     "comments", "acquisition_method", "processing_method",
+        #     "rack_code", "plate_code", "vial_position", "rack_position", 
+        #     "plate_position",
+        #     "injection_volume", "dilution_factor", "weight_to_volume",
+        #     "set_name"]
+
         required_headers = [
-            "sample_name", "sample_type",
-            "comments", "acquisition_method", "processing_method",
-            "rack_code", "plate_code", "vial_position", "rack_position", "plate_position",
-            "injection_volume", "dilution_factor", "weight_to_volume",
-            "set_name", "filename"
+            "sample_name", "sample_group_name", "sample_type", "filename"
             ]
 
         return required_headers
@@ -109,6 +112,10 @@ class SequenceHandler():
             print(
                 "SequenceFile Error: sample_name must be specified.")
             raise NameError('sample name')
+        if meta_data["sample_group_name"] is None:
+            print(
+                "SequenceFile Error: sample_group_name must be specified.")
+            raise NameError('sample group name')
         if meta_data["filename"] is None:
             print(
                 "SequenceFile Error: filename must be specified.")
@@ -146,3 +153,37 @@ class SequenceHandler():
         else:
             self.sequence[self.sample_to_index[sample_name]]["featureMap"] = featureMap
 
+    def getDefaultSampleProcessingWorkflow(self, sample_type):
+        """return the default workflow parameters for a given sample
+        
+        Args:
+            sample_type (str): the type of sample
+            
+        Returns:
+            dict: dictionary of workflow_parameters"""
+    
+        default = {
+            "pick_peaks": True,
+            "filter_peaks": True,
+            "select_peaks": True,
+            "validate_peaks": False,
+            "quantify_peaks": False,
+            "check_peaks": False}
+        
+        return default
+
+    def getDefaultSequenceProcessingWorkflow(self, sample_type):
+        """return the default workflow parameters for a given sequence
+        
+        Args:
+            sample_type (str): the type of sample
+            
+        Returns:
+            dict: dictionary of workflow_parameters"""
+    
+        default = {
+            "calculate_calibration": False,
+            "calculate_carryover": False,
+            "calculate_variability": False}
+        
+        return default
