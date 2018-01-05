@@ -15,7 +15,7 @@ class DBTables():
         self.quantitation_methods = None
         self.standards_concentrations = None
         self.algorithm_parameters = None
-        self.undolog = None
+        self.transaction_log = None
 
     def get_table(self, table_name):
         """Return the DBTable object for the specified table
@@ -44,8 +44,8 @@ class DBTables():
             table = self.standards_concentrations
         elif table_name == "algorithm_parameters":
             table = self.algorithm_parameters
-        elif table_name == "undolog":
-            table = self.undolog
+        elif table_name == "transaction_log":
+            table = self.transaction_log
         else:
             print("Table " + table_name + " is not a valid table.")
         return table
@@ -234,12 +234,12 @@ class DBTables():
             ["""UNIQUE(function, name)"""]
         )
 
-        self.undolog = DBTableInterface(    
+        self.transaction_log = DBTableInterface(    
             settings["database"]["dialect"],
-            "undolog",
+            "transaction_log",
             None,
-            ["history"],
-            ["TEXT"],
+            ["user", "transaction"],
+            ["TEXT", "TEXT"],
             None,
             None
         )
@@ -261,7 +261,7 @@ class DBTables():
         self.quantitation_methods.set_conn(conn)
         self.standards_concentrations.set_conn(conn)
         self.algorithm_parameters.set_conn(conn)
-        self.undolog.set_conn(conn)
+        self.transaction_log.set_conn(conn)
 
         self.sequence_file.set_cursor(cursor)
         self.traml.set_cursor(cursor)
@@ -271,7 +271,7 @@ class DBTables():
         self.quantitation_methods.set_cursor(cursor)
         self.standards_concentrations.set_cursor(cursor)
         self.algorithm_parameters.set_cursor(cursor)
-        self.undolog.set_cursor(cursor)
+        self.transaction_log.set_cursor(cursor)
     
     def create_tables(self):
         """Create all tables"""      
@@ -284,7 +284,7 @@ class DBTables():
         self.quantitation_methods.create_table()
         self.standards_concentrations.create_table()
         self.algorithm_parameters.create_table()
-        self.undolog.create_table()
+        self.transaction_log.create_table()
     
     def drop_tables(self):
         """Drop all tables"""      
@@ -297,4 +297,4 @@ class DBTables():
         self.quantitation_methods.drop_table()
         self.standards_concentrations.drop_table()
         self.algorithm_parameters.drop_table()
-        self.undolog.drop_table()
+        self.transaction_log.drop_table()
