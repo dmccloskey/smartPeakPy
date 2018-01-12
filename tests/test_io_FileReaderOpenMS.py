@@ -145,3 +145,18 @@ class TestFileReaderOpenMS():
         assert(sampleHandler.quantitationMethods[0].getULOQ() == 2.5)
         assert(sampleHandler.quantitationMethods[
             0].getComponentName() == b'23dpg.23dpg_1.Light')
+
+    def test_load_standardsConcentrations(self):
+        sampleHandler = SampleHandler()
+        fileReaderOpenMS = FileReaderOpenMS()
+
+        # load the quantitation method
+        standardsConcentrations_csv_i = '''%s%s''' % (
+            data_dir, "standardsConcentrations_1.csv")
+        fileReaderOpenMS.load_standardsConcentrations(
+            sampleHandler, 
+            {'standardsConcentrations_csv_i': standardsConcentrations_csv_i})
+        assert(sampleHandler.standardsConcentrations[0].getLLOQ() == 0.25)
+        assert(sampleHandler.standardsConcentrations[0].getULOQ() == 2.5)
+        assert(sampleHandler.standardsConcentrations[
+            0].getComponentName() == b'23dpg.23dpg_1.Light')

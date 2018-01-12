@@ -15,6 +15,34 @@ except ImportError as e:
 
 class FileReaderOpenMS():
 
+    def load_standardsConcentrations(
+        self,
+        sample_IO,
+        filenames_I,
+        verbose_I=False
+    ):
+        """Load AbsoluteQuantitationStandards
+
+        Args:
+            sample_IO (SampleHandler)
+            filenames_I (dict): dictionary of filename strings
+
+        Internals:
+            standardsConcentrations (list): list of AbsoluteQuantitationMethod objects
+
+        """
+        if verbose_I:
+            print("loading quantitation methods")
+
+        standardsConcentrations_csv_i = None
+        if 'standardsConcentrations_csv_i'in filenames_I.keys():
+            standardsConcentrations_csv_i = filenames_I['standardsConcentrations_csv_i']
+
+        standardsConcentrations = []
+        aqsf = pyopenms.AbsoluteQuantitationStandardsFile()
+        aqsf.load(standardsConcentrations_csv_i, standardsConcentrations)
+        sample_IO.standardsConcentrations = standardsConcentrations
+
     def load_quantitationMethods(
         self,
         sample_IO,

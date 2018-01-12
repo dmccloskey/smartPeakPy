@@ -137,5 +137,24 @@ class TestSequenceHandler():
             seqhandler.sample_to_index['sample2']]
         assert(injection["featureMap"] == "DummyFeatureMap")
 
+    test_getDefaultSampleProcessingWorkflow():
+        seqhandler = SequenceHandler()
 
-        
+        default = seqhandler.getDefaultSampleProcessingWorkflow(None)
+        assert(seqhandler.getDefaultSampleProcessingWorkflow("Unknown") != default)
+        assert(seqhandler.getDefaultSampleProcessingWorkflow("Standard") != default)
+        assert(seqhandler.getDefaultSampleProcessingWorkflow("QC") != default)
+        assert(seqhandler.getDefaultSampleProcessingWorkflow("Blank") != default)
+        assert(seqhandler.getDefaultSampleProcessingWorkflow("Double Blank") != default)
+        assert(seqhandler.getDefaultSampleProcessingWorkflow("Solvent") != default)
+
+    test_getDefaultSequenceProcessingWorkflow():
+        seqhandler = SequenceHandler()
+
+        default = seqhandler.getDefaultSequenceProcessingWorkflow(None)
+        assert(seqhandler.getDefaultSequenceProcessingWorkflow("Unknown") != default)
+        assert(seqhandler.getDefaultSequenceProcessingWorkflow("Standard") != default)
+        assert(seqhandler.getDefaultSequenceProcessingWorkflow("QC") != default)
+        assert(seqhandler.getDefaultSequenceProcessingWorkflow("Blank") == default)
+        assert(seqhandler.getDefaultSequenceProcessingWorkflow("Double Blank") == default)
+        assert(seqhandler.getDefaultSequenceProcessingWorkflow("Solvent") != default)

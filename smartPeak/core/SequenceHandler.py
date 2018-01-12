@@ -16,29 +16,44 @@ class SequenceHandler():
         """Return sequence"""
         return self.sequence
 
-    def addSampleToSequence(self, meta_data, featureMap):
+    def addSampleToSequence(
+        self, meta_data_I, featureMap_I, 
+        sample_processing_I=None, sequence_processing_I=None
+    ):
         """add meta_data and featureMap to a sequence list
 
         Args:
-            meta_data (dict): dictionary of meta data (e.g., sample_name)
-            featureMap (FeatureMap): processed data in a FeatureMap
+            meta_data_I (dict): dictionary of meta data (e.g., sample_name)
+            featureMap_I (FeatureMap): processed data in a FeatureMap
+            sample_processing_I (dict): dictionary of sample processing steps
+            sequence_processing_I (dict): dictionary of sequence processing steps for the sample
 
         Returns:
             dict: injection: dictionary of meta_data and FeatureMap
         """
 
-        sample_name = ''
-        if 'sample_name' in meta_data.keys():
-            sample_name = meta_data['sample_name']
+        meta_data = self.parse_metaData(meta_data_I)
+        
+        if sample_processing_I is None:
+            sample_processing = self.parse_sampleProcessing(sample_processing_I)
+        else:
+            sample_processing = sample_processing_I
+
+        if sequence_processing_I is None:
+            sequence_processing = self.parse_sequenceProcessing(sequence_processing_I)
+        else:
+            sequence_processing = sequence_processing_I
 
         injection = {
-            'meta_data': self.parse_metaData(meta_data),
-            'featureMap': featureMap
+            "meta_data": meta_data,
+            "featureMap": featureMap_I,
+            "sample_processing": sample_processing,
+            "sequence_processing": sequence_processing
         }
 
         self.sequence.append(injection)
-        self.index_to_sample[len(self.sequence)-1] = sample_name
-        self.sample_to_index[sample_name] = len(self.sequence)-1
+        self.index_to_sample[len(self.sequence)-1] = meta_data["sample_name"]
+        self.sample_to_index[meta_data["sample_name"]] = len(self.sequence)-1
 
     def getMetaValue(self, feature, subordinate, meta_value):
         """Returns the metaValue
@@ -52,7 +67,7 @@ class SequenceHandler():
             
         """
         datum = None
-        if meta_value == 'RT':
+        if meta_value == "RT":
             datum = feature.getRT()
         else:
             datum = feature.getMetaValue(meta_value)
@@ -104,22 +119,22 @@ class SequenceHandler():
                 print(
                     'SequenceFile Error: required header in sequence list "' +
                     header + '" not found.')
-                raise NameError('sequenceFile header')
+                raise NameError("sequenceFile header")
                 # meta_data[header] = None  # not needed
             
         # check for correctness of data
         if meta_data["sample_name"] is None:
             print(
                 "SequenceFile Error: sample_name must be specified.")
-            raise NameError('sample name')
+            raise NameError("sample name")
         if meta_data["sample_group_name"] is None:
             print(
                 "SequenceFile Error: sample_group_name must be specified.")
-            raise NameError('sample group name')
+            raise NameError("sample group name")
         if meta_data["filename"] is None:
             print(
                 "SequenceFile Error: filename must be specified.")
-            raise NameError('filename name')
+            raise NameError("filename name")
 
         if meta_data["sample_type"] is None or\
             meta_data["sample_type"] not in sample_types:
@@ -129,7 +144,7 @@ class SequenceHandler():
             print(
                 "Supported samples types are the following: " +
                 sample_types_str)
-            raise NameError('sample type')
+            raise NameError("sample type")
 
         # other checks...
 
@@ -169,8 +184,53 @@ class SequenceHandler():
             "validate_peaks": False,
             "quantify_peaks": False,
             "check_peaks": False}
+        if sample_type == "Unknown":
+            default["quantify_peaks"] = True
+            default["check_peaks"] = True
+        elif sample_type == "Standard":
+            default["quantify_peaks"] = True
+            default["check_peaks"] = True
+        elif sample_type == "QC":
+            default["quantify_peaks"] = True
+            default["check_peaks"] = True
+        elif sample_type == "Blank":
+            default["quantify_peaks"] = True
+            default["check_peaks"] = True
+        elif sample_type == "Double Blank":
+            default["check_peaks"] = True
+        elif sample_type == "Solvent":
+            default["check_peaks"] = True
         
         return default
+
+    def parse_sampleProcessing(self, sample_processing, sample_type):
+        """parse the sample processing steps
+
+        Args:
+            sample_processing (dict): dictionary of sample processing steps
+            sample_type (str): type of the sample
+
+        """
+
+        required_headers = [
+            "pick_peaks",
+            "filter_peaks",
+            "select_peaks",
+            "validate_peaks",
+            "quantify_peaks",
+            "check_peaks"]
+
+        # ensure supplied values are of the right type
+        for k,v in sample_processing.items():
+            if k in required_headers and ~isinstance(v, bool):
+                print("Wrong value provided for key " + k + " in sample_processing.")
+                raise NameError("sample_processing")
+
+        # ensure all headers are present
+        for k in required_headers:
+            if k not in sample_processing.keys():
+                sample_processing[k] = self.getDefaultSampleProcessingWorkflow(
+                    sample_type)[k]            
 
     def getDefaultSequenceProcessingWorkflow(self, sample_type):
         """return the default workflow parameters for a given sequence
@@ -185,5 +245,17 @@ class SequenceHandler():
             "calculate_calibration": False,
             "calculate_carryover": False,
             "calculate_variability": False}
+        if sample_type == "Unknown":
+            pass
+        elif sample_type == "Standard":
+            default["calculate_calibration"] = True
+        elif sample_type == "QC":
+            default["calculate_variability"] = True
+        elif sample_type == "Blank":
+            pass
+        elif sample_type == "Double Blank":
+            pass
+        elif sample_type == "Solvent":
+            default["calculate_carryover"] = True
         
         return default
