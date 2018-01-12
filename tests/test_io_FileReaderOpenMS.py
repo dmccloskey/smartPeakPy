@@ -2,7 +2,8 @@
 # modules
 from smartPeak.io.FileReader import FileReader
 from smartPeak.io.FileReaderOpenMS import FileReaderOpenMS
-from smartPeak.core.SampleHandler import SampleHandler
+from smartPeak.core.RawDataHandler import RawDataHandler
+from smartPeak.core.SequenceGroupHandler import SequenceGroupHandler
 from . import data_dir
 # 3rd part libraries
 try:
@@ -27,44 +28,44 @@ class TestFileReaderOpenMS():
         filereader.clear_data()
 
     def test_load_traML(self):
-        sampleHandler = SampleHandler()
+        rawDataHandler = RawDataHandler()
         fileReaderOpenMS = FileReaderOpenMS()
 
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        fileReaderOpenMS.load_TraML(sampleHandler, {'traML_csv_i': traML_csv_i})
-        assert(sampleHandler.targeted.getTransitions()[0].getPeptideRef() == b'arg-L')
-        assert(sampleHandler.targeted.getTransitions()[0].getPrecursorMZ() == 179.0)
-        assert(sampleHandler.targeted.getTransitions()[0].getProductMZ() == 136.0)
-        assert(sampleHandler.targeted.getTransitions()[50].getPeptideRef() == b'ins')
-        assert(sampleHandler.targeted.getTransitions()[50].getPrecursorMZ() == 267.0)
-        assert(sampleHandler.targeted.getTransitions()[50].getProductMZ() == 108.0)
+        fileReaderOpenMS.load_TraML(rawDataHandler, {'traML_csv_i': traML_csv_i})
+        assert(rawDataHandler.targeted.getTransitions()[0].getPeptideRef() == b'arg-L')
+        assert(rawDataHandler.targeted.getTransitions()[0].getPrecursorMZ() == 179.0)
+        assert(rawDataHandler.targeted.getTransitions()[0].getProductMZ() == 136.0)
+        assert(rawDataHandler.targeted.getTransitions()[50].getPeptideRef() == b'ins')
+        assert(rawDataHandler.targeted.getTransitions()[50].getPrecursorMZ() == 267.0)
+        assert(rawDataHandler.targeted.getTransitions()[50].getProductMZ() == 108.0)
 
     def test_load_MSExperiment(self):
         self.load_data()
-        sampleHandler = SampleHandler()
+        rawDataHandler = RawDataHandler()
         fileReaderOpenMS = FileReaderOpenMS()
         
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        fileReaderOpenMS.load_TraML(sampleHandler, {'traML_csv_i': traML_csv_i})
+        fileReaderOpenMS.load_TraML(rawDataHandler, {'traML_csv_i': traML_csv_i})
 
         # load MSExperiment
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        fileReaderOpenMS.load_MSExperiment(sampleHandler, {
+        fileReaderOpenMS.load_MSExperiment(rawDataHandler, {
             'mzML_feature_i': mzML_i},
             MRMMapping_params_I=self.params_1['MRMMapping'])
-        assert(sampleHandler.msExperiment.getChromatograms()[
+        assert(rawDataHandler.msExperiment.getChromatograms()[
             0].getProduct().getMZ() == 0.0)
-        assert(sampleHandler.msExperiment.getChromatograms()[
+        assert(rawDataHandler.msExperiment.getChromatograms()[
             0].getPrecursor().getMZ() == 0.0)
-        assert(sampleHandler.msExperiment.getChromatograms()[
+        assert(rawDataHandler.msExperiment.getChromatograms()[
             0].getNativeID() == b'TIC')
-        assert(sampleHandler.chromatogram_map.getChromatograms()[
+        assert(rawDataHandler.chromatogram_map.getChromatograms()[
             0].getProduct().getMZ() == 136.0)
-        assert(sampleHandler.chromatogram_map.getChromatograms()[
+        assert(rawDataHandler.chromatogram_map.getChromatograms()[
             0].getPrecursor().getMZ() == 179.0)
-        assert(sampleHandler.chromatogram_map.getChromatograms()[
+        assert(rawDataHandler.chromatogram_map.getChromatograms()[
             0].getNativeID() == b'arg-L.arg-L_1.Heavy')
 
         # # Precursor chromatogramExtraction
@@ -90,73 +91,73 @@ class TestFileReaderOpenMS():
 
     def test_load_Trafo(self):
         self.load_data()
-        sampleHandler = SampleHandler()
+        rawDataHandler = RawDataHandler()
         fileReaderOpenMS = FileReaderOpenMS()
         
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        fileReaderOpenMS.load_TraML(sampleHandler, {'traML_csv_i': traML_csv_i})
+        fileReaderOpenMS.load_TraML(rawDataHandler, {'traML_csv_i': traML_csv_i})
 
         # load MSExperiment
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        fileReaderOpenMS.load_MSExperiment(sampleHandler, {
+        fileReaderOpenMS.load_MSExperiment(rawDataHandler, {
             'mzML_feature_i': mzML_i},
             MRMMapping_params_I=self.params_1['MRMMapping'])
 
         # load trafo
         fileReaderOpenMS.load_Trafo(
-            sampleHandler, 
+            rawDataHandler, 
             {},  # {'trafo_csv_i':trafo_csv_i},
             self.params_1['MRMFeatureFinderScoring'])
-        assert(isinstance(sampleHandler.trafo, pyopenms.TransformationDescription))
+        assert(isinstance(rawDataHandler.trafo, pyopenms.TransformationDescription))
 
     def test_load_featureMap(self):
-        sampleHandler = SampleHandler()
+        rawDataHandler = RawDataHandler()
         fileReaderOpenMS = FileReaderOpenMS()
 
         # load featureMap
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
-        fileReaderOpenMS.load_featureMap(sampleHandler, {'featureXML_i': featureXML_o})
+        fileReaderOpenMS.load_featureMap(rawDataHandler, {'featureXML_i': featureXML_o})
 
-        assert(sampleHandler.featureMap[0].getSubordinates()[
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
             0].getMetaValue("peak_apex_int") == 266403.0)
-        assert(sampleHandler.featureMap[0].getSubordinates()[
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
             0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
-        assert(sampleHandler.featureMap[0].getSubordinates()[
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
             0].getRT() == 15.8944563381195)  # refactor to use pytest.approx
-        assert(sampleHandler.featureMap[50].getSubordinates()[
+        assert(rawDataHandler.featureMap[50].getSubordinates()[
             0].getMetaValue("peak_apex_int") == 0.0)
-        assert(sampleHandler.featureMap[50].getSubordinates()[
+        assert(rawDataHandler.featureMap[50].getSubordinates()[
             0].getMetaValue("native_id") == b'acon-C.acon-C_1.Heavy')
-        assert(sampleHandler.featureMap[50].getSubordinates()[
+        assert(rawDataHandler.featureMap[50].getSubordinates()[
             0].getRT() == 14.0348804560343)
 
     def test_load_quantitationMethods(self):
-        sampleHandler = SampleHandler()
+        sequenceGroupHandler = SequenceGroupHandler()
         fileReaderOpenMS = FileReaderOpenMS()
 
         # load the quantitation method
         quantitationMethods_csv_i = '''%s%s''' % (
             data_dir, "quantitationMethods_1.csv")
         fileReaderOpenMS.load_quantitationMethods(
-            sampleHandler, 
+            sequenceGroupHandler, 
             {'quantitationMethods_csv_i': quantitationMethods_csv_i})
-        assert(sampleHandler.quantitationMethods[0].getLLOQ() == 0.25)
-        assert(sampleHandler.quantitationMethods[0].getULOQ() == 2.5)
-        assert(sampleHandler.quantitationMethods[
+        assert(sequenceGroupHandler.quantitation_methods[0].getLLOQ() == 0.25)
+        assert(sequenceGroupHandler.quantitation_methods[0].getULOQ() == 2.5)
+        assert(sequenceGroupHandler.quantitation_methods[
             0].getComponentName() == b'23dpg.23dpg_1.Light')
 
     def test_load_standardsConcentrations(self):
-        sampleHandler = SampleHandler()
+        sequenceGroupHandler = SequenceGroupHandler()
         fileReaderOpenMS = FileReaderOpenMS()
 
         # load the quantitation method
         standardsConcentrations_csv_i = '''%s%s''' % (
             data_dir, "standardsConcentrations_1.csv")
-        fileReaderOpenMS.load_standardsConcentrations(
-            sampleHandler, 
+        fileReaderOpenMS.load_standardsConcentrations( 
+            sequenceGroupHandler, 
             {'standardsConcentrations_csv_i': standardsConcentrations_csv_i})
-        assert(sampleHandler.standardsConcentrations[0].getLLOQ() == 0.25)
-        assert(sampleHandler.standardsConcentrations[0].getULOQ() == 2.5)
-        assert(sampleHandler.standardsConcentrations[
+        assert(sequenceGroupHandler.standards_concentrations[0].getLLOQ() == 0.25)
+        assert(sequenceGroupHandler.standards_concentrations[0].getULOQ() == 2.5)
+        assert(sequenceGroupHandler.standards_concentrations[
             0].getComponentName() == b'23dpg.23dpg_1.Light')

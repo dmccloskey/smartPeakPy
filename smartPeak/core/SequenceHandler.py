@@ -321,24 +321,3 @@ class SequenceHandler():
             sequence_groups.append(sequenceGroupHandler)
 
         self.sequence_groups = sequence_groups
-
-    def getSampleIndicesBySampleTypeAndSequenceGroupName(
-        self,
-        sequence_group_name,
-        sample_type
-    ):
-        """Return all samples in a group that belong to a given sample type
-        
-        Args:
-            sequenceHandler_I (SequenceHandler)
-            sequence_group_name (str)
-            sample_type (str)
-            
-        """
-
-        sample_indices = []
-        for sequence_group in self.sequence_groups:
-            for index in sequence_group_name.sample_indices:
-                if self.sequence[index].meta_value["sample_type"] == sample_type:
-                    sample_indices.append(index)
-        return sample_indices

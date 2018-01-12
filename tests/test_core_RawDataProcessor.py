@@ -6,11 +6,6 @@ from smartPeak.io.FileWriterOpenMS import FileWriterOpenMS
 from smartPeak.core.RawDataHandler import RawDataHandler
 from smartPeak.core.RawDataProcessor import RawDataProcessor
 from . import data_dir
-# 3rd part libraries
-try:
-    import pyopenms
-except ImportError as e:
-    print(e)
 
 
 class TestRawDataProcessor():
@@ -31,7 +26,7 @@ class TestRawDataProcessor():
     def test_extract_metaData(self):
         self.load_data()
         rawDataHandler = RawDataHandler()
-        sampleProcessor = SampleProcessor()
+        rawDataProcessor = RawDataProcessor()
         fileReaderOpenMS = FileReaderOpenMS()
         
         # load traML
@@ -44,7 +39,7 @@ class TestRawDataProcessor():
             'mzML_feature_i': mzML_i},
             MRMMapping_params_I=self.params_1['MRMMapping'])
         
-        sampleProcessor.extract_metaData(rawDataHandler)
+        rawDataProcessor.extract_metaData(rawDataHandler)
         assert(
             rawDataHandler.meta_data['filename'] ==
             '''/home/user/code/tests/data//mzML/mzML_1.mzML''')
@@ -55,7 +50,7 @@ class TestRawDataProcessor():
     def test_pickFeatures(self):
         self.load_data()
         rawDataHandler = RawDataHandler()
-        sampleProcessor = SampleProcessor()
+        rawDataProcessor = RawDataProcessor()
         fileReaderOpenMS = FileReaderOpenMS()
         fileWriterOpenMS = FileWriterOpenMS()
         
@@ -69,7 +64,7 @@ class TestRawDataProcessor():
             'mzML_feature_i': mzML_i},
             MRMMapping_params_I=self.params_1['MRMMapping'])
         
-        sampleProcessor.extract_metaData(rawDataHandler)
+        rawDataProcessor.extract_metaData(rawDataHandler)
 
         # load trafo
         # trafo_csv_i = '''%s%s''' % (data_dir, "trafo_1")
@@ -82,7 +77,7 @@ class TestRawDataProcessor():
         fileReaderOpenMS.load_SWATHorDIA(rawDataHandler, {})
 
         # run OpenSWATH
-        sampleProcessor.pickFeatures(
+        rawDataProcessor.pickFeatures(
             rawDataHandler,
             self.params_1['MRMFeatureFinderScoring'])
         assert(rawDataHandler.featureMap[0].getSubordinates()[
@@ -108,7 +103,7 @@ class TestRawDataProcessor():
     def test_filterAndSelect(self):
         self.load_data()
         rawDataHandler = RawDataHandler()
-        sampleProcessor = SampleProcessor()
+        rawDataProcessor = RawDataProcessor()
         fileReaderOpenMS = FileReaderOpenMS()
         fileWriterOpenMS = FileWriterOpenMS()
         
@@ -122,7 +117,7 @@ class TestRawDataProcessor():
             'mzML_feature_i': mzML_i},
             MRMMapping_params_I=self.params_1['MRMMapping'])
         
-        sampleProcessor.extract_metaData(rawDataHandler)
+        rawDataProcessor.extract_metaData(rawDataHandler)
 
         # load featureMap
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
@@ -130,11 +125,11 @@ class TestRawDataProcessor():
 
         # filter and select
         mrmfeatureqcs_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
-        sampleProcessor.filterFeatures(
+        rawDataProcessor.filterFeatures(
             rawDataHandler,
             {'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i},
             self.params_1['MRMFeatureFilter.filter_MRMFeatures'])
-        sampleProcessor.selectFeatures(
+        rawDataProcessor.selectFeatures(
             rawDataHandler,
             {},
             self.params_1['MRMFeatureSelector.select_MRMFeatures_qmip'],
@@ -162,7 +157,7 @@ class TestRawDataProcessor():
     def test_validateFeatures(self):        
         self.load_data()
         rawDataHandler = RawDataHandler()
-        sampleProcessor = SampleProcessor()
+        rawDataProcessor = RawDataProcessor()
         fileReaderOpenMS = FileReaderOpenMS()
 
         # load featureMap
@@ -185,14 +180,14 @@ class TestRawDataProcessor():
             )
 
         # validate the data
-        sampleProcessor.validateFeatures(
+        rawDataProcessor.validateFeatures(
             rawDataHandler, self.params_1[
                 'MRMFeatureValidator.validate_MRMFeatures'])
         assert(rawDataHandler.validation_metrics["accuracy"] == 0.98709677419354835)
 
     def test_quantifyComponents(self):
         rawDataHandler = RawDataHandler()
-        sampleProcessor = SampleProcessor()
+        rawDataProcessor = RawDataProcessor()
         fileReaderOpenMS = FileReaderOpenMS()
         
         # load the quantitation method
@@ -207,7 +202,7 @@ class TestRawDataProcessor():
         fileReaderOpenMS.load_featureMap(rawDataHandler, {'featureXML_i': featureXML_o})
 
         # quantify the components
-        sampleProcessor.quantifyComponents(rawDataHandler)
+        rawDataProcessor.quantifyComponents(rawDataHandler)
         assert(rawDataHandler.featureMap[0].getSubordinates()[
                 1].getMetaValue("native_id") == b'23dpg.23dpg_1.Light')
         assert(rawDataHandler.featureMap[0].getSubordinates()[

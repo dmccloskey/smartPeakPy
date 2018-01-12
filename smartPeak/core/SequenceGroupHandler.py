@@ -18,7 +18,6 @@ class SequenceGroupHandler():
         self.standards_concentrations = None
         self.quantitation_methods = None
 
-
     # def getDefaultSampleOrder(self, sample_type):
     #     """Return the default order for each sample in a group
         

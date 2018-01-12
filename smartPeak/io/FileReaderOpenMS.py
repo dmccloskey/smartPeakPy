@@ -17,14 +17,14 @@ class FileReaderOpenMS():
 
     def load_standardsConcentrations(
         self,
-        sample_IO,
+        sequenceGroupHandler_IO,
         filenames_I,
         verbose_I=False
     ):
         """Load AbsoluteQuantitationStandards
 
         Args:
-            sample_IO (SampleHandler)
+            sequenceGroupHandler_IO (SampleHandler)
             filenames_I (dict): dictionary of filename strings
 
         Internals:
@@ -41,18 +41,18 @@ class FileReaderOpenMS():
         standardsConcentrations = []
         aqsf = pyopenms.AbsoluteQuantitationStandardsFile()
         aqsf.load(standardsConcentrations_csv_i, standardsConcentrations)
-        sample_IO.standardsConcentrations = standardsConcentrations
+        sequenceGroupHandler_IO.standardsConcentrations = standardsConcentrations
 
     def load_quantitationMethods(
         self,
-        sample_IO,
+        sequenceGroupHandler_IO,
         filenames_I,
         verbose_I=False
     ):
         """Load AbsoluteQuantitationMethods
 
         Args:
-            sample_IO (SampleHandler)
+            sequenceGroupHandler_IO (SampleHandler)
             filenames_I (dict): dictionary of filename strings
 
         Internals:
@@ -69,13 +69,13 @@ class FileReaderOpenMS():
         quantitationMethods = []
         aqmf = pyopenms.AbsoluteQuantitationMethodFile()
         aqmf.load(quantitationMethods_csv_i, quantitationMethods)
-        sample_IO.quantitationMethods = quantitationMethods
+        sequenceGroupHandler_IO.quantitationMethods = quantitationMethods
 
-    def load_TraML(self, sample_IO, filenames_I, verbose_I=False):
+    def load_TraML(self, rawDataHandler_IO, filenames_I, verbose_I=False):
         """Load TraML file
 
         Args:
-            sample_IO (SampleHandler): sample object; updated in place
+            rawDataHandler_IO (SampleHandler): sample object; updated in place
             filenames_I (list): list of filename strings
 
         Internals:
@@ -101,11 +101,11 @@ class FileReaderOpenMS():
             targeted = pyopenms.TargetedExperiment()
             tramlfile = pyopenms.TraMLFile()
             tramlfile.load(traML_i.encode('utf-8'), targeted)
-        sample_IO.targeted = targeted
+        rawDataHandler_IO.targeted = targeted
 
     def load_Trafo(
         self,
-        sample_IO,
+        rawDataHandler_IO,
         filenames_I,
         MRMFeatureFinderScoring_params_I={},
         verbose_I=False
@@ -113,7 +113,7 @@ class FileReaderOpenMS():
         """Load Trafo file
 
         Args:
-            sample_IO (SampleHandler): sample object; updated in place
+            rawDataHandler_IO (SampleHandler): sample object; updated in place
             filenames_I (list): list of filename strings
             MRMFeatureFinderScoring_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
@@ -161,7 +161,7 @@ class FileReaderOpenMS():
             # NOTE: same MRMFeatureFinderScoring params will be used to pickPeaks
             RTNormalizer = OpenSwathRTNormalizer()
             trafo = RTNormalizer.main(
-                sample_IO.chromatogram_map,
+                rawDataHandler_IO.chromatogram_map,
                 targeted_rt_norm,
                 model_params=None,
                 # model_params=model_params,
@@ -172,11 +172,11 @@ class FileReaderOpenMS():
                 estimateBestPeptides=True,
                 MRMFeatureFinderScoring_params=parameters
                 )
-        sample_IO.trafo = trafo
+        rawDataHandler_IO.trafo = trafo
 
     def load_MSExperiment(
         self,
-        sample_IO,
+        rawDataHandler_IO,
         filenames_I,
         MRMMapping_params_I={},
         chromatogramExtractor_params_I={},
@@ -185,7 +185,7 @@ class FileReaderOpenMS():
         """Load MzML into an MSExperiment
 
         Args:
-            sample_IO (SampleHandler): sample object; updated in place
+            rawDataHandler_IO (SampleHandler): sample object; updated in place
             filenames_I (list): list of filename strings
             MRMMapping_params_I (list): 
                 list of key:value parameters for OpenMS::MRMMapping
@@ -211,7 +211,7 @@ class FileReaderOpenMS():
 
         if chromatogramExtractor_params_I and \
             chromatogramExtractor_params_I is not None and \
-            sample_IO.targeted is not None:
+            rawDataHandler_IO.targeted is not None:
             # convert parameters
             utilities = Utilities()
             chromatogramExtractor_params = {d['name']: utilities.castString(
@@ -223,15 +223,15 @@ class FileReaderOpenMS():
             chromatograms_copy = copy.copy(chromatograms)
             chromatograms.clear(True)
             if chromatogramExtractor_params['extract_precursors']:
-                tr = sample_IO.targeted.getTransitions()
+                tr = rawDataHandler_IO.targeted.getTransitions()
                 for t in tr:
                     t.setProductMZ(t.getPrecursorMZ())
-                sample_IO.targeted.setTransitions(tr)
+                rawDataHandler_IO.targeted.setTransitions(tr)
             chromatogramExtractor = pyopenms.ChromatogramExtractor()
             chromatogramExtractor.extractChromatograms(
                 chromatograms_copy,
                 chromatograms, 
-                sample_IO.targeted,
+                rawDataHandler_IO.targeted,
                 chromatogramExtractor_params['extract_window'],
                 chromatogramExtractor_params['ppm'],
                 pyopenms.TransformationDescription(),
@@ -239,12 +239,12 @@ class FileReaderOpenMS():
                 chromatogramExtractor_params['filter'],
                 )
 
-        sample_IO.msExperiment = chromatograms
+        rawDataHandler_IO.msExperiment = chromatograms
 
         # map transitions to the chromatograms
         if MRMMapping_params_I and \
             MRMMapping_params_I is not None and \
-            sample_IO.targeted is not None:        
+            rawDataHandler_IO.targeted is not None:        
             # set up MRMMapping and
             # parse the MRMMapping params
             mrmmapper = pyopenms.MRMMapping()
@@ -260,26 +260,26 @@ class FileReaderOpenMS():
             # mrmmapper = MRMMapper()
             # chromatogram_map = mrmmapper.algorithm(
             #     chromatogram_map=chromatograms,
-            #     targeted=sample_IO.targeted, 
+            #     targeted=rawDataHandler_IO.targeted, 
             #     precursor_tolerance=0.0009, #hard-coded for now
             #     product_tolerance=0.0009, #hard-coded for now
             #     allow_unmapped=True,
             #     allow_double_mappings=True
             # )
 
-            mrmmapper.mapExperiment(chromatograms, sample_IO.targeted, chromatogram_map)
-        sample_IO.chromatogram_map = chromatogram_map
+            mrmmapper.mapExperiment(chromatograms, rawDataHandler_IO.targeted, chromatogram_map)
+        rawDataHandler_IO.chromatogram_map = chromatogram_map
 
     def load_SWATHorDIA(
         self,
-        sample_IO,
+        rawDataHandler_IO,
         filenames_I,
         verbose_I=False
     ):
         """Load SWATH or DIA into an MSExperiment
 
         Args:
-            sample_IO (SampleHandler): sample object; updated in place
+            rawDataHandler_IO (SampleHandler): sample object; updated in place
             filenames_I (list): list of filename strings
             
         Internals:
@@ -301,7 +301,7 @@ class FileReaderOpenMS():
             # dia_files_i = ...(dia_csv_i)
             swath = chromatogramExtractor.main(
                 infiles=[],
-                targeted=sample_IO.targeted,
+                targeted=rawDataHandler_IO.targeted,
                 extraction_window=0.05,
                 min_upper_edge_dist=0.0,
                 ppm=False,
@@ -309,18 +309,18 @@ class FileReaderOpenMS():
                 rt_extraction_window=-1,
                 extraction_function="tophat"
             )
-        sample_IO.swath = swath
+        rawDataHandler_IO.swath = swath
 
     def load_featureMap(
         self,
-        sample_IO,
+        rawDataHandler_IO,
         filenames_I={},
         verbose_I=False
     ):
         """Load a FeatureMap
         
         Args:
-            sample_IO (SampleHandler): sample object; updated in place
+            rawDataHandler_IO (SampleHandler): sample object; updated in place
             filenames_I (list): list of filename strings
             
         """        
@@ -338,11 +338,11 @@ class FileReaderOpenMS():
         if featureXML_i is not None:
             featurexml.load(featureXML_i.encode('utf-8'), output)
 
-        sample_IO.featureMap = output
+        rawDataHandler_IO.featureMap = output
 
     def load_validationData(
         self,
-        sample_IO,
+        rawDataHandler_IO,
         filenames_I,
         ReferenceDataMethods_params_I={},
         verbose_I=False
@@ -350,7 +350,7 @@ class FileReaderOpenMS():
         """Load the validation data from file or from a database
         
         Args:
-            sample_IO (SampleHandler): sample object; updated in place
+            rawDataHandler_IO (SampleHandler): sample object; updated in place
             filenames_I (dict): dictionary of filenames
             ReferenceDataMethods_params_I (dict): dictionary of DB query parameters
         
@@ -435,4 +435,4 @@ class FileReaderOpenMS():
                 settings_filename_I=db_ini_i,
                 data_filename_O=''
             )
-        sample_IO.reference_data = reference_data
+        rawDataHandler_IO.reference_data = reference_data
