@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from .DB_io import DB_io
+from .DBio import DBio
 """
 
 """
 
 
-class ReferenceData(DB_io):
+class ReferenceData(DBio):
     """
     Select reference data
     """

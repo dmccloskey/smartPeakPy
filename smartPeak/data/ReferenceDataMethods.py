@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from smartPeak.core.smartPeak_o import smartPeak_o
+from smartPeak.io.FileWriter import FileWriter
+import json
 import time as time
 from .DescriptiveStatistics import DescriptiveStatistics
 
@@ -44,7 +45,7 @@ class ReferenceDataMethods():
             settings_filename_I=settings_filename_I,
         )
         if data_filename_O:
-            smartpeak_o = smartPeak_o(data_ref_processed)
+            smartpeak_o = FileWriter(data_ref_processed)
             smartpeak_o.write_dict2csv(filename=data_filename_O)
             return None
         else:
@@ -110,7 +111,7 @@ class ReferenceDataMethods():
             tmp['retention_time'] = tmp['mean']
             calibrators_rt_list.append(tmp)
         if data_filename_O:
-            smartpeak_o = smartPeak_o(calibrators_rt_list)
+            smartpeak_o = FileWriter(calibrators_rt_list)
             smartpeak_o.write_dict2csv(filename=data_filename_O)
             return None
         else:
@@ -139,17 +140,17 @@ class ReferenceDataMethods():
 
         """
         # DB settings
-        from .DB_settings import DB_settings
-        from .DB_orm import DB_orm
-        pg_settings = DB_settings(settings_filename_I)
-        pg_orm = DB_orm()
-        pg_orm.set_sessionFromSettings(pg_settings.database_settings)
-        session = pg_orm.get_session()
-        engine = pg_orm.get_engine()
+        from .DBConnection import DBConnection
+        pg_settings = json.load(open(settings_filename_I))
+        pg_orm = DBConnection()
+        pg_orm.set_conn(pg_settings['database'])
+        pg_orm.set_cursor(pg_settings['database'])
+        cursor = pg_orm.get_cursor()
+        conn = pg_orm.get_conn()
         # query the reference data
         st = time.time()
         from .ReferenceData import ReferenceData
-        referenceData = ReferenceData(session, engine)
+        referenceData = ReferenceData(cursor, conn)
         if verbose_I: 
             print("query the reference data")
         data_ref = referenceData.get_referenceData(
@@ -168,7 +169,7 @@ class ReferenceDataMethods():
         elapsed_time = time.time() - st
         if verbose_I: 
             print("Elapsed time: %.2fs" % elapsed_time)
-        session.close()
+        cursor.close()
         # process the reference data
         if verbose_I: 
             print("process the reference data")

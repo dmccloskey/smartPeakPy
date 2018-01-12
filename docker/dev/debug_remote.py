@@ -17,5 +17,10 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-from tests import runAllTests
-runAllTests()
+from tests.test_data_ReferenceDataMethods import TestReferenceDataMethods
+test = TestReferenceDataMethods()
+test.test_getAndProcessReferenceDataSamples()
+test.test_getAndProcessReferenceDataCalibrators()
+
+# from tests import runAllTests
+# runAllTests()
