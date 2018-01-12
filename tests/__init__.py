@@ -120,8 +120,8 @@ def runAllTests():
     test = TestFileWriterOpenMS()
     test.test_store_featureMap()
 
-    from tests.test_core_SampleProcessor import TestSampleProcessor
-    test = TestSampleProcessor()
+    from tests.test_core_RawDataProcessor import TestRawDataProcessor
+    test = TestRawDataProcessor()
     test.test_extract_metaData()
     test.test_pickFeatures()
     test.test_filterAndSelect()

@@ -66,7 +66,8 @@ class TestSequenceHandler():
             assert(isinstance(e, NameError))
 
         meta_data = {
-            "sample_name": None, "sample_type": None, , "sample_group_name": None
+            "sample_name": None, "sample_type": None,
+            "sequence_group_name": None, "sample_group_name": None,
             "comments": None, "acquisition_method": None, "processing_method": None,
             "rack_code": None, "plate_code": None, 
             "vial_position": None, "rack_position": None, 
@@ -81,6 +82,7 @@ class TestSequenceHandler():
 
         meta_data["sample_name"] = ""
         meta_data["sample_group_name"] = None
+        meta_data["sequence_group_name"] = ""
         meta_data["filename"] = ""
         meta_data["sample_type"] = ""
         try:
@@ -89,6 +91,13 @@ class TestSequenceHandler():
             assert(isinstance(e, NameError))
 
         meta_data["sample_group_name"] = ""
+        meta_data["sequence_group_name"] = None
+        try:
+            seqhandler.parse_metaData(meta_data)
+        except Exception as e:
+            assert(isinstance(e, NameError))
+
+        meta_data["sequence_group_name"] = ""
         meta_data["filename"] = None
         try:
             seqhandler.parse_metaData(meta_data)
@@ -145,8 +154,8 @@ class TestSequenceHandler():
         assert(seqhandler.getDefaultSampleProcessingWorkflow("Standard") != default)
         assert(seqhandler.getDefaultSampleProcessingWorkflow("QC") != default)
         assert(seqhandler.getDefaultSampleProcessingWorkflow("Blank") != default)
-        assert(seqhandler.getDefaultSampleProcessingWorkflow("Double Blank") != default)
-        assert(seqhandler.getDefaultSampleProcessingWorkflow("Solvent") != default)
+        assert(seqhandler.getDefaultSampleProcessingWorkflow("Double Blank") == default)
+        assert(seqhandler.getDefaultSampleProcessingWorkflow("Solvent") == default)
 
     test_getDefaultSequenceProcessingWorkflow():
         seqhandler = SequenceHandler()
@@ -158,3 +167,11 @@ class TestSequenceHandler():
         assert(seqhandler.getDefaultSequenceProcessingWorkflow("Blank") == default)
         assert(seqhandler.getDefaultSequenceProcessingWorkflow("Double Blank") == default)
         assert(seqhandler.getDefaultSequenceProcessingWorkflow("Solvent") != default)
+
+    test_parse_sampleProcessing():
+        seqhandler = SequenceHandler()
+        # TODO
+
+    test_parse_sequenceProcessing():
+        seqhandler = SequenceHandler()
+        # TODO

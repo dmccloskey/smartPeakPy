@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from .SampleHandler import SampleHandler
 
 
 class SequenceHandler():
@@ -6,7 +7,10 @@ class SequenceHandler():
         (i.e., multiple samples in a run batch/sequence)"""
 
     def __init__(self):
-        """
+        """Sequence
+
+        A sequence is a list of sample injections
+
         """
         self.sequence = []
         self.index_to_sample = {}
@@ -26,7 +30,8 @@ class SequenceHandler():
             meta_data_I (dict): dictionary of meta data (e.g., sample_name)
             featureMap_I (FeatureMap): processed data in a FeatureMap
             sample_processing_I (dict): dictionary of sample processing steps
-            sequence_processing_I (dict): dictionary of sequence processing steps for the sample
+            sequence_processing_I (dict): dictionary of sequence processing steps for the
+                sample
 
         Returns:
             dict: injection: dictionary of meta_data and FeatureMap
@@ -34,24 +39,25 @@ class SequenceHandler():
 
         meta_data = self.parse_metaData(meta_data_I)
         
-        if sample_processing_I is None:
-            sample_processing = self.parse_sampleProcessing(sample_processing_I)
+        if sample_processing_I is not None:
+            sample_processing = self.parse_sampleProcessing(
+                sample_processing_I, meta_data["sample_type"])
         else:
             sample_processing = sample_processing_I
 
-        if sequence_processing_I is None:
-            sequence_processing = self.parse_sequenceProcessing(sequence_processing_I)
+        if sequence_processing_I is not None:
+            sequence_processing = self.parse_sequenceProcessing(
+                sequence_processing_I, meta_data["sample_type"])
         else:
             sequence_processing = sequence_processing_I
 
-        injection = {
-            "meta_data": meta_data,
-            "featureMap": featureMap_I,
-            "sample_processing": sample_processing,
-            "sequence_processing": sequence_processing
-        }
+        sample = SampleHandler()
+        sample.meta_data = meta_data
+        sample.featureMap = featureMap_I
+        sample.sample_processing = sample_processing
+        sample.sequence_processing = sequence_processing
 
-        self.sequence.append(injection)
+        self.sequence.append(sample)
         self.index_to_sample[len(self.sequence)-1] = meta_data["sample_name"]
         self.sample_to_index[meta_data["sample_name"]] = len(self.sequence)-1
 
@@ -95,7 +101,8 @@ class SequenceHandler():
         #     "set_name"]
 
         required_headers = [
-            "sample_name", "sample_group_name", "sample_type", "filename"
+            "sample_name", "sample_group_name", "sample_type", "filename",
+            "sequence_group_name"
             ]
 
         return required_headers
@@ -131,6 +138,14 @@ class SequenceHandler():
             print(
                 "SequenceFile Error: sample_group_name must be specified.")
             raise NameError("sample group name")
+        if meta_data["sequence_group_name"] is None:
+            print(
+                "SequenceFile Error: sequence_group_name must be specified.")
+            raise NameError("sequence group name")
+        if meta_data["filename"] is None:
+            print(
+                "SequenceFile Error: filename must be specified.")
+            raise NameError("filename name")
         if meta_data["filename"] is None:
             print(
                 "SequenceFile Error: filename must be specified.")
@@ -166,7 +181,7 @@ class SequenceHandler():
                 "Sample name " + sample_name + " not found in sequence.")
             raise NameError("sample_name")
         else:
-            self.sequence[self.sample_to_index[sample_name]]["featureMap"] = featureMap
+            self.sequence[self.sample_to_index[sample_name]].featureMap = featureMap
 
     def getDefaultSampleProcessingWorkflow(self, sample_type):
         """return the default workflow parameters for a given sample
@@ -183,23 +198,19 @@ class SequenceHandler():
             "select_peaks": True,
             "validate_peaks": False,
             "quantify_peaks": False,
-            "check_peaks": False}
+            "check_peaks": True}
         if sample_type == "Unknown":
             default["quantify_peaks"] = True
-            default["check_peaks"] = True
         elif sample_type == "Standard":
             default["quantify_peaks"] = True
-            default["check_peaks"] = True
         elif sample_type == "QC":
             default["quantify_peaks"] = True
-            default["check_peaks"] = True
         elif sample_type == "Blank":
             default["quantify_peaks"] = True
-            default["check_peaks"] = True
         elif sample_type == "Double Blank":
-            default["check_peaks"] = True
+            pass
         elif sample_type == "Solvent":
-            default["check_peaks"] = True
+            pass
         
         return default
 
@@ -221,7 +232,7 @@ class SequenceHandler():
             "check_peaks"]
 
         # ensure supplied values are of the right type
-        for k,v in sample_processing.items():
+        for k, v in sample_processing.items():
             if k in required_headers and ~isinstance(v, bool):
                 print("Wrong value provided for key " + k + " in sample_processing.")
                 raise NameError("sample_processing")
@@ -259,3 +270,29 @@ class SequenceHandler():
             default["calculate_carryover"] = True
         
         return default
+
+    def parse_sequenceProcessing(self, sequence_processing, sample_type):
+        """parse the sequence processing steps
+
+        Args:
+            sequence_processing (dict): dictionary of sequence processing steps for the sample
+            sample_type (str): type of the sample
+
+        """
+
+        required_headers = [
+            "calculate_calibration",
+            "calculate_carryover",
+            "calculate_variability"]
+
+        # ensure supplied values are of the right type
+        for k, v in sequence_processing.items():
+            if k in required_headers and ~isinstance(v, bool):
+                print("Wrong value provided for key " + k + " in sequence_processing.")
+                raise NameError("sequence_processing")
+
+        # ensure all headers are present
+        for k in required_headers:
+            if k not in sequence_processing.keys():
+                sequence_processing[k] = self.getDefaultSequenceProcessingWorkflow(
+                    sample_type)[k]

@@ -57,9 +57,11 @@ class DBTables():
             settings["database"]["dialect"],
             "sequence_file",
             None,
-            ["sequence_id", "sample_name", "sample_type", "filename",
+            ["sequence_id", "sequence_group_name", "sample_name",
+                "sample_group_name", "sample_type", "filename",
                 "used_"],
-            ["TEXT", "TEXT", "TEXT", "TEXT",
+            ["TEXT", "TEXT", "TEXT",
+                "TEXT", "TEXT", "TEXT",
                 "INTEGER"],
             ["sequence_file_unique"],
             ["UNIQUE(sequence_id, sample_name, filename)"]
