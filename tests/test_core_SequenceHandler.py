@@ -17,17 +17,20 @@ class TestSequenceHandler():
         meta_data_required = {h: None for h in seqhandler.getRequiredHeaders()}
         meta_data1 = copy.copy(meta_data_required)
         meta_data1.update({
-            'filename': 'file1', 'sample_name': 'sample1', 'sample_type': 'Unknown'})
+            'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
+            'sample_type': 'Unknown'})
         featuremap1 = None
         
         meta_data2 = copy.copy(meta_data_required)
         meta_data2.update({
-            'filename': 'file2', 'sample_name': 'sample2', 'sample_type': 'Unknown'})
+            'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
+            'sample_type': 'Unknown'})
         featuremap2 = None
         
         meta_data3 = copy.copy(meta_data_required)
         meta_data3.update({
-            'filename': 'file3', 'sample_name': 'sample3', 'sample_type': 'Unknown'})
+            'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
+            'sample_type': 'Unknown'})
         featuremap3 = None
 
         # add the injections to the sequence
@@ -63,7 +66,7 @@ class TestSequenceHandler():
             assert(isinstance(e, NameError))
 
         meta_data = {
-            "sample_name": None, "sample_type": None,
+            "sample_name": None, "sample_type": None, , "sample_group_name": None
             "comments": None, "acquisition_method": None, "processing_method": None,
             "rack_code": None, "plate_code": None, 
             "vial_position": None, "rack_position": None, 
@@ -77,8 +80,16 @@ class TestSequenceHandler():
             assert(isinstance(e, NameError))
 
         meta_data["sample_name"] = ""
-        meta_data["filename"] = None
+        meta_data["sample_group_name"] = None
+        meta_data["filename"] = ""
         meta_data["sample_type"] = ""
+        try:
+            seqhandler.parse_metaData(meta_data)
+        except Exception as e:
+            assert(isinstance(e, NameError))
+
+        meta_data["sample_group_name"] = ""
+        meta_data["filename"] = None
         try:
             seqhandler.parse_metaData(meta_data)
         except Exception as e:
@@ -100,17 +111,20 @@ class TestSequenceHandler():
         meta_data_required = {h: None for h in seqhandler.getRequiredHeaders()}
         meta_data1 = copy.copy(meta_data_required)
         meta_data1.update({
-            'filename': 'file1', 'sample_name': 'sample1', 'sample_type': 'Unknown'})
+            'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
+            'sample_type': 'Unknown'})
         featuremap1 = None
         
         meta_data2 = copy.copy(meta_data_required)
         meta_data2.update({
-            'filename': 'file2', 'sample_name': 'sample2', 'sample_type': 'Unknown'})
+            'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
+             'sample_type': 'Unknown'})
         featuremap2 = None
         
         meta_data3 = copy.copy(meta_data_required)
         meta_data3.update({
-            'filename': 'file3', 'sample_name': 'sample3', 'sample_type': 'Unknown'})
+            'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
+            'sample_type': 'Unknown'})
         featuremap3 = None
 
         # add the injections to the sequence
@@ -122,14 +136,6 @@ class TestSequenceHandler():
         injection = seqhandler.sequence[
             seqhandler.sample_to_index['sample2']]
         assert(injection["featureMap"] == "DummyFeatureMap")
-
-    def test_read_sequenceFile(self):
-        """No test"""
-        pass
-
-    def test_parse_sequenceFile(self):
-        """No test"""
-        pass
 
 
         

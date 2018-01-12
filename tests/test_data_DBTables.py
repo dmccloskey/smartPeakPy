@@ -41,11 +41,11 @@ class TestDBTables():
         tbname = dbtables.standards_concentrations.get_tableName()
         assert(tbname == '"standards_concentrations"')
 
-        tbname = dbtables.parameters.get_tableName()
-        assert(tbname == '"parameters"')
+        tbname = dbtables.algorithm_parameters.get_tableName()
+        assert(tbname == '"algorithm_parameters"')
 
-        tbname = dbtables.undolog.get_tableName()
-        assert(tbname == '"undolog"')
+        tbname = dbtables.transaction_log.get_tableName()
+        assert(tbname == '"transaction_log"')
 
     def test_get_table(self):
 
@@ -84,11 +84,11 @@ class TestDBTables():
         tbname = dbtables.get_table("standards_concentrations").get_tableName()
         assert(tbname == '"standards_concentrations"')
 
-        tbname = dbtables.get_table("parameters").get_tableName()
-        assert(tbname == '"parameters"')
+        tbname = dbtables.get_table("algorithm_parameters").get_tableName()
+        assert(tbname == '"algorithm_parameters"')
 
-        tbname = dbtables.get_table("undolog").get_tableName()
-        assert(tbname == '"undolog"')
+        tbname = dbtables.get_table("transaction_log").get_tableName()
+        assert(tbname == '"transaction_log"')
 
     def test_connect_tables(self):
 
@@ -129,10 +129,10 @@ class TestDBTables():
         conn = dbtables.standards_concentrations.get_conn()
         assert(conn is not None)
 
-        conn = dbtables.parameters.get_conn()
+        conn = dbtables.algorithm_parameters.get_conn()
         assert(conn is not None)
 
-        conn = dbtables.undolog.get_conn()
+        conn = dbtables.transaction_log.get_conn()
         assert(conn is not None)
         
         # test cursor
@@ -157,10 +157,10 @@ class TestDBTables():
         cursor = dbtables.standards_concentrations.get_cursor()
         assert(cursor is not None)
 
-        cursor = dbtables.parameters.get_cursor()
+        cursor = dbtables.algorithm_parameters.get_cursor()
         assert(cursor is not None)
 
-        cursor = dbtables.undolog.get_cursor()
+        cursor = dbtables.transaction_log.get_cursor()
         assert(cursor is not None)
 
     def test_createAndDrop_tables(self):    
@@ -192,13 +192,13 @@ class TestDBTables():
         tables = [
             "sequence_file", "traml", "feature_filter", 
             "feature_qc", "feature_maps", "quantitation_methods", 
-            "standards_concentrations", "parameters", "undolog"]
+            "standards_concentrations", "algorithm_parameters", "transaction_log"]
         for table in tables:
             print("Testing existance of table " + table)
             query = """SELECT COUNT(*) from sqlite_master
             where type='table' and name='%s'""" % (
                 table)
-            result = dbtables.undolog.execute_select(query)
+            result = dbtables.transaction_log.execute_select(query)
             assert(result[0][0] == 1)
 
         # test table constraints
@@ -206,7 +206,7 @@ class TestDBTables():
         tables1 = [
             "sequence_file", "traml", "feature_filter", 
             "feature_qc", "feature_maps", "quantitation_methods", 
-            "standards_concentrations", "parameters"]
+            "standards_concentrations", "algorithm_parameters"]
         for table in tables1:
             print("Testing constraints for table " + table)
             columns = dbtables.get_table(table).get_tableColumns()[2:]
@@ -220,7 +220,7 @@ class TestDBTables():
             except Exception as e:
                 # test that the UNIQUE constraint failed
                 assert(e.args[0].find("UNIQUE") == 0)
-        tables2 = ["undolog"]
+        tables2 = ["transaction_log"]
         for table in tables2:
             print("Testing constraints for table " + table)
             columns = dbtables.get_table(table).get_tableColumns()[2:]
@@ -239,12 +239,12 @@ class TestDBTables():
         tables = [
             "sequence_file", "traml", "feature_filter", 
             "feature_qc", "feature_maps", "quantitation_methods", 
-            "standards_concentrations", "parameters", "undolog"]
+            "standards_concentrations", "algorithm_parameters", "transaction_log"]
         for table in tables:
             print("Dropping table " + table)
             query = """SELECT COUNT(*) from sqlite_master
             where type='table' and name='%s'""" % (
                 table)
-            result = dbtables.undolog.execute_select(query)
+            result = dbtables.transaction_log.execute_select(query)
             assert(result[0][0] == 0)
 
