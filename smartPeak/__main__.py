@@ -96,17 +96,17 @@ class __main__():
                 params[parameter] = []
 
         for sequence in seqHandler.getSequence():
-            print("processing sample " + sequence["meta_data"]["sample_name"])
+            print("processing sample " + sequence.meta_data["sample_name"])
             try:
                 rawDataHandler = RawDataHandler()
                 
                 # dynamically make the filenames
                 mzML_i = '''%s/mzML/%s''' % (
-                    sequence["meta_data"]["data_dir"],
-                    sequence["meta_data"]["filename"])
-                traML_csv_i = '''%s/traML.csv''' % (sequence["meta_data"]["data_dir"])
+                    sequence.meta_data["data_dir"],
+                    sequence.meta_data["filename"])
+                traML_csv_i = '''%s/traML.csv''' % (sequence.meta_data["data_dir"])
                 # trafo_csv_i = '''%s/trafo.csv''' % (data_dir)
-                db_ini_i = '''%s/settings.ini''' % (sequence["meta_data"]["data_dir"])
+                db_ini_i = '''%s/settings.ini''' % (sequence.meta_data["data_dir"])
 
                 # load in the files
                 fileReaderOpenMS.load_TraML(
@@ -127,11 +127,11 @@ class __main__():
 
                 # pick peaks with OpenSWATH
                 featureXML_o = '''%s/features_tmp/%s.featureXML''' % (
-                    sequence["meta_data"]["data_dir"],
-                    sequence["meta_data"]["sample_name"]) 
+                    sequence.meta_data["data_dir"],
+                    sequence.meta_data["sample_name"]) 
                 feature_csv_o = '''%s/features_tmp/%s.csv''' % (
-                    sequence["meta_data"]["data_dir"],
-                    sequence["meta_data"]["sample_name"])
+                    sequence.meta_data["data_dir"],
+                    sequence.meta_data["sample_name"])
                 if pick_peaks:
                     # run the openSWATH workflow for metabolomics
                     rawDataProcessor.pickFeatures(
@@ -156,14 +156,14 @@ class __main__():
 
                 # Filter features
                 featureXML_o = '''%s/features/%s.featureXML''' % (
-                    sequence["meta_data"]["data_dir"],
-                    sequence["meta_data"]["sample_name"]) 
+                    sequence.meta_data["data_dir"],
+                    sequence.meta_data["sample_name"]) 
                 feature_csv_o = '''%s/features/%s.csv''' % (
-                    sequence["meta_data"]["data_dir"],
-                    sequence["meta_data"]["sample_name"])
+                    sequence.meta_data["data_dir"],
+                    sequence.meta_data["sample_name"])
                 if filter_peaks:
                     mrmfeaturefilter_csv_i = '''%s/featureFilters.csv''' % (
-                        sequence["meta_data"]["data_dir"])
+                        sequence.meta_data["data_dir"])
                     rawDataProcessor.filterFeatures(
                         rawDataHandler,
                         filenames_I={'mrmfeatureqcs_csv_i': mrmfeaturefilter_csv_i},
@@ -187,8 +187,8 @@ class __main__():
                     except Exception as e:
                         try:  # in case features were not filtered previously
                             featureXML_o = '''%s/features_tmp/%s.featureXML''' % (
-                                sequence["meta_data"]["data_dir"],
-                                sequence["meta_data"]["sample_name"]) 
+                                sequence.meta_data["data_dir"],
+                                sequence.meta_data["sample_name"]) 
                             fileReaderOpenMS.load_featureMap(
                                 rawDataHandler,
                                 {'featureXML_i': featureXML_o},
@@ -198,11 +198,11 @@ class __main__():
 
                 # Select features
                 featureXML_o = '''%s/features/%s.featureXML''' % (
-                    sequence["meta_data"]["data_dir"],
-                    sequence["meta_data"]["sample_name"]) 
+                    sequence.meta_data["data_dir"],
+                    sequence.meta_data["sample_name"]) 
                 feature_csv_o = '''%s/features/%s.csv''' % (
-                    sequence["meta_data"]["data_dir"],
-                    sequence["meta_data"]["sample_name"])
+                    sequence.meta_data["data_dir"],
+                    sequence.meta_data["sample_name"])
                 if select_peaks:
                     rawDataProcessor.selectFeatures(
                         rawDataHandler,
@@ -237,8 +237,8 @@ class __main__():
                 if plot_peaks:
                     # export diagnostic plots
                     features_pdf_o = '''%s/features/%s''' % (
-                        sequence["meta_data"]["data_dir"],
-                        sequence["meta_data"]["sample_name"]) 
+                        sequence.meta_data["data_dir"],
+                        sequence.meta_data["sample_name"]) 
                     rawDataProcessor.export_featurePlots(
                         rawDataHandler,
                         filenames_I={'features_pdf_o': features_pdf_o},
@@ -249,11 +249,11 @@ class __main__():
                 # Validate peaks
                 # dynamically make the filenames
                 featureXML_o = '''%s/features/%s.featureXML''' % (
-                    sequence["meta_data"]["data_dir"],
-                    sequence["meta_data"]["sample_name"]) 
+                    sequence.meta_data["data_dir"],
+                    sequence.meta_data["sample_name"]) 
                 feature_csv_o = '''%s/features/%s.csv''' % (
-                    sequence["meta_data"]["data_dir"],
-                    sequence["meta_data"]["sample_name"])
+                    sequence.meta_data["data_dir"],
+                    sequence.meta_data["sample_name"])
                 if validate_peaks:
                     # load in the validation data 
                     # (if no data is found, continue to the next sample)
@@ -261,7 +261,7 @@ class __main__():
                     ReferenceDataMethods_params_I.extend(
                         params['ReferenceDataMethods.getAndProcess_referenceData_samples']
                         )
-                    sample_names_I = '''['%s']''' % (sequence["meta_data"]["sample_name"])
+                    sample_names_I = '''['%s']''' % (sequence.meta_data["sample_name"])
                     ReferenceDataMethods_params_I.append({
                         'description': '', 'name': 'sample_names_I', 
                         'type': 'list', 'value': sample_names_I})
@@ -273,11 +273,11 @@ class __main__():
                         )
                     if not rawDataHandler.reference_data:
                         skipped_samples.append({
-                            'sample_name': sequence["meta_data"]["sample_name"],
+                            'sample_name': sequence.meta_data["sample_name"],
                             'error_message': 'no reference data found'})
                         print(
                             'Reference data not found for sample ' +
-                            sequence["meta_data"]["sample_name"] + '.')
+                            sequence.meta_data["sample_name"] + '.')
                         continue
                     # validate the data
                     rawDataProcessor.validateFeatures(
@@ -301,14 +301,14 @@ class __main__():
                 # Quantify peaks
                 # dynamically make the filenames
                 featureXML_o = '''%s/quantitation/%s.featureXML''' % (
-                    sequence["meta_data"]["data_dir"],
-                    sequence["meta_data"]["sample_name"]) 
+                    sequence.meta_data["data_dir"],
+                    sequence.meta_data["sample_name"]) 
                 feature_csv_o = '''%s/quantitation/%s.csv''' % (
-                    sequence["meta_data"]["data_dir"],
-                    sequence["meta_data"]["sample_name"])
+                    sequence.meta_data["data_dir"],
+                    sequence.meta_data["sample_name"])
                 if quantify_peaks:
                     quantitationMethods_csv_i = '''%s/quantitationMethods.csv''' % (
-                        sequence["meta_data"]["data_dir"])
+                        sequence.meta_data["data_dir"])
                     # load the quantitation method
                     fileReaderOpenMS.load_quantitationMethods(
                         rawDataHandler,
@@ -328,8 +328,8 @@ class __main__():
                     except Exception as e:
                         # Peaks have not been quantified, try opening picked peaks
                         featureXML_o = '''%s/features/%s.featureXML''' % (
-                            sequence["meta_data"]["data_dir"],
-                            sequence["meta_data"]["sample_name"])
+                            sequence.meta_data["data_dir"],
+                            sequence.meta_data["sample_name"])
                         fileReaderOpenMS.load_featureMap(
                             rawDataHandler,
                             {'featureXML_i': featureXML_o},
@@ -337,14 +337,14 @@ class __main__():
 
                 # QC the peaks
                 featureXML_o = '''%s/quantitation/%s.featureXML''' % (
-                    sequence["meta_data"]["data_dir"],
-                    sequence["meta_data"]["sample_name"]) 
+                    sequence.meta_data["data_dir"],
+                    sequence.meta_data["sample_name"]) 
                 feature_csv_o = '''%s/quantitation/%s.csv''' % (
-                    sequence["meta_data"]["data_dir"],
-                    sequence["meta_data"]["sample_name"])
+                    sequence.meta_data["data_dir"],
+                    sequence.meta_data["sample_name"])
                 if check_peaks:
                     mrmfeatureqcs_csv_i = '''%s/featureQCs.csv''' % (
-                        sequence["meta_data"]["data_dir"])
+                        sequence.meta_data["data_dir"])
                     rawDataProcessor.filterFeatures(
                         rawDataHandler,
                         filenames_I={'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i},
@@ -361,11 +361,11 @@ class __main__():
 
                 # record features
                 seqHandler.addFeatureMapToSequence(
-                    sequence["meta_data"]["sample_name"], rawDataHandler.featureMap)
+                    sequence.meta_data["sample_name"], rawDataHandler.featureMap)
             except Exception as e:
                 print(e)
                 skipped_samples.append({
-                    'sample_name': sequence["meta_data"]["sample_name"],
+                    'sample_name': sequence.meta_data["sample_name"],
                     'error_message': e})
             # manual clear data for the next iteration
             rawDataHandler.clear_data()
@@ -373,16 +373,16 @@ class __main__():
         if skipped_samples:
             smartpeak_o = FileWriter(skipped_samples)
             skippedSamples_csv_i = '''%s/mzML/skippedSamples.csv''' % (
-                sequence["meta_data"]["data_dir"]
+                sequence.meta_data["data_dir"]
             )
             smartpeak_o.write_dict2csv(skippedSamples_csv_i)
         if validation_metrics:
             smartpeak_o = FileWriter(validation_metrics)
             validationMetrics_csv_i = '''%s/validation/validationMetrics.csv''' % (
-                sequence["meta_data"]["data_dir"])
+                sequence.meta_data["data_dir"])
             smartpeak_o.write_dict2csv(validationMetrics_csv_i)
         sequenceSummary_csv_i = '''%s/SequenceSummary.csv''' % (
-            sequence["meta_data"]["data_dir"])
+            sequence.meta_data["data_dir"])
         seqWriter.write_dataMatrixFromMetaValue(
             seqHandler,
             filename=sequenceSummary_csv_i,

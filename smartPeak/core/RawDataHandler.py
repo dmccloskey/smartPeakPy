@@ -12,7 +12,7 @@ class RawDataHandler():
         self.swath = None
         self.reference_data = None
         self.meta_data = None
-        self.quantitationMethods = None
+        self.quantitation_methods = None
 
     def clear_data(self):
         """Remove all data"""        
@@ -25,4 +25,4 @@ class RawDataHandler():
         self.swath = None
         self.reference_data = None
         self.meta_data = None
-        self.quantitationMethods = None
+        self.quantitation_methods = None

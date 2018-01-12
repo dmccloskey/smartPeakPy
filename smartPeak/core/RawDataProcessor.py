@@ -304,5 +304,5 @@ class RawDataProcessor():
             print("Quantifying features")
 
         aq = pyopenms.AbsoluteQuantitation()
-        aq.setQuantMethods(rawDataHandler_IO.quantitationMethods)
+        aq.setQuantMethods(rawDataHandler_IO.quantitation_methods)
         aq.quantifyComponents(rawDataHandler_IO.featureMap)

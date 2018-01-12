@@ -24,7 +24,7 @@ class FileReaderOpenMS():
         """Load AbsoluteQuantitationStandards
 
         Args:
-            sequenceGroupHandler_IO (SampleHandler)
+            sequenceGroupHandler_IO (RawDataHandler)
             filenames_I (dict): dictionary of filename strings
 
         Internals:
@@ -38,10 +38,10 @@ class FileReaderOpenMS():
         if 'standardsConcentrations_csv_i'in filenames_I.keys():
             standardsConcentrations_csv_i = filenames_I['standardsConcentrations_csv_i']
 
-        standardsConcentrations = []
+        standards_concentrations = []
         aqsf = pyopenms.AbsoluteQuantitationStandardsFile()
-        aqsf.load(standardsConcentrations_csv_i, standardsConcentrations)
-        sequenceGroupHandler_IO.standardsConcentrations = standardsConcentrations
+        aqsf.load(standardsConcentrations_csv_i, standards_concentrations)
+        sequenceGroupHandler_IO.standards_concentrations = standards_concentrations
 
     def load_quantitationMethods(
         self,
@@ -52,7 +52,7 @@ class FileReaderOpenMS():
         """Load AbsoluteQuantitationMethods
 
         Args:
-            sequenceGroupHandler_IO (SampleHandler)
+            sequenceGroupHandler_IO (RawDataHandler)
             filenames_I (dict): dictionary of filename strings
 
         Internals:
@@ -66,16 +66,16 @@ class FileReaderOpenMS():
         if 'quantitationMethods_csv_i'in filenames_I.keys():
             quantitationMethods_csv_i = filenames_I['quantitationMethods_csv_i']
 
-        quantitationMethods = []
+        quantitation_methods = []
         aqmf = pyopenms.AbsoluteQuantitationMethodFile()
-        aqmf.load(quantitationMethods_csv_i, quantitationMethods)
-        sequenceGroupHandler_IO.quantitationMethods = quantitationMethods
+        aqmf.load(quantitationMethods_csv_i, quantitation_methods)
+        sequenceGroupHandler_IO.quantitation_methods = quantitation_methods
 
     def load_TraML(self, rawDataHandler_IO, filenames_I, verbose_I=False):
         """Load TraML file
 
         Args:
-            rawDataHandler_IO (SampleHandler): sample object; updated in place
+            rawDataHandler_IO (RawDataHandler): sample object; updated in place
             filenames_I (list): list of filename strings
 
         Internals:
@@ -113,7 +113,7 @@ class FileReaderOpenMS():
         """Load Trafo file
 
         Args:
-            rawDataHandler_IO (SampleHandler): sample object; updated in place
+            rawDataHandler_IO (RawDataHandler): sample object; updated in place
             filenames_I (list): list of filename strings
             MRMFeatureFinderScoring_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
@@ -185,7 +185,7 @@ class FileReaderOpenMS():
         """Load MzML into an MSExperiment
 
         Args:
-            rawDataHandler_IO (SampleHandler): sample object; updated in place
+            rawDataHandler_IO (RawDataHandler): sample object; updated in place
             filenames_I (list): list of filename strings
             MRMMapping_params_I (list): 
                 list of key:value parameters for OpenMS::MRMMapping
@@ -279,7 +279,7 @@ class FileReaderOpenMS():
         """Load SWATH or DIA into an MSExperiment
 
         Args:
-            rawDataHandler_IO (SampleHandler): sample object; updated in place
+            rawDataHandler_IO (RawDataHandler): sample object; updated in place
             filenames_I (list): list of filename strings
             
         Internals:
@@ -320,7 +320,7 @@ class FileReaderOpenMS():
         """Load a FeatureMap
         
         Args:
-            rawDataHandler_IO (SampleHandler): sample object; updated in place
+            rawDataHandler_IO (RawDataHandler): sample object; updated in place
             filenames_I (list): list of filename strings
             
         """        
@@ -350,7 +350,7 @@ class FileReaderOpenMS():
         """Load the validation data from file or from a database
         
         Args:
-            rawDataHandler_IO (SampleHandler): sample object; updated in place
+            rawDataHandler_IO (RawDataHandler): sample object; updated in place
             filenames_I (dict): dictionary of filenames
             ReferenceDataMethods_params_I (dict): dictionary of DB query parameters
         

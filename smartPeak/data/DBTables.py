@@ -230,7 +230,8 @@ class DBTables():
             ["function", "name", "type", "value", "default",
                 "restrictions", "description",
                 "used_"],
-            ["TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT", "TEXT",
+            ["TEXT", "TEXT", "TEXT", "TEXT", "TEXT", 
+                "TEXT", "TEXT",
                 "INTEGER"],
             ["algorithm_parameters_unique"],
             ["""UNIQUE(function, name)"""]

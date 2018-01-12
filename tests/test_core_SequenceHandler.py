@@ -18,19 +18,19 @@ class TestSequenceHandler():
         meta_data1 = copy.copy(meta_data_required)
         meta_data1.update({
             'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
-            'sample_type': 'Unknown'})
+            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
         featuremap1 = None
         
         meta_data2 = copy.copy(meta_data_required)
         meta_data2.update({
             'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
-            'sample_type': 'Unknown'})
+            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
         featuremap2 = None
         
         meta_data3 = copy.copy(meta_data_required)
         meta_data3.update({
             'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
-            'sample_type': 'Unknown'})
+            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
         featuremap3 = None
 
         # add the injections to the sequence
@@ -121,19 +121,19 @@ class TestSequenceHandler():
         meta_data1 = copy.copy(meta_data_required)
         meta_data1.update({
             'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
-            'sample_type': 'Unknown'})
+            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
         featuremap1 = None
         
         meta_data2 = copy.copy(meta_data_required)
         meta_data2.update({
             'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
-             'sample_type': 'Unknown'})
+            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
         featuremap2 = None
         
         meta_data3 = copy.copy(meta_data_required)
         meta_data3.update({
             'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
-            'sample_type': 'Unknown'})
+            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
         featuremap3 = None
 
         # add the injections to the sequence
@@ -142,11 +142,10 @@ class TestSequenceHandler():
         seqhandler.addSampleToSequence(meta_data3, featuremap3)
         seqhandler.addFeatureMapToSequence("sample2", "DummyFeatureMap")
 
-        injection = seqhandler.sequence[
-            seqhandler.sample_to_index['sample2']]
-        assert(injection["featureMap"] == "DummyFeatureMap")
+        assert(seqhandler.sequence[
+            seqhandler.sample_to_index['sample2']].featureMap == "DummyFeatureMap")
 
-    test_getDefaultSampleProcessingWorkflow():
+    def test_getDefaultSampleProcessingWorkflow(self):
         seqhandler = SequenceHandler()
 
         default = seqhandler.getDefaultSampleProcessingWorkflow(None)
@@ -157,21 +156,21 @@ class TestSequenceHandler():
         assert(seqhandler.getDefaultSampleProcessingWorkflow("Double Blank") == default)
         assert(seqhandler.getDefaultSampleProcessingWorkflow("Solvent") == default)
 
-    test_getDefaultSequenceProcessingWorkflow():
+    def test_getDefaultSequenceProcessingWorkflow(self):
         seqhandler = SequenceHandler()
 
         default = seqhandler.getDefaultSequenceProcessingWorkflow(None)
-        assert(seqhandler.getDefaultSequenceProcessingWorkflow("Unknown") != default)
+        assert(seqhandler.getDefaultSequenceProcessingWorkflow("Unknown") == default)
         assert(seqhandler.getDefaultSequenceProcessingWorkflow("Standard") != default)
         assert(seqhandler.getDefaultSequenceProcessingWorkflow("QC") != default)
         assert(seqhandler.getDefaultSequenceProcessingWorkflow("Blank") == default)
         assert(seqhandler.getDefaultSequenceProcessingWorkflow("Double Blank") == default)
         assert(seqhandler.getDefaultSequenceProcessingWorkflow("Solvent") != default)
 
-    test_parse_sampleProcessing():
+    def test_parse_sampleProcessing(self):
         seqhandler = SequenceHandler()
         # TODO
 
-    test_parse_sequenceProcessing():
+    def test_parse_sequenceProcessing(self):
         seqhandler = SequenceHandler()
         # TODO
