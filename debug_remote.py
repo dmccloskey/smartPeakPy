@@ -17,14 +17,5 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-from tests.test_io_FileReaderOpenMS import TestFileReaderOpenMS
-test = TestFileReaderOpenMS()
-test.test_load_standardsConcentrations()
-
-from tests.test_core_SequenceHandler import TestSequenceHandler
-test = TestSequenceHandler()
-test.test_getDefaultSampleProcessingWorkflow()
-test.test_getDefaultSequenceProcessingWorkflow()
-
-# from tests import runAllTests
-# runAllTests()
+from tests import runAllTests
+runAllTests()

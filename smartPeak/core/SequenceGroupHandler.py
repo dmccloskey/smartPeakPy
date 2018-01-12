@@ -6,8 +6,18 @@ class SequenceGroupHandler():
     def __init__(self):
         """Sequence Group
         """
-        self.sequence_groups = []
-        self.sequence_groups_order = {}
+
+        self.sequence_group_name = None
+        self.sample_indices = None
+        self.standards_concentrations = None
+        self.quantitation_methods = None
+
+    def clear_data(self):
+        self.sequence_group_name = None
+        self.sample_indices = None
+        self.standards_concentrations = None
+        self.quantitation_methods = None
+
 
     # def getDefaultSampleOrder(self, sample_type):
     #     """Return the default order for each sample in a group

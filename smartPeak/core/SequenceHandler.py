@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from .SampleHandler import SampleHandler
+from .SequenceGroupHandler import SequenceGroupHandler
 
 
 class SequenceHandler():
@@ -9,12 +10,18 @@ class SequenceHandler():
     def __init__(self):
         """Sequence
 
-        A sequence is a list of sample injections
+        A sequence is a list of sample
+
+        sequence (list): list of SampleHandlers
+        index_to_sample (dict): index to sample_name
+        index_to_sample (dict): sample_name to index
+        sequence_groups (list): list of SequenceGroupHandlers
 
         """
         self.sequence = []
         self.index_to_sample = {}
         self.sample_to_index = {}
+        self.sequence_groups = []
 
     def getSequence(self):
         """Return sequence"""
@@ -296,3 +303,42 @@ class SequenceHandler():
             if k not in sequence_processing.keys():
                 sequence_processing[k] = self.getDefaultSequenceProcessingWorkflow(
                     sample_type)[k]
+
+    def groupSamplesInSequence(self):
+        """group samples in a sequence"""
+
+        sequence_groups_dict = {}
+        for cnt, sample in enumerate(self.sequence):
+            if sample.meta_value["sequence_group_name"] not in sequence_groups_dict.keys():
+                sequence_groups_dict[sample.meta_value["sequence_group_name"]] = []
+            sequence_groups_dict[sample.meta_value["sequence_group_name"]].append(cnt)
+        
+        sequence_groups = []
+        for k, v in sequence_groups_dict.items():
+            sequenceGroupHandler = SequenceGroupHandler()
+            sequenceGroupHandler.sequence_group_name = k
+            sequenceGroupHandler.sample_indices = v
+            sequence_groups.append(sequenceGroupHandler)
+
+        self.sequence_groups = sequence_groups
+
+    def getSampleIndicesBySampleTypeAndSequenceGroupName(
+        self,
+        sequence_group_name,
+        sample_type
+    ):
+        """Return all samples in a group that belong to a given sample type
+        
+        Args:
+            sequenceHandler_I (SequenceHandler)
+            sequence_group_name (str)
+            sample_type (str)
+            
+        """
+
+        sample_indices = []
+        for sequence_group in self.sequence_groups:
+            for index in sequence_group_name.sample_indices:
+                if self.sequence[index].meta_value["sample_type"] == sample_type:
+                    sample_indices.append(index)
+        return sample_indices
