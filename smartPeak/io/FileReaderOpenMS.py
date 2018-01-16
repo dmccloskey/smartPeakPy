@@ -94,7 +94,7 @@ class FileReaderOpenMS():
         # load and make the transition file
         targeted = pyopenms.TargetedExperiment()  # must use "PeptideSequence"
         if traML_csv_i is not None:
-            tramlfile = pyopenms.TransitionTSVReader()
+            tramlfile = pyopenms.TransitionTSVFile()
             tramlfile.convertTSVToTargetedExperiment(
                 traML_csv_i.encode('utf-8'), 21, targeted)
         elif traML_i is not None:
