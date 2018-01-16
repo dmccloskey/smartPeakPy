@@ -164,9 +164,12 @@ class __main__():
                 if filter_peaks:
                     mrmfeaturefilter_csv_i = '''%s/featureFilters.csv''' % (
                         sequence.meta_data["data_dir"])
+                    fileReaderOpenMS.load_featureFilter(
+                        rawDataHandler,
+                        filenames_I={'mrmfeaturefilter_csv_i': mrmfeaturefilter_csv_i}
+                        )
                     rawDataProcessor.filterFeatures(
                         rawDataHandler,
-                        filenames_I={'mrmfeatureqcs_csv_i': mrmfeaturefilter_csv_i},
                         MRMFeatureFilter_filter_params_I=params[
                             'MRMFeatureFilter.filter_MRMFeatures'],
                         verbose_I=verbose_I
@@ -206,7 +209,6 @@ class __main__():
                 if select_peaks:
                     rawDataProcessor.selectFeatures(
                         rawDataHandler,
-                        filenames_I={},
                         # qmip algorithm
                         MRMFeatureSelector_select_params_I=params[
                             'MRMFeatureSelector.select_MRMFeatures_qmip'],
@@ -345,9 +347,12 @@ class __main__():
                 if check_peaks:
                     mrmfeatureqcs_csv_i = '''%s/featureQCs.csv''' % (
                         sequence.meta_data["data_dir"])
-                    rawDataProcessor.filterFeatures(
+                    fileReaderOpenMS.load_featureQC(
                         rawDataHandler,
-                        filenames_I={'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i},
+                        filenames_I={'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i}
+                        )
+                    rawDataProcessor.checkFeatures(
+                        rawDataHandler,
                         MRMFeatureFilter_filter_params_I=params[
                             'MRMFeatureFilter.filter_MRMFeatures.qc'],
                         verbose_I=verbose_I

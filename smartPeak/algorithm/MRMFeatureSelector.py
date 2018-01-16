@@ -19,7 +19,6 @@ class MRMFeatureSelector():
     def select_MRMFeatures_qmip(
         self,
         features,
-        tr_expected=[],
         select_criteria=[
             {"name": "nn_threshold", "value": 3},
             {"name": "locality_weights", "value": True},
@@ -35,7 +34,6 @@ class MRMFeatureSelector():
 
         Args:
             features (FeatureMap):
-            tr_expected (list(dict)): expected retention times
             select_criteria (list,dict): e.g., [{"name":, "value":, }]
                 name: "nn_threshold", value:10, type: float, description: 
                     # of nearest compounds by Tr to include in network
@@ -489,7 +487,6 @@ class MRMFeatureSelector():
         self,
         features,
         targeted=None,
-        tr_expected=[],
         schedule_criteria=[],
         score_weights=[],
         verbose_I=False
@@ -549,7 +546,6 @@ class MRMFeatureSelector():
                 {"name": "optimal_threshold", "value": optimal_thresholds[i]}]
             output_features = self.select_MRMFeatures_qmip(
                 output_features,
-                tr_expected,
                 select_criteria,
                 score_weights) 
         elapsed_time = time.time() - st

@@ -27,7 +27,7 @@ class TestOpenSwathFeatureXMLToTSV():
         traML_csv_i = data_dir + "/" + traML_csv_i
         self.targeted = pyopenms.TargetedExperiment()  # must use "PeptideSequence"
         if traML_csv_i is not None:
-            tramlfile = pyopenms.TransitionTSVReader()
+            tramlfile = pyopenms.TransitionTSVFile()
             tramlfile.convertTSVToTargetedExperiment(
                 traML_csv_i.encode('utf-8'), 21, self.targeted)
 

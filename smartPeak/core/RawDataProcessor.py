@@ -73,15 +73,13 @@ class RawDataProcessor():
     def filterFeatures(
         self,
         rawDataHandler_IO,
-        filenames_I,
         MRMFeatureFilter_filter_params_I={},
         verbose_I=False
     ):
-        """Run the openSWATH post processing filtering workflow for a single sample
+        """Filter features that do not pass the filter QCs
         
         Args:
             rawDataHandler_IO (RawDataHandler): raw data file class
-            filenames_I (list): list of filename strings
             MRMFeatureFilter_filter_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
 
@@ -94,10 +92,6 @@ class RawDataProcessor():
             output_filtered (FeatureMap): filtered features
                 
         """
-        # variables
-        mrmfeatureqcs_csv_i = None
-        if 'mrmfeatureqcs_csv_i'in filenames_I.keys():
-            mrmfeatureqcs_csv_i = filenames_I['mrmfeatureqcs_csv_i']
 
         # filter features
         if verbose_I:
@@ -111,24 +105,62 @@ class RawDataProcessor():
                 parameters,
                 MRMFeatureFilter_filter_params_I,
                 )
-            featureFilter.setParameters(parameters) 
-
-            # read in the parameters for the MRMFeatureQC
-            featureQC = pyopenms.MRMFeatureQC()
-            featureQCFile = pyopenms.MRMFeatureQCFile()
-            featureQCFile.load(mrmfeatureqcs_csv_i.encode('utf-8'), featureQC)  
+            featureFilter.setParameters(parameters)   
 
             output_filtered = copy.copy(rawDataHandler_IO.featureMap)
             featureFilter.FilterFeatureMap(
                 output_filtered,
-                featureQC,
+                rawDataHandler_IO.feature_filter,
+                rawDataHandler_IO.targeted)
+            rawDataHandler_IO.featureMap = output_filtered
+
+    def checkFeatures(
+        self,
+        rawDataHandler_IO,
+        MRMFeatureFilter_filter_params_I={},
+        verbose_I=False
+    ):
+        """Check that the features pass the QCs
+        
+        Args:
+            rawDataHandler_IO (RawDataHandler): raw data file class
+            MRMFeatureFilter_filter_params_I (dict): dictionary of parameter
+                names, values, descriptions, and tags
+
+        Internals:
+            features (FeatureMap): output from SWATH workflow
+            msExperiment (MSExperiment): 
+            targeted (TargetedExperiment): 
+
+        Returns:
+            output_filtered (FeatureMap): filtered features
+                
+        """
+
+        # filter features
+        if verbose_I:
+            print("Checking picked features")
+        if MRMFeatureFilter_filter_params_I:   
+            # set up MRMFeatureFilter and parse the MRMFeatureFilter params
+            featureFilter = pyopenms.MRMFeatureFilter()
+            parameters = featureFilter.getParameters()
+            utilities = Utilities()
+            parameters = utilities.updateParameters(
+                parameters,
+                MRMFeatureFilter_filter_params_I,
+                )
+            featureFilter.setParameters(parameters)   
+
+            output_filtered = copy.copy(rawDataHandler_IO.featureMap)
+            featureFilter.FilterFeatureMap(
+                output_filtered,
+                rawDataHandler_IO.feature_qc,
                 rawDataHandler_IO.targeted)
             rawDataHandler_IO.featureMap = output_filtered
 
     def selectFeatures(
         self,
         rawDataHandler_IO,
-        filenames_I,
         MRMFeatureSelector_select_params_I={},
         MRMFeatureSelector_schedule_params_I={},
         verbose_I=False
@@ -137,7 +169,6 @@ class RawDataProcessor():
         
         Args:
             rawDataHandler_IO (RawDataHandler): raw data file class
-            filenames_I (list): list of filename strings
             MRMFeatureSelector_select_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
             MRMFeatureSelector_schedule_params_I (dict): dictionary of parameter
@@ -152,27 +183,15 @@ class RawDataProcessor():
             output_selected (FeatureMap): selected features
                 
         """
-        # variables
-        calibrators_csv_i = None
-        if 'calibrators_csv_i'in filenames_I.keys():
-            calibrators_csv_i = filenames_I['calibrators_csv_i']
 
         # select features
         if verbose_I:
             print("Selecting picked features")
         featureSelector = MRMFeatureSelector()
-        if calibrators_csv_i is not None:
-            smartpeak_i = FileReader()
-            smartpeak_i.read_csv(calibrators_csv_i, delimiter=',')
-            calibrators = smartpeak_i.getData()
-            smartpeak_i.clear_data()
-        else: 
-            calibrators = []
 
         if MRMFeatureSelector_schedule_params_I:
             output_selected = featureSelector.schedule_MRMFeatures_qmip(
                 features=rawDataHandler_IO.featureMap,
-                tr_expected=calibrators,    
                 targeted=rawDataHandler_IO.targeted,
                 schedule_criteria=MRMFeatureSelector_schedule_params_I,                
                 score_weights=MRMFeatureSelector_select_params_I

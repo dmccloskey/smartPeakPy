@@ -13,6 +13,8 @@ class RawDataHandler():
         self.reference_data = None
         self.meta_data = None
         self.quantitation_methods = None
+        self.feature_filter = None
+        self.feature_qc = None
 
     def clear_data(self):
         """Remove all data"""        
@@ -26,3 +28,5 @@ class RawDataHandler():
         self.reference_data = None
         self.meta_data = None
         self.quantitation_methods = None
+        self.feature_filter = None
+        self.feature_qc = None
