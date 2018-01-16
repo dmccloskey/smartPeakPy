@@ -2,7 +2,7 @@
 from smartPeak.io.SequenceWriter import SequenceWriter
 from smartPeak.io.FileReaderOpenMS import FileReaderOpenMS
 from . import data_dir
-from smartPeak.core.SampleHandler import SampleHandler
+from smartPeak.core.RawDataHandler import RawDataHandler
 from smartPeak.core.SequenceHandler import SequenceHandler
 import copy
 
@@ -12,7 +12,7 @@ class TestSequenceWriter():
     def test_makeDataMatrixFromMetaValue(self):  
         seqhandler = SequenceHandler()
         seqWriter = SequenceWriter()
-        sampleHandler = SampleHandler()
+        rawDataHandler = RawDataHandler()
         fileReaderOpenMS = FileReaderOpenMS()
 
         # make the data
@@ -29,26 +29,23 @@ class TestSequenceWriter():
             meta_data1.update({
                 "sample_name": sample,
                 "filename": sample + ".mzML",
-                "sample_type": "Unknown"
+                "sample_type": "Unknown",
+                "sample_group_name": "sample_group",
+                "sequence_group_name": "sequence_group"
             })
             seqhandler.addSampleToSequence(meta_data1, None)
         for sequence in seqhandler.sequence:
-            try:
-                # dynamically make the filenames
-                featureXML_o = '''%s/quantitation/%s.featureXML''' % (
-                    data_dir, sequence["meta_data"]["sample_name"]) 
-                feature_csv_o = '''%s/quantitation/%s.csv''' % (
-                    data_dir, sequence["meta_data"]["sample_name"])
-                fileReaderOpenMS.load_featureMap(
-                    sampleHandler, {'featureXML_i': featureXML_o})
+            # dynamically make the filenames
+            featureXML_o = '''%s/quantitation/%s.featureXML''' % (
+                data_dir, sequence.meta_data["sample_name"])
+            fileReaderOpenMS.load_featureMap(
+                rawDataHandler, {'featureXML_i': featureXML_o})
 
-                # record features
-                seqhandler.addFeatureMapToSequence(
-                    sequence["meta_data"]["sample_name"], sampleHandler.featureMap)
-            except Exception as e:
-                print(e)
+            # record features
+            seqhandler.addFeatureMapToSequence(
+                sequence.meta_data["sample_name"], rawDataHandler.featureMap)
             # manual clear data for the next iteration
-            sampleHandler.clear_data()
+            rawDataHandler.clear_data()
 
         # Test:
         columns, rows, data = seqWriter.makeDataMatrixFromMetaValue(

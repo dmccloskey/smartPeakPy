@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from .SampleHandler import SampleHandler
+from .SequenceGroupHandler import SequenceGroupHandler
 
 
 class SequenceHandler():
@@ -6,39 +8,65 @@ class SequenceHandler():
         (i.e., multiple samples in a run batch/sequence)"""
 
     def __init__(self):
-        """
+        """Sequence
+
+        A sequence is a list of sample
+
+        sequence (list): list of SampleHandlers
+        index_to_sample (dict): index to sample_name
+        index_to_sample (dict): sample_name to index
+        sequence_groups (list): list of SequenceGroupHandlers
+
         """
         self.sequence = []
         self.index_to_sample = {}
         self.sample_to_index = {}
+        self.sequence_groups = []
 
     def getSequence(self):
         """Return sequence"""
         return self.sequence
 
-    def addSampleToSequence(self, meta_data, featureMap):
+    def addSampleToSequence(
+        self, meta_data_I, featureMap_I, 
+        raw_data_processing_I=None, sequence_group_processing_I=None
+    ):
         """add meta_data and featureMap to a sequence list
 
         Args:
-            meta_data (dict): dictionary of meta data (e.g., sample_name)
-            featureMap (FeatureMap): processed data in a FeatureMap
+            meta_data_I (dict): dictionary of meta data (e.g., sample_name)
+            featureMap_I (FeatureMap): processed data in a FeatureMap
+            raw_data_processing_I (dict): dictionary of sample processing steps
+            sequence_group_processing_I (dict): dictionary of sequence processing steps for the
+                sample
 
         Returns:
             dict: injection: dictionary of meta_data and FeatureMap
         """
 
-        sample_name = ''
-        if 'sample_name' in meta_data.keys():
-            sample_name = meta_data['sample_name']
+        meta_data = self.parse_metaData(meta_data_I)
+        
+        if raw_data_processing_I is not None:
+            raw_data_processing = self.parse_rawDataProcessing(
+                raw_data_processing_I, meta_data["sample_type"])
+        else:
+            raw_data_processing = raw_data_processing_I
 
-        injection = {
-            'meta_data': self.parse_metaData(meta_data),
-            'featureMap': featureMap
-        }
+        if sequence_group_processing_I is not None:
+            sequence_group_processing = self.parse_sequenceGroupProcessing(
+                sequence_group_processing_I, meta_data["sample_type"])
+        else:
+            sequence_group_processing = sequence_group_processing_I
 
-        self.sequence.append(injection)
-        self.index_to_sample[len(self.sequence)-1] = sample_name
-        self.sample_to_index[sample_name] = len(self.sequence)-1
+        sample = SampleHandler()
+        sample.meta_data = meta_data
+        sample.featureMap = featureMap_I
+        sample.raw_data_processing = raw_data_processing
+        sample.sequence_group_processing = sequence_group_processing
+
+        self.sequence.append(sample)
+        self.index_to_sample[len(self.sequence)-1] = meta_data["sample_name"]
+        self.sample_to_index[meta_data["sample_name"]] = len(self.sequence)-1
 
     def getMetaValue(self, feature, subordinate, meta_value):
         """Returns the metaValue
@@ -52,7 +80,7 @@ class SequenceHandler():
             
         """
         datum = None
-        if meta_value == 'RT':
+        if meta_value == "RT":
             datum = feature.getRT()
         else:
             datum = feature.getMetaValue(meta_value)
@@ -80,7 +108,8 @@ class SequenceHandler():
         #     "set_name"]
 
         required_headers = [
-            "sample_name", "sample_group_name", "sample_type", "filename"
+            "sample_name", "sample_group_name", "sample_type", "filename",
+            "sequence_group_name"
             ]
 
         return required_headers
@@ -104,22 +133,30 @@ class SequenceHandler():
                 print(
                     'SequenceFile Error: required header in sequence list "' +
                     header + '" not found.')
-                raise NameError('sequenceFile header')
+                raise NameError("sequenceFile header")
                 # meta_data[header] = None  # not needed
             
         # check for correctness of data
         if meta_data["sample_name"] is None:
             print(
                 "SequenceFile Error: sample_name must be specified.")
-            raise NameError('sample name')
+            raise NameError("sample name")
         if meta_data["sample_group_name"] is None:
             print(
                 "SequenceFile Error: sample_group_name must be specified.")
-            raise NameError('sample group name')
+            raise NameError("sample group name")
+        if meta_data["sequence_group_name"] is None:
+            print(
+                "SequenceFile Error: sequence_group_name must be specified.")
+            raise NameError("sequence group name")
         if meta_data["filename"] is None:
             print(
                 "SequenceFile Error: filename must be specified.")
-            raise NameError('filename name')
+            raise NameError("filename name")
+        if meta_data["filename"] is None:
+            print(
+                "SequenceFile Error: filename must be specified.")
+            raise NameError("filename name")
 
         if meta_data["sample_type"] is None or\
             meta_data["sample_type"] not in sample_types:
@@ -129,7 +166,7 @@ class SequenceHandler():
             print(
                 "Supported samples types are the following: " +
                 sample_types_str)
-            raise NameError('sample type')
+            raise NameError("sample type")
 
         # other checks...
 
@@ -151,7 +188,7 @@ class SequenceHandler():
                 "Sample name " + sample_name + " not found in sequence.")
             raise NameError("sample_name")
         else:
-            self.sequence[self.sample_to_index[sample_name]]["featureMap"] = featureMap
+            self.sequence[self.sample_to_index[sample_name]].featureMap = featureMap
 
     def getDefaultSampleProcessingWorkflow(self, sample_type):
         """return the default workflow parameters for a given sample
@@ -168,11 +205,52 @@ class SequenceHandler():
             "select_peaks": True,
             "validate_peaks": False,
             "quantify_peaks": False,
-            "check_peaks": False}
+            "check_peaks": True}
+        if sample_type == "Unknown":
+            default["quantify_peaks"] = True
+        elif sample_type == "Standard":
+            default["quantify_peaks"] = True
+        elif sample_type == "QC":
+            default["quantify_peaks"] = True
+        elif sample_type == "Blank":
+            default["quantify_peaks"] = True
+        elif sample_type == "Double Blank":
+            pass
+        elif sample_type == "Solvent":
+            pass
         
         return default
 
-    def getDefaultSequenceProcessingWorkflow(self, sample_type):
+    def parse_rawDataProcessing(self, raw_data_processing, sample_type):
+        """parse the sample processing steps
+
+        Args:
+            raw_data_processing (dict): dictionary of sample processing steps
+            sample_type (str): type of the sample
+
+        """
+
+        required_headers = [
+            "pick_peaks",
+            "filter_peaks",
+            "select_peaks",
+            "validate_peaks",
+            "quantify_peaks",
+            "check_peaks"]
+
+        # ensure supplied values are of the right type
+        for k, v in raw_data_processing.items():
+            if k in required_headers and ~isinstance(v, bool):
+                print("Wrong value provided for key " + k + " in raw_data_processing.")
+                raise NameError("raw_data_processing")
+
+        # ensure all headers are present
+        for k in required_headers:
+            if k not in raw_data_processing.keys():
+                raw_data_processing[k] = self.getDefaultSampleProcessingWorkflow(
+                    sample_type)[k]            
+
+    def getDefaultSequenceGroupProcessingWorkflow(self, sample_type):
         """return the default workflow parameters for a given sequence
         
         Args:
@@ -185,5 +263,61 @@ class SequenceHandler():
             "calculate_calibration": False,
             "calculate_carryover": False,
             "calculate_variability": False}
+        if sample_type == "Unknown":
+            pass
+        elif sample_type == "Standard":
+            default["calculate_calibration"] = True
+        elif sample_type == "QC":
+            default["calculate_variability"] = True
+        elif sample_type == "Blank":
+            pass
+        elif sample_type == "Double Blank":
+            pass
+        elif sample_type == "Solvent":
+            default["calculate_carryover"] = True
         
         return default
+
+    def parse_sequenceGroupProcessing(self, sequence_group_processing, sample_type):
+        """parse the sequence processing steps
+
+        Args:
+            sequence_group_processing (dict): dictionary of sequence processing steps for the sample
+            sample_type (str): type of the sample
+
+        """
+
+        required_headers = [
+            "calculate_calibration",
+            "calculate_carryover",
+            "calculate_variability"]
+
+        # ensure supplied values are of the right type
+        for k, v in sequence_group_processing.items():
+            if k in required_headers and ~isinstance(v, bool):
+                print("Wrong value provided for key " + k + " in sequence_group_processing.")
+                raise NameError("sequence_group_processing")
+
+        # ensure all headers are present
+        for k in required_headers:
+            if k not in sequence_group_processing.keys():
+                sequence_group_processing[k] = self.getDefaultSequenceGroupProcessingWorkflow(
+                    sample_type)[k]
+
+    def groupSamplesInSequence(self):
+        """group samples in a sequence"""
+
+        sequence_groups_dict = {}
+        for cnt, sample in enumerate(self.sequence):
+            if sample.meta_value["sequence_group_name"] not in sequence_groups_dict.keys():
+                sequence_groups_dict[sample.meta_value["sequence_group_name"]] = []
+            sequence_groups_dict[sample.meta_value["sequence_group_name"]].append(cnt)
+        
+        sequence_groups = []
+        for k, v in sequence_groups_dict.items():
+            sequenceGroupHandler = SequenceGroupHandler()
+            sequenceGroupHandler.sequence_group_name = k
+            sequenceGroupHandler.sample_indices = v
+            sequence_groups.append(sequenceGroupHandler)
+
+        self.sequence_groups = sequence_groups

@@ -43,11 +43,11 @@ class SequenceWriter():
         # collect the metaValues
         data_dict = {}
         for d in sequence_I.sequence:
-            if d['meta_data']['sample_type'] in sample_types:
-                sample_name = d['meta_data']['sample_name']
+            if d.meta_data['sample_type'] in sample_types:
+                sample_name = d.meta_data['sample_name']
                 data_dict[sample_name] = {}
                 for meta_value in meta_values:
-                    for feature in d['featureMap']:
+                    for feature in d.featureMap:
                         component_group_name = feature.getMetaValue(
                             "PeptideRef").decode('utf-8')
                         for subordinate in feature.getSubordinates():

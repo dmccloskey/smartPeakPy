@@ -11,21 +11,41 @@ class FileWriterOpenMS():
 
     def store_quantitationMethods(
         self,
-        filenames_I
+        sequenceGroupHandler_IO,
+        filenames_I={},
+        verbose_I=False
     ):
-        """ """
-        pass
+        """Store AbsoluteQuantitationMethods
+
+        Args:
+            sequenceGroupHandler_IO (SampleHandler)
+            filenames_I (dict): dictionary of filename strings
+
+        Internals:
+            quantitationMethods (list): list of AbsoluteQuantitationMethod objects
+
+        """
+        if verbose_I:
+            print("loading quantitation methods")
+
+        quantitationMethods_csv_i = None
+        if 'quantitationMethods_csv_i'in filenames_I.keys():
+            quantitationMethods_csv_i = filenames_I['quantitationMethods_csv_i']
+
+        quantitationMethods = []
+        aqmf = pyopenms.AbsoluteQuantitationMethodFile()
+        aqmf.store(quantitationMethods_csv_i, quantitationMethods)
 
     def store_featureMap(
         self,
-        sample_IO,
+        rawDataHandler_IO,
         filenames_I={},
         verbose_I=False
     ):
         """Store FeatureMap as .xml and .csv
         
         Args:
-            sample_IO (SampleHandler): sample object; updated in place
+            rawDataHandler_IO (SampleHandler): sample object; updated in place
             filenames_I (list): list of filename strings
         """
         if verbose_I:
@@ -41,15 +61,15 @@ class FileWriterOpenMS():
         # Store outfile as featureXML    
         featurexml = pyopenms.FeatureXMLFile()
         if featureXML_o is not None:
-            featurexml.store(featureXML_o.encode('utf-8'), sample_IO.featureMap)
+            featurexml.store(featureXML_o.encode('utf-8'), rawDataHandler_IO.featureMap)
         
         # Store the outfile as csv     
         featurescsv = OpenSwathFeatureXMLToTSV()  
         if feature_csv_o is not None:
             featurescsv.store(
-                feature_csv_o, sample_IO.featureMap, sample_IO.targeted,
-                run_id=sample_IO.meta_data['sample_name'],
-                filename=sample_IO.meta_data['filename']
+                feature_csv_o, rawDataHandler_IO.featureMap, rawDataHandler_IO.targeted,
+                run_id=rawDataHandler_IO.meta_data['sample_name'],
+                filename=rawDataHandler_IO.meta_data['filename']
                 )
 
     def store_mzML(self, out, output):

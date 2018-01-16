@@ -32,7 +32,8 @@ class DBTableInterface(DBio):
         if self.columns_ is not None and self.data_types_ is not None:
             if len(self.columns_) != len(self.data_types_):
                 raise Exception("""The number of columns 
-                and the number of data types do not match.""")
+                and the number of data types do not match
+                for table """ + table_name + ".")
         elif self.columns_ is not None:
             raise Exception("columns are not defined.")
         elif self.data_types_ is not None:
@@ -46,7 +47,8 @@ class DBTableInterface(DBio):
         if self.constraint_names_ is not None and self.constraints_ is not None:
             if len(self.constraint_names_) != len(self.constraints_):
                 raise Exception("""The number of constraints 
-                and the number of constraint_names do not match.""")
+                and the number of constraint_names do not match
+                for table """ + table_name + ".")
         elif self.constraints_ is not None:
             raise Exception("constraints are not defined.")
         elif self.constraint_names_ is not None:

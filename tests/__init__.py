@@ -114,13 +114,14 @@ def runAllTests():
     test.test_load_Trafo()
     test.test_load_featureMap()
     test.test_load_quantitationMethods()
+    # test.test_load_standardsConcentrations()
 
     from tests.test_io_FileWriterOpenMS import TestFileWriterOpenMS
     test = TestFileWriterOpenMS()
     test.test_store_featureMap()
 
-    from tests.test_core_SampleProcessor import TestSampleProcessor
-    test = TestSampleProcessor()
+    from tests.test_core_RawDataProcessor import TestRawDataProcessor
+    test = TestRawDataProcessor()
     test.test_extract_metaData()
     test.test_pickFeatures()
     test.test_filterAndSelect()
@@ -133,6 +134,8 @@ def runAllTests():
     test.test_getMetaValue()
     test.test_parse_metaData()
     test.test_addFeatureMapToSequence()
+    test.test_getDefaultSampleProcessingWorkflow()
+    test.test_getDefaultSequenceProcessingWorkflow()
 
     from tests.test_io_SequenceWriter import TestSequenceWriter
     test = TestSequenceWriter()

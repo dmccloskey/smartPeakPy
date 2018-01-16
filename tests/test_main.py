@@ -3,7 +3,7 @@ from smartPeak.__main__ import __main__
 from . import example_dir
 import os
 # import filecmp
-from smartPeak.core.SampleHandler import SampleHandler
+from smartPeak.core.RawDataHandler import RawDataHandler
 from smartPeak.io.FileReaderOpenMS import FileReaderOpenMS
 
 
@@ -20,18 +20,18 @@ class testMain():
             )
         assert(~os.path.isfile(example_dir + 'LCMS_MRM/mzML/skippedSamples.csv'))
 
-        sampleHandler = SampleHandler()
+        rawDataHandler = RawDataHandler()
         fileReaderOpenMS = FileReaderOpenMS()
-        fileReaderOpenMS.load_featureMap(sampleHandler, {
+        fileReaderOpenMS.load_featureMap(rawDataHandler, {
             'featureXML_i': 
             example_dir + 
             'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x.featureXML'})
-        fm1 = sampleHandler.featureMap
-        fileReaderOpenMS.load_featureMap(sampleHandler, {
+        fm1 = rawDataHandler.featureMap
+        fileReaderOpenMS.load_featureMap(rawDataHandler, {
             'featureXML_i': 
             example_dir + 
             'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x_test.featureXML'})
-        fm2 = sampleHandler.featureMap
+        fm2 = rawDataHandler.featureMap
         assert(
             fm1[50].getSubordinates()[0].getMetaValue("native_id") == 
             fm2[50].getSubordinates()[0].getMetaValue("native_id"))
@@ -75,19 +75,19 @@ class testMain():
             )
         assert(~os.path.isfile(example_dir + 'GCMS_SIM/mzML/skippedSamples.csv'))
 
-        sampleHandler = SampleHandler()
+        rawDataHandler = RawDataHandler()
         fileReaderOpenMS = FileReaderOpenMS()
 
-        fileReaderOpenMS.load_featureMap(sampleHandler, {
+        fileReaderOpenMS.load_featureMap(rawDataHandler, {
                 'featureXML_i': 
                 example_dir + 
                 'GCMS_SIM/features/GCMS_SIM.featureXML'})
-        fm1 = sampleHandler.featureMap
-        fileReaderOpenMS.load_featureMap(SampleHandler, {
+        fm1 = rawDataHandler.featureMap
+        fileReaderOpenMS.load_featureMap(RawDataHandler, {
             'featureXML_i': 
             example_dir + 
             'GCMS_SIM/features/GCMS_SIM_test.featureXML'})
-        fm2 = sampleHandler.featureMap
+        fm2 = rawDataHandler.featureMap
         assert(
             fm1[15].getSubordinates()[0].getMetaValue("native_id") == 
             fm2[15].getSubordinates()[0].getMetaValue("native_id"))

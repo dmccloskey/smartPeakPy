@@ -202,7 +202,9 @@ class TestDBTables():
             assert(result[0][0] == 1)
 
         # test table constraints
-        default_data = {"TEXT": "'a'", "INTEGER": 1, "REAL": 1.0}
+        default_data = {
+            "TEXT": "'a'", "INTEGER": 1, "REAL": 1.0,
+            "BLOB": "'a'"}
         tables1 = [
             "sequence_file", "traml", "feature_filter", 
             "feature_qc", "feature_maps", "quantitation_methods", 
