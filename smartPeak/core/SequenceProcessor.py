@@ -4,6 +4,14 @@ from .SequenceGroupProcessor import SequenceGroupProcessor
 
 class SequenceProcessor():
 
+    def loadResources(
+        self, 
+        sequence_handler_IO, sequence_group_handler_IO,
+        session_id
+    ):
+        """Load all files for the given session
+        """
+
     def processSequence(
         self, sequence_handler_IO,
         sample_names=[],
@@ -53,6 +61,6 @@ class SequenceProcessor():
 
     def processRawData(self, raw_data_handler_IO, raw_data_processing_methods):
         """Execute all raw data processing on the raw data"""
-        
+
         rawDataHandler = RawDataHandler()
 
