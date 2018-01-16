@@ -190,8 +190,8 @@ class SequenceHandler():
         else:
             self.sequence[self.sample_to_index[sample_name]].featureMap = featureMap
 
-    def getDefaultSampleProcessingWorkflow(self, sample_type):
-        """return the default workflow parameters for a given sample
+    def getDefaultRawDataProcessingWorkflow(self, sample_type):
+        """return the default workflow parameters for a given raw data
         
         Args:
             sample_type (str): the type of sample
@@ -247,7 +247,7 @@ class SequenceHandler():
         # ensure all headers are present
         for k in required_headers:
             if k not in raw_data_processing.keys():
-                raw_data_processing[k] = self.getDefaultSampleProcessingWorkflow(
+                raw_data_processing[k] = self.getDefaultRawDataProcessingWorkflow(
                     sample_type)[k]            
 
     def getDefaultSequenceGroupProcessingWorkflow(self, sample_type):

@@ -145,27 +145,27 @@ class TestSequenceHandler():
         assert(seqhandler.sequence[
             seqhandler.sample_to_index['sample2']].featureMap == "DummyFeatureMap")
 
-    def test_getDefaultSampleProcessingWorkflow(self):
+    def test_getDefaultRawDataProcessingWorkflow(self):
         seqhandler = SequenceHandler()
 
-        default = seqhandler.getDefaultSampleProcessingWorkflow(None)
-        assert(seqhandler.getDefaultSampleProcessingWorkflow("Unknown") != default)
-        assert(seqhandler.getDefaultSampleProcessingWorkflow("Standard") != default)
-        assert(seqhandler.getDefaultSampleProcessingWorkflow("QC") != default)
-        assert(seqhandler.getDefaultSampleProcessingWorkflow("Blank") != default)
-        assert(seqhandler.getDefaultSampleProcessingWorkflow("Double Blank") == default)
-        assert(seqhandler.getDefaultSampleProcessingWorkflow("Solvent") == default)
+        default = seqhandler.getDefaultRawDataProcessingWorkflow(None)
+        assert(seqhandler.getDefaultRawDataProcessingWorkflow("Unknown") != default)
+        assert(seqhandler.getDefaultRawDataProcessingWorkflow("Standard") != default)
+        assert(seqhandler.getDefaultRawDataProcessingWorkflow("QC") != default)
+        assert(seqhandler.getDefaultRawDataProcessingWorkflow("Blank") != default)
+        assert(seqhandler.getDefaultRawDataProcessingWorkflow("Double Blank") == default)
+        assert(seqhandler.getDefaultRawDataProcessingWorkflow("Solvent") == default)
 
-    def test_getDefaultSequenceProcessingWorkflow(self):
+    def test_getDefaultSequenceGroupProcessingWorkflow(self):
         seqhandler = SequenceHandler()
 
-        default = seqhandler.getDefaultSequenceProcessingWorkflow(None)
-        assert(seqhandler.getDefaultSequenceProcessingWorkflow("Unknown") == default)
-        assert(seqhandler.getDefaultSequenceProcessingWorkflow("Standard") != default)
-        assert(seqhandler.getDefaultSequenceProcessingWorkflow("QC") != default)
-        assert(seqhandler.getDefaultSequenceProcessingWorkflow("Blank") == default)
-        assert(seqhandler.getDefaultSequenceProcessingWorkflow("Double Blank") == default)
-        assert(seqhandler.getDefaultSequenceProcessingWorkflow("Solvent") != default)
+        default = seqhandler.getDefaultSequenceGroupProcessingWorkflow(None)
+        assert(seqhandler.getDefaultSequenceGroupProcessingWorkflow("Unknown") == default)
+        assert(seqhandler.getDefaultSequenceGroupProcessingWorkflow("Standard") != default)
+        assert(seqhandler.getDefaultSequenceGroupProcessingWorkflow("QC") != default)
+        assert(seqhandler.getDefaultSequenceGroupProcessingWorkflow("Blank") == default)
+        assert(seqhandler.getDefaultSequenceGroupProcessingWorkflow("Double Blank") == default)
+        assert(seqhandler.getDefaultSequenceGroupProcessingWorkflow("Solvent") != default)
 
     def test_parse_rawDataProcessing(self):
         seqhandler = SequenceHandler()

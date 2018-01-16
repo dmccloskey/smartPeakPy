@@ -134,8 +134,8 @@ def runAllTests():
     test.test_getMetaValue()
     test.test_parse_metaData()
     test.test_addFeatureMapToSequence()
-    test.test_getDefaultSampleProcessingWorkflow()
-    test.test_getDefaultSequenceProcessingWorkflow()
+    test.test_getDefaultRawDataProcessingWorkflow()
+    test.test_getDefaultSequenceGroupProcessingWorkflow()
 
     from tests.test_io_SequenceWriter import TestSequenceWriter
     test = TestSequenceWriter()
