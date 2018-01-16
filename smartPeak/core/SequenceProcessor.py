@@ -4,14 +4,6 @@ from .SequenceGroupProcessor import SequenceGroupProcessor
 
 class SequenceProcessor():
 
-    def loadResources(
-        self, 
-        sequence_handler_IO, sequence_group_handler_IO,
-        session_id
-    ):
-        """Load all files for the given session
-        """
-
     def processSequence(
         self, sequence_handler_IO,
         sample_names=[],
