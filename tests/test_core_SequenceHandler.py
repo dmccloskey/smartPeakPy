@@ -167,10 +167,10 @@ class TestSequenceHandler():
         assert(seqhandler.getDefaultSequenceProcessingWorkflow("Double Blank") == default)
         assert(seqhandler.getDefaultSequenceProcessingWorkflow("Solvent") != default)
 
-    def test_parse_sampleProcessing(self):
+    def test_parse_rawDataProcessing(self):
         seqhandler = SequenceHandler()
         # TODO
 
-    def test_parse_sequenceProcessing(self):
+    def test_parse_sequenceGroupProcessing(self):
         seqhandler = SequenceHandler()
         # TODO

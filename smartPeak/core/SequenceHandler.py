@@ -29,15 +29,15 @@ class SequenceHandler():
 
     def addSampleToSequence(
         self, meta_data_I, featureMap_I, 
-        sample_processing_I=None, sequence_processing_I=None
+        raw_data_processing_I=None, sequence_group_processing_I=None
     ):
         """add meta_data and featureMap to a sequence list
 
         Args:
             meta_data_I (dict): dictionary of meta data (e.g., sample_name)
             featureMap_I (FeatureMap): processed data in a FeatureMap
-            sample_processing_I (dict): dictionary of sample processing steps
-            sequence_processing_I (dict): dictionary of sequence processing steps for the
+            raw_data_processing_I (dict): dictionary of sample processing steps
+            sequence_group_processing_I (dict): dictionary of sequence processing steps for the
                 sample
 
         Returns:
@@ -46,23 +46,23 @@ class SequenceHandler():
 
         meta_data = self.parse_metaData(meta_data_I)
         
-        if sample_processing_I is not None:
-            sample_processing = self.parse_sampleProcessing(
-                sample_processing_I, meta_data["sample_type"])
+        if raw_data_processing_I is not None:
+            raw_data_processing = self.parse_rawDataProcessing(
+                raw_data_processing_I, meta_data["sample_type"])
         else:
-            sample_processing = sample_processing_I
+            raw_data_processing = raw_data_processing_I
 
-        if sequence_processing_I is not None:
-            sequence_processing = self.parse_sequenceProcessing(
-                sequence_processing_I, meta_data["sample_type"])
+        if sequence_group_processing_I is not None:
+            sequence_group_processing = self.parse_sequenceGroupProcessing(
+                sequence_group_processing_I, meta_data["sample_type"])
         else:
-            sequence_processing = sequence_processing_I
+            sequence_group_processing = sequence_group_processing_I
 
         sample = SampleHandler()
         sample.meta_data = meta_data
         sample.featureMap = featureMap_I
-        sample.sample_processing = sample_processing
-        sample.sequence_processing = sequence_processing
+        sample.raw_data_processing = raw_data_processing
+        sample.sequence_group_processing = sequence_group_processing
 
         self.sequence.append(sample)
         self.index_to_sample[len(self.sequence)-1] = meta_data["sample_name"]
@@ -221,11 +221,11 @@ class SequenceHandler():
         
         return default
 
-    def parse_sampleProcessing(self, sample_processing, sample_type):
+    def parse_rawDataProcessing(self, raw_data_processing, sample_type):
         """parse the sample processing steps
 
         Args:
-            sample_processing (dict): dictionary of sample processing steps
+            raw_data_processing (dict): dictionary of sample processing steps
             sample_type (str): type of the sample
 
         """
@@ -239,18 +239,18 @@ class SequenceHandler():
             "check_peaks"]
 
         # ensure supplied values are of the right type
-        for k, v in sample_processing.items():
+        for k, v in raw_data_processing.items():
             if k in required_headers and ~isinstance(v, bool):
-                print("Wrong value provided for key " + k + " in sample_processing.")
-                raise NameError("sample_processing")
+                print("Wrong value provided for key " + k + " in raw_data_processing.")
+                raise NameError("raw_data_processing")
 
         # ensure all headers are present
         for k in required_headers:
-            if k not in sample_processing.keys():
-                sample_processing[k] = self.getDefaultSampleProcessingWorkflow(
+            if k not in raw_data_processing.keys():
+                raw_data_processing[k] = self.getDefaultSampleProcessingWorkflow(
                     sample_type)[k]            
 
-    def getDefaultSequenceProcessingWorkflow(self, sample_type):
+    def getDefaultSequenceGroupProcessingWorkflow(self, sample_type):
         """return the default workflow parameters for a given sequence
         
         Args:
@@ -278,11 +278,11 @@ class SequenceHandler():
         
         return default
 
-    def parse_sequenceProcessing(self, sequence_processing, sample_type):
+    def parse_sequenceGroupProcessing(self, sequence_group_processing, sample_type):
         """parse the sequence processing steps
 
         Args:
-            sequence_processing (dict): dictionary of sequence processing steps for the sample
+            sequence_group_processing (dict): dictionary of sequence processing steps for the sample
             sample_type (str): type of the sample
 
         """
@@ -293,15 +293,15 @@ class SequenceHandler():
             "calculate_variability"]
 
         # ensure supplied values are of the right type
-        for k, v in sequence_processing.items():
+        for k, v in sequence_group_processing.items():
             if k in required_headers and ~isinstance(v, bool):
-                print("Wrong value provided for key " + k + " in sequence_processing.")
-                raise NameError("sequence_processing")
+                print("Wrong value provided for key " + k + " in sequence_group_processing.")
+                raise NameError("sequence_group_processing")
 
         # ensure all headers are present
         for k in required_headers:
-            if k not in sequence_processing.keys():
-                sequence_processing[k] = self.getDefaultSequenceProcessingWorkflow(
+            if k not in sequence_group_processing.keys():
+                sequence_group_processing[k] = self.getDefaultSequenceGroupProcessingWorkflow(
                     sample_type)[k]
 
     def groupSamplesInSequence(self):
