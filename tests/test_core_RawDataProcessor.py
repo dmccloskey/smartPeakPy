@@ -124,14 +124,16 @@ class TestRawDataProcessor():
         fileReaderOpenMS.load_featureMap(rawDataHandler, {'featureXML_i': featureXML_o})
 
         # filter and select
-        mrmfeatureqcs_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+        mrmfeaturefilter_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+        fileReaderOpenMS.load_featureFilter(
+            rawDataHandler,
+            filenames_I={'mrmfeaturefilter_csv_i': mrmfeaturefilter_csv_i}
+            )
         rawDataProcessor.filterFeatures(
             rawDataHandler,
-            {'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i},
             self.params_1['MRMFeatureFilter.filter_MRMFeatures'])
         rawDataProcessor.selectFeatures(
             rawDataHandler,
-            {},
             self.params_1['MRMFeatureSelector.select_MRMFeatures_qmip'],
             self.params_1['MRMFeatureSelector.schedule_MRMFeatures_qmip'])
         assert(rawDataHandler.featureMap[0].getSubordinates()[

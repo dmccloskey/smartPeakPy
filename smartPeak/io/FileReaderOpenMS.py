@@ -436,3 +436,57 @@ class FileReaderOpenMS():
                 data_filename_O=''
             )
         rawDataHandler_IO.reference_data = reference_data
+
+    def load_featureFilter(
+        self,
+        rawDataHandler_IO,
+        filenames_I,
+        verbose_I=False
+    ):
+        """Load the feature filters
+        
+        Args:
+            rawDataHandler_IO (RawDataHandler): sample object; updated in place
+            filenames_I (dict): dictionary of filenames
+        
+        """
+        if verbose_I:
+            print("Loading feature_filter")
+
+        # variables
+        mrmfeaturefilter_csv_i = None
+        if 'mrmfeaturefilter_csv_i'in filenames_I.keys():
+            mrmfeaturefilter_csv_i = filenames_I['mrmfeaturefilter_csv_i']
+
+        # read in the parameters for the MRMFeatureQC
+        featureQC = pyopenms.MRMFeatureQC()
+        featureQCFile = pyopenms.MRMFeatureQCFile()
+        featureQCFile.load(mrmfeaturefilter_csv_i.encode('utf-8'), featureQC)
+        rawDataHandler_IO.feature_filter = featureQC
+
+    def load_featureQC(
+        self,
+        rawDataHandler_IO,
+        filenames_I,
+        verbose_I=False
+    ):
+        """Load the feature QCs
+        
+        Args:
+            rawDataHandler_IO (RawDataHandler): sample object; updated in place
+            filenames_I (dict): dictionary of filenames
+        
+        """
+        if verbose_I:
+            print("Loading feature_qc")
+
+        # variables
+        mrmfeatureqcs_csv_i = None
+        if 'mrmfeatureqcs_csv_i'in filenames_I.keys():
+            mrmfeatureqcs_csv_i = filenames_I['mrmfeatureqcs_csv_i']
+
+        # read in the parameters for the MRMFeatureQC
+        featureQC = pyopenms.MRMFeatureQC()
+        featureQCFile = pyopenms.MRMFeatureQCFile()
+        featureQCFile.load(mrmfeaturefilter_csv_i.encode('utf-8'), featureQC)
+        rawDataHandler_IO.feature_qc = featureQC

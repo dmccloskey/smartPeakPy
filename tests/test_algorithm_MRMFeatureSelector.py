@@ -74,7 +74,6 @@ class TestMRMFeatureSelector():
         featureSelector = MRMFeatureSelector()         
         output_selected = featureSelector.schedule_MRMFeatures_qmip(
             features=output_filtered,
-            tr_expected=[],    
             targeted=self.targeted,
             schedule_criteria=self.params["MRMFeatureSelector.schedule_MRMFeatures_qmip"],
             score_weights=self.params["MRMFeatureSelector.select_MRMFeatures_qmip"])
