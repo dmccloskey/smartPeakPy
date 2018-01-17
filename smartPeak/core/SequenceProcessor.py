@@ -4,6 +4,9 @@ from .SequenceGroupProcessor import SequenceGroupProcessor
 
 class SequenceProcessor():
 
+    def createSequence(self):
+        pass
+
     def processSequence(
         self, sequence_handler_IO,
         sample_names=[],
