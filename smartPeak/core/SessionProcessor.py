@@ -18,13 +18,14 @@ class SessionProcessor():
         """
     
     def storeSession(self, session_filename):
-        """ """
+        """Write the current session to file"""
 
     def createSession(self, filenames={}):
-        """ """
+        """Create a new session from file"""
 
     def undo(self):
-        """ """
+        """Step back 1 step in the session history"""
 
     def redo(self):
-        """ """
+        """Step forward 1 step in the session history after
+        calling one or more undo commands"""
