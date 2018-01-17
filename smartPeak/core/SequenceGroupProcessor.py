@@ -53,3 +53,16 @@ class SequenceGroupProcessor():
         absoluteQuantitation.optimizeCalibrationCurves(components_to_concentrations)        
 
         sequenceGroupHandler_IO.quanitation_methods = absoluteQuantitation.getQuantMethods()  # TODO!!!
+
+    def processSequenceGroup(
+        self, sequenceGroupHandler_IO, 
+        sequence_group_processing_methods
+    ):
+        """Apply processing methods to a raw data handler
+        
+        Args:
+            sequenceGroupHandler_IO (SequenceGroupHandler)
+            sequence_group_processing_methods (dict): map of sequence group
+                processing methods
+            
+        """

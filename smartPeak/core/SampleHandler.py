@@ -8,6 +8,7 @@ class SampleHandler():
         self.featureMap = None
         self.sample_processing = None
         self.sequence_processing = None
+        self.raw_data = None
 
     def clear_data(self):
         """Remove all data""" 
@@ -15,3 +16,4 @@ class SampleHandler():
         self.featureMap = None
         self.sample_processing = None
         self.sequence_processing = None
+        self.raw_data = None

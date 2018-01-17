@@ -325,3 +325,17 @@ class RawDataProcessor():
         aq = pyopenms.AbsoluteQuantitation()
         aq.setQuantMethods(rawDataHandler_IO.quantitation_methods)
         aq.quantifyComponents(rawDataHandler_IO.featureMap)
+
+    def processRawData(
+        self, rawDataHandler_IO, 
+        raw_data_processing_methods,
+        verbose_I=False
+    ):
+        """Apply processing methods to a raw data handler
+        
+        Args:
+            rawDataHandler_IO (RawDataHandler)
+            raw_data_processing_methods (dict): map of raw data processing methods
+            
+        """
+        

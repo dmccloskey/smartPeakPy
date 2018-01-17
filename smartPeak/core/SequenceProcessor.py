@@ -51,8 +51,3 @@ class SequenceProcessor():
             # 2: process all Unknowns
             # 3: process all Blanks, Double Blanks, and Solvents
 
-    def processRawData(self, raw_data_handler_IO, raw_data_processing_methods):
-        """Execute all raw data processing on the raw data"""
-
-        rawDataHandler = RawDataHandler()
-
