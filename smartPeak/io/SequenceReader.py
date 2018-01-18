@@ -5,7 +5,7 @@ from smartPeak.io.FileReader import FileReader
 class SequenceReader():
     """A class to write SequenceHandlers"""
 
-    def read_sequenceFile(self, sequence_IO, filename, delimiter=','):
+    def read_sequenceFile(self, sequenceHandler_IO, filename, delimiter=','):
         """Import a sequence file
 
         the sample metadata is read in from a .csv file.  The raw_data_processing and
@@ -13,24 +13,65 @@ class SequenceReader():
         The featureMap is left as null.
         
         Args:
-            sequence_IO (SequenceHandler)
+            sequenceHandler_IO (SequenceHandler)
             
         """
 
         # read in the data
         fileReader = FileReader()
         fileReader.read_csv(filename, delimiter)
-        self.parse_sequenceFile(sequence_IO, fileReader.getData())
+        self.parse_sequenceFile(sequenceHandler_IO, fileReader.getData())
         fileReader.clear_data()
 
-    def parse_sequenceFile(self, sequence_IO, sequence_file):
+    def parse_sequenceFile(self, sequenceHandler_IO, sequence_file):
         """Parse a sequence file to ensure all headers are present
         
         Args:
-            sequence_IO (SequenceHandler)
-            sequenceFile (list): list of dictionaries of sequence information
+            sequenceHandler_IO (SequenceHandler)
+            sequence_file (list): list of dictionaries of sequence information
         """
 
         for seq in sequence_file:
-            sequence_IO.addSampleToSequence(seq, None)
+            sequenceHandler_IO.addSampleToSequence(seq, None)
+
+    def read_sequenceParameters(self, sequenceHandler_IO, filename, delimiter=','):
+        """Import a sequence processing parameters file
+
+        the sequencing processing parameters are read in from a .csv file.
+        
+        Args:
+            sequenceHandler_IO (SequenceHandler)
+            
+        """
+
+        # read in the data
+        fileReader = FileReader()
+        fileReader.read_openMSParams(filename, delimiter)
+        self.parse_sequenceParameters(sequenceHandler_IO, fileReader.getData())
+        fileReader.clear_data()
+
+    def parse_sequenceParameters(self, sequenceHandler_IO, parameters_file):
+        """Parse a sequence file to ensure all headers are present
+        
+        Args:
+            sequenceHandler_IO (SequenceHandler)
+            parameters_file (dict): dictionary of parameter
+        """
+
+        # check for workflow parameters integrity
+        required_parameters = [
+            "MRMMapping",
+            "ChromatogramExtractor", "MRMFeatureFinderScoring",
+            "MRMFeatureFilter.filter_MRMFeatures",
+            "MRMFeatureSelector.select_MRMFeatures_qmip",
+            "MRMFeatureSelector.schedule_MRMFeatures_qmip",
+            "MRMFeatureSelector.select_MRMFeatures_score",
+            "ReferenceDataMethods.getAndProcess_referenceData_samples",
+            "MRMFeatureValidator.validate_MRMFeatures",
+            "MRMFeatureFilter.filter_MRMFeatures.qc",
+        ]
+        for parameter in required_parameters:
+            if parameter not in parameters_file:
+                parameters_file[parameter] = []
+        sequenceHandler_IO.setParameters(parameters_file)
 

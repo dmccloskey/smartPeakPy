@@ -205,7 +205,8 @@ class SequenceHandler():
             "select_peaks": True,
             "validate_peaks": False,
             "quantify_peaks": False,
-            "check_peaks": True}
+            "check_peaks": True,
+            "plot_peaks": False}
         if sample_type == "Unknown":
             default["quantify_peaks"] = True
         elif sample_type == "Standard":
@@ -303,21 +304,3 @@ class SequenceHandler():
             if k not in sequence_group_processing.keys():
                 sequence_group_processing[k] = self.getDefaultSequenceGroupProcessingWorkflow(
                     sample_type)[k]
-
-    def groupSamplesInSequence(self):
-        """group samples in a sequence"""
-
-        sequence_groups_dict = {}
-        for cnt, sample in enumerate(self.sequence):
-            if sample.meta_value["sequence_group_name"] not in sequence_groups_dict.keys():
-                sequence_groups_dict[sample.meta_value["sequence_group_name"]] = []
-            sequence_groups_dict[sample.meta_value["sequence_group_name"]].append(cnt)
-        
-        sequence_groups = []
-        for k, v in sequence_groups_dict.items():
-            sequenceGroupHandler = SequenceGroupHandler()
-            sequenceGroupHandler.sequence_group_name = k
-            sequenceGroupHandler.sample_indices = v
-            sequence_groups.append(sequenceGroupHandler)
-
-        self.sequence_groups = sequence_groups

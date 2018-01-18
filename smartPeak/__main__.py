@@ -13,21 +13,32 @@ from smartPeak.io.SequenceWriter import SequenceWriter
 
 class __main__():
 
+    # def main2(
+    #     self,
+    #     filenames={},
+    #     delimiter=",",
+    #     verbose_I=False,
+    #     *Args,
+    #     **Kwargs
+    # ):
+    #     """ """
+    #     pass
+
     def main(
-            self,
-            filename_sequence,
-            filename_params,
-            delimiter=',',
-            pick_peaks=True,
-            select_peaks=True,
-            validate_peaks=False,
-            quantify_peaks=True,
-            check_peaks=False,
-            plot_peaks=False,
-            verbose_I=False,
-            *Args,
-            **Kwargs
-            ):
+        self,
+        filename_sequence,
+        filename_params,
+        delimiter=',',
+        pick_peaks=True,
+        select_peaks=True,
+        validate_peaks=False,
+        quantify_peaks=True,
+        check_peaks=False,
+        plot_peaks=False,
+        verbose_I=False,
+        *Args,
+        **Kwargs
+        ):
         """Run the AbsoluteQuantitation python pipeline
         
         Args:

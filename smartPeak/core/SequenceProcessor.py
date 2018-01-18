@@ -2,12 +2,22 @@
 from .SequenceGroupProcessor import SequenceGroupProcessor
 from .SequenceGroupHandler import SequenceGroupHandler
 from .RawDataHandler import RawDataHandler
+from .RawDataProcessor import RawDataProcessor
 from smartPeak.io.SequenceReader import SequenceReader
-from smartPeak.io.FileReader import FileReader
 from smartPeak.io.FileReaderOpenMS import FileReaderOpenMS
+import copy
 
 
 class SequenceProcessor():
+
+    def __init__(self):
+        self.parameters = None
+
+    def setParameters(self, parameters_I):
+        self.parameters = parameters_I
+
+    def getParameters(self):
+        return self.parameters
 
     def createSequence(
         self,
@@ -19,7 +29,7 @@ class SequenceProcessor():
         """Create a new session from files or wizard
         
         Args:
-            sequenceHandler_IO (SequenceHandler):
+            sequenceHandler_IO (SequenceHandler): sequence handler
             filenames (dict): map of filetype to filename
             delimiter (str): string delimiter of the imported text file
             verbose_I (boolean): verbosity
@@ -32,30 +42,10 @@ class SequenceProcessor():
             # read in the sequence file
             seqReader = SequenceReader()
             seqReader.read_sequenceFile(
-                sequenceHandler_IO, filenames["sequence"], delimiter)
-
+                sequenceHandler_IO, filenames["sequence_csv_i"], delimiter)
             # read in the parameters
-            fileReader = FileReader()
-            fileReader.read_openMSParams(filenames["parameters"], delimiter)
-            params = fileReader.getData()
-            fileReader.clear_data()
-
-            # check for workflow parameters integrity
-            required_parameters = [
-                "MRMMapping",
-                "ChromatogramExtractor", "MRMFeatureFinderScoring",
-                "MRMFeatureFilter.filter_MRMFeatures",
-                "MRMFeatureSelector.select_MRMFeatures_qmip",
-                "MRMFeatureSelector.schedule_MRMFeatures_qmip",
-                "MRMFeatureSelector.select_MRMFeatures_score",
-                "ReferenceDataMethods.getAndProcess_referenceData_samples",
-                "MRMFeatureValidator.validate_MRMFeatures",
-                "MRMFeatureFilter.filter_MRMFeatures.qc",
-            ]
-            for parameter in required_parameters:
-                if parameter not in params:
-                    params[parameter] = []
-            sequenceHandler_IO.parameters = params
+            seqReader.read_sequenceParameters(
+                sequenceHandler_IO, filenames["parameters_csv_i"], delimiter)
 
             # load rawDataHandler files (applies to the whole session)
             fileReaderOpenMS = FileReaderOpenMS()
@@ -76,30 +66,59 @@ class SequenceProcessor():
             pass
         
         # initialize the sequence
-        sequenceHandler_IO.
+        self.groupSamplesInSequence(sequenceHandler_IO, sequenceGroupHandler)
+        self.addRawDataHandlerToSequence(sequenceHandler_IO, rawDataHandler)
 
-        self.initializeSequence()
-
-    def initializeSequence(
-        self, 
-        sequenceHandler_IO, 
-        rawDataHandler_I, 
-        sequenceGroupHandler_I
+    def addRawDataHandlerToSequence(
+        self, sequenceHandler_IO, rawDataHandler_I
     ):
-        """Initialize the sequence using a template RawDataHandler
-        and sequenceGroupHandler
+        """Add template RawDataHandler and SequenceGroupHandler to all
+        samples and sequence groups in the sequence
         
         Args:
-        
+            sequenceHandler_IO (SequenceHandler): sequence handler
+            rawDataHandler_I (RawDataHandler): raw data handler
         """
-        pass
+        for sample in sequenceHandler_IO.sequence:
+            # pass the same object that can be reused
+            sample.raw_data = rawDataHandler_I
 
-    def processSequence(
+    def groupSamplesInSequence(self, sequenceHandler_IO, sequenceGroupHandler_I=None):
+        """group samples in a sequence
+
+        An optional template SequenceGroupHandler can be added to all groups
+        
+        Args:
+            sequenceHandler_IO (SequenceHandler): sequence handler
+            sequenceGroupHandler_I (SequenceGroupHandler): sequence group handler
+        """
+
+        sequence_groups_dict = {}
+        for cnt, sample in enumerate(sequenceHandler_IO.sequence):
+            if sample.meta_value["sequence_group_name"] not in sequence_groups_dict.keys():
+                sequence_groups_dict[sample.meta_value["sequence_group_name"]] = []
+            sequence_groups_dict[sample.meta_value["sequence_group_name"]].append(cnt)
+        
+        sequence_groups = []
+        for k, v in sequence_groups_dict.items():
+            # pass a copy that can be edited
+            if sequenceGroupHandler_I is not None:
+                sequenceGroupHandler = copy.copy(sequenceGroupHandler_I)
+            else:
+                sequenceGroupHandler = SequenceGroupHandler()
+            sequenceGroupHandler.sequence_group_name = k
+            sequenceGroupHandler.sample_indices = v
+            sequence_groups.append(sequenceGroupHandler)
+
+        sequenceHandler_IO.sequence_groups = sequence_groups
+
+    def processSequenceGroups(
         self, sequenceHandler_IO,
         sample_names=[],
         sequence_group_names=[],
         raw_data_processing_methods={},
-        sequence_group_processing_methods={}
+        sequence_group_processing_methods={},
+        verbose_I=False
     ):
         """process a sequence of samples
         
@@ -108,13 +127,12 @@ class SequenceProcessor():
             sample_names (list): name of the sample
             sequence_group_names (list): name of the sequence group
             raw_data_process_methods (list): name of the raw data method to execute
-            sequence_group_processing_methods (list): name of the sequence method to execute            
+            sequence_group_processing_methods (list): name of the sequence group
+                method to execute
         """
         # classes
         seqGroupProcessor = SequenceGroupProcessor()
-        rawDataHandler = rawDataHandler()
         rawDataProcessor = RawDataProcessor()
-        fileReaderOpenMS = FileReaderOpenMS()
 
         # process by sequence group
         for sequence_group in sequenceHandler_IO.sequence_groups:
@@ -124,16 +142,110 @@ class SequenceProcessor():
                 sequenceHandler_I=sequenceHandler_IO,
                 sample_type="Standard"
             )
-            # process the raw data
+            # pick, filter, select, and check
+            raw_data_processing_methods = \
+                sequenceHandler_IO.getDefaultRawDataProcessingWorkflow(None)
             for index in sample_indices:
-                self.processRawData(
-                    sequenceHandler_IO.sequence[index], raw_data_processing_methods)
+                rawDataProcessor.processRawData(
+                    sequenceHandler_IO.sequence[index].raw_data,
+                    raw_data_processing_methods)  # how to load files?
             # calculate the calibration curves
-            calibrators = []
+            seqGroupProcessor.optimizeCalibrationCurves(
+                sequence_group, sequenceHandler_IO)
+            # quantify and check
+            raw_data_processing_methods = {
+                "pick_peaks": False,
+                "filter_peaks": False,
+                "select_peaks": False,
+                "validate_peaks": False,
+                "quantify_peaks": True,
+                "check_peaks": True}
             for index in sample_indices:
-                if sequenceHandler_IO.sequence[index].raw_data_processing == "calculate_calibration":
-                    calibrators.append(sequenceHandler_IO.sequence[index])  # where is the actual concentrations?
+                rawDataProcessor.processRawData(
+                    sequenceHandler_IO.sequence[index].raw_data,
+                    raw_data_processing_methods)
+                # copy out the feature map
+                sequenceHandler_IO.sequence[index].featureMap = \
+                    sequenceHandler_IO.sequence[index].raw_data.featureMap
 
             # 2: process all Unknowns
-            # 3: process all Blanks, Double Blanks, and Solvents
+            sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
+                sequenceGroupHandler_I=sequence_group,
+                sequenceHandler_I=sequenceHandler_IO,
+                sample_type="Unknown"
+            )
+            for index in sample_indices:
+                # copy over updated quantitation_methods
+                sequenceHandler_IO.sequence[index].raw_data.quantitation_methods = \
+                    sequence_group.quantitation_methods
+                rawDataProcessor.processRawData(
+                    sequenceHandler_IO.sequence[index].raw_data,
+                    raw_data_processing_methods)
+                # copy out the feature map
+                sequenceHandler_IO.sequence[index].featureMap = \
+                    sequenceHandler_IO.sequence[index].raw_data.featureMap
 
+            # 3: process all QCs
+            sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
+                sequenceGroupHandler_I=sequence_group,
+                sequenceHandler_I=sequenceHandler_IO,
+                sample_type="QC"
+            )
+            for index in sample_indices:
+                # copy over updated quantitation_methods
+                sequenceHandler_IO.sequence[index].raw_data.quantitation_methods = \
+                    sequence_group.quantitation_methods
+                rawDataProcessor.processRawData(
+                    sequenceHandler_IO.sequence[index].raw_data,
+                    raw_data_processing_methods)
+                # copy out the feature map
+                sequenceHandler_IO.sequence[index].featureMap = \
+                    sequenceHandler_IO.sequence[index].raw_data.featureMap
+            # # calculate the QCs
+            # seqGroupProcessor.calculateQCs(
+            #     sequence_group, sequenceHandler_IO)
+
+            # 4: process all Blanks
+            sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
+                sequenceGroupHandler_I=sequence_group,
+                sequenceHandler_I=sequenceHandler_IO,
+                sample_type="Blank"
+            )
+            for index in sample_indices:
+                # copy over updated quantitation_methods
+                sequenceHandler_IO.sequence[index].raw_data.quantitation_methods = \
+                    sequence_group.quantitation_methods
+                rawDataProcessor.processRawData(
+                    sequenceHandler_IO.sequence[index].raw_data,
+                    raw_data_processing_methods)
+                # copy out the feature map
+                sequenceHandler_IO.sequence[index].featureMap = \
+                    sequenceHandler_IO.sequence[index].raw_data.featureMap
+            
+            # 5: process all Double Blanks
+            sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
+                sequenceGroupHandler_I=sequence_group,
+                sequenceHandler_I=sequenceHandler_IO,
+                sample_type="Double Blank"
+            )
+            for index in sample_indices:
+                rawDataProcessor.processRawData(
+                    sequenceHandler_IO.sequence[index].raw_data,
+                    raw_data_processing_methods)
+
+            # 6: process all Solvents
+            sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
+                sequenceGroupHandler_I=sequence_group,
+                sequenceHandler_I=sequenceHandler_IO,
+                sample_type="Solvent"
+            )
+            for index in sample_indices:
+                rawDataProcessor.processRawData(
+                    sequenceHandler_IO.sequence[index].raw_data,
+                    raw_data_processing_methods)
+                # copy out the feature map
+                sequenceHandler_IO.sequence[index].featureMap = \
+                    sequenceHandler_IO.sequence[index].raw_data.featureMap
+            # # calculate the carryover
+            # seqGroupProcessor.calculateCarryover(
+            #     sequence_group, sequenceHandler_IO)
