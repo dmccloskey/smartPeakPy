@@ -211,3 +211,33 @@ class TestRawDataProcessor():
             1].getMetaValue("calculated_concentration") == 0.44335812456518986) 
         assert(rawDataHandler.featureMap[0].getSubordinates()[
             1].getMetaValue("concentration_units") == b'uM')
+
+    def test_checkFeatures(self):
+        self.load_data()
+        rawDataHandler = RawDataHandler()
+        rawDataProcessor = RawDataProcessor()
+        fileReaderOpenMS = FileReaderOpenMS()
+        
+        # load traML
+        traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
+        fileReaderOpenMS.load_TraML(rawDataHandler, {'traML_csv_i': traML_csv_i})
+
+        # load featureMap
+        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_2") 
+        fileReaderOpenMS.load_featureMap(rawDataHandler, {'featureXML_i': featureXML_o})
+
+        mrmfeatureqcs_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+        fileReaderOpenMS.load_featureQC(
+            rawDataHandler,
+            filenames_I={'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i}
+            )
+        rawDataProcessor.checkFeatures(
+            rawDataHandler,
+            self.params_1['MRMFeatureFilter.filter_MRMFeatures.qc'])
+
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
+                1].getMetaValue("native_id") == b'23dpg.23dpg_1.Light')
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
+            1].getMetaValue("QC_transition_pass")) 
+        # assert(rawDataHandler.featureMap[0].getSubordinates()[
+        #     1].getMetaValue("QC_transition_group_pass"))

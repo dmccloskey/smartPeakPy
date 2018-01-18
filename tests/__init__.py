@@ -129,6 +129,7 @@ def runAllTests():
     test.test_filterAndSelect()
     test.test_validateFeatures()
     test.test_quantifyComponents()
+    test.test_checkFeatures()
 
     from tests.test_core_SequenceHandler import TestSequenceHandler
     test = TestSequenceHandler()
