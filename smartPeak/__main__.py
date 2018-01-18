@@ -328,7 +328,8 @@ class __main__():
                         {'quantitationMethods_csv_i': quantitationMethods_csv_i},
                         verbose_I=verbose_I)
                     # quantify the components
-                    rawDataProcessor.quantifyComponents(rawDataHandler, verbose_I=verbose_I)
+                    rawDataProcessor.quantifyComponents(
+                        rawDataHandler, verbose_I=verbose_I)
                     fileWriterOpenMS.store_featureMap(
                         rawDataHandler, {
                             'featureXML_o': featureXML_o,
@@ -364,7 +365,7 @@ class __main__():
                         )
                     rawDataProcessor.checkFeatures(
                         rawDataHandler,
-                        MRMFeatureFilter_filter_params_I=params[
+                        MRMFeatureFilter_qc_params_I=params[
                             'MRMFeatureFilter.filter_MRMFeatures.qc'],
                         verbose_I=verbose_I
                     )

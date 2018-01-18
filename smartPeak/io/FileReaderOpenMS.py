@@ -488,5 +488,5 @@ class FileReaderOpenMS():
         # read in the parameters for the MRMFeatureQC
         featureQC = pyopenms.MRMFeatureQC()
         featureQCFile = pyopenms.MRMFeatureQCFile()
-        featureQCFile.load(mrmfeaturefilter_csv_i.encode('utf-8'), featureQC)
+        featureQCFile.load(mrmfeatureqcs_csv_i.encode('utf-8'), featureQC)
         rawDataHandler_IO.feature_qc = featureQC

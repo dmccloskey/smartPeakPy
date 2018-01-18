@@ -145,6 +145,8 @@ def runAllTests():
     test = TestSequenceReader()
     test.test_parse_sequenceFile()
     test.test_read_sequenceFile()
+    test.test_parse_sequenceParameters()
+    test.test_read_sequenceParameters()
 
     from tests.test_main import testMain
     test = testMain()

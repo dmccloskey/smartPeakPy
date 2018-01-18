@@ -146,7 +146,7 @@ run_AbsoluteQuantitation,filter_peaks,bool,TRUE,,,Filter peaks using OpenSWATH,T
 run_AbsoluteQuantitation,select_peaks,bool,TRUE,,,Select peaks using OpenSWATH,TRUE,TRUE,
 run_AbsoluteQuantitation,validate_peaks,bool,FALSE,,,Validate peaks by checking against a reference database,TRUE,FALSE,
 run_AbsoluteQuantitation,quantify_peaks,bool,TRUE,,,Quantify peaks using IDMS,TRUE,TRUE,
-run_AbsoluteQuantitation,plot_peaks,bool,TRUE,,,Export annotated peaks for diagnostics,TRUE,FALSE,
+run_AbsoluteQuantitation,plot_peaks,bool,FALSE,,,Export annotated peaks for diagnostics,TRUE,FALSE,
 run_AbsoluteQuantitation,check_peaks,bool,TRUE,,,QC peaks using OpenSWATH,TRUE,TRUE,
 run_AbsoluteQuantitation,verbose_I,bool,TRUE,,,verbosity,TRUE,TRUE,
 FeaturePlotter,export_format,string,pdf,pdf,,The export format of the plot,TRUE,,

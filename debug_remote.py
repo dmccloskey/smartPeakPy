@@ -17,5 +17,13 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-from tests import runAllTests
-runAllTests()
+
+from tests.test_io_SequenceReader import TestSequenceReader
+test = TestSequenceReader()
+test.test_parse_sequenceFile()
+test.test_read_sequenceFile()
+test.test_parse_sequenceParameters()
+test.test_read_sequenceParameters()
+
+# from tests import runAllTests
+# runAllTests()
