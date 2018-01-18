@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from .SequenceGroupProcessor import SequenceGroupProcessor
+from .SequenceGroupHandler import SequenceGroupHandler
+from .RawDataHandler import RawDataHandler
 from smartPeak.io.SequenceReader import SequenceReader
 from smartPeak.io.FileReader import FileReader
 from smartPeak.io.FileReaderOpenMS import FileReaderOpenMS
@@ -17,11 +19,16 @@ class SequenceProcessor():
         """Create a new session from files or wizard
         
         Args:
+            sequenceHandler_IO (SequenceHandler):
             filenames (dict): map of filetype to filename
+            delimiter (str): string delimiter of the imported text file
+            verbose_I (boolean): verbosity
         """
+        rawDataHandler = RawDataHandler()
+        sequenceGroupHandler = SequenceGroupHandler()
 
+        # load sequence assets
         if filenames:  # load sequence from disk files 
-
             # read in the sequence file
             seqReader = SequenceReader()
             seqReader.read_sequenceFile(
@@ -53,18 +60,39 @@ class SequenceProcessor():
             # load rawDataHandler files (applies to the whole session)
             fileReaderOpenMS = FileReaderOpenMS()
             fileReaderOpenMS.load_TraML(
-                sequenceHandler_IO, filenames, verbose_I=verbose_I)
+                rawDataHandler, filenames, verbose_I=verbose_I)
             fileReaderOpenMS.load_featureFilter(
-                sequenceHandler_IO, filenames, verbose_I=verbose_I)
+                rawDataHandler, filenames, verbose_I=verbose_I)
             fileReaderOpenMS.load_featureQC(
-                sequenceHandler_IO, filenames, verbose_I=verbose_I)
+                rawDataHandler, filenames, verbose_I=verbose_I)
             # raw data files (i.e., mzML will be loaded dynamically)
 
             # load sequenceGroupHandler files
             fileReaderOpenMS.load_quantitationMethods(
-                sequenceHandler_IO, filenames, verbose_I=verbose_I)
+                sequenceGroupHandler, filenames, verbose_I=verbose_I)
             fileReaderOpenMS.load_standardsConcentrations(
-                sequenceHandler_IO, filenames, verbose_I=verbose_I)            
+                sequenceGroupHandler, filenames, verbose_I=verbose_I)         
+        else:  # load sequence from GUI
+            pass
+        
+        # initialize the sequence
+        sequenceHandler_IO.
+
+        self.initializeSequence()
+
+    def initializeSequence(
+        self, 
+        sequenceHandler_IO, 
+        rawDataHandler_I, 
+        sequenceGroupHandler_I
+    ):
+        """Initialize the sequence using a template RawDataHandler
+        and sequenceGroupHandler
+        
+        Args:
+        
+        """
+        pass
 
     def processSequence(
         self, sequenceHandler_IO,
