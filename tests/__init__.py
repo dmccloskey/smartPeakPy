@@ -152,6 +152,11 @@ def runAllTests():
     test.test_parse_sequenceParameters()
     test.test_read_sequenceParameters()
 
+    from tests.test_core_SequenceGroupProcessor import TestSequenceGroupProcessor
+    test = TestSequenceGroupProcessor()
+    test.test_getSampleIndicesBySampleType()
+    test.test_optimizeCalibrationCurves()
+
     from tests.test_main import testMain
     test = testMain()
     test.test_main_LCMS_MRM()

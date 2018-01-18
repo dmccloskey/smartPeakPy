@@ -18,26 +18,32 @@ class SequenceGroupProcessor():
         Args:
             sequenceGroupHandler_I (SequenceGroupHandler)
             sequenceHandler_I (SequenceHandler)
-            sequence_group_name (str)
             sample_type (str)
             
         """
 
         sample_indices = []
         for index in sequenceGroupHandler_I.sample_indices:
-            if sequenceHandler_I.sequence[index].meta_value["sample_type"] == sample_type:
+            if sequenceHandler_I.sequence[index].meta_data["sample_type"] == sample_type:
                 sample_indices.append(index)
         return sample_indices
 
     def optimizeCalibrationCurves(self, sequenceGroupHandler_IO, sequenceHandler_I):
-        """ """
+        """Optimize the calibration curve for all components
+        
+        Args:
+            sequenceGroupHandler_I (SequenceGroupHandler)
+            sequenceHandler_I (SequenceHandler)
+            
+        """
 
         # get all standards
         standards_indices = self.getSampleIndicesBySampleType(
             sequenceGroupHandler_IO, sequenceHandler_I,
             "Standard"
         )
-        standards_featureMaps = [sequenceHandler_I.sequence[index].featureMap for index in standards_indices]
+        standards_featureMaps = [
+            sequenceHandler_I.sequence[index].featureMap for index in standards_indices]
 
         # map standards to features
         components_to_concentrations = {}       
@@ -66,3 +72,4 @@ class SequenceGroupProcessor():
                 processing methods
             
         """
+        pass
