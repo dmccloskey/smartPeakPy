@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# modules
 from smartPeak.core.SequenceGroupProcessor import SequenceGroupProcessor
 from smartPeak.core.SequenceGroupHandler import SequenceGroupHandler
 from smartPeak.core.SequenceHandler import SequenceHandler

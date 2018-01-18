@@ -86,9 +86,9 @@ class SequenceProcessor():
 
         sequence_groups_dict = {}
         for cnt, sample in enumerate(sequenceHandler_IO.sequence):
-            if sample.meta_value["sequence_group_name"] not in sequence_groups_dict.keys():
-                sequence_groups_dict[sample.meta_value["sequence_group_name"]] = []
-            sequence_groups_dict[sample.meta_value["sequence_group_name"]].append(cnt)
+            if sample.meta_data["sequence_group_name"] not in sequence_groups_dict.keys():
+                sequence_groups_dict[sample.meta_data["sequence_group_name"]] = []
+            sequence_groups_dict[sample.meta_data["sequence_group_name"]].append(cnt)
         
         sequence_groups = []
         for k, v in sequence_groups_dict.items():

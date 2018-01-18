@@ -141,6 +141,11 @@ def runAllTests():
     test.test_getDefaultRawDataProcessingWorkflow()
     test.test_getDefaultSequenceGroupProcessingWorkflow()
 
+    from tests.test_core_SequenceProcessor import TestSequenceProcessor
+    test = TestSequenceProcessor()
+    test.test_groupSamplesInSequence()
+    test.test_addRawDataHandlerToSequence()
+
     from tests.test_io_SequenceWriter import TestSequenceWriter
     test = TestSequenceWriter()
     test.test_makeDataMatrixFromMetaValue()
