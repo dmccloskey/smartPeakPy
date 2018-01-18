@@ -17,13 +17,16 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-
-from tests.test_io_SequenceReader import TestSequenceReader
-test = TestSequenceReader()
-test.test_parse_sequenceFile()
-test.test_read_sequenceFile()
-test.test_parse_sequenceParameters()
-test.test_read_sequenceParameters()
+from tests.test_io_FileReaderOpenMS import TestFileReaderOpenMS
+test = TestFileReaderOpenMS()
+test.test_load_traML()
+test.test_load_MSExperiment()
+test.test_load_Trafo()
+test.test_load_featureMap()
+test.test_load_quantitationMethods()
+# test.test_load_standardsConcentrations()
+test.test_load_featureFilter()
+test.test_load_featureQC()
 
 # from tests import runAllTests
 # runAllTests()

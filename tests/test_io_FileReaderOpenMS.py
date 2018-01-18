@@ -161,3 +161,31 @@ class TestFileReaderOpenMS():
         assert(sequenceGroupHandler.standards_concentrations[0].getULOQ() == 2.5)
         assert(sequenceGroupHandler.standards_concentrations[
             0].getComponentName() == b'23dpg.23dpg_1.Light')
+
+    def test_load_featureFilter(self):
+        rawDataHandler = RawDataHandler()
+        fileReaderOpenMS = FileReaderOpenMS()
+
+        # load traML
+        mrmfeaturefilter_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+        fileReaderOpenMS.load_featureFilter(rawDataHandler, {
+            'mrmfeaturefilter_csv_i': mrmfeaturefilter_csv_i})
+        assert(rawDataHandler.feature_filter.component_qcs[
+            0].component_name == b'arg-L.arg-L_1.Heavy')
+        assert(rawDataHandler.feature_filter.component_group_qcs[
+            0].component_group_name == b'arg-L')
+
+    def test_load_featureQC(self):
+        rawDataHandler = RawDataHandler()
+        fileReaderOpenMS = FileReaderOpenMS()
+
+        # load traML
+        mrmfeatureqcs_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+        fileReaderOpenMS.load_featureQC(rawDataHandler, {
+            'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i})
+        assert(rawDataHandler.feature_qc.component_qcs[
+            0].component_name == b'arg-L.arg-L_1.Heavy')
+        assert(rawDataHandler.feature_qc.component_group_qcs[
+            0].component_group_name == b'arg-L')
+
+    

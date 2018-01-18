@@ -115,6 +115,8 @@ def runAllTests():
     test.test_load_featureMap()
     test.test_load_quantitationMethods()
     # test.test_load_standardsConcentrations()
+    test.test_load_featureFilter()
+    test.test_load_featureQC()
 
     from tests.test_io_FileWriterOpenMS import TestFileWriterOpenMS
     test = TestFileWriterOpenMS()
