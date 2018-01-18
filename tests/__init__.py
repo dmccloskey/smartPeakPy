@@ -145,6 +145,7 @@ def runAllTests():
     test = TestSequenceProcessor()
     test.test_groupSamplesInSequence()
     test.test_addRawDataHandlerToSequence()
+    test.test_createSequence()
 
     from tests.test_io_SequenceWriter import TestSequenceWriter
     test = TestSequenceWriter()

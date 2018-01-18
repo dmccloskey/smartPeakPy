@@ -51,8 +51,8 @@ class SequenceProcessor():
             # load sequenceGroupHandler files
             fileReaderOpenMS.load_quantitationMethods(
                 sequenceGroupHandler, filenames, verbose_I=verbose_I)
-            fileReaderOpenMS.load_standardsConcentrations(
-                sequenceGroupHandler, filenames, verbose_I=verbose_I)         
+            # fileReaderOpenMS.load_standardsConcentrations(
+            #     sequenceGroupHandler, filenames, verbose_I=verbose_I)         
         else:  # load sequence from GUI
             pass
         
@@ -139,10 +139,12 @@ class SequenceProcessor():
             for index in sample_indices:
                 rawDataProcessor.processRawData(
                     sequenceHandler_IO.sequence[index].raw_data,
-                    raw_data_processing_methods)  # how to load files?
+                    raw_data_processing_methods,
+                    sequenceHandler_IO.parameters,
+                    sequenceHandler_IO.sequence[index].meta_data["filename"])
             # calculate the calibration curves
             seqGroupProcessor.optimizeCalibrationCurves(
-                sequence_group, sequenceHandler_IO)
+                sequence_group, sequenceHandler_IO)  # TODO: fix bug
             # quantify and check
             raw_data_processing_methods = {
                 "pick_peaks": False,
@@ -154,7 +156,8 @@ class SequenceProcessor():
             for index in sample_indices:
                 rawDataProcessor.processRawData(
                     sequenceHandler_IO.sequence[index].raw_data,
-                    raw_data_processing_methods)
+                    raw_data_processing_methods,
+                    sequenceHandler_IO.parameters)
                 # copy out the feature map
                 sequenceHandler_IO.sequence[index].featureMap = \
                     sequenceHandler_IO.sequence[index].raw_data.featureMap
@@ -171,7 +174,9 @@ class SequenceProcessor():
                     sequence_group.quantitation_methods
                 rawDataProcessor.processRawData(
                     sequenceHandler_IO.sequence[index].raw_data,
-                    raw_data_processing_methods)
+                    sequenceHandler_IO.sequence[index].raw_data_processing,
+                    sequenceHandler_IO.parameters,
+                    sequenceHandler_IO.sequence[index].meta_data["filename"])
                 # copy out the feature map
                 sequenceHandler_IO.sequence[index].featureMap = \
                     sequenceHandler_IO.sequence[index].raw_data.featureMap
@@ -188,7 +193,9 @@ class SequenceProcessor():
                     sequence_group.quantitation_methods
                 rawDataProcessor.processRawData(
                     sequenceHandler_IO.sequence[index].raw_data,
-                    raw_data_processing_methods)
+                    sequenceHandler_IO.sequence[index].raw_data_processing,
+                    sequenceHandler_IO.parameters,
+                    sequenceHandler_IO.sequence[index].meta_data["filename"])
                 # copy out the feature map
                 sequenceHandler_IO.sequence[index].featureMap = \
                     sequenceHandler_IO.sequence[index].raw_data.featureMap
@@ -208,7 +215,9 @@ class SequenceProcessor():
                     sequence_group.quantitation_methods
                 rawDataProcessor.processRawData(
                     sequenceHandler_IO.sequence[index].raw_data,
-                    raw_data_processing_methods)
+                    sequenceHandler_IO.sequence[index].raw_data_processing,
+                    sequenceHandler_IO.parameters,
+                    sequenceHandler_IO.sequence[index].meta_data["filename"])
                 # copy out the feature map
                 sequenceHandler_IO.sequence[index].featureMap = \
                     sequenceHandler_IO.sequence[index].raw_data.featureMap
@@ -222,7 +231,9 @@ class SequenceProcessor():
             for index in sample_indices:
                 rawDataProcessor.processRawData(
                     sequenceHandler_IO.sequence[index].raw_data,
-                    raw_data_processing_methods)
+                    sequenceHandler_IO.sequence[index].raw_data_processing,
+                    sequenceHandler_IO.parameters,
+                    sequenceHandler_IO.sequence[index].meta_data["filename"])
 
             # 6: process all Solvents
             sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
@@ -233,7 +244,9 @@ class SequenceProcessor():
             for index in sample_indices:
                 rawDataProcessor.processRawData(
                     sequenceHandler_IO.sequence[index].raw_data,
-                    raw_data_processing_methods)
+                    sequenceHandler_IO.sequence[index].raw_data_processing,
+                    sequenceHandler_IO.parameters,
+                    sequenceHandler_IO.sequence[index].meta_data["filename"])
                 # copy out the feature map
                 sequenceHandler_IO.sequence[index].featureMap = \
                     sequenceHandler_IO.sequence[index].raw_data.featureMap

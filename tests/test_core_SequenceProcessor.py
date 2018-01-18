@@ -3,6 +3,7 @@ from smartPeak.core.RawDataHandler import RawDataHandler
 from smartPeak.core.SequenceGroupHandler import SequenceGroupHandler
 from smartPeak.core.SequenceProcessor import SequenceProcessor
 from smartPeak.core.SequenceHandler import SequenceHandler
+from . import data_dir
 import copy
 
 
@@ -84,7 +85,65 @@ class TestSequenceProcessor():
         assert(sequenceHandler.sequence[2].raw_data.featureMap == "Test")
 
     def test_createSequence(self):
-        pass
+        sequenceHandler = SequenceHandler()
+        sequenceProcessor = SequenceProcessor()
+
+        filenames = {
+            'sequence_csv_i': '''%s%s''' % (data_dir, "sequence_1.csv"),
+            'parameters_csv_i': '''%s%s''' % (data_dir, "params_1.csv"),
+            'traML_csv_i': '''%s%s''' % (data_dir, "traML_1.csv"),
+            'mrmfeaturefilter_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
+            'quantitationMethods_csv_i': '''%s%s''' % (
+                data_dir, "quantitationMethods_1.csv"),
+            'standardsConcentrations_csv_i': '''%s%s''' % (
+                data_dir, "standardsConcentrations_1.csv"),
+            'mrmfeatureqcs_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
+            }
+
+        sequenceProcessor.createSequence(
+            sequenceHandler, 
+            filenames=filenames,
+            delimiter=","
+        )
+
+        assert(sequenceHandler.sequence[0].meta_data[
+            "sample_name"] == "170808_Jonathan_yeast_Sacc1_1x")
+        assert(sequenceHandler.sequence[0].meta_data[
+            "sample_group_name"] == "Test01")
+        assert(sequenceHandler.sequence[
+            0].raw_data.targeted.getTransitions()[
+            0].getPeptideRef() == b'arg-L')
+        assert(sequenceHandler.sequence[
+            0].raw_data.feature_filter.component_qcs[
+            0].component_name == b'arg-L.arg-L_1.Heavy')
+        assert(sequenceHandler.sequence[
+            0].raw_data.feature_qc.component_qcs[
+            0].component_name == b'arg-L.arg-L_1.Heavy')
+        assert(len(sequenceHandler.sequence_groups) == 1)
+        assert(sequenceHandler.sequence_groups[
+            0].quantitation_methods[
+            0].getComponentName() == b'23dpg.23dpg_1.Light')
 
     def test_processSequenceGroups(self):
-        pass
+        sequenceHandler = SequenceHandler()
+        sequenceProcessor = SequenceProcessor()
+
+        filenames = {
+            'sequence_csv_i': '''%s%s''' % (data_dir, "sequence_1.csv"),
+            'parameters_csv_i': '''%s%s''' % (data_dir, "params_1.csv"),
+            'traML_csv_i': '''%s%s''' % (data_dir, "traML_1.csv"),
+            'mrmfeaturefilter_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
+            'quantitationMethods_csv_i': '''%s%s''' % (
+                data_dir, "quantitationMethods_1.csv"),
+            'standardsConcentrations_csv_i': '''%s%s''' % (
+                data_dir, "standardsConcentrations_1.csv"),
+            'mrmfeatureqcs_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
+            }
+
+        sequenceProcessor.createSequence(
+            sequenceHandler, 
+            filenames=filenames,
+            delimiter=","
+        )
+        sequenceProcessor.processSequenceGroups(
+            sequenceHandler)

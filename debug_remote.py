@@ -21,6 +21,8 @@ from tests.test_core_SequenceProcessor import TestSequenceProcessor
 test = TestSequenceProcessor()
 test.test_groupSamplesInSequence()
 test.test_addRawDataHandlerToSequence()
+test.test_createSequence()
+test.test_processSequenceGroups()
 
 # from tests import runAllTests
 # runAllTests()
