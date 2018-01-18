@@ -82,3 +82,9 @@ class TestSequenceProcessor():
         assert(sequenceHandler.sequence[0].raw_data.featureMap == "Test")
         assert(sequenceHandler.sequence[1].raw_data.featureMap == "Test")
         assert(sequenceHandler.sequence[2].raw_data.featureMap == "Test")
+
+    def test_createSequence(self):
+        pass
+
+    def test_processSequenceGroups(self):
+        pass
