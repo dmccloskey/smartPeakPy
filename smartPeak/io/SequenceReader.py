@@ -61,7 +61,8 @@ class SequenceReader():
         # check for workflow parameters integrity
         required_parameters = [
             "MRMMapping",
-            "ChromatogramExtractor", "MRMFeatureFinderScoring",
+            "ChromatogramExtractor", 
+            "MRMFeatureFinderScoring",
             "MRMFeatureFilter.filter_MRMFeatures",
             "MRMFeatureSelector.select_MRMFeatures_qmip",
             "MRMFeatureSelector.schedule_MRMFeatures_qmip",

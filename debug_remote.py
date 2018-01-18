@@ -19,7 +19,7 @@ m = __main__()
 
 from tests.test_core_RawDataProcessor import TestRawDataProcessor
 test = TestRawDataProcessor()
-test.test_checkFeatures()
+test.test_processRawData()
 
 # from tests import runAllTests
 # runAllTests()

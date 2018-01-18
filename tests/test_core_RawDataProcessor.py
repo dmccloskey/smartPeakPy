@@ -241,3 +241,68 @@ class TestRawDataProcessor():
             1].getMetaValue("QC_transition_pass")) 
         # assert(rawDataHandler.featureMap[0].getSubordinates()[
         #     1].getMetaValue("QC_transition_group_pass"))
+
+    def test_processRawData(self):
+        self.load_data()
+        rawDataHandler = RawDataHandler()
+        rawDataProcessor = RawDataProcessor()
+        fileReaderOpenMS = FileReaderOpenMS()
+        
+        # load files
+        traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
+        fileReaderOpenMS.load_TraML(rawDataHandler, {'traML_csv_i': traML_csv_i})
+        mrmfeaturefilter_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+        fileReaderOpenMS.load_featureFilter(
+            rawDataHandler,
+            filenames_I={'mrmfeaturefilter_csv_i': mrmfeaturefilter_csv_i}
+            )
+        quantitationMethods_csv_i = '''%s%s''' % (
+            data_dir, "quantitationMethods_1.csv")
+        fileReaderOpenMS.load_quantitationMethods(
+            rawDataHandler,
+            {'quantitationMethods_csv_i': quantitationMethods_csv_i})
+        mrmfeatureqcs_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+        fileReaderOpenMS.load_featureQC(
+            rawDataHandler,
+            filenames_I={'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i}
+            )
+
+        # test all
+        raw_data_processing_methods = {
+            "pick_peaks": True,
+            "filter_peaks": True,
+            "select_peaks": True,
+            "validate_peaks": False,
+            "quantify_peaks": True,
+            "check_peaks": True,
+            "plot_peaks": False}
+
+        mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
+        filenames = {'mzML_feature_i': mzML_i}
+        self.params_1.update({'ChromatogramExtractor': []})
+
+        rawDataProcessor.processRawData(
+            rawDataHandler, 
+            raw_data_processing_methods=raw_data_processing_methods,
+            parameters=self.params_1,
+            filenames=filenames,
+        )
+
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
+            1].getMetaValue("QC_transition_pass")) 
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
+            1].getMetaValue("calculated_concentration") == 0.44335812456518986) 
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
+            1].getMetaValue("concentration_units") == b'uM')
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
+            0].getMetaValue("peak_apex_int") == 266403.0)
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
+            0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
+            0].getRT() == 15.894456338119507)  # refactor to use pytest.approx
+        assert(rawDataHandler.featureMap[50].getSubordinates()[
+            0].getMetaValue("peak_apex_int") == 198161.0)
+        assert(rawDataHandler.featureMap[50].getSubordinates()[
+            0].getMetaValue("native_id") == b'glutacon.glutacon_1.Heavy')
+        assert(rawDataHandler.featureMap[50].getSubordinates()[
+            0].getRT() == 12.546641343688965)

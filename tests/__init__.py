@@ -130,6 +130,7 @@ def runAllTests():
     test.test_validateFeatures()
     test.test_quantifyComponents()
     test.test_checkFeatures()
+    test.test_processRawData()
 
     from tests.test_core_SequenceHandler import TestSequenceHandler
     test = TestSequenceHandler()

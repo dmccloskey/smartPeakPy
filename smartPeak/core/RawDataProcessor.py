@@ -351,6 +351,10 @@ class RawDataProcessor():
                 MRMMapping_params_I=parameters['MRMMapping'],
                 chromatogramExtractor_params_I=parameters['ChromatogramExtractor'],
                 verbose_I=verbose_I)
+            fileReaderOpenMS.load_Trafo(  # skip, no transformation of RT
+                rawDataHandler_IO, 
+                {},
+                MRMFeatureFinderScoring_params_I=parameters['MRMFeatureFinderScoring'])
 
             if raw_data_processing_methods["pick_peaks"]:
                 self.pickFeatures(
@@ -416,7 +420,7 @@ class RawDataProcessor():
             if raw_data_processing_methods["check_peaks"]:
                 self.checkFeatures(
                     rawDataHandler_IO,
-                    MRMFeatureFilter_filter_params_I=parameters[
+                    MRMFeatureFilter_qc_params_I=parameters[
                         'MRMFeatureFilter.filter_MRMFeatures.qc'],
                     verbose_I=verbose_I)
         except Exception as e:
