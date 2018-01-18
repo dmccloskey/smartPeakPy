@@ -10,15 +10,6 @@ import copy
 
 class SequenceProcessor():
 
-    def __init__(self):
-        self.parameters = None
-
-    def setParameters(self, parameters_I):
-        self.parameters = parameters_I
-
-    def getParameters(self):
-        return self.parameters
-
     def createSequence(
         self,
         sequenceHandler_IO, 

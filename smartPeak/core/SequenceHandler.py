@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .SampleHandler import SampleHandler
-from .SequenceGroupHandler import SequenceGroupHandler
+# import logging
 
 
 class SequenceHandler():
@@ -22,10 +22,26 @@ class SequenceHandler():
         self.index_to_sample = {}
         self.sample_to_index = {}
         self.sequence_groups = []
+        self.parameters = None
+        # self.error_log = None
+
+    def setParameters(self, parameters_I):
+        self.parameters = parameters_I
+
+    def getParameters(self):
+        return self.parameters
 
     def getSequence(self):
         """Return sequence"""
         return self.sequence
+
+    # def setErrorLogging(self):
+    #     # https://docs.python.org/3/howto/logging.html#logging-basic-tutorial
+    #     self.error_log.basicConfig(
+    #         filename='example.log',
+    #         level=logging.DEBUG,
+    #         format='%(asctime)s %(levelname)s:%(message)s', 
+    #         datefmt='%m/%d/%Y %I:%M:%S %p')
 
     def addSampleToSequence(
         self, meta_data_I, featureMap_I, 

@@ -341,28 +341,87 @@ class RawDataProcessor():
             
         """
 
-        # load dynamic assets
-        fileReaderOpenMS = FileReaderOpenMS()              
-        fileReaderOpenMS.load_SWATHorDIA(rawDataHandler_IO, {})
-        fileReaderOpenMS.load_MSExperiment(
-            rawDataHandler_IO, 
-            filenames,
-            MRMMapping_parameters_I=parameters['MRMMapping'],
-            chromatogramExtractor_parameters_I=parameters['ChromatogramExtractor'],
-            verbose_I=verbose_I)
+        try:
+            # load dynamic assets
+            fileReaderOpenMS = FileReaderOpenMS()              
+            fileReaderOpenMS.load_SWATHorDIA(rawDataHandler_IO, {})
+            fileReaderOpenMS.load_MSExperiment(
+                rawDataHandler_IO, 
+                filenames,
+                MRMMapping_parameters_I=parameters['MRMMapping'],
+                chromatogramExtractor_parameters_I=parameters['ChromatogramExtractor'],
+                verbose_I=verbose_I)
 
-        if raw_data_processing_methods["pick_peaks"]:
-            pass
-        if raw_data_processing_methods["filter_peaks"]:
-            pass
-        if raw_data_processing_methods["select_peaks"]:
-            pass
-        if raw_data_processing_methods["validate_peaks"]:
-            pass
-        if raw_data_processing_methods["quantify_peaks"]:
-            pass
-        if raw_data_processing_methods["plot_peaks"]:
-            pass
-        if raw_data_processing_methods["check_peaks"]:
-            pass
-        
+            if raw_data_processing_methods["pick_peaks"]:
+                self.pickFeatures(
+                    rawDataHandler_IO,
+                    parameters['MRMFeatureFinderScoring'],
+                    verbose_I=verbose_I)
+            if raw_data_processing_methods["filter_peaks"]:
+                self.filterFeatures(
+                    rawDataHandler_IO,
+                    parameters['MRMFeatureFilter.filter_MRMFeatures'],
+                    verbose_I=verbose_I)
+            if raw_data_processing_methods["select_peaks"]:
+                self.selectFeatures(
+                    rawDataHandler_IO,
+                    # qmip algorithm
+                    MRMFeatureSelector_select_params_I=parameters[
+                        'MRMFeatureSelector.select_MRMFeatures_qmip'],
+                    MRMFeatureSelector_schedule_params_I=parameters[
+                        'MRMFeatureSelector.schedule_MRMFeatures_qmip'],
+                    # score algorithm
+                    # MRMFeatureSelector_select_params_I=parameters[
+                    #     'MRMFeatureSelector.select_MRMFeatures_score'],
+                    # MRMFeatureSelector_schedule_params_I={},
+                    verbose_I=verbose_I)
+            if raw_data_processing_methods["validate_peaks"]:
+                # load in the validation data 
+                # (if no data is found, continue to the next sample)
+                ReferenceDataMethods_params_I = []
+                ReferenceDataMethods_params_I.extend(
+                    parameters['ReferenceDataMethods.getAndProcess_referenceData_samples']
+                    )
+                sample_names_I = '''['%s']''' % (rawDataHandler_IO.meta_data["sample_name"])
+                ReferenceDataMethods_params_I.append({
+                    'description': '', 'name': 'sample_names_I', 
+                    'type': 'list', 'value': sample_names_I})
+                fileReaderOpenMS.load_validationData(
+                    rawDataHandler_IO,
+                    filenames,
+                    ReferenceDataMethods_params_I,
+                    verbose_I=verbose_I
+                    )
+                # TODO: add error class
+                # if not rawDataHandler.reference_data:
+                #     skipped_samples.append({
+                #         'sample_name': rawDataHandler_IO.meta_data["sample_name"],
+                #         'error_message': 'no reference data found'})
+                #     print(
+                #         'Reference data not found for sample ' +
+                #         rawDataHandler_IO.meta_data["sample_name"] + '.')
+                self.validateFeatures(
+                    rawDataHandler_IO,
+                    parameters['MRMFeatureValidator.validate_MRMFeatures'],
+                    verbose_I=verbose_I)
+            if raw_data_processing_methods["plot_peaks"]:
+                self.export_featurePlots(
+                    rawDataHandler_IO,
+                    filenames_I=filenames,
+                    FeaturePlotter_params_I=parameters[
+                        'FeaturePlotter'],
+                    verbose_I=verbose_I)
+            if raw_data_processing_methods["quantify_peaks"]:
+                self.quantifyComponents(rawDataHandler_IO, verbose_I=verbose_I)
+            if raw_data_processing_methods["check_peaks"]:
+                self.checkFeatures(
+                    rawDataHandler_IO,
+                    MRMFeatureFilter_filter_params_I=parameters[
+                        'MRMFeatureFilter.filter_MRMFeatures.qc'],
+                    verbose_I=verbose_I)
+        except Exception as e:
+            print(e)
+            # TODO: add error class
+            # skipped_samples.append({
+            #     'sample_name': sequence.meta_data["sample_name"],
+            #     'error_message': e})
