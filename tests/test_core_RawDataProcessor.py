@@ -263,28 +263,25 @@ class TestRawDataProcessor():
             )
 
         # test all
-        raw_data_processing_methods = {
-            "load_raw_data": True,
-            "load_peaks": False,
-            "pick_peaks": True,
-            "filter_peaks": True,
-            "select_peaks": True,
-            "validate_peaks": False,
-            "quantify_peaks": True,
-            "check_peaks": True,
-            "plot_peaks": False,
-            "store_peaks": False}
+        raw_data_processing_events = [
+            "load_raw_data",
+            "pick_features",
+            "filter_features",
+            "select_features",
+            "quantify_features",
+            "check_features"]
 
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
         filenames = {'mzML_i': mzML_i}
         self.params_1.update({'ChromatogramExtractor': []})
 
-        rawDataProcessor.processRawData(
-            rawDataHandler, 
-            raw_data_processing_methods=raw_data_processing_methods,
-            parameters=self.params_1,
-            filenames=filenames,
-        )
+        for event in raw_data_processing_events:
+            rawDataProcessor.processRawData(
+                rawDataHandler, 
+                event,
+                parameters=self.params_1,
+                filenames=filenames,
+            )
 
         assert(rawDataHandler.featureMap[0].getSubordinates()[
             1].getMetaValue("QC_transition_pass")) 

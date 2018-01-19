@@ -17,5 +17,9 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-from tests import runAllTests
-runAllTests()
+from tests.test_core_RawDataProcessor import TestRawDataProcessor
+test = TestRawDataProcessor()
+test.test_processRawData()
+
+# from tests import runAllTests
+# runAllTests()

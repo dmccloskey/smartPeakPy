@@ -326,22 +326,23 @@ class RawDataProcessor():
     def processRawData(
         self, 
         rawDataHandler_IO, 
-        raw_data_processing_methods,
+        raw_data_processing_event,
         parameters,
         filenames={},
         verbose_I=False
     ):
-        """Apply processing methods to a raw data handler
+        """Apply processing event to a raw data handler
         
         Args:
             rawDataHandler_IO (RawDataHandler)
-            raw_data_processing_methods (dict): map of raw data processing methods
+            raw_data_processing_event (str): string representation of
+                a raw data processing event
             
         """
         fileWriterOpenMS = FileWriterOpenMS()
         
         try:
-            if raw_data_processing_methods["load_raw_data"]:
+            if raw_data_processing_event == "load_raw_data":
                 # load dynamic assets
                 fileReaderOpenMS = FileReaderOpenMS()              
                 fileReaderOpenMS.load_SWATHorDIA(rawDataHandler_IO, {})
@@ -355,22 +356,22 @@ class RawDataProcessor():
                     rawDataHandler_IO, 
                     None,
                     MRMFeatureFinderScoring_params_I=parameters['MRMFeatureFinderScoring'])
-            if raw_data_processing_methods["load_peaks"]:
+            elif raw_data_processing_event == "load_features":
                 fileReaderOpenMS.load_featureMap(
                     rawDataHandler_IO,
                     filenames["featureXML_i"],
                     verbose_I=verbose_I)
-            if raw_data_processing_methods["pick_peaks"]:
+            elif raw_data_processing_event == "pick_features":
                 self.pickFeatures(
                     rawDataHandler_IO,
                     parameters['MRMFeatureFinderScoring'],
                     verbose_I=verbose_I)
-            if raw_data_processing_methods["filter_peaks"]:
+            elif raw_data_processing_event == "filter_features":
                 self.filterFeatures(
                     rawDataHandler_IO,
                     parameters['MRMFeatureFilter.filter_MRMFeatures'],
                     verbose_I=verbose_I)
-            if raw_data_processing_methods["select_peaks"]:
+            elif raw_data_processing_event == "select_features":
                 self.selectFeatures(
                     rawDataHandler_IO,
                     # qmip algorithm
@@ -383,7 +384,7 @@ class RawDataProcessor():
                     #     'MRMFeatureSelector.select_MRMFeatures_score'],
                     # MRMFeatureSelector_schedule_params_I={},
                     verbose_I=verbose_I)
-            if raw_data_processing_methods["validate_peaks"]:
+            elif raw_data_processing_event == "validate_features":
                 # load in the validation data 
                 # (if no data is found, continue to the next sample)
                 ReferenceDataMethods_params_I = []
@@ -413,27 +414,32 @@ class RawDataProcessor():
                     rawDataHandler_IO,
                     parameters['MRMFeatureValidator.validate_MRMFeatures'],
                     verbose_I=verbose_I)
-            if raw_data_processing_methods["quantify_peaks"]:
+            elif raw_data_processing_event == "quantify_features":
                 self.quantifyComponents(rawDataHandler_IO, verbose_I=verbose_I)
-            if raw_data_processing_methods["check_peaks"]:
+            elif raw_data_processing_event == "check_features":
                 self.checkFeatures(
                     rawDataHandler_IO,
                     MRMFeatureFilter_qc_params_I=parameters[
                         'MRMFeatureFilter.filter_MRMFeatures.qc'],
                     verbose_I=verbose_I)
-            if raw_data_processing_methods["store_peaks"]:
+            elif raw_data_processing_event == "store_features":
                 fileWriterOpenMS.store_featureMap(
                     rawDataHandler_IO, 
                     filenames["featureXML_o"], 
                     filenames["feature_csv_o"],
                     verbose_I=verbose_I)
-            if raw_data_processing_methods["plot_peaks"]:
+            elif raw_data_processing_event == "plot_features":
                 self.export_featurePlots(
                     rawDataHandler_IO,
                     filenames["features_pdf_o"],
                     FeaturePlotter_params_I=parameters[
                         'FeaturePlotter'],
                     verbose_I=verbose_I)
+            else:
+                print(
+                    "Raw data processing event " +
+                    raw_data_processing_event +
+                    " was not recognized.")
         except Exception as e:
             print(e)
             # TODO: add error class
