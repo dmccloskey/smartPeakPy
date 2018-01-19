@@ -119,6 +119,9 @@ class TestSequenceProcessor():
         assert(sequenceHandler.sequence[
             0].raw_data.feature_qc.component_qcs[
             0].component_name == b'arg-L.arg-L_1.Heavy')
+        assert(sequenceHandler.sequence[
+            0].raw_data.quantitation_methods[
+            0].getComponentName() == b'23dpg.23dpg_1.Light')
         assert(len(sequenceHandler.sequence_groups) == 1)
         assert(sequenceHandler.sequence_groups[
             0].quantitation_methods[
@@ -143,22 +146,28 @@ class TestSequenceProcessor():
         sequenceHandler.setFilenames(filenames)
         sequenceHandler.setDirDynamic(data_dir)
         raw_data_processing_methods = {
+            "load_raw_data": True,
+            "load_peaks": False,
             "pick_peaks": False,
             "filter_peaks": False,
             "select_peaks": False,
             "validate_peaks": False,
             "quantify_peaks": False,
             "check_peaks": False,
-            "plot_peaks": False}
+            "plot_peaks": False,
+            "store_peaks": False}
 
         sequenceHandler.setFilenames(filenames)
         sequenceProcessor.createSequence(
             sequenceHandler,
             delimiter=","
         )
-        sequenceProcessor.processSequenceGroups(
+        sequenceProcessor.processSequence(
             sequenceHandler,
-            raw_data_processing_methods_I=raw_data_processing_methods)        
+            raw_data_processing_methods_I=raw_data_processing_methods) 
+
+        # TODO: add a formal test
+        # for now, test should run without erroring out if all files are found 
 
     def test_processSequenceGroups(self):
         sequenceHandler = SequenceHandler()

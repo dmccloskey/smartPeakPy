@@ -50,7 +50,7 @@ class TestSequenceWriter():
         # Test:
         columns, rows, data = seqWriter.makeDataMatrixFromMetaValue(
             seqhandler,
-            meta_values=["calculated_concentration"], sample_types=["Unknown"])
+            meta_data=["calculated_concentration"], sample_types=["Unknown"])
         
         assert(len(columns) == 6)
         assert(columns[0] == '170808_Jonathan_yeast_Sacc1_1x')

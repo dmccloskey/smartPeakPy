@@ -13,12 +13,17 @@ class testMain():
         """Test LCMS MRM example"""
         m = __main__()
 
-        m.main(
-            filename_sequence=example_dir + 'LCMS_MRM/sequence.csv',
-            filename_params=example_dir + 'LCMS_MRM/parameters.csv',
+        # m.main(
+        #     filename_sequence=example_dir + 'LCMS_MRM/sequence.csv',
+        #     filename_params=example_dir + 'LCMS_MRM/parameters.csv',
+        #     delimiter=',',
+        #     )
+        # assert(~os.path.isfile(example_dir + 'LCMS_MRM/mzML/skippedSamples.csv'))
+        
+        m.main2(
+            dir_I=example_dir + 'LCMS_MRM',
             delimiter=',',
             )
-        assert(~os.path.isfile(example_dir + 'LCMS_MRM/mzML/skippedSamples.csv'))
 
         rawDataHandler = RawDataHandler()
         fileReaderOpenMS = FileReaderOpenMS()
@@ -66,12 +71,17 @@ class testMain():
         """Test GCMS SIM example"""
         m = __main__()
 
-        m.main(
-            filename_sequence=example_dir + 'GCMS_SIM/sequence.csv',
-            filename_params=example_dir + 'GCMS_SIM/parameters.csv',
+        # m.main(
+        #     filename_sequence=example_dir + 'GCMS_SIM/sequence.csv',
+        #     filename_params=example_dir + 'GCMS_SIM/parameters.csv',
+        #     delimiter=',',
+        #     )
+        # assert(~os.path.isfile(example_dir + 'GCMS_SIM/mzML/skippedSamples.csv'))
+
+        m.main2(
+            dir_I=example_dir + 'GCMS_SIM',
             delimiter=',',
             )
-        assert(~os.path.isfile(example_dir + 'GCMS_SIM/mzML/skippedSamples.csv'))
 
         rawDataHandler = RawDataHandler()
         fileReaderOpenMS = FileReaderOpenMS()

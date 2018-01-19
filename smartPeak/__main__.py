@@ -7,22 +7,89 @@ from smartPeak.io.FileWriterOpenMS import FileWriterOpenMS
 from smartPeak.core.RawDataHandler import RawDataHandler
 from smartPeak.core.RawDataProcessor import RawDataProcessor
 from smartPeak.core.SequenceHandler import SequenceHandler
+from smartPeak.core.SequenceProcessor import SequenceProcessor
 from smartPeak.io.SequenceReader import SequenceReader
 from smartPeak.io.SequenceWriter import SequenceWriter
 
 
 class __main__():
 
-    # def main2(
-    #     self,
-    #     filenames={},
-    #     delimiter=",",
-    #     verbose_I=False,
-    #     *Args,
-    #     **Kwargs
-    # ):
-    #     """ """
-    #     pass
+    def main2(
+        self,
+        dir_I,
+        delimiter_I=",",
+        verbose_I=False,
+        *Args,
+        **Kwargs
+    ):
+        """Run the AbsoluteQuantitation python pipeline
+        
+        Args:
+            dir_I (str): name of the directory (filenames will be created dynamically)
+            verbose (bool): print command line statements to stdout
+            
+        """
+        
+        sequenceHandler = SequenceHandler()
+        sequenceProcessor = SequenceProcessor()
+        sequenceWriter = SequenceWriter()
+
+        # set the directory for all files and data
+        sequenceHandler.setDirStatic(dir_I)
+        sequenceHandler.setDirDynamic(dir_I)
+
+        sequenceProcessor.createSequence(
+            sequenceHandler,
+            delimiter=","
+        )
+
+        # check that all files are found
+        raw_data_processing_methods = {
+            "load_raw_data": True,
+            "load_peaks": False,
+            "pick_peaks": False,
+            "filter_peaks": False,
+            "select_peaks": False,
+            "validate_peaks": False,
+            "quantify_peaks": False,
+            "check_peaks": False,
+            "plot_peaks": False,
+            "store_peaks": False}
+        sequenceProcessor.processSequence(
+            sequenceHandler,
+            raw_data_processing_methods_I=raw_data_processing_methods) 
+
+        # process all files
+        sequenceProcessor.processSequence(
+            sequenceHandler) 
+
+        # store all features
+        raw_data_processing_methods = {
+            "load_raw_data": False,
+            "load_peaks": False,
+            "pick_peaks": False,
+            "filter_peaks": False,
+            "select_peaks": False,
+            "validate_peaks": False,
+            "quantify_peaks": False,
+            "check_peaks": False,
+            "plot_peaks": False,
+            "store_peaks": True}
+        sequenceProcessor.processSequence(
+            sequenceHandler,
+            raw_data_processing_methods_I=raw_data_processing_methods) 
+
+        # write out a summary of all files
+        sequenceSummary_csv_i = '''%s/SequenceSummary.csv''' % (dir_I)
+        sequenceWriter.write_dataMatrixFromMetaValue(
+            sequenceHandler,
+            filename=sequenceSummary_csv_i,
+            # meta_data=[
+            # 'calculated_concentration','RT','peak_apex_int',
+            # 'noise_background_level','leftWidth','rightWidth'],
+            meta_data=['calculated_concentration'],
+            sample_types=['Unknown']
+        )
 
     def main(
         self,
@@ -38,7 +105,7 @@ class __main__():
         verbose_I=False,
         *Args,
         **Kwargs
-        ):
+    ):
         """Run the AbsoluteQuantitation python pipeline
         
         Args:
@@ -391,9 +458,9 @@ class __main__():
         seqWriter.write_dataMatrixFromMetaValue(
             seqHandler,
             filename=sequenceSummary_csv_i,
-            # meta_values=[
+            # meta_data=[
             # 'calculated_concentration','RT','peak_apex_int',
             # 'noise_background_level','leftWidth','rightWidth'],
-            meta_values=['calculated_concentration'],
+            meta_data=['calculated_concentration'],
             sample_types=['Unknown']
         )

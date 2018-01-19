@@ -156,6 +156,25 @@ class TestSequenceHandler():
         assert(sequenceHandler.getDefaultRawDataProcessingWorkflow("Double Blank") == default)
         assert(sequenceHandler.getDefaultRawDataProcessingWorkflow("Solvent") == default)
 
+    def test_checkRawDataProcessingWorkflow(self):
+        sequenceHandler = SequenceHandler()
+
+        raw_data_processing_methods = {
+            # "load_raw_data": False,
+            # "load_peaks": False,
+            "pick_peaks": True,
+            "filter_peaks": False,
+            "select_peaks": False,
+            "validate_peaks": False,
+            "quantify_peaks": False,
+            "check_peaks": False,
+            "plot_peaks": False,
+            "store_peaks": False}
+        test = sequenceHandler.checkRawDataProcessingWorkflow(raw_data_processing_methods)
+        assert(~test["load_raw_data"])
+        assert(~test["load_peaks"])
+        assert(test["pick_peaks"])
+
     def test_getDefaultSequenceGroupProcessingWorkflow(self):
         sequenceHandler = SequenceHandler()
 

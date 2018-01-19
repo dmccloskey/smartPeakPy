@@ -2,6 +2,7 @@
 # modules
 from smartPeak.core.Utilities import Utilities
 from smartPeak.io.FileReaderOpenMS import FileReaderOpenMS
+from smartPeak.io.FileWriterOpenMS import FileWriterOpenMS
 from smartPeak.algorithm.MRMFeatureSelector import MRMFeatureSelector
 from smartPeak.algorithm.MRMFeatureValidator import MRMFeatureValidator
 from smartPeak.ui.FeaturePlotter import FeaturePlotter
@@ -283,7 +284,7 @@ class RawDataProcessor():
     def export_featurePlots(
         self,     
         rawDataHandler_IO,   
-        filenames_I,
+        features_pdf_o,
         FeaturePlotter_params_I={},
         verbose_I=False
     ):
@@ -291,18 +292,14 @@ class RawDataProcessor():
 
         Args:
             rawDataHandler_IO (RawDataHandler): raw data file class
+            features_pdf_o (str): filename
 
         """
         if verbose_I:
             print("Plotting peaks with features")
-        
-        # Handle the filenames
-        features_pdf_o = None
-        if 'features_pdf_o'in filenames_I.keys():
-            features_pdf_o = filenames_I['features_pdf_o']  
 
         # export diagnostic plots
-        if FeaturePlotter_params_I:
+        if FeaturePlotter_params_I and features_pdf_o is not None:
             featurePlotter = FeaturePlotter()
             featurePlotter.setParameters(FeaturePlotter_params_I)
             featurePlotter.plot_peaks(
@@ -327,7 +324,8 @@ class RawDataProcessor():
         aq.quantifyComponents(rawDataHandler_IO.featureMap)
 
     def processRawData(
-        self, rawDataHandler_IO, 
+        self, 
+        rawDataHandler_IO, 
         raw_data_processing_methods,
         parameters,
         filenames={},
@@ -340,22 +338,28 @@ class RawDataProcessor():
             raw_data_processing_methods (dict): map of raw data processing methods
             
         """
-
+        fileWriterOpenMS = FileWriterOpenMS()
+        
         try:
-            # load dynamic assets
-            fileReaderOpenMS = FileReaderOpenMS()              
-            fileReaderOpenMS.load_SWATHorDIA(rawDataHandler_IO, {})
-            fileReaderOpenMS.load_MSExperiment(
-                rawDataHandler_IO, 
-                filenames["mzML_i"],
-                MRMMapping_params_I=parameters['MRMMapping'],
-                chromatogramExtractor_params_I=parameters['ChromatogramExtractor'],
-                verbose_I=verbose_I)
-            fileReaderOpenMS.load_Trafo(  # skip, no transformation of RT
-                rawDataHandler_IO, 
-                None,
-                MRMFeatureFinderScoring_params_I=parameters['MRMFeatureFinderScoring'])
-
+            if raw_data_processing_methods["load_raw_data"]:
+                # load dynamic assets
+                fileReaderOpenMS = FileReaderOpenMS()              
+                fileReaderOpenMS.load_SWATHorDIA(rawDataHandler_IO, {})
+                fileReaderOpenMS.load_MSExperiment(
+                    rawDataHandler_IO, 
+                    filenames["mzML_i"],
+                    MRMMapping_params_I=parameters['MRMMapping'],
+                    chromatogramExtractor_params_I=parameters['ChromatogramExtractor'],
+                    verbose_I=verbose_I)
+                fileReaderOpenMS.load_Trafo(  # skip, no transformation of RT
+                    rawDataHandler_IO, 
+                    None,
+                    MRMFeatureFinderScoring_params_I=parameters['MRMFeatureFinderScoring'])
+            if raw_data_processing_methods["load_peaks"]:
+                fileReaderOpenMS.load_featureMap(
+                    rawDataHandler_IO,
+                    filenames["featureXML_i"],
+                    verbose_I=verbose_I)
             if raw_data_processing_methods["pick_peaks"]:
                 self.pickFeatures(
                     rawDataHandler_IO,
@@ -409,13 +413,6 @@ class RawDataProcessor():
                     rawDataHandler_IO,
                     parameters['MRMFeatureValidator.validate_MRMFeatures'],
                     verbose_I=verbose_I)
-            if raw_data_processing_methods["plot_peaks"]:
-                self.export_featurePlots(
-                    rawDataHandler_IO,
-                    filenames_I=filenames,
-                    FeaturePlotter_params_I=parameters[
-                        'FeaturePlotter'],
-                    verbose_I=verbose_I)
             if raw_data_processing_methods["quantify_peaks"]:
                 self.quantifyComponents(rawDataHandler_IO, verbose_I=verbose_I)
             if raw_data_processing_methods["check_peaks"]:
@@ -423,6 +420,19 @@ class RawDataProcessor():
                     rawDataHandler_IO,
                     MRMFeatureFilter_qc_params_I=parameters[
                         'MRMFeatureFilter.filter_MRMFeatures.qc'],
+                    verbose_I=verbose_I)
+            if raw_data_processing_methods["store_peaks"]:
+                fileWriterOpenMS.store_featureMap(
+                    rawDataHandler_IO, 
+                    filenames["featureXML_o"], 
+                    filenames["feature_csv_o"],
+                    verbose_I=verbose_I)
+            if raw_data_processing_methods["plot_peaks"]:
+                self.export_featurePlots(
+                    rawDataHandler_IO,
+                    filenames["features_pdf_o"],
+                    FeaturePlotter_params_I=parameters[
+                        'FeaturePlotter'],
                     verbose_I=verbose_I)
         except Exception as e:
             print(e)

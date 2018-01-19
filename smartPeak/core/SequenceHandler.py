@@ -73,16 +73,16 @@ class SequenceHandler():
         
         filenames = {
             # static
-            'sequence_csv_i': '''%s%s''' % (dir_I, "sequence.csv"),
-            'parameters_csv_i': '''%s%s''' % (dir_I, "parameters.csv"),
-            'traML_csv_i': '''%s%s''' % (dir_I, "traML.csv"),
-            'featureFilter_csv_i': '''%s%s''' % (dir_I, "featureFilters.csv"),
-            'quantitationMethods_csv_i': '''%s%s''' % (
+            'sequence_csv_i': '''%s/%s''' % (dir_I, "sequence.csv"),
+            'parameters_csv_i': '''%s/%s''' % (dir_I, "parameters.csv"),
+            'traML_csv_i': '''%s/%s''' % (dir_I, "traML.csv"),
+            'featureFilter_csv_i': '''%s/%s''' % (dir_I, "featureFilters.csv"),
+            'quantitationMethods_csv_i': '''%s/%s''' % (
                 dir_I, "quantitationMethods.csv"),
-            'standardsConcentrations_csv_i': '''%s%s''' % (
+            'standardsConcentrations_csv_i': '''%s/%s''' % (
                 dir_I, "standardsConcentrations.csv"),
-            'featureQC_csv_i': '''%s%s''' % (dir_I, "featureQCs.csv"),
-            'db_json_i': '''%s%s''' % (dir_I, "featureQCs.csv")
+            'featureQC_csv_i': '''%s/%s''' % (dir_I, "featureQCs.csv"),
+            'db_json_i': '''%s/%s''' % (dir_I, "featureQCs.csv")
             }
         return filenames
 
@@ -106,6 +106,7 @@ class SequenceHandler():
             'featureXML_o': '''%s/features/%s.FeatureXML''' % (dir_I, sample_name_I),
             'feature_csv_o': '''%s/features/%s.csv''' % (dir_I, sample_name_I),
             'featureXML_i': '''%s/features/%s.FeatureXML''' % (dir_I, sample_name_I),
+            'features_pdf_o': '''%s/features/%s''' % (dir_I, sample_name_I),
             }
         return filenames
 
@@ -292,6 +293,34 @@ class SequenceHandler():
         else:
             self.sequence[self.sample_to_index[sample_name]].featureMap = featureMap
 
+    def checkRawDataProcessingWorkflow(self, raw_data_processing_I):
+        """check the integrity of the raw_data_processing_I
+        
+        Args:
+            raw_data_processing_I (dict)
+            
+        Returns:
+            dict: raw_data_processing_O: All keys not found are set to False
+        """
+
+        required_keys = [
+            "load_raw_data",
+            "load_peaks",
+            "pick_peaks",
+            "filter_peaks",
+            "select_peaks",
+            "validate_peaks",
+            "quantify_peaks",
+            "check_peaks",
+            "plot_peaks",
+            "store_peaks"]
+        raw_data_processing_O = raw_data_processing_I
+        for key in required_keys:
+            if key not in raw_data_processing_O:
+                raw_data_processing_O[key] = False
+                
+        return raw_data_processing_O
+
     def getDefaultRawDataProcessingWorkflow(self, sample_type):
         """return the default workflow parameters for a given raw data
         
@@ -302,13 +331,16 @@ class SequenceHandler():
             dict: dictionary of workflow_parameters"""
     
         default = {
+            "load_raw_data": True,
+            "load_peaks": False,
             "pick_peaks": True,
             "filter_peaks": True,
             "select_peaks": True,
             "validate_peaks": False,
             "quantify_peaks": False,
             "check_peaks": True,
-            "plot_peaks": False}
+            "plot_peaks": False,
+            "store_peaks": False}
         if sample_type == "Unknown":
             default["quantify_peaks"] = True
         elif sample_type == "Standard":
@@ -334,12 +366,16 @@ class SequenceHandler():
         """
 
         required_headers = [
+            "load_raw_data",
+            "load_peaks",
             "pick_peaks",
             "filter_peaks",
             "select_peaks",
             "validate_peaks",
             "quantify_peaks",
-            "check_peaks"]
+            "check_peaks",
+            "plot_peaks",
+            "store_peaks"]
 
         # ensure supplied values are of the right type
         for k, v in raw_data_processing.items():

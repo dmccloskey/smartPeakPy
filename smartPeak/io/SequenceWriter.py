@@ -15,7 +15,7 @@ class SequenceWriter():
     def makeDataMatrixFromMetaValue(
         self,
         sequenceHandler_I,
-        meta_values=['calculated_concentration'],
+        meta_data=['calculated_concentration'],
         sample_types=['Unknown']
     ):
         """make a data matrix from a feature metaValue for 
@@ -23,7 +23,7 @@ class SequenceWriter():
 
         Args:
             sequenceHandler_I (SequenceHandler)
-            meta_values (list): 
+            meta_data (list): 
                 list of strings specifying the name of the feature metaValue
             sample_types (list): list of strings corresponding to sample types
 
@@ -44,7 +44,7 @@ class SequenceWriter():
             if d.meta_data['sample_type'] in sample_types:
                 sample_name = d.meta_data['sample_name']
                 data_dict[sample_name] = {}
-                for meta_value in meta_values:
+                for meta_value in meta_data:
                     for feature in d.featureMap:
                         component_group_name = feature.getMetaValue(
                             "PeptideRef").decode('utf-8')
@@ -53,7 +53,8 @@ class SequenceWriter():
                                 component_group_name, 
                                 subordinate.getMetaValue(
                                     'native_id').decode('utf-8'), meta_value)
-                            datum = sequenceHandler_I.getMetaValue(feature, subordinate, meta_value)
+                            datum = sequenceHandler_I.getMetaValue(
+                                feature, subordinate, meta_value)
                             if datum and datum is not None:
                                 data_dict[sample_name][row_tuple_name] = datum
                                 columns.add(sample_name)
@@ -77,7 +78,7 @@ class SequenceWriter():
         self,
         sequenceHandler_I,
         filename,
-        meta_values=['calculated_concentration'],
+        meta_data=['calculated_concentration'],
         sample_types=['Unknown']
     ):
         """export data matrix from feature metaValue to .csv
@@ -92,7 +93,7 @@ class SequenceWriter():
         data_O = []
         columns, rows, data = self.makeDataMatrixFromMetaValue(
             sequenceHandler_I,
-            meta_values=meta_values, sample_types=sample_types)
+            meta_data=meta_data, sample_types=sample_types)
         header = ['component_group_name', 'component_name', 'meta_value'] + columns
         for i, r in enumerate(rows):
             data_O.append(dict(zip(header, list(r) + list(data[i, :]))))

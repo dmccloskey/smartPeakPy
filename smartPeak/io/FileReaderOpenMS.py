@@ -34,11 +34,14 @@ class FileReaderOpenMS():
         if verbose_I:
             print("loading quantitation methods")
 
-        standards_concentrations = []
-        if standardsConcentrations_csv_i is not None:
-            aqsf = pyopenms.AbsoluteQuantitationStandardsFile()
-            aqsf.load(standardsConcentrations_csv_i, standards_concentrations)
-        sequenceGroupHandler_IO.standards_concentrations = standards_concentrations
+        try:
+            standards_concentrations = []
+            if standardsConcentrations_csv_i is not None:
+                aqsf = pyopenms.AbsoluteQuantitationStandardsFile()
+                aqsf.load(standardsConcentrations_csv_i, standards_concentrations)
+            sequenceGroupHandler_IO.standards_concentrations = standards_concentrations
+        except Exception as e:
+            print(e)
 
     def load_quantitationMethods(
         self,
@@ -59,11 +62,14 @@ class FileReaderOpenMS():
         if verbose_I:
             print("loading quantitation methods")
 
-        quantitation_methods = []
-        if quantitationMethods_csv_i is not None:
-            aqmf = pyopenms.AbsoluteQuantitationMethodFile()
-            aqmf.load(quantitationMethods_csv_i, quantitation_methods)
-        sequenceGroupHandler_IO.quantitation_methods = quantitation_methods
+        try:
+            quantitation_methods = []
+            if quantitationMethods_csv_i is not None:
+                aqmf = pyopenms.AbsoluteQuantitationMethodFile()
+                aqmf.load(quantitationMethods_csv_i, quantitation_methods)
+            sequenceGroupHandler_IO.quantitation_methods = quantitation_methods
+        except Exception as e:
+            print(e)
 
     def load_TraML(
         self, rawDataHandler_IO, 

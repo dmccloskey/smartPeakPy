@@ -51,6 +51,10 @@ class SequenceProcessor():
             fileReaderOpenMS.load_featureQC(
                 rawDataHandler, sequenceHandler_IO.filenames["featureQC_csv_i"],
                 verbose_I=verbose_I)
+            fileReaderOpenMS.load_quantitationMethods(
+                rawDataHandler, sequenceHandler_IO.filenames[
+                    "quantitationMethods_csv_i"],
+                verbose_I=verbose_I)
             # raw data files (i.e., mzML will be loaded dynamically)
 
             # load sequenceGroupHandler files
@@ -136,7 +140,9 @@ class SequenceProcessor():
             if raw_data_processing_methods_I:
                 raw_data_processing_methods = raw_data_processing_methods_I
             else:
-                raw_data_processing_methods = sequenceHandler_IO.raw_data_processing
+                raw_data_processing_methods = \
+                    sequenceHandler_IO.getDefaultRawDataProcessingWorkflow(
+                        sample.meta_data["sample_type"])
                 if sample.raw_data.quantitation_methods is None:
                     raw_data_processing_methods["quantify_peak"] = False
                     
@@ -149,6 +155,8 @@ class SequenceProcessor():
                     sequenceHandler_IO.getDirDynamic(),
                     sample.meta_data["sample_name"])
                 )
+            # copy out the feature map
+            sample.featureMap = sample.raw_data.featureMap
 
     def processSequenceGroups(
         self, sequenceHandler_IO,

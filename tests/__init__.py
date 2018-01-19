@@ -139,6 +139,7 @@ def runAllTests():
     test.test_parse_metaData()
     test.test_addFeatureMapToSequence()
     test.test_getDefaultRawDataProcessingWorkflow()
+    test.test_checkRawDataProcessingWorkflow()
     test.test_getDefaultSequenceGroupProcessingWorkflow()
     test.test_getSamplesInSequence()
 

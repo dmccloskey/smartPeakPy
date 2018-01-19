@@ -264,13 +264,16 @@ class TestRawDataProcessor():
 
         # test all
         raw_data_processing_methods = {
+            "load_raw_data": True,
+            "load_peaks": False,
             "pick_peaks": True,
             "filter_peaks": True,
             "select_peaks": True,
             "validate_peaks": False,
             "quantify_peaks": True,
             "check_peaks": True,
-            "plot_peaks": False}
+            "plot_peaks": False,
+            "store_peaks": False}
 
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
         filenames = {'mzML_i': mzML_i}
