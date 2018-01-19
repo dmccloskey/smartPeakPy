@@ -145,17 +145,7 @@ class TestSequenceProcessor():
 
         sequenceHandler.setFilenames(filenames)
         sequenceHandler.setDirDynamic(data_dir)
-        raw_data_processing_methods = {
-            "load_raw_data": True,
-            "load_peaks": False,
-            "pick_peaks": False,
-            "filter_peaks": False,
-            "select_peaks": False,
-            "validate_peaks": False,
-            "quantify_peaks": False,
-            "check_peaks": False,
-            "plot_peaks": False,
-            "store_peaks": False}
+        raw_data_processing_methods = ["load_raw_data"]            
 
         sequenceHandler.setFilenames(filenames)
         sequenceProcessor.createSequence(

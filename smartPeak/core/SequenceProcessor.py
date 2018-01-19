@@ -141,20 +141,21 @@ class SequenceProcessor():
                 raw_data_processing_methods = raw_data_processing_methods_I
             else:
                 raw_data_processing_methods = \
-                    sequenceHandler_IO.getDefaultRawDataProcessingWorkflow(
+                    rawDataProcessor.getDefaultRawDataProcessingWorkflow(
                         sample.meta_data["sample_type"])
-                if sample.raw_data.quantitation_methods is None:
-                    raw_data_processing_methods["quantify_peak"] = False
+                # if sample.raw_data.quantitation_methods is None:
+                #     raw_data_processing_methods["quantify_peak"] = False
                     
             # process the samples
-            rawDataProcessor.processRawData(
-                sample.raw_data,
-                raw_data_processing_methods,
-                sequenceHandler_IO.parameters,
-                sequenceHandler_IO.getDefaultDynamicFilenames(
-                    sequenceHandler_IO.getDirDynamic(),
-                    sample.meta_data["sample_name"])
-                )
+            for event in raw_data_processing_methods:
+                rawDataProcessor.processRawData(
+                    sample.raw_data,
+                    event,
+                    sequenceHandler_IO.parameters,
+                    sequenceHandler_IO.getDefaultDynamicFilenames(
+                        sequenceHandler_IO.getDirDynamic(),
+                        sample.meta_data["sample_name"])
+                    )
             # copy out the feature map
             sample.featureMap = sample.raw_data.featureMap
 
