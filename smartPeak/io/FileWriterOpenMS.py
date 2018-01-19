@@ -12,14 +12,14 @@ class FileWriterOpenMS():
     def store_quantitationMethods(
         self,
         sequenceGroupHandler_IO,
-        filenames_I={},
+        quantitationMethods_csv_i,
         verbose_I=False
     ):
         """Store AbsoluteQuantitationMethods
 
         Args:
             sequenceGroupHandler_IO (SampleHandler)
-            filenames_I (dict): dictionary of filename strings
+            quantitationMethods_csv_i (str): filename
 
         Internals:
             quantitationMethods (list): list of AbsoluteQuantitationMethod objects
@@ -28,35 +28,27 @@ class FileWriterOpenMS():
         if verbose_I:
             print("loading quantitation methods")
 
-        quantitationMethods_csv_i = None
-        if 'quantitationMethods_csv_i'in filenames_I.keys():
-            quantitationMethods_csv_i = filenames_I['quantitationMethods_csv_i']
-
         quantitationMethods = []
-        aqmf = pyopenms.AbsoluteQuantitationMethodFile()
-        aqmf.store(quantitationMethods_csv_i, quantitationMethods)
+        if quantitationMethods_csv_i is not None:
+            aqmf = pyopenms.AbsoluteQuantitationMethodFile()
+            aqmf.store(quantitationMethods_csv_i, quantitationMethods)
 
     def store_featureMap(
         self,
         rawDataHandler_IO,
-        filenames_I={},
+        featureXML_o,
+        feature_csv_o,
         verbose_I=False
     ):
         """Store FeatureMap as .xml and .csv
         
         Args:
             rawDataHandler_IO (SampleHandler): sample object; updated in place
-            filenames_I (list): list of filename strings
+            featureXML_o (str): .FeatureXML filename
+            feature_csv_o (str): .csv filename
         """
         if verbose_I:
             print("Storing FeatureMap")
-
-        # Handle the filenames
-        featureXML_o, feature_csv_o = None, None
-        if 'featureXML_o'in filenames_I.keys():
-            featureXML_o = filenames_I['featureXML_o']
-        if 'feature_csv_o'in filenames_I.keys():
-            feature_csv_o = filenames_I['feature_csv_o']
 
         # Store outfile as featureXML    
         featurexml = pyopenms.FeatureXMLFile()

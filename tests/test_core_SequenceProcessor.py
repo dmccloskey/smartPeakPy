@@ -92,17 +92,17 @@ class TestSequenceProcessor():
             'sequence_csv_i': '''%s%s''' % (data_dir, "sequence_1.csv"),
             'parameters_csv_i': '''%s%s''' % (data_dir, "params_1.csv"),
             'traML_csv_i': '''%s%s''' % (data_dir, "traML_1.csv"),
-            'mrmfeaturefilter_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
+            'featureFilter_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
             'quantitationMethods_csv_i': '''%s%s''' % (
                 data_dir, "quantitationMethods_1.csv"),
             'standardsConcentrations_csv_i': '''%s%s''' % (
                 data_dir, "standardsConcentrations_1.csv"),
-            'mrmfeatureqcs_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
+            'featureQC_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
             }
 
+        sequenceHandler.setFilenames(filenames)
         sequenceProcessor.createSequence(
             sequenceHandler, 
-            filenames=filenames,
             delimiter=","
         )
 
@@ -124,6 +124,42 @@ class TestSequenceProcessor():
             0].quantitation_methods[
             0].getComponentName() == b'23dpg.23dpg_1.Light')
 
+    def test_processSequence(self):
+        sequenceHandler = SequenceHandler()
+        sequenceProcessor = SequenceProcessor()
+
+        filenames = {
+            'sequence_csv_i': '''%s%s''' % (data_dir, "sequence_1.csv"),
+            'parameters_csv_i': '''%s%s''' % (data_dir, "params_1.csv"),
+            'traML_csv_i': '''%s%s''' % (data_dir, "traML_1.csv"),
+            'featureFilter_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
+            'quantitationMethods_csv_i': '''%s%s''' % (
+                data_dir, "quantitationMethods_1.csv"),
+            'standardsConcentrations_csv_i': '''%s%s''' % (
+                data_dir, "standardsConcentrations_1.csv"),
+            'featureQC_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
+            }
+
+        sequenceHandler.setFilenames(filenames)
+        sequenceHandler.setDirDynamic(data_dir)
+        raw_data_processing_methods = {
+            "pick_peaks": False,
+            "filter_peaks": False,
+            "select_peaks": False,
+            "validate_peaks": False,
+            "quantify_peaks": False,
+            "check_peaks": False,
+            "plot_peaks": False}
+
+        sequenceHandler.setFilenames(filenames)
+        sequenceProcessor.createSequence(
+            sequenceHandler,
+            delimiter=","
+        )
+        sequenceProcessor.processSequenceGroups(
+            sequenceHandler,
+            raw_data_processing_methods_I=raw_data_processing_methods)        
+
     def test_processSequenceGroups(self):
         sequenceHandler = SequenceHandler()
         sequenceProcessor = SequenceProcessor()
@@ -132,18 +168,20 @@ class TestSequenceProcessor():
             'sequence_csv_i': '''%s%s''' % (data_dir, "sequence_1.csv"),
             'parameters_csv_i': '''%s%s''' % (data_dir, "params_1.csv"),
             'traML_csv_i': '''%s%s''' % (data_dir, "traML_1.csv"),
-            'mrmfeaturefilter_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
+            'featureFilter_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
             'quantitationMethods_csv_i': '''%s%s''' % (
                 data_dir, "quantitationMethods_1.csv"),
             'standardsConcentrations_csv_i': '''%s%s''' % (
                 data_dir, "standardsConcentrations_1.csv"),
-            'mrmfeatureqcs_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
+            'featureQC_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
             }
 
+        sequenceHandler.setFilenames(filenames)
         sequenceProcessor.createSequence(
-            sequenceHandler, 
-            filenames=filenames,
+            sequenceHandler,
             delimiter=","
         )
         sequenceProcessor.processSequenceGroups(
             sequenceHandler)
+
+        assert()

@@ -39,7 +39,7 @@ class TestSequenceWriter():
             featureXML_o = '''%s/quantitation/%s.featureXML''' % (
                 data_dir, sequence.meta_data["sample_name"])
             fileReaderOpenMS.load_featureMap(
-                rawDataHandler, {'featureXML_i': featureXML_o})
+                rawDataHandler, featureXML_o)
 
             # record features
             seqhandler.addFeatureMapToSequence(

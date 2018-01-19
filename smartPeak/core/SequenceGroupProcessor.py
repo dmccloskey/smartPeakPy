@@ -42,6 +42,11 @@ class SequenceGroupProcessor():
             sequenceGroupHandler_IO, sequenceHandler_I,
             "Standard"
         )
+
+        # check if there are any standards to calculate the calibrators from
+        if not standards_indices:
+            return
+
         standards_featureMaps = [
             sequenceHandler_I.sequence[index].featureMap for index in standards_indices]
 

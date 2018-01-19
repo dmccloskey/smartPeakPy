@@ -347,13 +347,13 @@ class RawDataProcessor():
             fileReaderOpenMS.load_SWATHorDIA(rawDataHandler_IO, {})
             fileReaderOpenMS.load_MSExperiment(
                 rawDataHandler_IO, 
-                filenames,
+                filenames["mzML_i"],
                 MRMMapping_params_I=parameters['MRMMapping'],
                 chromatogramExtractor_params_I=parameters['ChromatogramExtractor'],
                 verbose_I=verbose_I)
             fileReaderOpenMS.load_Trafo(  # skip, no transformation of RT
                 rawDataHandler_IO, 
-                {},
+                None,
                 MRMFeatureFinderScoring_params_I=parameters['MRMFeatureFinderScoring'])
 
             if raw_data_processing_methods["pick_peaks"]:
@@ -386,7 +386,8 @@ class RawDataProcessor():
                 ReferenceDataMethods_params_I.extend(
                     parameters['ReferenceDataMethods.getAndProcess_referenceData_samples']
                     )
-                sample_names_I = '''['%s']''' % (rawDataHandler_IO.meta_data["sample_name"])
+                sample_names_I = '''['%s']''' % (
+                    rawDataHandler_IO.meta_data["sample_name"])
                 ReferenceDataMethods_params_I.append({
                     'description': '', 'name': 'sample_names_I', 
                     'type': 'list', 'value': sample_names_I})

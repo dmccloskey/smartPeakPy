@@ -22,15 +22,13 @@ class testMain():
 
         rawDataHandler = RawDataHandler()
         fileReaderOpenMS = FileReaderOpenMS()
-        fileReaderOpenMS.load_featureMap(rawDataHandler, {
-            'featureXML_i': 
-            example_dir + 
-            'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x.featureXML'})
+        fileReaderOpenMS.load_featureMap(
+            rawDataHandler, example_dir + 
+            'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x.featureXML')
         fm1 = rawDataHandler.featureMap
-        fileReaderOpenMS.load_featureMap(rawDataHandler, {
-            'featureXML_i': 
-            example_dir + 
-            'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x_test.featureXML'})
+        fileReaderOpenMS.load_featureMap(
+            rawDataHandler, example_dir + 
+            'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x_test.featureXML')
         fm2 = rawDataHandler.featureMap
         assert(
             fm1[50].getSubordinates()[0].getMetaValue("native_id") == 
@@ -78,15 +76,13 @@ class testMain():
         rawDataHandler = RawDataHandler()
         fileReaderOpenMS = FileReaderOpenMS()
 
-        fileReaderOpenMS.load_featureMap(rawDataHandler, {
-                'featureXML_i': 
-                example_dir + 
-                'GCMS_SIM/features/GCMS_SIM.featureXML'})
+        fileReaderOpenMS.load_featureMap(
+            rawDataHandler, example_dir + 
+            'GCMS_SIM/features/GCMS_SIM.featureXML')
         fm1 = rawDataHandler.featureMap
-        fileReaderOpenMS.load_featureMap(RawDataHandler, {
-            'featureXML_i': 
-            example_dir + 
-            'GCMS_SIM/features/GCMS_SIM_test.featureXML'})
+        fileReaderOpenMS.load_featureMap(
+            rawDataHandler, example_dir + 
+            'GCMS_SIM/features/GCMS_SIM_test.featureXML')
         fm2 = rawDataHandler.featureMap
         assert(
             fm1[15].getSubordinates()[0].getMetaValue("native_id") == 

@@ -17,11 +17,11 @@ class TestFileWriterOpenMS():
 
         # load featureMap
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
-        fileReaderOpenMS.load_featureMap(sampleHandler, {'featureXML_i': featureXML_o})
+        fileReaderOpenMS.load_featureMap(sampleHandler, featureXML_o)
 
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        fileReaderOpenMS.load_TraML(sampleHandler, {'traML_csv_i': traML_csv_i})
+        fileReaderOpenMS.load_TraML(sampleHandler, traML_csv_i)
 
         # missing meta data in .featureXML
         sampleHandler.meta_data = {}
@@ -31,6 +31,7 @@ class TestFileWriterOpenMS():
         # store
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
         feature_csv_o = '''%s/features/%s.csv''' % (data_dir, "test_1")
-        fileWriterOpenMS.store_featureMap(sampleHandler, {
-            'featureXML_o': featureXML_o,
-            'feature_csv_o': feature_csv_o})
+        fileWriterOpenMS.store_featureMap(
+            sampleHandler,
+            featureXML_o,
+            feature_csv_o)

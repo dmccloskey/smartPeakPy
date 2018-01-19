@@ -17,12 +17,13 @@ m = __main__()
 #     delimiter=',',
 #     )
 
+# from tests import runAllTests
+# runAllTests()
+
 from tests.test_core_SequenceProcessor import TestSequenceProcessor
 test = TestSequenceProcessor()
 test.test_groupSamplesInSequence()
 test.test_addRawDataHandlerToSequence()
 test.test_createSequence()
-test.test_processSequenceGroups()
-
-# from tests import runAllTests
-# runAllTests()
+test.test_processSequence()
+# test.test_processSequenceGroups()

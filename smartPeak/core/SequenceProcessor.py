@@ -13,7 +13,6 @@ class SequenceProcessor():
     def createSequence(
         self,
         sequenceHandler_IO, 
-        filenames={},
         delimiter=",",
         verbose_I=False
     ):
@@ -21,7 +20,6 @@ class SequenceProcessor():
         
         Args:
             sequenceHandler_IO (SequenceHandler): sequence handler
-            filenames (dict): map of filetype to filename
             delimiter (str): string delimiter of the imported text file
             verbose_I (boolean): verbosity
         """
@@ -29,30 +27,41 @@ class SequenceProcessor():
         sequenceGroupHandler = SequenceGroupHandler()
 
         # load sequence assets
-        if filenames:  # load sequence from disk files 
+        if sequenceHandler_IO.filenames is not None:  
+            # load sequence from disk files
+
             # read in the sequence file
             seqReader = SequenceReader()
             seqReader.read_sequenceFile(
-                sequenceHandler_IO, filenames["sequence_csv_i"], delimiter)
+                sequenceHandler_IO, sequenceHandler_IO.filenames["sequence_csv_i"],
+                delimiter)
             # read in the parameters
             seqReader.read_sequenceParameters(
-                sequenceHandler_IO, filenames["parameters_csv_i"], delimiter)
+                sequenceHandler_IO, sequenceHandler_IO.filenames["parameters_csv_i"],
+                delimiter)
 
             # load rawDataHandler files (applies to the whole session)
             fileReaderOpenMS = FileReaderOpenMS()
             fileReaderOpenMS.load_TraML(
-                rawDataHandler, filenames, verbose_I=verbose_I)
+                rawDataHandler, sequenceHandler_IO.filenames["traML_csv_i"],
+                verbose_I=verbose_I)
             fileReaderOpenMS.load_featureFilter(
-                rawDataHandler, filenames, verbose_I=verbose_I)
+                rawDataHandler, sequenceHandler_IO.filenames["featureFilter_csv_i"],
+                verbose_I=verbose_I)
             fileReaderOpenMS.load_featureQC(
-                rawDataHandler, filenames, verbose_I=verbose_I)
+                rawDataHandler, sequenceHandler_IO.filenames["featureQC_csv_i"],
+                verbose_I=verbose_I)
             # raw data files (i.e., mzML will be loaded dynamically)
 
             # load sequenceGroupHandler files
             fileReaderOpenMS.load_quantitationMethods(
-                sequenceGroupHandler, filenames, verbose_I=verbose_I)
-            # fileReaderOpenMS.load_standardsConcentrations(
-            #     sequenceGroupHandler, filenames, verbose_I=verbose_I)         
+                sequenceGroupHandler, sequenceHandler_IO.filenames[
+                    "quantitationMethods_csv_i"],
+                verbose_I=verbose_I)
+            fileReaderOpenMS.load_standardsConcentrations(
+                sequenceGroupHandler, sequenceHandler_IO.filenames[
+                    "standardsConcentrations_csv_i"],
+                verbose_I=verbose_I)         
         else:  # load sequence from GUI
             pass
         
@@ -103,6 +112,44 @@ class SequenceProcessor():
 
         sequenceHandler_IO.sequence_groups = sequence_groups
 
+    def processSequence(
+        self, sequenceHandler_IO,
+        sample_names_I=[],
+        raw_data_processing_methods_I={},
+    ):
+        """process a sequence of samples
+        
+        Args:
+            sequenceHandler_IO (SequenceHandler): the sequence class
+            sample_names_I (list): name of the sample
+            raw_data_process_methods_I (list): name of the raw data method to execute
+        """
+        rawDataProcessor = RawDataProcessor()
+
+        # handle user desired sample_names
+        process_sequence = sequenceHandler_IO.sequence
+        if sample_names_I:
+            process_sequence = sequenceHandler_IO.getSamplesInSequence(sample_names_I)
+
+        for sample in process_sequence:
+            # handle user desired raw_data_processing_methods
+            if raw_data_processing_methods_I:
+                raw_data_processing_methods = raw_data_processing_methods_I
+            else:
+                raw_data_processing_methods = sequenceHandler_IO.raw_data_processing
+                if sample.raw_data.quantitation_methods is None:
+                    raw_data_processing_methods["quantify_peak"] = False
+                    
+            # process the samples
+            rawDataProcessor.processRawData(
+                sample.raw_data,
+                raw_data_processing_methods,
+                sequenceHandler_IO.parameters,
+                sequenceHandler_IO.getDefaultDynamicFilenames(
+                    sequenceHandler_IO.getDirDynamic(),
+                    sample.meta_data["sample_name"])
+                )
+
     def processSequenceGroups(
         self, sequenceHandler_IO,
         sample_names=[],
@@ -111,7 +158,7 @@ class SequenceProcessor():
         sequence_group_processing_methods={},
         verbose_I=False
     ):
-        """process a sequence of samples
+        """process a sequence of samples by sequence groups
         
         Args:
             sequenceHandler_IO (SequenceHandler): the sequence class
@@ -141,10 +188,13 @@ class SequenceProcessor():
                     sequenceHandler_IO.sequence[index].raw_data,
                     raw_data_processing_methods,
                     sequenceHandler_IO.parameters,
-                    sequenceHandler_IO.sequence[index].meta_data["filename"])
+                    sequenceHandler_IO.getDefaultDynamicFilenames(
+                        sequenceHandler_IO.getDirDynamic(),
+                        sequenceHandler_IO.sequence[index].meta_data["sample_name"])
+                    )
             # calculate the calibration curves
             seqGroupProcessor.optimizeCalibrationCurves(
-                sequence_group, sequenceHandler_IO)  # TODO: fix bug
+                sequence_group, sequenceHandler_IO)
             # quantify and check
             raw_data_processing_methods = {
                 "pick_peaks": False,
@@ -171,12 +221,15 @@ class SequenceProcessor():
             for index in sample_indices:
                 # copy over updated quantitation_methods
                 sequenceHandler_IO.sequence[index].raw_data.quantitation_methods = \
-                    sequence_group.quantitation_methods
+                    sequence_group.quantitation_methods                
                 rawDataProcessor.processRawData(
                     sequenceHandler_IO.sequence[index].raw_data,
                     sequenceHandler_IO.sequence[index].raw_data_processing,
                     sequenceHandler_IO.parameters,
-                    sequenceHandler_IO.sequence[index].meta_data["filename"])
+                    sequenceHandler_IO.getDefaultDynamicFilenames(
+                        sequenceHandler_IO.getDirDynamic(),
+                        sequenceHandler_IO.sequence[index].meta_data["sample_name"])
+                    )
                 # copy out the feature map
                 sequenceHandler_IO.sequence[index].featureMap = \
                     sequenceHandler_IO.sequence[index].raw_data.featureMap
@@ -195,7 +248,10 @@ class SequenceProcessor():
                     sequenceHandler_IO.sequence[index].raw_data,
                     sequenceHandler_IO.sequence[index].raw_data_processing,
                     sequenceHandler_IO.parameters,
-                    sequenceHandler_IO.sequence[index].meta_data["filename"])
+                    sequenceHandler_IO.getDefaultDynamicFilenames(
+                        sequenceHandler_IO.getDirDynamic(),
+                        sequenceHandler_IO.sequence[index].meta_data["sample_name"])
+                    )
                 # copy out the feature map
                 sequenceHandler_IO.sequence[index].featureMap = \
                     sequenceHandler_IO.sequence[index].raw_data.featureMap
@@ -217,7 +273,10 @@ class SequenceProcessor():
                     sequenceHandler_IO.sequence[index].raw_data,
                     sequenceHandler_IO.sequence[index].raw_data_processing,
                     sequenceHandler_IO.parameters,
-                    sequenceHandler_IO.sequence[index].meta_data["filename"])
+                    sequenceHandler_IO.getDefaultDynamicFilenames(
+                        sequenceHandler_IO.getDirDynamic(),
+                        sequenceHandler_IO.sequence[index].meta_data["sample_name"])
+                    )
                 # copy out the feature map
                 sequenceHandler_IO.sequence[index].featureMap = \
                     sequenceHandler_IO.sequence[index].raw_data.featureMap
@@ -233,7 +292,10 @@ class SequenceProcessor():
                     sequenceHandler_IO.sequence[index].raw_data,
                     sequenceHandler_IO.sequence[index].raw_data_processing,
                     sequenceHandler_IO.parameters,
-                    sequenceHandler_IO.sequence[index].meta_data["filename"])
+                    sequenceHandler_IO.getDefaultDynamicFilenames(
+                        sequenceHandler_IO.getDirDynamic(),
+                        sequenceHandler_IO.sequence[index].meta_data["sample_name"])
+                    )
 
             # 6: process all Solvents
             sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
@@ -246,7 +308,10 @@ class SequenceProcessor():
                     sequenceHandler_IO.sequence[index].raw_data,
                     sequenceHandler_IO.sequence[index].raw_data_processing,
                     sequenceHandler_IO.parameters,
-                    sequenceHandler_IO.sequence[index].meta_data["filename"])
+                    sequenceHandler_IO.getDefaultDynamicFilenames(
+                        sequenceHandler_IO.getDirDynamic(),
+                        sequenceHandler_IO.sequence[index].meta_data["sample_name"])
+                    )
                 # copy out the feature map
                 sequenceHandler_IO.sequence[index].featureMap = \
                     sequenceHandler_IO.sequence[index].raw_data.featureMap

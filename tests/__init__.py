@@ -140,12 +140,15 @@ def runAllTests():
     test.test_addFeatureMapToSequence()
     test.test_getDefaultRawDataProcessingWorkflow()
     test.test_getDefaultSequenceGroupProcessingWorkflow()
+    test.test_getSamplesInSequence()
 
     from tests.test_core_SequenceProcessor import TestSequenceProcessor
     test = TestSequenceProcessor()
     test.test_groupSamplesInSequence()
     test.test_addRawDataHandlerToSequence()
     test.test_createSequence()
+    test.test_processSequence()
+    # test.test_processSequenceGroups()
 
     from tests.test_io_SequenceWriter import TestSequenceWriter
     test = TestSequenceWriter()

@@ -18,10 +18,11 @@ class SequenceReader():
         """
 
         # read in the data
-        fileReader = FileReader()
-        fileReader.read_csv(filename, delimiter)
-        self.parse_sequenceFile(sequenceHandler_IO, fileReader.getData())
-        fileReader.clear_data()
+        if filename is not None:
+            fileReader = FileReader()
+            fileReader.read_csv(filename, delimiter)
+            self.parse_sequenceFile(sequenceHandler_IO, fileReader.getData())
+            fileReader.clear_data()
 
     def parse_sequenceFile(self, sequenceHandler_IO, sequence_file):
         """Parse a sequence file to ensure all headers are present
@@ -45,10 +46,11 @@ class SequenceReader():
         """
 
         # read in the data
-        fileReader = FileReader()
-        fileReader.read_openMSParams(filename, delimiter)
-        self.parse_sequenceParameters(sequenceHandler_IO, fileReader.getData())
-        fileReader.clear_data()
+        if filename is not None:
+            fileReader = FileReader()
+            fileReader.read_openMSParams(filename, delimiter)
+            self.parse_sequenceParameters(sequenceHandler_IO, fileReader.getData())
+            fileReader.clear_data()
 
     def parse_sequenceParameters(self, sequenceHandler_IO, parameters_file):
         """Parse a sequence file to ensure all headers are present

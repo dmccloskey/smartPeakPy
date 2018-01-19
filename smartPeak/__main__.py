@@ -117,22 +117,22 @@ class __main__():
                     sequence.meta_data["filename"])
                 traML_csv_i = '''%s/traML.csv''' % (sequence.meta_data["data_dir"])
                 # trafo_csv_i = '''%s/trafo.csv''' % (data_dir)
-                db_ini_i = '''%s/settings.ini''' % (sequence.meta_data["data_dir"])
+                db_json_i = '''%s/settings.ini''' % (sequence.meta_data["data_dir"])
 
                 # load in the files
                 fileReaderOpenMS.load_TraML(
-                    rawDataHandler, {'traML_csv_i': traML_csv_i}, verbose_I=verbose_I)                
+                    rawDataHandler,  traML_csv_i, verbose_I=verbose_I)                
                 fileReaderOpenMS.load_SWATHorDIA(rawDataHandler, {})
                 fileReaderOpenMS.load_MSExperiment(
                     rawDataHandler, 
-                    {'mzML_feature_i': mzML_i},
+                    mzML_i,
                     MRMMapping_params_I=params['MRMMapping'],
                     chromatogramExtractor_params_I=params['ChromatogramExtractor'],
                     verbose_I=verbose_I)
                 rawDataProcessor.extract_metaData(rawDataHandler, verbose_I=verbose_I)
                 fileReaderOpenMS.load_Trafo(  # skip transformation of RT
                     rawDataHandler, 
-                    {},  # {'trafo_csv_i':trafo_csv_i},
+                    None,  # {'trafo_csv_i':trafo_csv_i},
                     params['MRMFeatureFinderScoring'],
                     verbose_I=verbose_I)
 
@@ -151,16 +151,14 @@ class __main__():
                         verbose_I=verbose_I)
                     # store
                     fileWriterOpenMS.store_featureMap(
-                        rawDataHandler, {
-                            'featureXML_o': featureXML_o,
-                            'feature_csv_o': feature_csv_o},
+                        rawDataHandler, featureXML_o, feature_csv_o,
                         verbose_I=verbose_I)
                 elif filter_peaks or select_peaks or plot_peaks or validate_peaks\
                 or quantify_peaks or check_peaks:
                     try:
                         fileReaderOpenMS.load_featureMap(
                             rawDataHandler,
-                            {'featureXML_i': featureXML_o},
+                            featureXML_o,
                             verbose_I=verbose_I)
                     except Exception as e:
                         print(e)
@@ -173,11 +171,11 @@ class __main__():
                     sequence.meta_data["data_dir"],
                     sequence.meta_data["sample_name"])
                 if filter_peaks:
-                    mrmfeaturefilter_csv_i = '''%s/featureFilters.csv''' % (
+                    featureFilter_csv_i = '''%s/featureFilters.csv''' % (
                         sequence.meta_data["data_dir"])
                     fileReaderOpenMS.load_featureFilter(
                         rawDataHandler,
-                        filenames_I={'mrmfeaturefilter_csv_i': mrmfeaturefilter_csv_i}
+                        featureFilter_csv_i
                         )
                     rawDataProcessor.filterFeatures(
                         rawDataHandler,
@@ -187,16 +185,14 @@ class __main__():
                     )
                     # store
                     fileWriterOpenMS.store_featureMap(
-                        rawDataHandler, {
-                            'featureXML_o': featureXML_o,
-                            'feature_csv_o': feature_csv_o},
+                        rawDataHandler, featureXML_o, feature_csv_o,
                         verbose_I=verbose_I)
                 elif select_peaks or plot_peaks or validate_peaks or quantify_peaks\
                 or check_peaks:        
                     try:
                         fileReaderOpenMS.load_featureMap(
                             rawDataHandler,
-                            {'featureXML_i': featureXML_o},
+                            featureXML_o,
                             verbose_I=verbose_I)
                     except Exception as e:
                         try:  # in case features were not filtered previously
@@ -205,7 +201,7 @@ class __main__():
                                 sequence.meta_data["sample_name"]) 
                             fileReaderOpenMS.load_featureMap(
                                 rawDataHandler,
-                                {'featureXML_i': featureXML_o},
+                                featureXML_o,
                                 verbose_I=verbose_I)
                         except Exception as e:
                             print(e)
@@ -233,15 +229,13 @@ class __main__():
                     )
                     # store
                     fileWriterOpenMS.store_featureMap(
-                        rawDataHandler, {
-                            'featureXML_o': featureXML_o,
-                            'feature_csv_o': feature_csv_o},
+                        rawDataHandler, featureXML_o, feature_csv_o,
                         verbose_I=verbose_I)
                 elif plot_peaks or validate_peaks or quantify_peaks or check_peaks:        
                     try:
                         fileReaderOpenMS.load_featureMap(
                             rawDataHandler,
-                            {'featureXML_i': featureXML_o},
+                            featureXML_o,
                             verbose_I=verbose_I)
                     except Exception as e:
                         print(e)
@@ -280,7 +274,7 @@ class __main__():
                         'type': 'list', 'value': sample_names_I})
                     fileReaderOpenMS.load_validationData(
                         rawDataHandler,
-                        {'db_ini_i': db_ini_i},
+                        db_json_i,
                         ReferenceDataMethods_params_I,
                         verbose_I=verbose_I
                         )
@@ -298,15 +292,13 @@ class __main__():
                         params['MRMFeatureValidator.validate_MRMFeatures'],
                         verbose_I=verbose_I)
                     fileWriterOpenMS.store_featureMap(
-                        rawDataHandler, {
-                            'featureXML_o': featureXML_o,
-                            'feature_csv_o': feature_csv_o},
+                        rawDataHandler, featureXML_o, feature_csv_o,
                         verbose_I=verbose_I)
                 elif quantify_peaks or check_peaks:                   
                     try:
                         fileReaderOpenMS.load_featureMap(
                             rawDataHandler,
-                            {'featureXML_i': featureXML_o},
+                            featureXML_o,
                             verbose_I=verbose_I)
                     except Exception as e:
                         print(e)
@@ -325,20 +317,18 @@ class __main__():
                     # load the quantitation method
                     fileReaderOpenMS.load_quantitationMethods(
                         rawDataHandler,
-                        {'quantitationMethods_csv_i': quantitationMethods_csv_i},
+                        quantitationMethods_csv_i,
                         verbose_I=verbose_I)
                     # quantify the components
                     rawDataProcessor.quantifyComponents(
                         rawDataHandler, verbose_I=verbose_I)
                     fileWriterOpenMS.store_featureMap(
-                        rawDataHandler, {
-                            'featureXML_o': featureXML_o,
-                            'feature_csv_o': feature_csv_o},
+                        rawDataHandler, featureXML_o, feature_csv_o,
                         verbose_I=verbose_I)
                 elif check_peaks: 
                     try:
                         fileReaderOpenMS.load_featureMap(
-                            rawDataHandler, {'featureXML_i': featureXML_o})
+                            rawDataHandler, featureXML_o)
                     except Exception as e:
                         # Peaks have not been quantified, try opening picked peaks
                         featureXML_o = '''%s/features/%s.featureXML''' % (
@@ -346,7 +336,7 @@ class __main__():
                             sequence.meta_data["sample_name"])
                         fileReaderOpenMS.load_featureMap(
                             rawDataHandler,
-                            {'featureXML_i': featureXML_o},
+                            featureXML_o,
                             verbose_I=verbose_I)
 
                 # QC the peaks
@@ -357,11 +347,11 @@ class __main__():
                     sequence.meta_data["data_dir"],
                     sequence.meta_data["sample_name"])
                 if check_peaks:
-                    mrmfeatureqcs_csv_i = '''%s/featureQCs.csv''' % (
+                    featureQC_csv_i = '''%s/featureQCs.csv''' % (
                         sequence.meta_data["data_dir"])
                     fileReaderOpenMS.load_featureQC(
                         rawDataHandler,
-                        filenames_I={'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i}
+                        featureQC_csv_i
                         )
                     rawDataProcessor.checkFeatures(
                         rawDataHandler,
@@ -371,9 +361,7 @@ class __main__():
                     )
                     # store
                     fileWriterOpenMS.store_featureMap(
-                        rawDataHandler, {
-                            'featureXML_o': featureXML_o,
-                            'feature_csv_o': feature_csv_o},
+                        rawDataHandler, featureXML_o, feature_csv_o,
                         verbose_I=verbose_I)
 
                 # record features

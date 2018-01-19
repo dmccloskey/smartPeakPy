@@ -167,10 +167,51 @@ class TestSequenceHandler():
         assert(sequenceHandler.getDefaultSequenceGroupProcessingWorkflow("Double Blank") == default)
         assert(sequenceHandler.getDefaultSequenceGroupProcessingWorkflow("Solvent") != default)
 
+    def test_getSamplesInSequence(self):
+        sequenceHandler = SequenceHandler()
+
+        # test data
+        meta_data_required = {h: None for h in sequenceHandler.getRequiredHeaders()}
+        meta_data1 = copy.copy(meta_data_required)
+        meta_data1.update({
+            'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
+            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
+        featuremap1 = None
+        
+        meta_data2 = copy.copy(meta_data_required)
+        meta_data2.update({
+            'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
+            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
+        featuremap2 = None
+        
+        meta_data3 = copy.copy(meta_data_required)
+        meta_data3.update({
+            'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
+            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
+        featuremap3 = None
+
+        # add the injections to the sequence
+        sequenceHandler.addSampleToSequence(meta_data1, featuremap1)
+        sequenceHandler.addSampleToSequence(meta_data2, featuremap2)
+        sequenceHandler.addSampleToSequence(meta_data3, featuremap3)
+
+        sample_names = ["sample1", "ample2", "sample3"]
+        samples = sequenceHandler.getSamplesInSequence(sample_names)
+        assert(samples[0].meta_data["sample_name"] == "sample1")
+        assert(samples[1].meta_data["sample_name"] == "sample3")
+
     def test_parse_rawDataProcessing(self):
         sequenceHandler = SequenceHandler()
         # TODO
 
     def test_parse_sequenceGroupProcessing(self):
+        sequenceHandler = SequenceHandler()
+        # TODO
+
+    def test_getDefaultStaticFilenames(self):
+        sequenceHandler = SequenceHandler()
+        # TODO
+
+    def test_getDefaultDynamicFilenames(self):
         sequenceHandler = SequenceHandler()
         # TODO

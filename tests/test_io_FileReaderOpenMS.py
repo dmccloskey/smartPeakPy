@@ -33,7 +33,7 @@ class TestFileReaderOpenMS():
 
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        fileReaderOpenMS.load_TraML(rawDataHandler, {'traML_csv_i': traML_csv_i})
+        fileReaderOpenMS.load_TraML(rawDataHandler, traML_csv_i)
         assert(rawDataHandler.targeted.getTransitions()[0].getPeptideRef() == b'arg-L')
         assert(rawDataHandler.targeted.getTransitions()[0].getPrecursorMZ() == 179.0)
         assert(rawDataHandler.targeted.getTransitions()[0].getProductMZ() == 136.0)
@@ -48,12 +48,11 @@ class TestFileReaderOpenMS():
         
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        fileReaderOpenMS.load_TraML(rawDataHandler, {'traML_csv_i': traML_csv_i})
+        fileReaderOpenMS.load_TraML(rawDataHandler, traML_csv_i)
 
         # load MSExperiment
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        fileReaderOpenMS.load_MSExperiment(rawDataHandler, {
-            'mzML_feature_i': mzML_i},
+        fileReaderOpenMS.load_MSExperiment(rawDataHandler, mzML_i,
             MRMMapping_params_I=self.params_1['MRMMapping'])
         assert(rawDataHandler.msExperiment.getChromatograms()[
             0].getProduct().getMZ() == 0.0)
@@ -71,7 +70,7 @@ class TestFileReaderOpenMS():
         # # Precursor chromatogramExtraction
         # # load traML
         # traML_csv_i = '''%s%s''' % (data_dir, "traML_2.csv")
-        # fileReaderOpenMS.load_TraML({'traML_csv_i': traML_csv_i})
+        # fileReaderOpenMS.load_TraML(traML_csv_i)
 
         # # load MSExperiment
         # mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_2.mzML")
@@ -82,8 +81,7 @@ class TestFileReaderOpenMS():
         # #     "filter": "tophat",
         # #     "extract_precursors": True
         # # }
-        # fileReaderOpenMS.load_MSExperiment({
-        #     'mzML_feature_i': mzML_i},
+        # fileReaderOpenMS.load_MSExperiment(mzML_i,
         #     MRMMapping_params_I=self.params_2['MRMMapping'],
         #     chromatogramExtractor_params_I=self.params_2['ChromatogramExtractor'])
         # assert()
@@ -96,18 +94,18 @@ class TestFileReaderOpenMS():
         
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        fileReaderOpenMS.load_TraML(rawDataHandler, {'traML_csv_i': traML_csv_i})
+        fileReaderOpenMS.load_TraML(rawDataHandler, traML_csv_i)
 
         # load MSExperiment
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        fileReaderOpenMS.load_MSExperiment(rawDataHandler, {
-            'mzML_feature_i': mzML_i},
+        fileReaderOpenMS.load_MSExperiment(
+            rawDataHandler, mzML_i,
             MRMMapping_params_I=self.params_1['MRMMapping'])
 
         # load trafo
         fileReaderOpenMS.load_Trafo(
             rawDataHandler, 
-            {},  # {'trafo_csv_i':trafo_csv_i},
+            None,  # {'trafo_csv_i':trafo_csv_i},
             self.params_1['MRMFeatureFinderScoring'])
         assert(isinstance(rawDataHandler.trafo, pyopenms.TransformationDescription))
 
@@ -117,7 +115,7 @@ class TestFileReaderOpenMS():
 
         # load featureMap
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
-        fileReaderOpenMS.load_featureMap(rawDataHandler, {'featureXML_i': featureXML_o})
+        fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
 
         assert(rawDataHandler.featureMap[0].getSubordinates()[
             0].getMetaValue("peak_apex_int") == 266403.0)
@@ -140,8 +138,7 @@ class TestFileReaderOpenMS():
         quantitationMethods_csv_i = '''%s%s''' % (
             data_dir, "quantitationMethods_1.csv")
         fileReaderOpenMS.load_quantitationMethods(
-            sequenceGroupHandler, 
-            {'quantitationMethods_csv_i': quantitationMethods_csv_i})
+            sequenceGroupHandler, quantitationMethods_csv_i)
         assert(sequenceGroupHandler.quantitation_methods[0].getLLOQ() == 0.25)
         assert(sequenceGroupHandler.quantitation_methods[0].getULOQ() == 2.5)
         assert(sequenceGroupHandler.quantitation_methods[
@@ -155,8 +152,7 @@ class TestFileReaderOpenMS():
         standardsConcentrations_csv_i = '''%s%s''' % (
             data_dir, "standardsConcentrations_1.csv")
         fileReaderOpenMS.load_standardsConcentrations( 
-            sequenceGroupHandler, 
-            {'standardsConcentrations_csv_i': standardsConcentrations_csv_i})
+            sequenceGroupHandler, standardsConcentrations_csv_i)
         assert(sequenceGroupHandler.standards_concentrations[0].getLLOQ() == 0.25)
         assert(sequenceGroupHandler.standards_concentrations[0].getULOQ() == 2.5)
         assert(sequenceGroupHandler.standards_concentrations[
@@ -167,9 +163,8 @@ class TestFileReaderOpenMS():
         fileReaderOpenMS = FileReaderOpenMS()
 
         # load traML
-        mrmfeaturefilter_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
-        fileReaderOpenMS.load_featureFilter(rawDataHandler, {
-            'mrmfeaturefilter_csv_i': mrmfeaturefilter_csv_i})
+        featureFiltercsv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+        fileReaderOpenMS.load_featureFilter(rawDataHandler, featureFiltercsv_i)
         assert(rawDataHandler.feature_filter.component_qcs[
             0].component_name == b'arg-L.arg-L_1.Heavy')
         assert(rawDataHandler.feature_filter.component_group_qcs[
@@ -180,9 +175,8 @@ class TestFileReaderOpenMS():
         fileReaderOpenMS = FileReaderOpenMS()
 
         # load traML
-        mrmfeatureqcs_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
-        fileReaderOpenMS.load_featureQC(rawDataHandler, {
-            'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i})
+        featureQC_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+        fileReaderOpenMS.load_featureQC(rawDataHandler, featureQC_csv_i)
         assert(rawDataHandler.feature_qc.component_qcs[
             0].component_name == b'arg-L.arg-L_1.Heavy')
         assert(rawDataHandler.feature_qc.component_group_qcs[

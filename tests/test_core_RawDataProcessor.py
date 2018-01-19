@@ -31,12 +31,11 @@ class TestRawDataProcessor():
         
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        fileReaderOpenMS.load_TraML(rawDataHandler, {'traML_csv_i': traML_csv_i})
+        fileReaderOpenMS.load_TraML(rawDataHandler, traML_csv_i)
 
         # load MSExperiment
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        fileReaderOpenMS.load_MSExperiment(rawDataHandler, {
-            'mzML_feature_i': mzML_i},
+        fileReaderOpenMS.load_MSExperiment(rawDataHandler, mzML_i,
             MRMMapping_params_I=self.params_1['MRMMapping'])
         
         rawDataProcessor.extract_metaData(rawDataHandler)
@@ -56,12 +55,12 @@ class TestRawDataProcessor():
         
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        fileReaderOpenMS.load_TraML(rawDataHandler, {'traML_csv_i': traML_csv_i})
+        fileReaderOpenMS.load_TraML(rawDataHandler, traML_csv_i)
 
         # load MSExperiment
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        fileReaderOpenMS.load_MSExperiment(rawDataHandler, {
-            'mzML_feature_i': mzML_i},
+        fileReaderOpenMS.load_MSExperiment(
+            rawDataHandler, mzML_i,
             MRMMapping_params_I=self.params_1['MRMMapping'])
         
         rawDataProcessor.extract_metaData(rawDataHandler)
@@ -70,7 +69,7 @@ class TestRawDataProcessor():
         # trafo_csv_i = '''%s%s''' % (data_dir, "trafo_1")
         fileReaderOpenMS.load_Trafo(
             rawDataHandler,
-            {},  # {'trafo_csv_i':trafo_csv_i},
+            None,
             self.params_1['MRMFeatureFinderScoring'])
 
         # load SWATH
@@ -96,9 +95,7 @@ class TestRawDataProcessor():
         # store
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
         feature_csv_o = '''%s/features/%s.csv''' % (data_dir, "test_1")
-        fileWriterOpenMS.store_featureMap(rawDataHandler, {
-            'featureXML_o': featureXML_o,
-            'feature_csv_o': feature_csv_o})
+        fileWriterOpenMS.store_featureMap(rawDataHandler, featureXML_o, feature_csv_o)
 
     def test_filterAndSelect(self):
         self.load_data()
@@ -109,25 +106,25 @@ class TestRawDataProcessor():
         
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        fileReaderOpenMS.load_TraML(rawDataHandler, {'traML_csv_i': traML_csv_i})
+        fileReaderOpenMS.load_TraML(rawDataHandler, traML_csv_i)
 
         # load MSExperiment
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        fileReaderOpenMS.load_MSExperiment(rawDataHandler, {
-            'mzML_feature_i': mzML_i},
+        fileReaderOpenMS.load_MSExperiment(
+            rawDataHandler, mzML_i,
             MRMMapping_params_I=self.params_1['MRMMapping'])
         
         rawDataProcessor.extract_metaData(rawDataHandler)
 
         # load featureMap
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
-        fileReaderOpenMS.load_featureMap(rawDataHandler, {'featureXML_i': featureXML_o})
+        fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
 
         # filter and select
-        mrmfeaturefilter_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+        featureFilter_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
         fileReaderOpenMS.load_featureFilter(
             rawDataHandler,
-            filenames_I={'mrmfeaturefilter_csv_i': mrmfeaturefilter_csv_i}
+            featureFilter_csv_i
             )
         rawDataProcessor.filterFeatures(
             rawDataHandler,
@@ -152,9 +149,7 @@ class TestRawDataProcessor():
         # store
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_2") 
         feature_csv_o = '''%s/features/%s.csv''' % (data_dir, "test_2")
-        fileWriterOpenMS.store_featureMap(rawDataHandler, {
-            'featureXML_o': featureXML_o,
-            'feature_csv_o': feature_csv_o})
+        fileWriterOpenMS.store_featureMap(rawDataHandler, featureXML_o, feature_csv_o)
 
     def test_validateFeatures(self):        
         self.load_data()
@@ -164,7 +159,7 @@ class TestRawDataProcessor():
 
         # load featureMap
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_2")
-        fileReaderOpenMS.load_featureMap(rawDataHandler, {'featureXML_i': featureXML_o})
+        fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
         
         # load in the validation data 
         referenceData_csv_i = '''%s%s''' % (data_dir, "referenceData_1.csv")
@@ -177,7 +172,7 @@ class TestRawDataProcessor():
             'type': 'list', 'value': sample_names_I})
         fileReaderOpenMS.load_validationData(
             rawDataHandler,
-            {'referenceData_csv_i': referenceData_csv_i},
+            referenceData_csv_i,
             ReferenceDataMethods_params_I
             )
 
@@ -197,11 +192,11 @@ class TestRawDataProcessor():
             data_dir, "quantitationMethods_1.csv")
         fileReaderOpenMS.load_quantitationMethods(
             rawDataHandler,
-            {'quantitationMethods_csv_i': quantitationMethods_csv_i})
+            quantitationMethods_csv_i)
 
         # load featureMap
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_2") 
-        fileReaderOpenMS.load_featureMap(rawDataHandler, {'featureXML_i': featureXML_o})
+        fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
 
         # quantify the components
         rawDataProcessor.quantifyComponents(rawDataHandler)
@@ -220,16 +215,16 @@ class TestRawDataProcessor():
         
         # load traML
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        fileReaderOpenMS.load_TraML(rawDataHandler, {'traML_csv_i': traML_csv_i})
+        fileReaderOpenMS.load_TraML(rawDataHandler, traML_csv_i)
 
         # load featureMap
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_2") 
-        fileReaderOpenMS.load_featureMap(rawDataHandler, {'featureXML_i': featureXML_o})
+        fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
 
-        mrmfeatureqcs_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+        featureQC_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
         fileReaderOpenMS.load_featureQC(
             rawDataHandler,
-            filenames_I={'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i}
+            featureQC_csv_i
             )
         rawDataProcessor.checkFeatures(
             rawDataHandler,
@@ -250,21 +245,21 @@ class TestRawDataProcessor():
         
         # load files
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
-        fileReaderOpenMS.load_TraML(rawDataHandler, {'traML_csv_i': traML_csv_i})
-        mrmfeaturefilter_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+        fileReaderOpenMS.load_TraML(rawDataHandler, traML_csv_i)
+        featureFilter_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
         fileReaderOpenMS.load_featureFilter(
             rawDataHandler,
-            filenames_I={'mrmfeaturefilter_csv_i': mrmfeaturefilter_csv_i}
+            featureFilter_csv_i
             )
         quantitationMethods_csv_i = '''%s%s''' % (
             data_dir, "quantitationMethods_1.csv")
         fileReaderOpenMS.load_quantitationMethods(
             rawDataHandler,
-            {'quantitationMethods_csv_i': quantitationMethods_csv_i})
-        mrmfeatureqcs_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+            quantitationMethods_csv_i)
+        featureQC_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
         fileReaderOpenMS.load_featureQC(
             rawDataHandler,
-            filenames_I={'mrmfeatureqcs_csv_i': mrmfeatureqcs_csv_i}
+            featureQC_csv_i
             )
 
         # test all
@@ -278,7 +273,7 @@ class TestRawDataProcessor():
             "plot_peaks": False}
 
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        filenames = {'mzML_feature_i': mzML_i}
+        filenames = {'mzML_i': mzML_i}
         self.params_1.update({'ChromatogramExtractor': []})
 
         rawDataProcessor.processRawData(
