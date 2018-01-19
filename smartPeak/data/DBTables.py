@@ -57,7 +57,7 @@ class DBTables():
             settings["database"]["dialect"],
             "sequence_file",
             None,
-            ["sequence_id", "sequence_group_name", "sample_name",
+            ["sequence_id", "sequence_segment_name", "sample_name",
                 "sample_group_name", "sample_type", "filename",
                 "used_"],
             ["TEXT", "TEXT", "TEXT",

@@ -17,10 +17,10 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-from tests.test_core_SequenceGroupProcessor import TestSequenceGroupProcessor
-test = TestSequenceGroupProcessor()
-test.test_checkSequenceGroupProcessing()
-test.test_getDefaultSequenceGroupProcessingWorkflow()
+from tests.test_core_SequenceSegmentProcessor import TestSequenceSegmentProcessor
+test = TestSequenceSegmentProcessor()
+test.test_checkSequenceSegmentProcessing()
+test.test_getDefaultSequenceSegmentProcessingWorkflow()
 
 # from tests import runAllTests
 # runAllTests()

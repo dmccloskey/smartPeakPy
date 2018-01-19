@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from .SequenceGroupProcessor import SequenceGroupProcessor
-from .SequenceGroupHandler import SequenceGroupHandler
+from .SequenceSegmentProcessor import SequenceSegmentProcessor
+from .SequenceSegmentHandler import SequenceSegmentHandler
 from .RawDataHandler import RawDataHandler
 from .RawDataProcessor import RawDataProcessor
 from smartPeak.io.SequenceReader import SequenceReader
@@ -24,7 +24,7 @@ class SequenceProcessor():
             verbose_I (boolean): verbosity
         """
         rawDataHandler = RawDataHandler()
-        sequenceGroupHandler = SequenceGroupHandler()
+        sequenceSegmentHandler = SequenceSegmentHandler()
 
         # load sequence assets
         if sequenceHandler_IO.filenames is not None:  
@@ -57,26 +57,26 @@ class SequenceProcessor():
                 verbose_I=verbose_I)
             # raw data files (i.e., mzML will be loaded dynamically)
 
-            # load sequenceGroupHandler files
+            # load sequenceSegmentHandler files
             fileReaderOpenMS.load_quantitationMethods(
-                sequenceGroupHandler, sequenceHandler_IO.filenames[
+                sequenceSegmentHandler, sequenceHandler_IO.filenames[
                     "quantitationMethods_csv_i"],
                 verbose_I=verbose_I)
             fileReaderOpenMS.load_standardsConcentrations(
-                sequenceGroupHandler, sequenceHandler_IO.filenames[
+                sequenceSegmentHandler, sequenceHandler_IO.filenames[
                     "standardsConcentrations_csv_i"],
                 verbose_I=verbose_I)         
         else:  # load sequence from GUI
             pass
         
         # initialize the sequence
-        self.groupSamplesInSequence(sequenceHandler_IO, sequenceGroupHandler)
+        self.groupSamplesInSequence(sequenceHandler_IO, sequenceSegmentHandler)
         self.addRawDataHandlerToSequence(sequenceHandler_IO, rawDataHandler)
 
     def addRawDataHandlerToSequence(
         self, sequenceHandler_IO, rawDataHandler_I
     ):
-        """Add template RawDataHandler and SequenceGroupHandler to all
+        """Add template RawDataHandler and SequenceSegmentHandler to all
         samples and sequence groups in the sequence
         
         Args:
@@ -87,32 +87,32 @@ class SequenceProcessor():
             # pass the same object that can be reused
             sample.raw_data = rawDataHandler_I
 
-    def groupSamplesInSequence(self, sequenceHandler_IO, sequenceGroupHandler_I=None):
+    def groupSamplesInSequence(self, sequenceHandler_IO, sequenceSegmentHandler_I=None):
         """group samples in a sequence
 
-        An optional template SequenceGroupHandler can be added to all groups
+        An optional template SequenceSegmentHandler can be added to all groups
         
         Args:
             sequenceHandler_IO (SequenceHandler): sequence handler
-            sequenceGroupHandler_I (SequenceGroupHandler): sequence group handler
+            sequenceSegmentHandler_I (SequenceSegmentHandler): sequence group handler
         """
 
         sequence_groups_dict = {}
         for cnt, sample in enumerate(sequenceHandler_IO.sequence):
-            if sample.meta_data["sequence_group_name"] not in sequence_groups_dict.keys():
-                sequence_groups_dict[sample.meta_data["sequence_group_name"]] = []
-            sequence_groups_dict[sample.meta_data["sequence_group_name"]].append(cnt)
+            if sample.meta_data["sequence_segment_name"] not in sequence_groups_dict.keys():
+                sequence_groups_dict[sample.meta_data["sequence_segment_name"]] = []
+            sequence_groups_dict[sample.meta_data["sequence_segment_name"]].append(cnt)
         
         sequence_groups = []
         for k, v in sequence_groups_dict.items():
             # pass a copy that can be edited
-            if sequenceGroupHandler_I is not None:
-                sequenceGroupHandler = copy.copy(sequenceGroupHandler_I)
+            if sequenceSegmentHandler_I is not None:
+                sequenceSegmentHandler = copy.copy(sequenceSegmentHandler_I)
             else:
-                sequenceGroupHandler = SequenceGroupHandler()
-            sequenceGroupHandler.sequence_group_name = k
-            sequenceGroupHandler.sample_indices = v
-            sequence_groups.append(sequenceGroupHandler)
+                sequenceSegmentHandler = SequenceSegmentHandler()
+            sequenceSegmentHandler.sequence_segment_name = k
+            sequenceSegmentHandler.sample_indices = v
+            sequence_groups.append(sequenceSegmentHandler)
 
         sequenceHandler_IO.sequence_groups = sequence_groups
 
@@ -158,10 +158,10 @@ class SequenceProcessor():
             # copy out the feature map
             sample.featureMap = sample.raw_data.featureMap
 
-    def processSequenceGroups(
+    def processSequenceSegments(
         self, sequenceHandler_IO,
         sample_names=[],
-        sequence_group_names=[],
+        sequence_segment_names=[],
         raw_data_processing_methods={},
         sequence_group_processing_methods={},
         verbose_I=False
@@ -171,20 +171,20 @@ class SequenceProcessor():
         Args:
             sequenceHandler_IO (SequenceHandler): the sequence class
             sample_names (list): name of the sample
-            sequence_group_names (list): name of the sequence group
+            sequence_segment_names (list): name of the sequence group
             raw_data_process_methods (list): name of the raw data method to execute
             sequence_group_processing_methods (list): name of the sequence group
                 method to execute
         """
         # classes
-        seqGroupProcessor = SequenceGroupProcessor()
+        seqGroupProcessor = SequenceSegmentProcessor()
         rawDataProcessor = RawDataProcessor()
 
         # process by sequence group
         for sequence_group in sequenceHandler_IO.sequence_groups:
             # 1: process all Standards
             sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
-                sequenceGroupHandler_I=sequence_group,
+                sequenceSegmentHandler_I=sequence_group,
                 sequenceHandler_I=sequenceHandler_IO,
                 sample_type="Standard"
             )
@@ -222,7 +222,7 @@ class SequenceProcessor():
 
             # 2: process all Unknowns
             sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
-                sequenceGroupHandler_I=sequence_group,
+                sequenceSegmentHandler_I=sequence_group,
                 sequenceHandler_I=sequenceHandler_IO,
                 sample_type="Unknown"
             )
@@ -244,7 +244,7 @@ class SequenceProcessor():
 
             # 3: process all QCs
             sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
-                sequenceGroupHandler_I=sequence_group,
+                sequenceSegmentHandler_I=sequence_group,
                 sequenceHandler_I=sequenceHandler_IO,
                 sample_type="QC"
             )
@@ -269,7 +269,7 @@ class SequenceProcessor():
 
             # 4: process all Blanks
             sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
-                sequenceGroupHandler_I=sequence_group,
+                sequenceSegmentHandler_I=sequence_group,
                 sequenceHandler_I=sequenceHandler_IO,
                 sample_type="Blank"
             )
@@ -291,7 +291,7 @@ class SequenceProcessor():
             
             # 5: process all Double Blanks
             sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
-                sequenceGroupHandler_I=sequence_group,
+                sequenceSegmentHandler_I=sequence_group,
                 sequenceHandler_I=sequenceHandler_IO,
                 sample_type="Double Blank"
             )
@@ -307,7 +307,7 @@ class SequenceProcessor():
 
             # 6: process all Solvents
             sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
-                sequenceGroupHandler_I=sequence_group,
+                sequenceSegmentHandler_I=sequence_group,
                 sequenceHandler_I=sequenceHandler_IO,
                 sample_type="Solvent"
             )

@@ -140,7 +140,6 @@ def runAllTests():
     test.test_getMetaValue()
     test.test_parse_metaData()
     test.test_addFeatureMapToSequence()
-    test.test_getDefaultSequenceGroupProcessingWorkflow()
     test.test_getSamplesInSequence()
 
     from tests.test_core_SequenceProcessor import TestSequenceProcessor
@@ -149,7 +148,7 @@ def runAllTests():
     test.test_addRawDataHandlerToSequence()
     test.test_createSequence()
     test.test_processSequence()
-    # test.test_processSequenceGroups()
+    # test.test_processSequenceSegments()
 
     from tests.test_io_SequenceWriter import TestSequenceWriter
     test = TestSequenceWriter()
@@ -162,10 +161,10 @@ def runAllTests():
     test.test_parse_sequenceParameters()
     test.test_read_sequenceParameters()
 
-    from tests.test_core_SequenceGroupProcessor import TestSequenceGroupProcessor
-    test = TestSequenceGroupProcessor()
-    test.test_checkSequenceGroupProcessing()
-    test.test_getDefaultSequenceGroupProcessingWorkflow()
+    from tests.test_core_SequenceSegmentProcessor import TestSequenceSegmentProcessor
+    test = TestSequenceSegmentProcessor()
+    test.test_checkSequenceSegmentProcessing()
+    test.test_getDefaultSequenceSegmentProcessingWorkflow()
     test.test_getSampleIndicesBySampleType()
     test.test_optimizeCalibrationCurves()
 

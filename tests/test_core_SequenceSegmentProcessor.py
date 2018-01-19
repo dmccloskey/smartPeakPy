@@ -1,78 +1,78 @@
 # -*- coding: utf-8 -*-
-from smartPeak.core.SequenceGroupProcessor import SequenceGroupProcessor
-from smartPeak.core.SequenceGroupHandler import SequenceGroupHandler
+from smartPeak.core.SequenceSegmentProcessor import SequenceSegmentProcessor
+from smartPeak.core.SequenceSegmentHandler import SequenceSegmentHandler
 from smartPeak.core.SequenceHandler import SequenceHandler
 import copy
 
 
-class TestSequenceGroupProcessor():
-    """tests for SequenceGroupProcessor class
+class TestSequenceSegmentProcessor():
+    """tests for SequenceSegmentProcessor class
     """
 
-    def test_checkSequenceGroupProcessing(self):
-        sequenceGroupProcessor = SequenceGroupProcessor()
+    def test_checkSequenceSegmentProcessing(self):
+        sequenceSegmentProcessor = SequenceSegmentProcessor()
 
         events = [
             "calculate_calibration",
             "calculate_carryover",
             "calculate_variability"]
-        assert(sequenceGroupProcessor.checkSequenceGroupProcessing(events))
+        assert(sequenceSegmentProcessor.checkSequenceSegmentProcessing(events))
         
         events = [
             "calculate_calibration",
             "carryover",
             "calculate_variability"]
-        assert(~sequenceGroupProcessor.checkSequenceGroupProcessing(events))
+        assert(~sequenceSegmentProcessor.checkSequenceSegmentProcessing(events))
 
-    def test_getDefaultSequenceGroupProcessingWorkflow(self):
-        sequenceGroupProcessor = SequenceGroupProcessor()
+    def test_getDefaultSequenceSegmentProcessingWorkflow(self):
+        sequenceSegmentProcessor = SequenceSegmentProcessor()
 
-        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow(
+        assert(sequenceSegmentProcessor.getDefaultSequenceSegmentProcessingWorkflow(
             "Unknown") == [])
-        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow(
+        assert(sequenceSegmentProcessor.getDefaultSequenceSegmentProcessingWorkflow(
             "Standard") == ["calculate_calibration"])
-        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow(
+        assert(sequenceSegmentProcessor.getDefaultSequenceSegmentProcessingWorkflow(
             "QC") == ["calculate_variability"])
-        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow(
+        assert(sequenceSegmentProcessor.getDefaultSequenceSegmentProcessingWorkflow(
             "Blank") == [])
-        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow(
+        assert(sequenceSegmentProcessor.getDefaultSequenceSegmentProcessingWorkflow(
             "Double Blank") == [])
-        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow(
+        assert(sequenceSegmentProcessor.getDefaultSequenceSegmentProcessingWorkflow(
             "Solvent") == ["calculate_carryover"])
 
     def test_getSampleIndicesBySampleType(self):
         sequenceHandler = SequenceHandler()
-        sequenceGroupHandler = SequenceGroupHandler()
-        sequenceGroupProcessor = SequenceGroupProcessor()
+        sequenceSegmentHandler = SequenceSegmentHandler()
+        sequenceSegmentProcessor = SequenceSegmentProcessor()
 
         # test data
         meta_data_required = {h: None for h in sequenceHandler.getRequiredHeaders()}
         meta_data1 = copy.copy(meta_data_required)
         meta_data1.update({
             'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
         featuremap1 = None
         
         meta_data2 = copy.copy(meta_data_required)
         meta_data2.update({
             'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group', 'sample_type': 'Standard'})
+            'sequence_segment_name': 'sequence_group', 'sample_type': 'Standard'})
         featuremap2 = None
         
         meta_data3 = copy.copy(meta_data_required)
         meta_data3.update({
             'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
         featuremap3 = None
 
         # add the injections to the sequence
         sequenceHandler.addSampleToSequence(meta_data1, featuremap1)
         sequenceHandler.addSampleToSequence(meta_data2, featuremap2)
         sequenceHandler.addSampleToSequence(meta_data3, featuremap3)
-        sequenceGroupHandler.sample_indices = [0, 1, 2]
+        sequenceSegmentHandler.sample_indices = [0, 1, 2]
 
-        sample_indices = sequenceGroupProcessor.getSampleIndicesBySampleType(
-            sequenceGroupHandler,
+        sample_indices = sequenceSegmentProcessor.getSampleIndicesBySampleType(
+            sequenceSegmentHandler,
             sequenceHandler,
             "Unknown"
         )
@@ -81,7 +81,7 @@ class TestSequenceGroupProcessor():
     def test_optimizeCalibrationCurves(self):
         """No test"""
         # sequenceHandler = SequenceHandler()
-        # sequenceGroupHandler = SequenceGroupHandler()
-        # sequenceGroupProcessor = SequenceGroupProcessor()
+        # sequenceSegmentHandler = SequenceSegmentHandler()
+        # sequenceSegmentProcessor = SequenceSegmentProcessor()
 
         pass

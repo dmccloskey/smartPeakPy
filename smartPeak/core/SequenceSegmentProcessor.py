@@ -5,41 +5,41 @@ except ImportError as e:
     print(e)
 
 
-class SequenceGroupProcessor():
+class SequenceSegmentProcessor():
 
     def getSampleIndicesBySampleType(
         self,
-        sequenceGroupHandler_I,
+        sequenceSegmentHandler_I,
         sequenceHandler_I,
         sample_type
     ):
         """Return all samples in that belong to a given sample type
         
         Args:
-            sequenceGroupHandler_I (SequenceGroupHandler)
+            sequenceSegmentHandler_I (SequenceSegmentHandler)
             sequenceHandler_I (SequenceHandler)
             sample_type (str)
             
         """
 
         sample_indices = []
-        for index in sequenceGroupHandler_I.sample_indices:
+        for index in sequenceSegmentHandler_I.sample_indices:
             if sequenceHandler_I.sequence[index].meta_data["sample_type"] == sample_type:
                 sample_indices.append(index)
         return sample_indices
 
-    def optimizeCalibrationCurves(self, sequenceGroupHandler_IO, sequenceHandler_I):
+    def optimizeCalibrationCurves(self, sequenceSegmentHandler_IO, sequenceHandler_I):
         """Optimize the calibration curve for all components
         
         Args:
-            sequenceGroupHandler_I (SequenceGroupHandler)
+            sequenceSegmentHandler_I (SequenceSegmentHandler)
             sequenceHandler_I (SequenceHandler)
             
         """
 
         # get all standards
         standards_indices = self.getSampleIndicesBySampleType(
-            sequenceGroupHandler_IO, sequenceHandler_I,
+            sequenceSegmentHandler_IO, sequenceHandler_I,
             "Standard"
         )
 
@@ -54,7 +54,7 @@ class SequenceGroupProcessor():
         components_to_concentrations = {}       
         absoluteQuantitationStandards = pyopenms.AbsoluteQuantitationStandards()
         absoluteQuantitationStandards.mapConcentrationsToComponents(
-            sequenceGroupHandler_IO.standards_concentrations,
+            sequenceSegmentHandler_IO.standards_concentrations,
             standards_featureMaps,
             components_to_concentrations
         )        
@@ -63,23 +63,23 @@ class SequenceGroupProcessor():
         absoluteQuantitation = pyopenms.AbsoluteQuantitation()
         absoluteQuantitation.optimizeCalibrationCurves(components_to_concentrations)        
 
-        sequenceGroupHandler_IO.quanitation_methods = absoluteQuantitation.getQuantMethods()  # TODO!!!
+        sequenceSegmentHandler_IO.quanitation_methods = absoluteQuantitation.getQuantMethods()  # TODO!!!
 
-    def processSequenceGroup(
-        self, sequenceGroupHandler_IO, 
+    def processSequenceSegment(
+        self, sequenceSegmentHandler_IO, 
         sequence_group_processing_methods
     ):
         """Apply processing methods to a raw data handler
         
         Args:
-            sequenceGroupHandler_IO (SequenceGroupHandler)
+            sequenceSegmentHandler_IO (SequenceSegmentHandler)
             sequence_group_processing_methods (dict): map of sequence group
                 processing methods
             
         """
         pass
 
-    def getDefaultSequenceGroupProcessingWorkflow(self, sample_type):
+    def getDefaultSequenceSegmentProcessingWorkflow(self, sample_type):
         """return the default workflow events for a given sequence
         
         Args:
@@ -104,7 +104,7 @@ class SequenceGroupProcessor():
         
         return default
 
-    def checkSequenceGroupProcessing(self, sequence_group_processing):
+    def checkSequenceSegmentProcessing(self, sequence_group_processing):
         """check the sequence processing steps
 
         Args:

@@ -15,7 +15,7 @@ class SequenceHandler():
         sequence (list): list of SampleHandlers
         index_to_sample (dict): index to sample_name
         index_to_sample (dict): sample_name to index
-        sequence_groups (list): list of SequenceGroupHandlers
+        sequence_groups (list): list of SequenceSegmentHandlers
 
         """
         self.sequence = []
@@ -144,7 +144,7 @@ class SequenceHandler():
             raw_data_processing = raw_data_processing_I
 
         if sequence_group_processing_I is not None:
-            sequence_group_processing = self.parse_sequenceGroupProcessing(
+            sequence_group_processing = self.parse_sequenceSegmentProcessing(
                 sequence_group_processing_I, meta_data["sample_type"])
         else:
             sequence_group_processing = sequence_group_processing_I
@@ -212,7 +212,7 @@ class SequenceHandler():
 
         required_headers = [
             "sample_name", "sample_group_name", "sample_type", "filename",
-            "sequence_group_name"
+            "sequence_segment_name"
             ]
 
         return required_headers
@@ -248,9 +248,9 @@ class SequenceHandler():
             print(
                 "SequenceFile Error: sample_group_name must be specified.")
             raise NameError("sample group name")
-        if meta_data["sequence_group_name"] is None:
+        if meta_data["sequence_segment_name"] is None:
             print(
-                "SequenceFile Error: sequence_group_name must be specified.")
+                "SequenceFile Error: sequence_segment_name must be specified.")
             raise NameError("sequence group name")
         if meta_data["filename"] is None:
             print(

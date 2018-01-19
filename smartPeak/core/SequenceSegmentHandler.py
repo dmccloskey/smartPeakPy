@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 
 
-class SequenceGroupHandler():
+class SequenceSegmentHandler():
 
     def __init__(self):
         """Sequence Group
         """
 
-        self.sequence_group_name = None
+        self.sequence_segment_name = None
         self.sample_indices = None
         self.standards_concentrations = None
         self.quantitation_methods = None
 
     def clear_data(self):
-        self.sequence_group_name = None
+        self.sequence_segment_name = None
         self.sample_indices = None
         self.standards_concentrations = None
         self.quantitation_methods = None

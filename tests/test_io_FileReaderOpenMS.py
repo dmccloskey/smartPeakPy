@@ -3,7 +3,7 @@
 from smartPeak.io.FileReader import FileReader
 from smartPeak.io.FileReaderOpenMS import FileReaderOpenMS
 from smartPeak.core.RawDataHandler import RawDataHandler
-from smartPeak.core.SequenceGroupHandler import SequenceGroupHandler
+from smartPeak.core.SequenceSegmentHandler import SequenceSegmentHandler
 from . import data_dir
 # 3rd part libraries
 try:
@@ -131,31 +131,31 @@ class TestFileReaderOpenMS():
             0].getRT() == 14.0348804560343)
 
     def test_load_quantitationMethods(self):
-        sequenceGroupHandler = SequenceGroupHandler()
+        sequenceSegmentHandler = SequenceSegmentHandler()
         fileReaderOpenMS = FileReaderOpenMS()
 
         # load the quantitation method
         quantitationMethods_csv_i = '''%s%s''' % (
             data_dir, "quantitationMethods_1.csv")
         fileReaderOpenMS.load_quantitationMethods(
-            sequenceGroupHandler, quantitationMethods_csv_i)
-        assert(sequenceGroupHandler.quantitation_methods[0].getLLOQ() == 0.25)
-        assert(sequenceGroupHandler.quantitation_methods[0].getULOQ() == 2.5)
-        assert(sequenceGroupHandler.quantitation_methods[
+            sequenceSegmentHandler, quantitationMethods_csv_i)
+        assert(sequenceSegmentHandler.quantitation_methods[0].getLLOQ() == 0.25)
+        assert(sequenceSegmentHandler.quantitation_methods[0].getULOQ() == 2.5)
+        assert(sequenceSegmentHandler.quantitation_methods[
             0].getComponentName() == b'23dpg.23dpg_1.Light')
 
     def test_load_standardsConcentrations(self):
-        sequenceGroupHandler = SequenceGroupHandler()
+        sequenceSegmentHandler = SequenceSegmentHandler()
         fileReaderOpenMS = FileReaderOpenMS()
 
         # load the quantitation method
         standardsConcentrations_csv_i = '''%s%s''' % (
             data_dir, "standardsConcentrations_1.csv")
         fileReaderOpenMS.load_standardsConcentrations( 
-            sequenceGroupHandler, standardsConcentrations_csv_i)
-        assert(sequenceGroupHandler.standards_concentrations[0].getLLOQ() == 0.25)
-        assert(sequenceGroupHandler.standards_concentrations[0].getULOQ() == 2.5)
-        assert(sequenceGroupHandler.standards_concentrations[
+            sequenceSegmentHandler, standardsConcentrations_csv_i)
+        assert(sequenceSegmentHandler.standards_concentrations[0].getLLOQ() == 0.25)
+        assert(sequenceSegmentHandler.standards_concentrations[0].getULOQ() == 2.5)
+        assert(sequenceSegmentHandler.standards_concentrations[
             0].getComponentName() == b'23dpg.23dpg_1.Light')
 
     def test_load_featureFilter(self):

@@ -17,14 +17,14 @@ class FileReaderOpenMS():
 
     def load_standardsConcentrations(
         self,
-        sequenceGroupHandler_IO,
+        sequenceSegmentHandler_IO,
         standardsConcentrations_csv_i,
         verbose_I=False
     ):
         """Load AbsoluteQuantitationStandards
 
         Args:
-            sequenceGroupHandler_IO (RawDataHandler)
+            sequenceSegmentHandler_IO (RawDataHandler)
             standardsConcentrations_csv_i (str): filename
 
         Internals:
@@ -39,20 +39,20 @@ class FileReaderOpenMS():
             if standardsConcentrations_csv_i is not None:
                 aqsf = pyopenms.AbsoluteQuantitationStandardsFile()
                 aqsf.load(standardsConcentrations_csv_i, standards_concentrations)
-            sequenceGroupHandler_IO.standards_concentrations = standards_concentrations
+            sequenceSegmentHandler_IO.standards_concentrations = standards_concentrations
         except Exception as e:
             print(e)
 
     def load_quantitationMethods(
         self,
-        sequenceGroupHandler_IO,
+        sequenceSegmentHandler_IO,
         quantitationMethods_csv_i,
         verbose_I=False
     ):
         """Load AbsoluteQuantitationMethods
 
         Args:
-            sequenceGroupHandler_IO (RawDataHandler)
+            sequenceSegmentHandler_IO (RawDataHandler)
             quantitationMethods_csv_i (str): None
 
         Internals:
@@ -67,7 +67,7 @@ class FileReaderOpenMS():
             if quantitationMethods_csv_i is not None:
                 aqmf = pyopenms.AbsoluteQuantitationMethodFile()
                 aqmf.load(quantitationMethods_csv_i, quantitation_methods)
-            sequenceGroupHandler_IO.quantitation_methods = quantitation_methods
+            sequenceSegmentHandler_IO.quantitation_methods = quantitation_methods
         except Exception as e:
             print(e)
 

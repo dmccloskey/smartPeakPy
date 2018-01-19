@@ -31,7 +31,7 @@ class TestSequenceWriter():
                 "filename": sample + ".mzML",
                 "sample_type": "Unknown",
                 "sample_group_name": "sample_group",
-                "sequence_group_name": "sequence_group"
+                "sequence_segment_name": "sequence_group"
             })
             seqhandler.addSampleToSequence(meta_data1, None)
         for sequence in seqhandler.sequence:
