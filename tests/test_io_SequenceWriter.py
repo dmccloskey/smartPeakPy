@@ -39,7 +39,7 @@ class TestSequenceWriter():
             featureXML_o = '''%s/quantitation/%s.featureXML''' % (
                 data_dir, sequence.meta_data["sample_name"])
             fileReaderOpenMS.load_featureMap(
-                rawDataHandler, {'featureXML_i': featureXML_o})
+                rawDataHandler, featureXML_o)
 
             # record features
             seqhandler.addFeatureMapToSequence(
@@ -50,7 +50,7 @@ class TestSequenceWriter():
         # Test:
         columns, rows, data = seqWriter.makeDataMatrixFromMetaValue(
             seqhandler,
-            meta_values=["calculated_concentration"], sample_types=["Unknown"])
+            meta_data=["calculated_concentration"], sample_types=["Unknown"])
         
         assert(len(columns) == 6)
         assert(columns[0] == '170808_Jonathan_yeast_Sacc1_1x')

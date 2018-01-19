@@ -13,24 +13,27 @@ class testMain():
         """Test LCMS MRM example"""
         m = __main__()
 
-        m.main(
-            filename_sequence=example_dir + 'LCMS_MRM/sequence.csv',
-            filename_params=example_dir + 'LCMS_MRM/parameters.csv',
+        # m.main(
+        #     filename_sequence=example_dir + 'LCMS_MRM/sequence.csv',
+        #     filename_params=example_dir + 'LCMS_MRM/parameters.csv',
+        #     delimiter=',',
+        #     )
+        # assert(~os.path.isfile(example_dir + 'LCMS_MRM/mzML/skippedSamples.csv'))
+        
+        m.main2(
+            dir_I=example_dir + 'LCMS_MRM',
             delimiter=',',
             )
-        assert(~os.path.isfile(example_dir + 'LCMS_MRM/mzML/skippedSamples.csv'))
 
         rawDataHandler = RawDataHandler()
         fileReaderOpenMS = FileReaderOpenMS()
-        fileReaderOpenMS.load_featureMap(rawDataHandler, {
-            'featureXML_i': 
-            example_dir + 
-            'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x.featureXML'})
+        fileReaderOpenMS.load_featureMap(
+            rawDataHandler, example_dir + 
+            'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x.featureXML')
         fm1 = rawDataHandler.featureMap
-        fileReaderOpenMS.load_featureMap(rawDataHandler, {
-            'featureXML_i': 
-            example_dir + 
-            'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x_test.featureXML'})
+        fileReaderOpenMS.load_featureMap(
+            rawDataHandler, example_dir + 
+            'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x_test.featureXML')
         fm2 = rawDataHandler.featureMap
         assert(
             fm1[50].getSubordinates()[0].getMetaValue("native_id") == 
@@ -68,25 +71,28 @@ class testMain():
         """Test GCMS SIM example"""
         m = __main__()
 
-        m.main(
-            filename_sequence=example_dir + 'GCMS_SIM/sequence.csv',
-            filename_params=example_dir + 'GCMS_SIM/parameters.csv',
+        # m.main(
+        #     filename_sequence=example_dir + 'GCMS_SIM/sequence.csv',
+        #     filename_params=example_dir + 'GCMS_SIM/parameters.csv',
+        #     delimiter=',',
+        #     )
+        # assert(~os.path.isfile(example_dir + 'GCMS_SIM/mzML/skippedSamples.csv'))
+
+        m.main2(
+            dir_I=example_dir + 'GCMS_SIM',
             delimiter=',',
             )
-        assert(~os.path.isfile(example_dir + 'GCMS_SIM/mzML/skippedSamples.csv'))
 
         rawDataHandler = RawDataHandler()
         fileReaderOpenMS = FileReaderOpenMS()
 
-        fileReaderOpenMS.load_featureMap(rawDataHandler, {
-                'featureXML_i': 
-                example_dir + 
-                'GCMS_SIM/features/GCMS_SIM.featureXML'})
+        fileReaderOpenMS.load_featureMap(
+            rawDataHandler, example_dir + 
+            'GCMS_SIM/features/GCMS_SIM.featureXML')
         fm1 = rawDataHandler.featureMap
-        fileReaderOpenMS.load_featureMap(RawDataHandler, {
-            'featureXML_i': 
-            example_dir + 
-            'GCMS_SIM/features/GCMS_SIM_test.featureXML'})
+        fileReaderOpenMS.load_featureMap(
+            rawDataHandler, example_dir + 
+            'GCMS_SIM/features/GCMS_SIM_test.featureXML')
         fm2 = rawDataHandler.featureMap
         assert(
             fm1[15].getSubordinates()[0].getMetaValue("native_id") == 

@@ -18,14 +18,14 @@ class FileReaderOpenMS():
     def load_standardsConcentrations(
         self,
         sequenceGroupHandler_IO,
-        filenames_I,
+        standardsConcentrations_csv_i,
         verbose_I=False
     ):
         """Load AbsoluteQuantitationStandards
 
         Args:
             sequenceGroupHandler_IO (RawDataHandler)
-            filenames_I (dict): dictionary of filename strings
+            standardsConcentrations_csv_i (str): filename
 
         Internals:
             standardsConcentrations (list): list of AbsoluteQuantitationMethod objects
@@ -34,26 +34,26 @@ class FileReaderOpenMS():
         if verbose_I:
             print("loading quantitation methods")
 
-        standardsConcentrations_csv_i = None
-        if 'standardsConcentrations_csv_i'in filenames_I.keys():
-            standardsConcentrations_csv_i = filenames_I['standardsConcentrations_csv_i']
-
-        standards_concentrations = []
-        aqsf = pyopenms.AbsoluteQuantitationStandardsFile()
-        aqsf.load(standardsConcentrations_csv_i, standards_concentrations)
-        sequenceGroupHandler_IO.standards_concentrations = standards_concentrations
+        try:
+            standards_concentrations = []
+            if standardsConcentrations_csv_i is not None:
+                aqsf = pyopenms.AbsoluteQuantitationStandardsFile()
+                aqsf.load(standardsConcentrations_csv_i, standards_concentrations)
+            sequenceGroupHandler_IO.standards_concentrations = standards_concentrations
+        except Exception as e:
+            print(e)
 
     def load_quantitationMethods(
         self,
         sequenceGroupHandler_IO,
-        filenames_I,
+        quantitationMethods_csv_i,
         verbose_I=False
     ):
         """Load AbsoluteQuantitationMethods
 
         Args:
             sequenceGroupHandler_IO (RawDataHandler)
-            filenames_I (dict): dictionary of filename strings
+            quantitationMethods_csv_i (str): None
 
         Internals:
             quantitationMethods (list): list of AbsoluteQuantitationMethod objects
@@ -62,21 +62,27 @@ class FileReaderOpenMS():
         if verbose_I:
             print("loading quantitation methods")
 
-        quantitationMethods_csv_i = None
-        if 'quantitationMethods_csv_i'in filenames_I.keys():
-            quantitationMethods_csv_i = filenames_I['quantitationMethods_csv_i']
+        try:
+            quantitation_methods = []
+            if quantitationMethods_csv_i is not None:
+                aqmf = pyopenms.AbsoluteQuantitationMethodFile()
+                aqmf.load(quantitationMethods_csv_i, quantitation_methods)
+            sequenceGroupHandler_IO.quantitation_methods = quantitation_methods
+        except Exception as e:
+            print(e)
 
-        quantitation_methods = []
-        aqmf = pyopenms.AbsoluteQuantitationMethodFile()
-        aqmf.load(quantitationMethods_csv_i, quantitation_methods)
-        sequenceGroupHandler_IO.quantitation_methods = quantitation_methods
-
-    def load_TraML(self, rawDataHandler_IO, filenames_I, verbose_I=False):
+    def load_TraML(
+        self, rawDataHandler_IO, 
+        traML_csv_i=None,
+        traML_i=None,
+        verbose_I=False
+    ):
         """Load TraML file
 
         Args:
             rawDataHandler_IO (RawDataHandler): sample object; updated in place
-            filenames_I (list): list of filename strings
+            traML_csv_i (str): .csv traML filename
+            traML (str): .traML traML filename
 
         Internals:
             targeted (TargetedExperiment)
@@ -84,12 +90,6 @@ class FileReaderOpenMS():
         """
         if verbose_I:
             print("Loading TraML")
-
-        traML_csv_i, traML_i = None, None
-        if 'traML_csv_i'in filenames_I.keys():
-            traML_csv_i = filenames_I['traML_csv_i']
-        if 'traML_i'in filenames_I.keys():
-            traML_i = filenames_I['traML_i']
 
         # load and make the transition file
         targeted = pyopenms.TargetedExperiment()  # must use "PeptideSequence"
@@ -106,7 +106,7 @@ class FileReaderOpenMS():
     def load_Trafo(
         self,
         rawDataHandler_IO,
-        filenames_I,
+        trafo_csv_i,
         MRMFeatureFinderScoring_params_I={},
         verbose_I=False
     ):
@@ -114,7 +114,7 @@ class FileReaderOpenMS():
 
         Args:
             rawDataHandler_IO (RawDataHandler): sample object; updated in place
-            filenames_I (list): list of filename strings
+            trafo_csv_i (str): filename
             MRMFeatureFinderScoring_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
 
@@ -125,9 +125,6 @@ class FileReaderOpenMS():
         if verbose_I:
             print("Loading Trafo")
 
-        trafo_csv_i = None
-        if 'trafo_csv_i'in filenames_I.keys(): 
-            trafo_csv_i = filenames_I['trafo_csv_i']
         MRMFeatureFinderScoring_params = MRMFeatureFinderScoring_params_I
         
         # set up MRMFeatureFinderScoring (featurefinder) and
@@ -177,7 +174,7 @@ class FileReaderOpenMS():
     def load_MSExperiment(
         self,
         rawDataHandler_IO,
-        filenames_I,
+        mzML_i,
         MRMMapping_params_I={},
         chromatogramExtractor_params_I={},
         verbose_I=False
@@ -186,7 +183,7 @@ class FileReaderOpenMS():
 
         Args:
             rawDataHandler_IO (RawDataHandler): sample object; updated in place
-            filenames_I (list): list of filename strings
+            mzML_i (str): filename
             MRMMapping_params_I (list): 
                 list of key:value parameters for OpenMS::MRMMapping
             chromatogramExtractor_params_I (list): 
@@ -197,17 +194,13 @@ class FileReaderOpenMS():
         
         """
         if verbose_I:
-            print("Loading mzML")
-
-        mzML_feature_i = None
-        if 'mzML_feature_i'in filenames_I.keys():
-            mzML_feature_i = filenames_I['mzML_feature_i']      
+            print("Loading mzML")    
 
         # load chromatograms
         chromatograms = pyopenms.MSExperiment()
-        if mzML_feature_i is not None:
+        if mzML_i is not None:
             fh = pyopenms.FileHandler()
-            fh.loadExperiment(mzML_feature_i.encode('utf-8'), chromatograms)
+            fh.loadExperiment(mzML_i.encode('utf-8'), chromatograms)
 
         if chromatogramExtractor_params_I and \
             chromatogramExtractor_params_I is not None and \
@@ -267,20 +260,21 @@ class FileReaderOpenMS():
             #     allow_double_mappings=True
             # )
 
-            mrmmapper.mapExperiment(chromatograms, rawDataHandler_IO.targeted, chromatogram_map)
+            mrmmapper.mapExperiment(
+                chromatograms, rawDataHandler_IO.targeted, chromatogram_map)
         rawDataHandler_IO.chromatogram_map = chromatogram_map
 
     def load_SWATHorDIA(
         self,
         rawDataHandler_IO,
-        filenames_I,
+        dia_csv_i,
         verbose_I=False
     ):
         """Load SWATH or DIA into an MSExperiment
 
         Args:
             rawDataHandler_IO (RawDataHandler): sample object; updated in place
-            filenames_I (list): list of filename strings
+            dia_csv_i (str): filename
             
         Internals:
             msExperiment (TargetedExperiment)
@@ -288,10 +282,6 @@ class FileReaderOpenMS():
         """
         if verbose_I:
             print("Loading SWATH/DIA files")
-
-        dia_csv_i = None
-        if 'dia_csv_i'in filenames_I.keys(): 
-            dia_csv_i = filenames_I['dia_csv_i']
 
         # load in the DIA data
         swath = pyopenms.MSExperiment()
@@ -314,23 +304,18 @@ class FileReaderOpenMS():
     def load_featureMap(
         self,
         rawDataHandler_IO,
-        filenames_I={},
+        featureXML_i,
         verbose_I=False
     ):
         """Load a FeatureMap
         
         Args:
             rawDataHandler_IO (RawDataHandler): sample object; updated in place
-            filenames_I (list): list of filename strings
+            featureXML_i (str): filename
             
         """        
         if verbose_I:
-            print("Loading FeatureMap")
-
-        # Handle the filenames
-        featureXML_i = None
-        if 'featureXML_i'in filenames_I.keys():
-            featureXML_i = filenames_I['featureXML_i']        
+            print("Loading FeatureMap")      
 
         # Store outfile as featureXML    
         featurexml = pyopenms.FeatureXMLFile()
@@ -343,7 +328,8 @@ class FileReaderOpenMS():
     def load_validationData(
         self,
         rawDataHandler_IO,
-        filenames_I,
+        referenceData_csv_i=None,
+        db_json_i=None,
         ReferenceDataMethods_params_I={},
         verbose_I=False
     ):
@@ -351,7 +337,8 @@ class FileReaderOpenMS():
         
         Args:
             rawDataHandler_IO (RawDataHandler): sample object; updated in place
-            filenames_I (dict): dictionary of filenames
+            referenceData_csv_i (str): filename of the reference data
+            db_json_i (str): filename of the DB json settings file
             ReferenceDataMethods_params_I (dict): dictionary of DB query parameters
         
         """
@@ -359,13 +346,6 @@ class FileReaderOpenMS():
             print("Loading validation data")
 
         utilities = Utilities()
-
-        # Handle the filenames
-        referenceData_csv_i, db_ini_i = None, None
-        if 'referenceData_csv_i'in filenames_I.keys(): 
-            referenceData_csv_i = filenames_I['referenceData_csv_i']
-        if 'db_ini_i'in filenames_I.keys(): 
-            db_ini_i = filenames_I['db_ini_i']
 
         # Parse the input parameters
         ReferenceDataMethods_dict = {d['name']: utilities.parseString(
@@ -418,7 +398,7 @@ class FileReaderOpenMS():
             smartpeak_i.read_csv(referenceData_csv_i)
             reference_data = smartpeak_i.getData()
             smartpeak_i.clear_data()
-        elif db_ini_i is not None:
+        elif db_json_i is not None:
             referenceDataMethods = ReferenceDataMethods()
             reference_data = referenceDataMethods.getAndProcess_referenceData_samples(
                 experiment_ids_I=experiment_ids_I,
@@ -432,7 +412,7 @@ class FileReaderOpenMS():
                 used__I=used__I,
                 experiment_limit_I=experiment_limit_I,
                 mqresultstable_limit_I=mqresultstable_limit_I,
-                settings_filename_I=db_ini_i,
+                settings_filename_I=db_json_i,
                 data_filename_O=''
             )
         rawDataHandler_IO.reference_data = reference_data
@@ -440,53 +420,44 @@ class FileReaderOpenMS():
     def load_featureFilter(
         self,
         rawDataHandler_IO,
-        filenames_I,
+        featureFilter_csv_i,
         verbose_I=False
     ):
         """Load the feature filters
         
         Args:
             rawDataHandler_IO (RawDataHandler): sample object; updated in place
-            filenames_I (dict): dictionary of filenames
+            featureFilter_csv_i (str): filename
         
         """
         if verbose_I:
             print("Loading feature_filter")
 
-        # variables
-        mrmfeaturefilter_csv_i = None
-        if 'mrmfeaturefilter_csv_i'in filenames_I.keys():
-            mrmfeaturefilter_csv_i = filenames_I['mrmfeaturefilter_csv_i']
-
         # read in the parameters for the MRMFeatureQC
-        featureQC = pyopenms.MRMFeatureQC()
-        featureQCFile = pyopenms.MRMFeatureQCFile()
-        featureQCFile.load(mrmfeaturefilter_csv_i.encode('utf-8'), featureQC)
+        featureQC = pyopenms.MRMFeatureQC()        
+        if featureFilter_csv_i is not None:
+            featureQCFile = pyopenms.MRMFeatureQCFile()
+            featureQCFile.load(featureFilter_csv_i.encode('utf-8'), featureQC)
         rawDataHandler_IO.feature_filter = featureQC
 
     def load_featureQC(
         self,
         rawDataHandler_IO,
-        filenames_I,
+        featureQC_csv_i,
         verbose_I=False
     ):
         """Load the feature QCs
         
         Args:
             rawDataHandler_IO (RawDataHandler): sample object; updated in place
-            filenames_I (dict): dictionary of filenames
+            featureQC_csv_i (str): filename
         
         """
         if verbose_I:
             print("Loading feature_qc")
 
-        # variables
-        mrmfeatureqcs_csv_i = None
-        if 'mrmfeatureqcs_csv_i'in filenames_I.keys():
-            mrmfeatureqcs_csv_i = filenames_I['mrmfeatureqcs_csv_i']
-
         # read in the parameters for the MRMFeatureQC
         featureQC = pyopenms.MRMFeatureQC()
         featureQCFile = pyopenms.MRMFeatureQCFile()
-        featureQCFile.load(mrmfeaturefilter_csv_i.encode('utf-8'), featureQC)
+        featureQCFile.load(featureQC_csv_i.encode('utf-8'), featureQC)
         rawDataHandler_IO.feature_qc = featureQC

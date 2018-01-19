@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from .SampleHandler import SampleHandler
-from .SequenceGroupHandler import SequenceGroupHandler
+# import logging
 
 
 class SequenceHandler():
@@ -22,10 +22,101 @@ class SequenceHandler():
         self.index_to_sample = {}
         self.sample_to_index = {}
         self.sequence_groups = []
+        self.parameters = None
+        # self.error_log = None
+        self.dir_static = None
+        self.dir_dynamic = None
+        self.filenames = None
+
+    def setFilenames(self, filenames_I):
+        self.filenames = filenames_I
+    
+    def getFilenames(self):
+        return self.filenames
+
+    def setDirStatic(self, dir_static_I):
+        self.dir_static = dir_static_I
+        filenames_static = self.getDefaultStaticFilenames(dir_static_I)
+        self.setFilenames(filenames_static)
+    
+    def getDirStatic(self):
+        return self.dir_static
+
+    def setDirDynamic(self, dir_dynamic_I):
+        self.dir_dynamic = dir_dynamic_I
+    
+    def getDirDynamic(self):
+        return self.dir_dynamic
+
+    def setParameters(self, parameters_I):
+        self.parameters = parameters_I
+
+    def getParameters(self):
+        return self.parameters
 
     def getSequence(self):
         """Return sequence"""
         return self.sequence
+
+    def getDefaultStaticFilenames(self, dir_I):
+        """Return the default map of filetype to filename for static files
+
+        Static files are small and consist of application settings that
+        are loaded in at the start of the application.
+        
+        Args:
+            dir_I (str): the directory that all files can be found
+            
+        Returns:
+            dict: filenames
+        """
+        
+        filenames = {
+            # static
+            'sequence_csv_i': '''%s/%s''' % (dir_I, "sequence.csv"),
+            'parameters_csv_i': '''%s/%s''' % (dir_I, "parameters.csv"),
+            'traML_csv_i': '''%s/%s''' % (dir_I, "traML.csv"),
+            'featureFilter_csv_i': '''%s/%s''' % (dir_I, "featureFilters.csv"),
+            'quantitationMethods_csv_i': '''%s/%s''' % (
+                dir_I, "quantitationMethods.csv"),
+            'standardsConcentrations_csv_i': '''%s/%s''' % (
+                dir_I, "standardsConcentrations.csv"),
+            'featureQC_csv_i': '''%s/%s''' % (dir_I, "featureQCs.csv"),
+            'db_json_i': '''%s/%s''' % (dir_I, "featureQCs.csv")
+            }
+        return filenames
+
+    def getDefaultDynamicFilenames(self, dir_I, sample_name_I):
+        """Return the default map of filetype to filename for dynamic files
+
+        Dynamic files are often much larger and are read/written to
+        disk as needed by the application
+        
+        Args:
+            dir_I (str): the directory that all files can be found
+            sample_name_I (str): the name of the file (also the sample_name)
+            
+        Returns:
+            dict: filenames
+        """
+        
+        filenames = {
+            # dynamic
+            'mzML_i': '''%s/mzML/%s.mzML''' % (dir_I, sample_name_I),
+            'featureXML_o': '''%s/features/%s.FeatureXML''' % (dir_I, sample_name_I),
+            'feature_csv_o': '''%s/features/%s.csv''' % (dir_I, sample_name_I),
+            'featureXML_i': '''%s/features/%s.FeatureXML''' % (dir_I, sample_name_I),
+            'features_pdf_o': '''%s/features/%s''' % (dir_I, sample_name_I),
+            }
+        return filenames
+
+    # def setErrorLogging(self):
+    #     # https://docs.python.org/3/howto/logging.html#logging-basic-tutorial
+    #     self.error_log.basicConfig(
+    #         filename='example.log',
+    #         level=logging.DEBUG,
+    #         format='%(asctime)s %(levelname)s:%(message)s', 
+    #         datefmt='%m/%d/%Y %I:%M:%S %p')
 
     def addSampleToSequence(
         self, meta_data_I, featureMap_I, 
@@ -67,6 +158,18 @@ class SequenceHandler():
         self.sequence.append(sample)
         self.index_to_sample[len(self.sequence)-1] = meta_data["sample_name"]
         self.sample_to_index[meta_data["sample_name"]] = len(self.sequence)-1
+
+    def getSamplesInSequence(self, sample_names):
+        """Return samples in a sequence
+        
+        Args:
+            sample_names (list): list of str sample names
+        """
+
+        samples = [
+            self.sequence[self.sample_to_index[sample]] for sample in sample_names
+            if sample in self.sample_to_index.keys()]
+        return samples
 
     def getMetaValue(self, feature, subordinate, meta_value):
         """Returns the metaValue
@@ -190,6 +293,34 @@ class SequenceHandler():
         else:
             self.sequence[self.sample_to_index[sample_name]].featureMap = featureMap
 
+    def checkRawDataProcessingWorkflow(self, raw_data_processing_I):
+        """check the integrity of the raw_data_processing_I
+        
+        Args:
+            raw_data_processing_I (dict)
+            
+        Returns:
+            dict: raw_data_processing_O: All keys not found are set to False
+        """
+
+        required_keys = [
+            "load_raw_data",
+            "load_peaks",
+            "pick_peaks",
+            "filter_peaks",
+            "select_peaks",
+            "validate_peaks",
+            "quantify_peaks",
+            "check_peaks",
+            "plot_peaks",
+            "store_peaks"]
+        raw_data_processing_O = raw_data_processing_I
+        for key in required_keys:
+            if key not in raw_data_processing_O:
+                raw_data_processing_O[key] = False
+                
+        return raw_data_processing_O
+
     def getDefaultRawDataProcessingWorkflow(self, sample_type):
         """return the default workflow parameters for a given raw data
         
@@ -200,12 +331,16 @@ class SequenceHandler():
             dict: dictionary of workflow_parameters"""
     
         default = {
+            "load_raw_data": True,
+            "load_peaks": False,
             "pick_peaks": True,
             "filter_peaks": True,
             "select_peaks": True,
             "validate_peaks": False,
             "quantify_peaks": False,
-            "check_peaks": True}
+            "check_peaks": True,
+            "plot_peaks": False,
+            "store_peaks": False}
         if sample_type == "Unknown":
             default["quantify_peaks"] = True
         elif sample_type == "Standard":
@@ -231,12 +366,16 @@ class SequenceHandler():
         """
 
         required_headers = [
+            "load_raw_data",
+            "load_peaks",
             "pick_peaks",
             "filter_peaks",
             "select_peaks",
             "validate_peaks",
             "quantify_peaks",
-            "check_peaks"]
+            "check_peaks",
+            "plot_peaks",
+            "store_peaks"]
 
         # ensure supplied values are of the right type
         for k, v in raw_data_processing.items():
@@ -303,21 +442,3 @@ class SequenceHandler():
             if k not in sequence_group_processing.keys():
                 sequence_group_processing[k] = self.getDefaultSequenceGroupProcessingWorkflow(
                     sample_type)[k]
-
-    def groupSamplesInSequence(self):
-        """group samples in a sequence"""
-
-        sequence_groups_dict = {}
-        for cnt, sample in enumerate(self.sequence):
-            if sample.meta_value["sequence_group_name"] not in sequence_groups_dict.keys():
-                sequence_groups_dict[sample.meta_value["sequence_group_name"]] = []
-            sequence_groups_dict[sample.meta_value["sequence_group_name"]].append(cnt)
-        
-        sequence_groups = []
-        for k, v in sequence_groups_dict.items():
-            sequenceGroupHandler = SequenceGroupHandler()
-            sequenceGroupHandler.sequence_group_name = k
-            sequenceGroupHandler.sample_indices = v
-            sequence_groups.append(sequenceGroupHandler)
-
-        self.sequence_groups = sequence_groups

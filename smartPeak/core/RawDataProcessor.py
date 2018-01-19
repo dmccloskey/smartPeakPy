@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # modules
 from smartPeak.core.Utilities import Utilities
-from smartPeak.io.FileReader import FileReader
+from smartPeak.io.FileReaderOpenMS import FileReaderOpenMS
+from smartPeak.io.FileWriterOpenMS import FileWriterOpenMS
 from smartPeak.algorithm.MRMFeatureSelector import MRMFeatureSelector
 from smartPeak.algorithm.MRMFeatureValidator import MRMFeatureValidator
 from smartPeak.ui.FeaturePlotter import FeaturePlotter
@@ -50,7 +51,7 @@ class RawDataProcessor():
         output = pyopenms.FeatureMap()
         
         # set up MRMFeatureFinderScoring (featurefinder) and
-        # parse the MRMFeatureFinderScoring params
+        # parse the MRMFeatureFinderScoring parameters
         featurefinder = pyopenms.MRMFeatureFinderScoring()
         parameters = featurefinder.getParameters()
         parameters = utilities.updateParameters(
@@ -97,7 +98,7 @@ class RawDataProcessor():
         if verbose_I:
             print("Filtering picked features")
         if MRMFeatureFilter_filter_params_I:   
-            # set up MRMFeatureFilter and parse the MRMFeatureFilter params
+            # set up MRMFeatureFilter and parse the MRMFeatureFilter parameters
             featureFilter = pyopenms.MRMFeatureFilter()
             parameters = featureFilter.getParameters()
             utilities = Utilities()
@@ -117,14 +118,14 @@ class RawDataProcessor():
     def checkFeatures(
         self,
         rawDataHandler_IO,
-        MRMFeatureFilter_filter_params_I={},
+        MRMFeatureFilter_qc_params_I={},
         verbose_I=False
     ):
         """Check that the features pass the QCs
         
         Args:
             rawDataHandler_IO (RawDataHandler): raw data file class
-            MRMFeatureFilter_filter_params_I (dict): dictionary of parameter
+            MRMFeatureFilter_qc_params_I (dict): dictionary of parameter
                 names, values, descriptions, and tags
 
         Internals:
@@ -140,14 +141,14 @@ class RawDataProcessor():
         # filter features
         if verbose_I:
             print("Checking picked features")
-        if MRMFeatureFilter_filter_params_I:   
-            # set up MRMFeatureFilter and parse the MRMFeatureFilter params
+        if MRMFeatureFilter_qc_params_I:   
+            # set up MRMFeatureFilter and parse the MRMFeatureFilter parameters
             featureFilter = pyopenms.MRMFeatureFilter()
             parameters = featureFilter.getParameters()
             utilities = Utilities()
             parameters = utilities.updateParameters(
                 parameters,
-                MRMFeatureFilter_filter_params_I,
+                MRMFeatureFilter_qc_params_I,
                 )
             featureFilter.setParameters(parameters)   
 
@@ -283,7 +284,7 @@ class RawDataProcessor():
     def export_featurePlots(
         self,     
         rawDataHandler_IO,   
-        filenames_I,
+        features_pdf_o,
         FeaturePlotter_params_I={},
         verbose_I=False
     ):
@@ -291,18 +292,14 @@ class RawDataProcessor():
 
         Args:
             rawDataHandler_IO (RawDataHandler): raw data file class
+            features_pdf_o (str): filename
 
         """
         if verbose_I:
             print("Plotting peaks with features")
-        
-        # Handle the filenames
-        features_pdf_o = None
-        if 'features_pdf_o'in filenames_I.keys():
-            features_pdf_o = filenames_I['features_pdf_o']  
 
         # export diagnostic plots
-        if FeaturePlotter_params_I:
+        if FeaturePlotter_params_I and features_pdf_o is not None:
             featurePlotter = FeaturePlotter()
             featurePlotter.setParameters(FeaturePlotter_params_I)
             featurePlotter.plot_peaks(
@@ -325,3 +322,121 @@ class RawDataProcessor():
         aq = pyopenms.AbsoluteQuantitation()
         aq.setQuantMethods(rawDataHandler_IO.quantitation_methods)
         aq.quantifyComponents(rawDataHandler_IO.featureMap)
+
+    def processRawData(
+        self, 
+        rawDataHandler_IO, 
+        raw_data_processing_methods,
+        parameters,
+        filenames={},
+        verbose_I=False
+    ):
+        """Apply processing methods to a raw data handler
+        
+        Args:
+            rawDataHandler_IO (RawDataHandler)
+            raw_data_processing_methods (dict): map of raw data processing methods
+            
+        """
+        fileWriterOpenMS = FileWriterOpenMS()
+        
+        try:
+            if raw_data_processing_methods["load_raw_data"]:
+                # load dynamic assets
+                fileReaderOpenMS = FileReaderOpenMS()              
+                fileReaderOpenMS.load_SWATHorDIA(rawDataHandler_IO, {})
+                fileReaderOpenMS.load_MSExperiment(
+                    rawDataHandler_IO, 
+                    filenames["mzML_i"],
+                    MRMMapping_params_I=parameters['MRMMapping'],
+                    chromatogramExtractor_params_I=parameters['ChromatogramExtractor'],
+                    verbose_I=verbose_I)
+                fileReaderOpenMS.load_Trafo(  # skip, no transformation of RT
+                    rawDataHandler_IO, 
+                    None,
+                    MRMFeatureFinderScoring_params_I=parameters['MRMFeatureFinderScoring'])
+            if raw_data_processing_methods["load_peaks"]:
+                fileReaderOpenMS.load_featureMap(
+                    rawDataHandler_IO,
+                    filenames["featureXML_i"],
+                    verbose_I=verbose_I)
+            if raw_data_processing_methods["pick_peaks"]:
+                self.pickFeatures(
+                    rawDataHandler_IO,
+                    parameters['MRMFeatureFinderScoring'],
+                    verbose_I=verbose_I)
+            if raw_data_processing_methods["filter_peaks"]:
+                self.filterFeatures(
+                    rawDataHandler_IO,
+                    parameters['MRMFeatureFilter.filter_MRMFeatures'],
+                    verbose_I=verbose_I)
+            if raw_data_processing_methods["select_peaks"]:
+                self.selectFeatures(
+                    rawDataHandler_IO,
+                    # qmip algorithm
+                    MRMFeatureSelector_select_params_I=parameters[
+                        'MRMFeatureSelector.select_MRMFeatures_qmip'],
+                    MRMFeatureSelector_schedule_params_I=parameters[
+                        'MRMFeatureSelector.schedule_MRMFeatures_qmip'],
+                    # score algorithm
+                    # MRMFeatureSelector_select_params_I=parameters[
+                    #     'MRMFeatureSelector.select_MRMFeatures_score'],
+                    # MRMFeatureSelector_schedule_params_I={},
+                    verbose_I=verbose_I)
+            if raw_data_processing_methods["validate_peaks"]:
+                # load in the validation data 
+                # (if no data is found, continue to the next sample)
+                ReferenceDataMethods_params_I = []
+                ReferenceDataMethods_params_I.extend(
+                    parameters['ReferenceDataMethods.getAndProcess_referenceData_samples']
+                    )
+                sample_names_I = '''['%s']''' % (
+                    rawDataHandler_IO.meta_data["sample_name"])
+                ReferenceDataMethods_params_I.append({
+                    'description': '', 'name': 'sample_names_I', 
+                    'type': 'list', 'value': sample_names_I})
+                fileReaderOpenMS.load_validationData(
+                    rawDataHandler_IO,
+                    filenames,
+                    ReferenceDataMethods_params_I,
+                    verbose_I=verbose_I
+                    )
+                # TODO: add error class
+                # if not rawDataHandler.reference_data:
+                #     skipped_samples.append({
+                #         'sample_name': rawDataHandler_IO.meta_data["sample_name"],
+                #         'error_message': 'no reference data found'})
+                #     print(
+                #         'Reference data not found for sample ' +
+                #         rawDataHandler_IO.meta_data["sample_name"] + '.')
+                self.validateFeatures(
+                    rawDataHandler_IO,
+                    parameters['MRMFeatureValidator.validate_MRMFeatures'],
+                    verbose_I=verbose_I)
+            if raw_data_processing_methods["quantify_peaks"]:
+                self.quantifyComponents(rawDataHandler_IO, verbose_I=verbose_I)
+            if raw_data_processing_methods["check_peaks"]:
+                self.checkFeatures(
+                    rawDataHandler_IO,
+                    MRMFeatureFilter_qc_params_I=parameters[
+                        'MRMFeatureFilter.filter_MRMFeatures.qc'],
+                    verbose_I=verbose_I)
+            if raw_data_processing_methods["store_peaks"]:
+                fileWriterOpenMS.store_featureMap(
+                    rawDataHandler_IO, 
+                    filenames["featureXML_o"], 
+                    filenames["feature_csv_o"],
+                    verbose_I=verbose_I)
+            if raw_data_processing_methods["plot_peaks"]:
+                self.export_featurePlots(
+                    rawDataHandler_IO,
+                    filenames["features_pdf_o"],
+                    FeaturePlotter_params_I=parameters[
+                        'FeaturePlotter'],
+                    verbose_I=verbose_I)
+        except Exception as e:
+            print(e)
+            # TODO: add error class
+            # skipped_samples.append({
+            #     'sample_name': sequence.meta_data["sample_name"],
+            #     'error_message': e})
