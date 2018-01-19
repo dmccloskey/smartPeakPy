@@ -164,6 +164,8 @@ def runAllTests():
 
     from tests.test_core_SequenceGroupProcessor import TestSequenceGroupProcessor
     test = TestSequenceGroupProcessor()
+    test.test_checkSequenceGroupProcessing()
+    test.test_getDefaultSequenceGroupProcessingWorkflow()
     test.test_getSampleIndicesBySampleType()
     test.test_optimizeCalibrationCurves()
 

@@ -17,10 +17,10 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-from tests.test_core_RawDataProcessor import TestRawDataProcessor
-test = TestRawDataProcessor()
-test.test_getDefaultRawDataProcessingWorkflow()
-test.test_checkRawDataProcessingWorkflow()
+from tests.test_core_SequenceGroupProcessor import TestSequenceGroupProcessor
+test = TestSequenceGroupProcessor()
+test.test_checkSequenceGroupProcessing()
+test.test_getDefaultSequenceGroupProcessingWorkflow()
 
 # from tests import runAllTests
 # runAllTests()

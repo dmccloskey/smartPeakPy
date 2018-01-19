@@ -9,15 +9,36 @@ class TestSequenceGroupProcessor():
     """tests for SequenceGroupProcessor class
     """
 
+    def test_checkSequenceGroupProcessing(self):
+        sequenceGroupProcessor = SequenceGroupProcessor()
+
+        events = [
+            "calculate_calibration",
+            "calculate_carryover",
+            "calculate_variability"]
+        assert(sequenceGroupProcessor.checkSequenceGroupProcessing(events))
+        
+        events = [
+            "calculate_calibration",
+            "carryover",
+            "calculate_variability"]
+        assert(~sequenceGroupProcessor.checkSequenceGroupProcessing(events))
+
     def test_getDefaultSequenceGroupProcessingWorkflow(self):
         sequenceGroupProcessor = SequenceGroupProcessor()
 
-        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow("Unknown") == default)
-        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow("Standard") != default)
-        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow("QC") != default)
-        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow("Blank") == default)
-        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow("Double Blank") == default)
-        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow("Solvent") != default)
+        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow(
+            "Unknown") == [])
+        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow(
+            "Standard") == ["calculate_calibration"])
+        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow(
+            "QC") == ["calculate_variability"])
+        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow(
+            "Blank") == [])
+        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow(
+            "Double Blank") == [])
+        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow(
+            "Solvent") == ["calculate_carryover"])
 
     def test_getSampleIndicesBySampleType(self):
         sequenceHandler = SequenceHandler()
