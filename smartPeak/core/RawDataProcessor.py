@@ -446,3 +446,91 @@ class RawDataProcessor():
             # skipped_samples.append({
             #     'sample_name': sequence.meta_data["sample_name"],
             #     'error_message': e})
+
+    def checkRawDataProcessingWorkflow(self, raw_data_processing_I):
+        """check if all events in the workflow are valid 
+        
+        Args:
+            raw_data_processing_I (list)
+            
+        Returns:
+            bool: True if all events are valid, False otherwise
+        """
+
+        valid_events = [
+            "load_raw_data",
+            "load_features",
+            "pick_features",
+            "filter_features",
+            "select_features",
+            "validate_features",
+            "quantify_features",
+            "check_features",
+            "plot_features",
+            "store_features"]
+        valid = True
+        for event in raw_data_processing_I:
+            if event not in valid_events:
+                print("Raw data processing event " + event + " is not valid.")
+                valid = False
+                
+        return valid
+
+    def getDefaultRawDataProcessingWorkflow(self, sample_type):
+        """return the default workflow parameters for a given raw data
+        
+        Args:
+            sample_type (str): the type of sample
+            
+        Returns:
+            dict: dictionary of workflow_parameters"""
+
+        default = []
+        if sample_type == "Unknown":
+            default = [
+                "load_raw_data",
+                "pick_features",
+                "filter_features",
+                "select_features",
+                "quantify_features",
+                "check_features"]
+        elif sample_type == "Standard":
+            default = [
+                "load_raw_data",
+                "pick_features",
+                "filter_features",
+                "select_features",
+                "quantify_features",
+                "check_features"]
+        elif sample_type == "QC":
+            default = [
+                "load_raw_data",
+                "pick_features",
+                "filter_features",
+                "select_features",
+                "quantify_features",
+                "check_features"]
+        elif sample_type == "Blank":
+            default = [
+                "load_raw_data",
+                "pick_features",
+                "filter_features",
+                "select_features",
+                "quantify_features",
+                "check_features"]
+        elif sample_type == "Double Blank":
+            default = [
+                "load_raw_data",
+                "pick_features",
+                "filter_features",
+                "select_features",
+                "check_features"]
+        elif sample_type == "Solvent":
+            default = [
+                "load_raw_data",
+                "pick_features",
+                "filter_features",
+                "select_features",
+                "check_features"]
+        
+        return default

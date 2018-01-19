@@ -237,6 +237,49 @@ class TestRawDataProcessor():
         # assert(rawDataHandler.featureMap[0].getSubordinates()[
         #     1].getMetaValue("QC_transition_group_pass"))
 
+    def test_getDefaultRawDataProcessingWorkflow(self):
+        rawDataProcessor = RawDataProcessor()
+
+        workflow = [
+                "load_raw_data",
+                "pick_features",
+                "filter_features",
+                "select_features",
+                "quantify_features",
+                "check_features"]
+        assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow("Unknown") == workflow)
+        assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow("Standard") == workflow)
+        assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow("QC") == workflow)
+        assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow("Blank") == workflow)
+        workflow = [
+                "load_raw_data",
+                "pick_features",
+                "filter_features",
+                "select_features",
+                "check_features"]
+        assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow("Double Blank") == workflow)
+        assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow("Solvent") == workflow)
+
+    def test_checkRawDataProcessingWorkflow(self):
+        rawDataProcessor = RawDataProcessor()
+
+        raw_data_processing_methods = [
+            "load_raw_data",
+            "load_features",
+            "pick_features",
+            "filter_features",
+            "select_features",
+            "validate_features",
+            "quantify_features",
+            "check_features",
+            "plot_features",
+            "store_features"]
+        assert(rawDataProcessor.checkRawDataProcessingWorkflow(raw_data_processing_methods))
+
+        raw_data_processing_methods = ["load_peaks"]
+        assert(~rawDataProcessor.checkRawDataProcessingWorkflow(
+            raw_data_processing_methods))
+
     def test_processRawData(self):
         self.load_data()
         rawDataHandler = RawDataHandler()

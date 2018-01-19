@@ -19,7 +19,8 @@ m = __main__()
 
 from tests.test_core_RawDataProcessor import TestRawDataProcessor
 test = TestRawDataProcessor()
-test.test_processRawData()
+test.test_getDefaultRawDataProcessingWorkflow()
+test.test_checkRawDataProcessingWorkflow()
 
 # from tests import runAllTests
 # runAllTests()
