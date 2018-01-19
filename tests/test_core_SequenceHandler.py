@@ -145,17 +145,6 @@ class TestSequenceHandler():
         assert(sequenceHandler.sequence[
             sequenceHandler.sample_to_index['sample2']].featureMap == "DummyFeatureMap")
 
-    def test_getDefaultSequenceGroupProcessingWorkflow(self):
-        sequenceHandler = SequenceHandler()
-
-        default = sequenceHandler.getDefaultSequenceGroupProcessingWorkflow(None)
-        assert(sequenceHandler.getDefaultSequenceGroupProcessingWorkflow("Unknown") == default)
-        assert(sequenceHandler.getDefaultSequenceGroupProcessingWorkflow("Standard") != default)
-        assert(sequenceHandler.getDefaultSequenceGroupProcessingWorkflow("QC") != default)
-        assert(sequenceHandler.getDefaultSequenceGroupProcessingWorkflow("Blank") == default)
-        assert(sequenceHandler.getDefaultSequenceGroupProcessingWorkflow("Double Blank") == default)
-        assert(sequenceHandler.getDefaultSequenceGroupProcessingWorkflow("Solvent") != default)
-
     def test_getSamplesInSequence(self):
         sequenceHandler = SequenceHandler()
 

@@ -78,3 +78,51 @@ class SequenceGroupProcessor():
             
         """
         pass
+
+    def getDefaultSequenceGroupProcessingWorkflow(self, sample_type):
+        """return the default workflow events for a given sequence
+        
+        Args:
+            sample_type (str): the type of sample
+            
+        Returns:
+            list: list of sequence group processing events"""
+    
+        default = []
+        if sample_type == "Unknown":
+            pass
+        elif sample_type == "Standard":
+            default = ["calculate_calibration"]
+        elif sample_type == "QC":
+            default = ["calculate_variability"]
+        elif sample_type == "Blank":
+            pass
+        elif sample_type == "Double Blank":
+            pass
+        elif sample_type == "Solvent":
+            default = ["calculate_carryover"]
+        
+        return default
+
+    def checkSequenceGroupProcessing(self, sequence_group_processing):
+        """check the sequence processing steps
+
+        Args:
+            sequence_group_processing (list): list of sequence group processing events
+            
+        Returns:
+            bool: True if all events are valid, False otherwise
+        """
+
+        valid_events = [
+            "calculate_calibration",
+            "calculate_carryover",
+            "calculate_variability"]
+
+        valid = True
+        for event in sequence_group_processing:
+            if event not in valid_events:
+                print("Sequence group processing event " + event + " is not valid.")
+                valid = False
+                
+        return valid

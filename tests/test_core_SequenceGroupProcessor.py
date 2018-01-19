@@ -9,6 +9,16 @@ class TestSequenceGroupProcessor():
     """tests for SequenceGroupProcessor class
     """
 
+    def test_getDefaultSequenceGroupProcessingWorkflow(self):
+        sequenceGroupProcessor = SequenceGroupProcessor()
+
+        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow("Unknown") == default)
+        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow("Standard") != default)
+        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow("QC") != default)
+        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow("Blank") == default)
+        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow("Double Blank") == default)
+        assert(sequenceGroupProcessor.getDefaultSequenceGroupProcessingWorkflow("Solvent") != default)
+
     def test_getSampleIndicesBySampleType(self):
         sequenceHandler = SequenceHandler()
         sequenceGroupHandler = SequenceGroupHandler()
