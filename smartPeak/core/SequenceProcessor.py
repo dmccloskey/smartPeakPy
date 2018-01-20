@@ -156,8 +156,6 @@ class SequenceProcessor():
                         sequenceHandler_IO.getDirDynamic(),
                         sample.meta_data["sample_name"])
                     )
-            # copy out the feature map
-            sample.featureMap = sample.raw_data.featureMap
 
     def processSequenceSegments(
         self, sequenceHandler_IO,
