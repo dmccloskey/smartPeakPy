@@ -11,14 +11,14 @@ class FileWriterOpenMS():
 
     def store_quantitationMethods(
         self,
-        sequenceGroupHandler_IO,
+        sequenceSegmentHandler_IO,
         quantitationMethods_csv_i,
         verbose_I=False
     ):
         """Store AbsoluteQuantitationMethods
 
         Args:
-            sequenceGroupHandler_IO (SampleHandler)
+            sequenceSegmentHandler_IO (SampleHandler)
             quantitationMethods_csv_i (str): filename
 
         Internals:

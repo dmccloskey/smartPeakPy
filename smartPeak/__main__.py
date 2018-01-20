@@ -44,17 +44,7 @@ class __main__():
         )
 
         # check that all files are found
-        raw_data_processing_methods = {
-            "load_raw_data": True,
-            "load_peaks": False,
-            "pick_peaks": False,
-            "filter_peaks": False,
-            "select_peaks": False,
-            "validate_peaks": False,
-            "quantify_peaks": False,
-            "check_peaks": False,
-            "plot_peaks": False,
-            "store_peaks": False}
+        raw_data_processing_methods = ["load_raw_data"]
         sequenceProcessor.processSequence(
             sequenceHandler,
             raw_data_processing_methods_I=raw_data_processing_methods) 
@@ -64,17 +54,7 @@ class __main__():
             sequenceHandler) 
 
         # store all features
-        raw_data_processing_methods = {
-            "load_raw_data": False,
-            "load_peaks": False,
-            "pick_peaks": False,
-            "filter_peaks": False,
-            "select_peaks": False,
-            "validate_peaks": False,
-            "quantify_peaks": False,
-            "check_peaks": False,
-            "plot_peaks": False,
-            "store_peaks": True}
+        raw_data_processing_methods = ["store_features"]
         sequenceProcessor.processSequence(
             sequenceHandler,
             raw_data_processing_methods_I=raw_data_processing_methods) 

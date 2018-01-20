@@ -15,15 +15,16 @@ class SequenceHandler():
         sequence (list): list of SampleHandlers
         index_to_sample (dict): index to sample_name
         index_to_sample (dict): sample_name to index
-        sequence_groups (list): list of SequenceGroupHandlers
+        sequence_groups (list): list of SequenceSegmentHandlers
 
         """
+        # sequence
         self.sequence = []
         self.index_to_sample = {}
         self.sample_to_index = {}
         self.sequence_groups = []
-        self.parameters = None
-        # self.error_log = None
+
+        # directories and filenames
         self.dir_static = None
         self.dir_dynamic = None
         self.filenames = None
@@ -47,12 +48,6 @@ class SequenceHandler():
     
     def getDirDynamic(self):
         return self.dir_dynamic
-
-    def setParameters(self, parameters_I):
-        self.parameters = parameters_I
-
-    def getParameters(self):
-        return self.parameters
 
     def getSequence(self):
         """Return sequence"""
@@ -110,14 +105,6 @@ class SequenceHandler():
             }
         return filenames
 
-    # def setErrorLogging(self):
-    #     # https://docs.python.org/3/howto/logging.html#logging-basic-tutorial
-    #     self.error_log.basicConfig(
-    #         filename='example.log',
-    #         level=logging.DEBUG,
-    #         format='%(asctime)s %(levelname)s:%(message)s', 
-    #         datefmt='%m/%d/%Y %I:%M:%S %p')
-
     def addSampleToSequence(
         self, meta_data_I, featureMap_I, 
         raw_data_processing_I=None, sequence_group_processing_I=None
@@ -144,7 +131,7 @@ class SequenceHandler():
             raw_data_processing = raw_data_processing_I
 
         if sequence_group_processing_I is not None:
-            sequence_group_processing = self.parse_sequenceGroupProcessing(
+            sequence_group_processing = self.parse_sequenceSegmentProcessing(
                 sequence_group_processing_I, meta_data["sample_type"])
         else:
             sequence_group_processing = sequence_group_processing_I
@@ -212,7 +199,7 @@ class SequenceHandler():
 
         required_headers = [
             "sample_name", "sample_group_name", "sample_type", "filename",
-            "sequence_group_name"
+            "sequence_segment_name"
             ]
 
         return required_headers
@@ -248,9 +235,9 @@ class SequenceHandler():
             print(
                 "SequenceFile Error: sample_group_name must be specified.")
             raise NameError("sample group name")
-        if meta_data["sequence_group_name"] is None:
+        if meta_data["sequence_segment_name"] is None:
             print(
-                "SequenceFile Error: sequence_group_name must be specified.")
+                "SequenceFile Error: sequence_segment_name must be specified.")
             raise NameError("sequence group name")
         if meta_data["filename"] is None:
             print(
@@ -274,171 +261,3 @@ class SequenceHandler():
         # other checks...
 
         return meta_data
-
-    def addFeatureMapToSequence(self, sample_name, featureMap):
-        """add a featureMap to an existing sequence
-
-        Args:
-            sample_name (str): name of the sample (must be unique!)
-            featureMap (FeatureMap): processed data in a FeatureMap
-
-        Returns:
-            dict: injection: dictionary of meta_data and FeatureMap
-        """
-
-        if sample_name not in self.sample_to_index.keys():
-            print(
-                "Sample name " + sample_name + " not found in sequence.")
-            raise NameError("sample_name")
-        else:
-            self.sequence[self.sample_to_index[sample_name]].featureMap = featureMap
-
-    def checkRawDataProcessingWorkflow(self, raw_data_processing_I):
-        """check the integrity of the raw_data_processing_I
-        
-        Args:
-            raw_data_processing_I (dict)
-            
-        Returns:
-            dict: raw_data_processing_O: All keys not found are set to False
-        """
-
-        required_keys = [
-            "load_raw_data",
-            "load_peaks",
-            "pick_peaks",
-            "filter_peaks",
-            "select_peaks",
-            "validate_peaks",
-            "quantify_peaks",
-            "check_peaks",
-            "plot_peaks",
-            "store_peaks"]
-        raw_data_processing_O = raw_data_processing_I
-        for key in required_keys:
-            if key not in raw_data_processing_O:
-                raw_data_processing_O[key] = False
-                
-        return raw_data_processing_O
-
-    def getDefaultRawDataProcessingWorkflow(self, sample_type):
-        """return the default workflow parameters for a given raw data
-        
-        Args:
-            sample_type (str): the type of sample
-            
-        Returns:
-            dict: dictionary of workflow_parameters"""
-    
-        default = {
-            "load_raw_data": True,
-            "load_peaks": False,
-            "pick_peaks": True,
-            "filter_peaks": True,
-            "select_peaks": True,
-            "validate_peaks": False,
-            "quantify_peaks": False,
-            "check_peaks": True,
-            "plot_peaks": False,
-            "store_peaks": False}
-        if sample_type == "Unknown":
-            default["quantify_peaks"] = True
-        elif sample_type == "Standard":
-            default["quantify_peaks"] = True
-        elif sample_type == "QC":
-            default["quantify_peaks"] = True
-        elif sample_type == "Blank":
-            default["quantify_peaks"] = True
-        elif sample_type == "Double Blank":
-            pass
-        elif sample_type == "Solvent":
-            pass
-        
-        return default
-
-    def parse_rawDataProcessing(self, raw_data_processing, sample_type):
-        """parse the sample processing steps
-
-        Args:
-            raw_data_processing (dict): dictionary of sample processing steps
-            sample_type (str): type of the sample
-
-        """
-
-        required_headers = [
-            "load_raw_data",
-            "load_peaks",
-            "pick_peaks",
-            "filter_peaks",
-            "select_peaks",
-            "validate_peaks",
-            "quantify_peaks",
-            "check_peaks",
-            "plot_peaks",
-            "store_peaks"]
-
-        # ensure supplied values are of the right type
-        for k, v in raw_data_processing.items():
-            if k in required_headers and ~isinstance(v, bool):
-                print("Wrong value provided for key " + k + " in raw_data_processing.")
-                raise NameError("raw_data_processing")
-
-        # ensure all headers are present
-        for k in required_headers:
-            if k not in raw_data_processing.keys():
-                raw_data_processing[k] = self.getDefaultRawDataProcessingWorkflow(
-                    sample_type)[k]            
-
-    def getDefaultSequenceGroupProcessingWorkflow(self, sample_type):
-        """return the default workflow parameters for a given sequence
-        
-        Args:
-            sample_type (str): the type of sample
-            
-        Returns:
-            dict: dictionary of workflow_parameters"""
-    
-        default = {
-            "calculate_calibration": False,
-            "calculate_carryover": False,
-            "calculate_variability": False}
-        if sample_type == "Unknown":
-            pass
-        elif sample_type == "Standard":
-            default["calculate_calibration"] = True
-        elif sample_type == "QC":
-            default["calculate_variability"] = True
-        elif sample_type == "Blank":
-            pass
-        elif sample_type == "Double Blank":
-            pass
-        elif sample_type == "Solvent":
-            default["calculate_carryover"] = True
-        
-        return default
-
-    def parse_sequenceGroupProcessing(self, sequence_group_processing, sample_type):
-        """parse the sequence processing steps
-
-        Args:
-            sequence_group_processing (dict): dictionary of sequence processing steps for the sample
-            sample_type (str): type of the sample
-
-        """
-
-        required_headers = [
-            "calculate_calibration",
-            "calculate_carryover",
-            "calculate_variability"]
-
-        # ensure supplied values are of the right type
-        for k, v in sequence_group_processing.items():
-            if k in required_headers and ~isinstance(v, bool):
-                print("Wrong value provided for key " + k + " in sequence_group_processing.")
-                raise NameError("sequence_group_processing")
-
-        # ensure all headers are present
-        for k in required_headers:
-            if k not in sequence_group_processing.keys():
-                sequence_group_processing[k] = self.getDefaultSequenceGroupProcessingWorkflow(
-                    sample_type)[k]

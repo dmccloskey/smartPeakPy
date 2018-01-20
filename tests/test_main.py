@@ -29,11 +29,11 @@ class testMain():
         fileReaderOpenMS = FileReaderOpenMS()
         fileReaderOpenMS.load_featureMap(
             rawDataHandler, example_dir + 
-            'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x.featureXML')
+            'LCMS_MRM/features/170808_Jonathan_yeast_Sacc1_1x.featureXML')
         fm1 = rawDataHandler.featureMap
         fileReaderOpenMS.load_featureMap(
             rawDataHandler, example_dir + 
-            'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x_test.featureXML')
+            'LCMS_MRM/features/170808_Jonathan_yeast_Sacc1_1x_test.featureXML')
         fm2 = rawDataHandler.featureMap
         assert(
             fm1[50].getSubordinates()[0].getMetaValue("native_id") == 
@@ -47,18 +47,8 @@ class testMain():
 
         # # TODO: why is this not working?
         # assert(filecmp.cmp(
-        #     example_dir + 'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x.featureXML',
-        #     example_dir + 'LCMS_MRM/quantitation/170808_Jonathan_yeast_Sacc1_1x_test.featureXML',
-        #     shallow=False
-        #     ))
-        # assert(filecmp.cmp(
         #     example_dir + 'LCMS_MRM/features/170808_Jonathan_yeast_Sacc1_1x.featureXML',
         #     example_dir + 'LCMS_MRM/features/170808_Jonathan_yeast_Sacc1_1x_test.featureXML',
-        #     shallow=False
-        #     ))
-        # assert(filecmp.cmp(
-        #     example_dir + 'LCMS_MRM/features_tmp/170808_Jonathan_yeast_Sacc1_1x.featureXML',
-        #     example_dir + 'LCMS_MRM/features_tmp/170808_Jonathan_yeast_Sacc1_1x_test.featureXML',
         #     shallow=False
         #     ))
         # assert(filecmp.cmp(
@@ -108,11 +98,6 @@ class testMain():
         # assert(filecmp.cmp(
         #     example_dir + 'GCMS_SIM/features/GCMS_SIM.featureXML',
         #     example_dir + 'GCMS_SIM/features/GCMS_SIM_test.featureXML',
-        #     shallow=False
-        #     ))
-        # assert(filecmp.cmp(
-        #     example_dir + 'GCMS_SIM/features_tmp/GCMS_SIM.featureXML',
-        #     example_dir + 'GCMS_SIM/features_tmp/GCMS_SIM_test.featureXML',
         #     shallow=False
         #     ))
         # assert(filecmp.cmp(

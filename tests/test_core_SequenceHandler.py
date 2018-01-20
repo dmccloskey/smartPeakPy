@@ -18,19 +18,19 @@ class TestSequenceHandler():
         meta_data1 = copy.copy(meta_data_required)
         meta_data1.update({
             'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
         featuremap1 = None
         
         meta_data2 = copy.copy(meta_data_required)
         meta_data2.update({
             'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
         featuremap2 = None
         
         meta_data3 = copy.copy(meta_data_required)
         meta_data3.update({
             'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
         featuremap3 = None
 
         # add the injections to the sequence
@@ -67,7 +67,7 @@ class TestSequenceHandler():
 
         meta_data = {
             "sample_name": None, "sample_type": None,
-            "sequence_group_name": None, "sample_group_name": None,
+            "sequence_segment_name": None, "sample_group_name": None,
             "comments": None, "acquisition_method": None, "processing_method": None,
             "rack_code": None, "plate_code": None, 
             "vial_position": None, "rack_position": None, 
@@ -82,7 +82,7 @@ class TestSequenceHandler():
 
         meta_data["sample_name"] = ""
         meta_data["sample_group_name"] = None
-        meta_data["sequence_group_name"] = ""
+        meta_data["sequence_segment_name"] = ""
         meta_data["filename"] = ""
         meta_data["sample_type"] = ""
         try:
@@ -91,13 +91,13 @@ class TestSequenceHandler():
             assert(isinstance(e, NameError))
 
         meta_data["sample_group_name"] = ""
-        meta_data["sequence_group_name"] = None
+        meta_data["sequence_segment_name"] = None
         try:
             sequenceHandler.parse_metaData(meta_data)
         except Exception as e:
             assert(isinstance(e, NameError))
 
-        meta_data["sequence_group_name"] = ""
+        meta_data["sequence_segment_name"] = ""
         meta_data["filename"] = None
         try:
             sequenceHandler.parse_metaData(meta_data)
@@ -113,79 +113,6 @@ class TestSequenceHandler():
         meta_data["sample_type"] = "Unknown"
         assert(sequenceHandler.parse_metaData(meta_data)["sample_type"] == "Unknown")
 
-    def test_addFeatureMapToSequence(self):
-        sequenceHandler = SequenceHandler()
-
-        # test data
-        meta_data_required = {h: None for h in sequenceHandler.getRequiredHeaders()}
-        meta_data1 = copy.copy(meta_data_required)
-        meta_data1.update({
-            'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
-        featuremap1 = None
-        
-        meta_data2 = copy.copy(meta_data_required)
-        meta_data2.update({
-            'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
-        featuremap2 = None
-        
-        meta_data3 = copy.copy(meta_data_required)
-        meta_data3.update({
-            'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
-        featuremap3 = None
-
-        # add the injections to the sequence
-        sequenceHandler.addSampleToSequence(meta_data1, featuremap1)
-        sequenceHandler.addSampleToSequence(meta_data2, featuremap2)
-        sequenceHandler.addSampleToSequence(meta_data3, featuremap3)
-        sequenceHandler.addFeatureMapToSequence("sample2", "DummyFeatureMap")
-
-        assert(sequenceHandler.sequence[
-            sequenceHandler.sample_to_index['sample2']].featureMap == "DummyFeatureMap")
-
-    def test_getDefaultRawDataProcessingWorkflow(self):
-        sequenceHandler = SequenceHandler()
-
-        default = sequenceHandler.getDefaultRawDataProcessingWorkflow(None)
-        assert(sequenceHandler.getDefaultRawDataProcessingWorkflow("Unknown") != default)
-        assert(sequenceHandler.getDefaultRawDataProcessingWorkflow("Standard") != default)
-        assert(sequenceHandler.getDefaultRawDataProcessingWorkflow("QC") != default)
-        assert(sequenceHandler.getDefaultRawDataProcessingWorkflow("Blank") != default)
-        assert(sequenceHandler.getDefaultRawDataProcessingWorkflow("Double Blank") == default)
-        assert(sequenceHandler.getDefaultRawDataProcessingWorkflow("Solvent") == default)
-
-    def test_checkRawDataProcessingWorkflow(self):
-        sequenceHandler = SequenceHandler()
-
-        raw_data_processing_methods = {
-            # "load_raw_data": False,
-            # "load_peaks": False,
-            "pick_peaks": True,
-            "filter_peaks": False,
-            "select_peaks": False,
-            "validate_peaks": False,
-            "quantify_peaks": False,
-            "check_peaks": False,
-            "plot_peaks": False,
-            "store_peaks": False}
-        test = sequenceHandler.checkRawDataProcessingWorkflow(raw_data_processing_methods)
-        assert(~test["load_raw_data"])
-        assert(~test["load_peaks"])
-        assert(test["pick_peaks"])
-
-    def test_getDefaultSequenceGroupProcessingWorkflow(self):
-        sequenceHandler = SequenceHandler()
-
-        default = sequenceHandler.getDefaultSequenceGroupProcessingWorkflow(None)
-        assert(sequenceHandler.getDefaultSequenceGroupProcessingWorkflow("Unknown") == default)
-        assert(sequenceHandler.getDefaultSequenceGroupProcessingWorkflow("Standard") != default)
-        assert(sequenceHandler.getDefaultSequenceGroupProcessingWorkflow("QC") != default)
-        assert(sequenceHandler.getDefaultSequenceGroupProcessingWorkflow("Blank") == default)
-        assert(sequenceHandler.getDefaultSequenceGroupProcessingWorkflow("Double Blank") == default)
-        assert(sequenceHandler.getDefaultSequenceGroupProcessingWorkflow("Solvent") != default)
-
     def test_getSamplesInSequence(self):
         sequenceHandler = SequenceHandler()
 
@@ -194,19 +121,19 @@ class TestSequenceHandler():
         meta_data1 = copy.copy(meta_data_required)
         meta_data1.update({
             'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
         featuremap1 = None
         
         meta_data2 = copy.copy(meta_data_required)
         meta_data2.update({
             'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
         featuremap2 = None
         
         meta_data3 = copy.copy(meta_data_required)
         meta_data3.update({
             'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
         featuremap3 = None
 
         # add the injections to the sequence
@@ -223,7 +150,7 @@ class TestSequenceHandler():
         sequenceHandler = SequenceHandler()
         # TODO
 
-    def test_parse_sequenceGroupProcessing(self):
+    def test_parse_sequenceSegmentProcessing(self):
         sequenceHandler = SequenceHandler()
         # TODO
 

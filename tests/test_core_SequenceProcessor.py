@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from smartPeak.core.RawDataHandler import RawDataHandler
-from smartPeak.core.SequenceGroupHandler import SequenceGroupHandler
+from smartPeak.core.SequenceSegmentHandler import SequenceSegmentHandler
 from smartPeak.core.SequenceProcessor import SequenceProcessor
 from smartPeak.core.SequenceHandler import SequenceHandler
 from . import data_dir
@@ -11,7 +11,7 @@ class TestSequenceProcessor():
 
     def test_groupSamplesInSequence(self):
         sequenceHandler = SequenceHandler()
-        sequenceGroupHandler = SequenceGroupHandler()
+        sequenceSegmentHandler = SequenceSegmentHandler()
         sequenceProcessor = SequenceProcessor()
 
         # test data
@@ -19,19 +19,19 @@ class TestSequenceProcessor():
         meta_data1 = copy.copy(meta_data_required)
         meta_data1.update({
             'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group1', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_group1', 'sample_type': 'Unknown'})
         featuremap1 = None
         
         meta_data2 = copy.copy(meta_data_required)
         meta_data2.update({
             'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group1', 'sample_type': 'Standard'})
+            'sequence_segment_name': 'sequence_group1', 'sample_type': 'Standard'})
         featuremap2 = None
         
         meta_data3 = copy.copy(meta_data_required)
         meta_data3.update({
             'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group2', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_group2', 'sample_type': 'Unknown'})
         featuremap3 = None
 
         # add the injections to the sequence
@@ -39,9 +39,9 @@ class TestSequenceProcessor():
         sequenceHandler.addSampleToSequence(meta_data2, featuremap2)
         sequenceHandler.addSampleToSequence(meta_data3, featuremap3)
         
-        sequenceGroupHandler.quantitation_methods = "Test"
+        sequenceSegmentHandler.quantitation_methods = "Test"
 
-        sequenceProcessor.groupSamplesInSequence(sequenceHandler, sequenceGroupHandler)
+        sequenceProcessor.groupSamplesInSequence(sequenceHandler, sequenceSegmentHandler)
         assert(len(sequenceHandler.sequence_groups) == 2)
         assert(sequenceHandler.sequence_groups[0].sample_indices == [0, 1])
         assert(sequenceHandler.sequence_groups[1].sample_indices == [2])
@@ -57,19 +57,19 @@ class TestSequenceProcessor():
         meta_data1 = copy.copy(meta_data_required)
         meta_data1.update({
             'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group1', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_group1', 'sample_type': 'Unknown'})
         featuremap1 = None
         
         meta_data2 = copy.copy(meta_data_required)
         meta_data2.update({
             'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group1', 'sample_type': 'Standard'})
+            'sequence_segment_name': 'sequence_group1', 'sample_type': 'Standard'})
         featuremap2 = None
         
         meta_data3 = copy.copy(meta_data_required)
         meta_data3.update({
             'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
-            'sequence_group_name': 'sequence_group2', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_group2', 'sample_type': 'Unknown'})
         featuremap3 = None
 
         # add the injections to the sequence
@@ -145,17 +145,7 @@ class TestSequenceProcessor():
 
         sequenceHandler.setFilenames(filenames)
         sequenceHandler.setDirDynamic(data_dir)
-        raw_data_processing_methods = {
-            "load_raw_data": True,
-            "load_peaks": False,
-            "pick_peaks": False,
-            "filter_peaks": False,
-            "select_peaks": False,
-            "validate_peaks": False,
-            "quantify_peaks": False,
-            "check_peaks": False,
-            "plot_peaks": False,
-            "store_peaks": False}
+        raw_data_processing_methods = ["load_raw_data"]            
 
         sequenceHandler.setFilenames(filenames)
         sequenceProcessor.createSequence(
@@ -169,7 +159,7 @@ class TestSequenceProcessor():
         # TODO: add a formal test
         # for now, test should run without erroring out if all files are found 
 
-    def test_processSequenceGroups(self):
+    def test_processSequenceSegments(self):
         sequenceHandler = SequenceHandler()
         sequenceProcessor = SequenceProcessor()
 
@@ -190,7 +180,7 @@ class TestSequenceProcessor():
             sequenceHandler,
             delimiter=","
         )
-        sequenceProcessor.processSequenceGroups(
+        sequenceProcessor.processSequenceSegments(
             sequenceHandler)
 
         assert()
