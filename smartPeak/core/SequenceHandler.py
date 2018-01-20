@@ -18,12 +18,13 @@ class SequenceHandler():
         sequence_groups (list): list of SequenceSegmentHandlers
 
         """
+        # sequence
         self.sequence = []
         self.index_to_sample = {}
         self.sample_to_index = {}
         self.sequence_groups = []
-        self.parameters = None
-        # self.error_log = None
+
+        # directories and filenames
         self.dir_static = None
         self.dir_dynamic = None
         self.filenames = None
@@ -47,12 +48,6 @@ class SequenceHandler():
     
     def getDirDynamic(self):
         return self.dir_dynamic
-
-    def setParameters(self, parameters_I):
-        self.parameters = parameters_I
-
-    def getParameters(self):
-        return self.parameters
 
     def getSequence(self):
         """Return sequence"""
@@ -109,14 +104,6 @@ class SequenceHandler():
             'features_pdf_o': '''%s/features/%s''' % (dir_I, sample_name_I),
             }
         return filenames
-
-    # def setErrorLogging(self):
-    #     # https://docs.python.org/3/howto/logging.html#logging-basic-tutorial
-    #     self.error_log.basicConfig(
-    #         filename='example.log',
-    #         level=logging.DEBUG,
-    #         format='%(asctime)s %(levelname)s:%(message)s', 
-    #         datefmt='%m/%d/%Y %I:%M:%S %p')
 
     def addSampleToSequence(
         self, meta_data_I, featureMap_I, 

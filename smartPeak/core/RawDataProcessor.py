@@ -319,9 +319,12 @@ class RawDataProcessor():
         if verbose_I:
             print("Quantifying features")
 
-        aq = pyopenms.AbsoluteQuantitation()
-        aq.setQuantMethods(rawDataHandler_IO.quantitation_methods)
-        aq.quantifyComponents(rawDataHandler_IO.featureMap)
+        try:
+            aq = pyopenms.AbsoluteQuantitation()
+            aq.setQuantMethods(rawDataHandler_IO.quantitation_methods)
+            aq.quantifyComponents(rawDataHandler_IO.featureMap)
+        except Exception as e:
+            print(e)
 
     def processRawData(
         self, 

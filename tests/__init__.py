@@ -117,6 +117,8 @@ def runAllTests():
     # test.test_load_standardsConcentrations()
     test.test_load_featureFilter()
     test.test_load_featureQC()
+    test.test_read_rawDataProcessingParameters()
+    test.test_parse_rawDataProcessingParameters()
 
     from tests.test_io_FileWriterOpenMS import TestFileWriterOpenMS
     test = TestFileWriterOpenMS()
@@ -157,8 +159,6 @@ def runAllTests():
     test = TestSequenceReader()
     test.test_parse_sequenceFile()
     test.test_read_sequenceFile()
-    test.test_parse_sequenceParameters()
-    test.test_read_sequenceParameters()
 
     from tests.test_core_SequenceSegmentProcessor import TestSequenceSegmentProcessor
     test = TestSequenceSegmentProcessor()

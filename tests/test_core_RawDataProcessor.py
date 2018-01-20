@@ -276,7 +276,7 @@ class TestRawDataProcessor():
             "store_features"]
         assert(rawDataProcessor.checkRawDataProcessingWorkflow(raw_data_processing_methods))
 
-        raw_data_processing_methods = ["load_peaks"]
+        raw_data_processing_methods = ["load_features"]
         assert(~rawDataProcessor.checkRawDataProcessingWorkflow(
             raw_data_processing_methods))
 

@@ -461,3 +461,46 @@ class FileReaderOpenMS():
         featureQCFile = pyopenms.MRMFeatureQCFile()
         featureQCFile.load(featureQC_csv_i.encode('utf-8'), featureQC)
         rawDataHandler_IO.feature_qc = featureQC
+
+    def read_rawDataProcessingParameters(self, rawDataHandler_IO, filename, delimiter=','):
+        """Import a rawDataProcessing parameters file
+
+        the rawDataProcessing parameters are read in from a .csv file.
+        
+        Args:
+            rawDataHandler_IO (RawDataHandler)
+            
+        """
+
+        # read in the data
+        if filename is not None:
+            fileReader = FileReader()
+            fileReader.read_openMSParams(filename, delimiter)
+            self.parse_rawDataProcessingParameters(rawDataHandler_IO, fileReader.getData())
+            fileReader.clear_data()
+
+    def parse_rawDataProcessingParameters(self, rawDataHandler_IO, parameters_file):
+        """Parse a rawDataProcessing file to ensure all headers are present
+        
+        Args:
+            rawDataHandler_IO (RawDataHandler)
+            parameters_file (dict): dictionary of parameter
+        """
+
+        # check for workflow parameters integrity
+        required_parameters = [
+            "MRMMapping",
+            "ChromatogramExtractor", 
+            "MRMFeatureFinderScoring",
+            "MRMFeatureFilter.filter_MRMFeatures",
+            "MRMFeatureSelector.select_MRMFeatures_qmip",
+            "MRMFeatureSelector.schedule_MRMFeatures_qmip",
+            "MRMFeatureSelector.select_MRMFeatures_score",
+            "ReferenceDataMethods.getAndProcess_referenceData_samples",
+            "MRMFeatureValidator.validate_MRMFeatures",
+            "MRMFeatureFilter.filter_MRMFeatures.qc",
+        ]
+        for parameter in required_parameters:
+            if parameter not in parameters_file:
+                parameters_file[parameter] = []
+        rawDataHandler_IO.setParameters(parameters_file)

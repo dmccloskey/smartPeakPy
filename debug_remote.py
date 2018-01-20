@@ -19,3 +19,7 @@ m = __main__()
 
 # from tests import runAllTests
 # runAllTests()
+
+from tests.test_main import testMain
+test = testMain()
+test.test_main_GCMS_SIM()

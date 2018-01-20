@@ -54,7 +54,7 @@ class __main__():
             sequenceHandler) 
 
         # store all features
-        raw_data_processing_methods = ["store_peaks"]
+        raw_data_processing_methods = ["store_features"]
         sequenceProcessor.processSequence(
             sequenceHandler,
             raw_data_processing_methods_I=raw_data_processing_methods) 

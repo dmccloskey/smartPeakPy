@@ -35,13 +35,12 @@ class SequenceProcessor():
             seqReader.read_sequenceFile(
                 sequenceHandler_IO, sequenceHandler_IO.filenames["sequence_csv_i"],
                 delimiter)
-            # read in the parameters
-            seqReader.read_sequenceParameters(
-                sequenceHandler_IO, sequenceHandler_IO.filenames["parameters_csv_i"],
-                delimiter)
 
             # load rawDataHandler files (applies to the whole session)
             fileReaderOpenMS = FileReaderOpenMS()
+            fileReaderOpenMS.read_rawDataProcessingParameters(
+                rawDataHandler, sequenceHandler_IO.filenames["parameters_csv_i"],
+                delimiter)
             fileReaderOpenMS.load_TraML(
                 rawDataHandler, sequenceHandler_IO.filenames["traML_csv_i"],
                 verbose_I=verbose_I)
@@ -51,11 +50,7 @@ class SequenceProcessor():
             fileReaderOpenMS.load_featureQC(
                 rawDataHandler, sequenceHandler_IO.filenames["featureQC_csv_i"],
                 verbose_I=verbose_I)
-            fileReaderOpenMS.load_quantitationMethods(
-                rawDataHandler, sequenceHandler_IO.filenames[
-                    "quantitationMethods_csv_i"],
-                verbose_I=verbose_I)
-            # raw data files (i.e., mzML will be loaded dynamically)
+            # raw data files (i.e., mzML, trafo, etc.,  will be loaded dynamically)
 
             # load sequenceSegmentHandler files
             fileReaderOpenMS.load_quantitationMethods(
@@ -65,7 +60,12 @@ class SequenceProcessor():
             fileReaderOpenMS.load_standardsConcentrations(
                 sequenceSegmentHandler, sequenceHandler_IO.filenames[
                     "standardsConcentrations_csv_i"],
-                verbose_I=verbose_I)         
+                verbose_I=verbose_I)
+
+            # copy over the quantitation_method to the rawDataHandler
+            rawDataHandler.setQuantitationMethods(
+                sequenceSegmentHandler.quantitation_methods)
+
         else:  # load sequence from GUI
             pass
         
@@ -84,8 +84,8 @@ class SequenceProcessor():
             rawDataHandler_I (RawDataHandler): raw data handler
         """
         for sample in sequenceHandler_IO.sequence:
-            # pass the same object that can be reused
-            sample.raw_data = rawDataHandler_I
+            # copy the object to persist the data
+            sample.raw_data = copy.copy(rawDataHandler_I)
 
     def groupSamplesInSequence(self, sequenceHandler_IO, sequenceSegmentHandler_I=None):
         """group samples in a sequence
@@ -151,7 +151,7 @@ class SequenceProcessor():
                 rawDataProcessor.processRawData(
                     sample.raw_data,
                     event,
-                    sequenceHandler_IO.parameters,
+                    sample.raw_data.parameters,
                     sequenceHandler_IO.getDefaultDynamicFilenames(
                         sequenceHandler_IO.getDirDynamic(),
                         sample.meta_data["sample_name"])
