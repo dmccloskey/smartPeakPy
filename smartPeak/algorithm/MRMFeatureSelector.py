@@ -860,3 +860,17 @@ class MRMFeatureSelector():
             except Exception as e:
                 print(e)
         return score_1
+
+    def checkVariableName(self, var_name):
+        """Remove whitespaces from variable names
+        
+        Args:
+            var_name (str): the variable name
+            
+        Returns:
+            str
+        """
+        
+        "".join(var_name.split())
+        var_name_O = "".join(var_name.split())
+        return var_name_O
