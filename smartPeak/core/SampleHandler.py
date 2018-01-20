@@ -5,7 +5,7 @@ class SampleHandler():
 
     def __init__(self):
         self.meta_data = None
-        self.featureMap = None
+        # self.featureMap = None
         self.raw_data_processing = None
         self.sequence_group_processing = None
         self.raw_data = None
@@ -13,7 +13,7 @@ class SampleHandler():
     def clear_data(self):
         """Remove all data""" 
         self.meta_data = None
-        self.featureMap = None
+        # self.featureMap = None
         self.raw_data_processing = None
         self.sequence_group_processing = None
         self.raw_data = None

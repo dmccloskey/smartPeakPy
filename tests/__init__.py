@@ -139,7 +139,6 @@ def runAllTests():
     test.test_addSampleToSequence()
     test.test_getMetaValue()
     test.test_parse_metaData()
-    test.test_addFeatureMapToSequence()
     test.test_getSamplesInSequence()
 
     from tests.test_core_SequenceProcessor import TestSequenceProcessor

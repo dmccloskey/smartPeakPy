@@ -274,21 +274,3 @@ class SequenceHandler():
         # other checks...
 
         return meta_data
-
-    def addFeatureMapToSequence(self, sample_name, featureMap):
-        """add a featureMap to an existing sequence
-
-        Args:
-            sample_name (str): name of the sample (must be unique!)
-            featureMap (FeatureMap): processed data in a FeatureMap
-
-        Returns:
-            dict: injection: dictionary of meta_data and FeatureMap
-        """
-
-        if sample_name not in self.sample_to_index.keys():
-            print(
-                "Sample name " + sample_name + " not found in sequence.")
-            raise NameError("sample_name")
-        else:
-            self.sequence[self.sample_to_index[sample_name]].featureMap = featureMap
