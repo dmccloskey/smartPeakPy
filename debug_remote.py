@@ -17,13 +17,5 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-# from tests import runAllTests
-# runAllTests()
-
-from tests.test_algorithm_MRMFeatureSelector import TestMRMFeatureSelector
-test = TestMRMFeatureSelector()
-test.test_checkVariableName()
-
-from tests.test_main import testMain
-test = testMain()
-test.test_main_HPLC_UV()
+from tests import runAllTests
+runAllTests()
