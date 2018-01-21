@@ -1,8 +1,8 @@
 .. highlight:: shell
 
-==================
-Tutorial 3: part 2
-==================
+======================================================================
+Example LCMS DDA fluxomics:  spectra filtering, scoring, and selecting
+======================================================================
 
 
 Synopsis

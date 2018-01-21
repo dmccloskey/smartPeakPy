@@ -1,8 +1,8 @@
 .. highlight:: shell
 
-==========
-Tutorial 2
-==========
+===============================================================================
+Example GCMS SIM Fluxomics: feature picking, filtering, selecting, and checking
+===============================================================================
 
 
 Synopsis
