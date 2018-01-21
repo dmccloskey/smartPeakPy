@@ -20,10 +20,7 @@ m = __main__()
 # from tests import runAllTests
 # runAllTests()
 
-from tests.test_algorithm_MRMFeatureSelector import TestMRMFeatureSelector
-test = TestMRMFeatureSelector()
-test.test_checkVariableName()
-
 from tests.test_main import testMain
 test = testMain()
-test.test_main_HPLC_UV()
+test.test_main_LCMS_MRM()
+test.test_main_GCMS_SIM()

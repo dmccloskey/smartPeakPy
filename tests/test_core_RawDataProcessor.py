@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # modules
-from smartPeak.io.FileReader import FileReader
 from smartPeak.io.FileReaderOpenMS import FileReaderOpenMS
 from smartPeak.io.FileWriterOpenMS import FileWriterOpenMS
 from smartPeak.core.RawDataHandler import RawDataHandler
@@ -13,15 +12,16 @@ class TestRawDataProcessor():
     """
 
     def load_data(self):
-        filereader = FileReader()
+        filereader = FileReaderOpenMS()
+        rawDataHandler = RawDataHandler()
         filename_params = '''%s%s''' % (data_dir, "params_1.csv")
-        filereader.read_openMSParams(filename_params, ",")
-        self.params_1 = filereader.getData()
-        filereader.clear_data()
+        filereader.read_rawDataProcessingParameters(rawDataHandler, filename_params, ",")
+        self.params_1 = rawDataHandler.getParameters()
+        rawDataHandler.clear()
         filename_params = '''%s%s''' % (data_dir, "params_2.csv")
-        filereader.read_openMSParams(filename_params, ",")
-        self.params_2 = filereader.getData()
-        filereader.clear_data()
+        filereader.read_rawDataProcessingParameters(rawDataHandler, filename_params, ",")
+        self.params_2 = rawDataHandler.getParameters()
+        rawDataHandler.clear()
 
     def test_extract_metaData(self):
         self.load_data()
@@ -316,7 +316,8 @@ class TestRawDataProcessor():
 
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
         filenames = {'mzML_i': mzML_i}
-        self.params_1.update({'ChromatogramExtractor': []})
+        self.params_1.update(
+            {'ChromatogramExtractor': []})
 
         for event in raw_data_processing_events:
             rawDataProcessor.processRawData(

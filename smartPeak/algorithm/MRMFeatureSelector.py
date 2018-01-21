@@ -278,14 +278,14 @@ class MRMFeatureSelector():
                     for (%s/%s) components""" % (cnt_1, len(To_list)-1))
             component_name_1 = v1['component_name']
             constraints = []
-            constraint_name_1 = '%s_constraint' % (component_name_1)
+            constraint_name_1 = self.checkVariableName('%s_constraint' % (component_name_1))
             if component_name_1 not in Tr_dict.keys():
                 continue
             for i_1, row_1 in enumerate(Tr_dict[component_name_1]):
                 # variable capture 1
-                variable_name_1 = '%s_%s' % (
+                variable_name_1 = self.checkVariableName('%s_%s' % (
                     component_name_1,
-                    Tr_dict[component_name_1][i_1]['transition_id'])
+                    Tr_dict[component_name_1][i_1]['transition_id']))
                 if variable_name_1 not in variables.keys():
                     variables[variable_name_1] = \
                         Variable(variable_name_1, lb=0, ub=1, type=variable_type)
@@ -311,9 +311,9 @@ class MRMFeatureSelector():
                         continue
                     for i_2, row_2 in enumerate(Tr_dict[component_name_2]):
                         # variable capture 2
-                        variable_name_2 = '%s_%s' % (
+                        variable_name_2 = self.checkVariableName('%s_%s' % (
                             component_name_2,
-                            Tr_dict[component_name_2][i_2]['transition_id'])
+                            Tr_dict[component_name_2][i_2]['transition_id']))
                         if variable_name_2 not in variables.keys():
                             variables[variable_name_2] = Variable(
                                 variable_name_2, lb=0, ub=1, type=variable_type)
@@ -329,11 +329,11 @@ class MRMFeatureSelector():
                             Tr_expected_dict[component_name_1]['retention_time'] - \
                             Tr_expected_dict[component_name_2]['retention_time']
                         tr_delta = row_1['retention_time'] - row_2['retention_time']  
-                        obj_constraint_name = '%s_%s-%s_%s' % (
-                            component_name_1, i_1, component_name_2, i_2)
+                        obj_constraint_name = self.checkVariableName('%s_%s-%s_%s' % (
+                            component_name_1, i_1, component_name_2, i_2))
                         # linearized binary variable multiplication
-                        var_qp_name = '%s_%s-%s_%s' % (
-                            component_name_1, i_1, component_name_2, i_2)
+                        var_qp_name = self.checkVariableName('%s_%s-%s_%s' % (
+                            component_name_1, i_1, component_name_2, i_2))
                         var_qp = Variable(var_qp_name, lb=0, ub=1, type="continuous")
                         model.add(var_qp)
                         # model.add(Constraint(
@@ -387,8 +387,8 @@ class MRMFeatureSelector():
                         if locality_weights:
                             locality_weight = 1.0/(nn_threshold-abs(
                                 start_iter+cnt_2 - cnt_1) + 1)
-                        obj_variable_name = '%s_%s-%s_%s-ABS' % (
-                            component_name_1, i_1, component_name_2, i_2)
+                        obj_variable_name = self.checkVariableName('%s_%s-%s_%s-ABS' % (
+                            component_name_1, i_1, component_name_2, i_2))
                         obj_variables[obj_variable_name] = Variable(
                             obj_variable_name, type="continuous")
                         model.add(obj_variables[obj_variable_name])
@@ -777,13 +777,14 @@ class MRMFeatureSelector():
                 constraints for (%s/%s) components""" % (cnt_1, len(To_list)-1))
             component_name_1 = v1['component_name']
             constraints = []
-            constraint_name_1 = '%s_constraint' % (component_name_1)
+            constraint_name_1 = self.checkVariableName(
+                '%s_constraint' % (component_name_1))
             if component_name_1 not in Tr_dict.keys():
                 continue
             for i_1, row_1 in enumerate(Tr_dict[component_name_1]):
                 # variable capture 1
-                variable_name_1 = '%s_%s' % (
-                    component_name_1, Tr_dict[component_name_1][i_1]['transition_id'])
+                variable_name_1 = self.checkVariableName('%s_%s' % (
+                    component_name_1, Tr_dict[component_name_1][i_1]['transition_id']))
                 if variable_name_1 not in variables.keys():
                     variables[variable_name_1] = Variable(
                         variable_name_1, lb=0, ub=1, type=variable_type)
