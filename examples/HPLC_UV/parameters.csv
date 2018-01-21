@@ -25,7 +25,7 @@ MRMFeatureFinderScoring,TransitionGroupPicker:PeakPickerMRM:sgolay_polynomial_or
 MRMFeatureFinderScoring,TransitionGroupPicker:PeakPickerMRM:gauss_width,float,0.15,50,,Gaussian width in seconds; estimated peak size.,TRUE,,
 MRMFeatureFinderScoring,TransitionGroupPicker:PeakPickerMRM:use_gauss,string,TRUE,TRUE,false; true,Use Gaussian filter for smoothing (alternative is Savitzky-Golay filter),TRUE,,
 MRMFeatureFinderScoring,TransitionGroupPicker:PeakPickerMRM:peak_width,float,0.1,40,,Force a certain minimal peak_width on the data (e.g. extend the peak at least by this amount on both sides) in seconds. -1 turns this feature off.,TRUE,,
-MRMFeatureFinderScoring,TransitionGroupPicker:PeakPickerMRM:signal_to_noise,float,0.01,1,min: 0,Signal-to-noise threshold at which a peak will not be extended any more. Note that setting this too high (e.g. 1.0) can lead to peaks whose flanks are not fully captured.,TRUE,,
+MRMFeatureFinderScoring,TransitionGroupPicker:PeakPickerMRM:signal_to_noise,float,0,1,min: 0,Signal-to-noise threshold at which a peak will not be extended any more. Note that setting this too high (e.g. 1.0) can lead to peaks whose flanks are not fully captured.,TRUE,,
 MRMFeatureFinderScoring,TransitionGroupPicker:PeakPickerMRM:sn_win_len,float,1000,1000,,Signal to noise window length.,TRUE,,
 MRMFeatureFinderScoring,TransitionGroupPicker:PeakPickerMRM:sn_bin_count,int,30,30,,Signal to noise bin count.,TRUE,,
 MRMFeatureFinderScoring,TransitionGroupPicker:PeakPickerMRM:write_sn_log_messages,string,TRUE,TRUE,true; false,Write out log messages of the signal-to-noise estimator in case of sparse windows or median in rightmost histogram bin,TRUE,,

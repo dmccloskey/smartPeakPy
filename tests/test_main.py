@@ -119,11 +119,11 @@ class testMain():
         fileReaderOpenMS = FileReaderOpenMS()
         fileReaderOpenMS.load_featureMap(
             rawDataHandler, example_dir + 
-            'LCMS_MRM/features/20171013_HMP_C61_ISO_P1_GA1_UV_VIS_2.featureXML')
+            'HPLC_UV/features/20171013_HMP_C61_ISO_P1_GA1_UV_VIS_2.featureXML')
         fm1 = rawDataHandler.featureMap
         fileReaderOpenMS.load_featureMap(
             rawDataHandler, example_dir + 
-            'LCMS_MRM/features/20171013_HMP_C61_ISO_P1_GA1_UV_VIS_2_test.featureXML')
+            'HPLC_UV/features/20171013_HMP_C61_ISO_P1_GA1_UV_VIS_2_test.featureXML')
         fm2 = rawDataHandler.featureMap
         assert(
             fm1[0].getSubordinates()[0].getMetaValue("native_id") == 
