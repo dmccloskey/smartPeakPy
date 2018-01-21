@@ -50,11 +50,23 @@ class __main__():
             raw_data_processing_methods_I=raw_data_processing_methods) 
 
         # process all files
+        raw_data_processing_methods = [
+            "load_raw_data",
+            "load_features",
+            "pick_features",
+            # "filter_features",
+            # "select_features",
+            # "check_features",
+        ]
         sequenceProcessor.processSequence(
-            sequenceHandler) 
+            sequenceHandler,
+            raw_data_processing_methods_I=raw_data_processing_methods)
 
         # store all features
-        raw_data_processing_methods = ["store_features"]
+        raw_data_processing_methods = [
+            "store_features", 
+            # "plot_features"
+        ]
         sequenceProcessor.processSequence(
             sequenceHandler,
             raw_data_processing_methods_I=raw_data_processing_methods) 

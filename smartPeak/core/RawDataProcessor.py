@@ -343,11 +343,11 @@ class RawDataProcessor():
             
         """
         fileWriterOpenMS = FileWriterOpenMS()
+        fileReaderOpenMS = FileReaderOpenMS()  
         
         try:
             if raw_data_processing_event == "load_raw_data":
-                # load dynamic assets
-                fileReaderOpenMS = FileReaderOpenMS()              
+                # load dynamic assets            
                 fileReaderOpenMS.load_SWATHorDIA(rawDataHandler_IO, {})
                 fileReaderOpenMS.load_MSExperiment(
                     rawDataHandler_IO, 
