@@ -57,7 +57,7 @@ class __main__():
             "filter_features",
             "select_features",
             # "validate_features",
-            "quantify_features"
+            "quantify_features",
             "check_features",
         ]
         sequenceProcessor.processSequence(
