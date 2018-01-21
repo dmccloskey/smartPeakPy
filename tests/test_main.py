@@ -105,3 +105,32 @@ class testMain():
         #     example_dir + 'GCMS_SIM/SequenceSummary_test.csv',
         #     shallow=False
         #     ))
+
+    def test_main_HPLC_UV(self):
+        """Test HPLC UV example"""
+        m = __main__()
+        
+        m.main2(
+            dir_I=example_dir + 'HPLC_UV',
+            delimiter=',',
+            )
+
+        rawDataHandler = RawDataHandler()
+        fileReaderOpenMS = FileReaderOpenMS()
+        fileReaderOpenMS.load_featureMap(
+            rawDataHandler, example_dir + 
+            'HPLC_UV/features/20171013_HMP_C61_ISO_P1_GA1_UV_VIS_2.featureXML')
+        fm1 = rawDataHandler.featureMap
+        fileReaderOpenMS.load_featureMap(
+            rawDataHandler, example_dir + 
+            'HPLC_UV/features/20171013_HMP_C61_ISO_P1_GA1_UV_VIS_2_test.featureXML')
+        fm2 = rawDataHandler.featureMap
+        assert(
+            fm1[0].getSubordinates()[0].getMetaValue("native_id") == 
+            fm2[50].getSubordinates()[0].getMetaValue("native_id"))
+        assert(
+            fm1[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 
+            fm2[0].getSubordinates()[0].getMetaValue("peak_apex_int"))
+        assert(
+            fm1[0].getSubordinates()[0].getRT() == 
+            fm2[0].getSubordinates()[0].getRT())

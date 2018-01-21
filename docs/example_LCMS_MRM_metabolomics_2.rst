@@ -1,8 +1,8 @@
 .. highlight:: shell
 
-==================
-Tutorial 1: part 2
-==================
+=================================================================
+example LCMS MRM metabolomics (2): calibration curve optimization
+=================================================================
 
 
 Synopsis

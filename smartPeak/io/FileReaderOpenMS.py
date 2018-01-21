@@ -177,6 +177,7 @@ class FileReaderOpenMS():
         mzML_i,
         MRMMapping_params_I={},
         chromatogramExtractor_params_I={},
+        mzML_params_I={},
         verbose_I=False
     ):
         """Load MzML into an MSExperiment
@@ -188,6 +189,9 @@ class FileReaderOpenMS():
                 list of key:value parameters for OpenMS::MRMMapping
             chromatogramExtractor_params_I (list): 
                 list of key:value parameters for OpenMS::ChromatogramExtractor
+            mzML_params_I (list): 
+                list of key:value parameters to trigger the use of different
+                file importers (e.g., ChromeleonFile)
 
         Internals:
             msExperiment (TargetedExperiment)
@@ -199,8 +203,19 @@ class FileReaderOpenMS():
         # load chromatograms
         chromatograms = pyopenms.MSExperiment()
         if mzML_i is not None:
-            fh = pyopenms.FileHandler()
-            fh.loadExperiment(mzML_i.encode('utf-8'), chromatograms)
+            if mzML_params_I and mzML_params_I is not None:
+                # convert parameters
+                utilities = Utilities()
+                mzML_params = {d['name']: utilities.castString(
+                    d['value'], 
+                    d['type']) for d in mzML_params_I}
+                if mzML_params["format"] == b"ChromeleonFile":
+                    mzML_i = mzML_i.replace(".mzML", ".txt")
+                    chfh = pyopenms.ChromeleonFile()
+                    chfh.load(mzML_i.encode('utf-8'), chromatograms)
+            else:
+                fh = pyopenms.FileHandler()
+                fh.loadExperiment(mzML_i.encode('utf-8'), chromatograms)
 
         if chromatogramExtractor_params_I and \
             chromatogramExtractor_params_I is not None and \
@@ -489,6 +504,7 @@ class FileReaderOpenMS():
 
         # check for workflow parameters integrity
         required_parameters = [
+            "mzML",
             "MRMMapping",
             "ChromatogramExtractor", 
             "MRMFeatureFinderScoring",

@@ -65,6 +65,7 @@ def runAllTests():
     # test = TestMRMFeatureSelector()
     # test.test_select_MRMFeatures_score()
     # test.test_schedule_MRMFeatures_qmip()
+    # test.test_checkVariableName()
 
     # # NOTE: requires database settings file
     # from tests.test_data_ReferenceDataMethods import TestReferenceDataMethods

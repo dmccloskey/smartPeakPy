@@ -116,3 +116,13 @@ class TestMRMFeatureSelector():
         assert(output_selected[50].getSubordinates()[0].getMetaValue(
             "native_id") == b'f1p.f1p_1.Heavy')
         assert(output_selected[50].getSubordinates()[0].getRT() == 13.4859151489258)
+
+    def test_checkVariableName(self):
+        featureSelector = MRMFeatureSelector()
+
+        test1 = featureSelector.checkVariableName("AB")
+        assert(test1 == "AB")
+        test1 = featureSelector.checkVariableName("A B")
+        assert(test1 == "AB")
+        test1 = featureSelector.checkVariableName("A    B")
+        assert(test1 == "AB")

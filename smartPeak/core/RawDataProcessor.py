@@ -343,17 +343,18 @@ class RawDataProcessor():
             
         """
         fileWriterOpenMS = FileWriterOpenMS()
+        fileReaderOpenMS = FileReaderOpenMS()  
         
         try:
             if raw_data_processing_event == "load_raw_data":
-                # load dynamic assets
-                fileReaderOpenMS = FileReaderOpenMS()              
+                # load dynamic assets            
                 fileReaderOpenMS.load_SWATHorDIA(rawDataHandler_IO, {})
                 fileReaderOpenMS.load_MSExperiment(
                     rawDataHandler_IO, 
                     filenames["mzML_i"],
                     MRMMapping_params_I=parameters['MRMMapping'],
-                    chromatogramExtractor_params_I=parameters['ChromatogramExtractor'],
+                    chromatogramExtractor_params_I=parameters['ChromatogramExtractor'],                    
+                    mzML_params_I=parameters['mzML'],
                     verbose_I=verbose_I)
                 fileReaderOpenMS.load_Trafo(  # skip, no transformation of RT
                     rawDataHandler_IO, 
@@ -426,6 +427,7 @@ class RawDataProcessor():
                         'MRMFeatureFilter.filter_MRMFeatures.qc'],
                     verbose_I=verbose_I)
             elif raw_data_processing_event == "store_features":
+                self.extract_metaData(rawDataHandler_IO)
                 fileWriterOpenMS.store_featureMap(
                     rawDataHandler_IO, 
                     filenames["featureXML_o"], 
