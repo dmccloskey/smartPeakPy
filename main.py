@@ -24,15 +24,15 @@ sequenceProcessor.processSequence(
 # store all features
 raw_data_processing_methods = {
     "load_raw_data": False,
-    "load_peaks": False,
-    "pick_peaks": False,
-    "filter_peaks": False,
-    "select_peaks": False,
-    "validate_peaks": False,
-    "quantify_peaks": False,
-    "check_peaks": False,
-    "plot_peaks": False,
-    "store_peaks": True}
+    "load_features": False,
+    "pick_features": False,
+    "filter_features": False,
+    "select_features": False,
+    "validate_features": False,
+    "quantify_features": False,
+    "check_features": False,
+    "plot_features": False,
+    "store_features": True}
 sequenceProcessor.processSequence(
     sequenceHandler,
     raw_data_processing_methods_I=raw_data_processing_methods) 
