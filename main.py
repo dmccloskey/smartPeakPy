@@ -22,17 +22,8 @@ sequenceProcessor.processSequence(
     sequenceHandler) 
 
 # store all features
-raw_data_processing_methods = {
-    "load_raw_data": False,
-    "load_features": False,
-    "pick_features": False,
-    "filter_features": False,
-    "select_features": False,
-    "validate_features": False,
-    "quantify_features": False,
-    "check_features": False,
-    "plot_features": False,
-    "store_features": True}
+raw_data_processing_methods = [
+    "store_features"]
 sequenceProcessor.processSequence(
     sequenceHandler,
     raw_data_processing_methods_I=raw_data_processing_methods) 
