@@ -55,7 +55,9 @@ class SequenceWriter():
                                     'native_id').decode('utf-8'), meta_value)
                             datum = sequenceHandler_I.getMetaValue(
                                 feature, subordinate, meta_value)
-                            if datum and datum is not None:
+                            if datum and datum is not None:                                
+                                if isinstance(datum, bytes):
+                                    datum = datum.decode('utf-8')
                                 data_dict[sample_name][row_tuple_name] = datum
                                 columns.add(sample_name)
                                 rows.add(row_tuple_name)
