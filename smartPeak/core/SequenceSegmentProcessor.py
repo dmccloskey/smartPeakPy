@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from smartPeak.io.FileReaderOpenMS import FileReaderOpenMS
+from smartPeak.io.FileWriterOpenMS import FileWriterOpenMS
+from smartPeak.core.Utilities import Utilities
 try:
     import pyopenms
 except ImportError as e:
@@ -28,7 +31,11 @@ class SequenceSegmentProcessor():
                 sample_indices.append(index)
         return sample_indices
 
-    def optimizeCalibrationCurves(self, sequenceSegmentHandler_IO, sequenceHandler_I):
+    def optimizeCalibrationCurves(
+        self,
+        sequenceSegmentHandler_IO,
+        sequenceHandler_I,
+        AbsoluteQuantitation_params_I={}):
         """Optimize the calibration curve for all components
         
         Args:
@@ -61,18 +68,28 @@ class SequenceSegmentProcessor():
                 standards_featureMaps,
                 row.getComponentName(),
                 feature_concentrations
-            )        
+            )
 
-        # find the optimal calibration curve for each component
-        # TODO: update to use the python wrapper C++ method
-        absoluteQuantitation = pyopenms.AbsoluteQuantitation()
-        absoluteQuantitation.optimizeCalibrationCurves(components_to_concentrations)      
+        # add in the method parameters
+        if AbsoluteQuantitation_params_I and AbsoluteQuantitation_params_I is not None:
+            utilities = Utilities()
+            absoluteQuantitation = pyopenms.AbsoluteQuantitation()
+            parameters = absoluteQuantitation.getParameters()
+            parameters = utilities.updateParameters(
+                parameters,
+                AbsoluteQuantitation_params_I,
+                )
+            absoluteQuantitation.setParameters(parameters) 
 
-        sequenceSegmentHandler_IO.setOptimizedComponentsToConcentrations(
-            components_to_concentrations
-        )
-        sequenceSegmentHandler_IO.setQuantitationMethods(
-            absoluteQuantitation.getQuantMethods())
+            # find the optimal calibration curve for each component
+            # TODO: update to use the python wrapper C++ method
+            absoluteQuantitation.optimizeCalibrationCurves(components_to_concentrations) 
+
+            sequenceSegmentHandler_IO.setOptimizedComponentsToConcentrations(
+                components_to_concentrations
+            )
+            sequenceSegmentHandler_IO.setQuantitationMethods(
+                absoluteQuantitation.getQuantMethods())
 
     def processSequenceSegment(
         self, sequenceSegmentHandler_IO,
@@ -90,15 +107,24 @@ class SequenceSegmentProcessor():
                 sequence group processing methods
             
         """
+        fileReaderOpenMS = FileReaderOpenMS()
+        fileWriterOpenMS = FileWriterOpenMS()
 
         try:
             if sequence_group_processing_event == "calculate_calibration":
                 self.optimizeCalibrationCurves(
-                    sequenceSegmentHandler_IO, sequenceHandler_I)
+                    sequenceSegmentHandler_IO, sequenceHandler_I,
+                    AbsoluteQuantitation_params_I=parameters["AbsoluteQuantitation"])
             elif sequence_group_processing_event == "store_quantitation_methods":
-                pass
-            elif sequence_group_processing_event == "store_optimized_components_to_concentrations":
-                pass
+                fileWriterOpenMS.store_quantitationMethods(
+                    sequenceSegmentHandler_IO,
+                    filenames["quantitationMethods_csv_o"])
+            elif sequence_group_processing_event == "load_quantitation_methods":
+                fileReaderOpenMS.load_quantitationMethods(
+                    sequenceSegmentHandler_IO,
+                    filenames["quantitationMethods_csv_i"])
+            # elif sequence_group_processing_event == "store_optimized_components_to_concentrations":
+            #     pass
             else:                
                 print(
                     "Sequence group processing event " +

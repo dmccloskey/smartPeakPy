@@ -52,7 +52,8 @@ class TestFileReaderOpenMS():
 
         # load MSExperiment
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        fileReaderOpenMS.load_MSExperiment(rawDataHandler, mzML_i,
+        fileReaderOpenMS.load_MSExperiment(
+            rawDataHandler, mzML_i,
             MRMMapping_params_I=self.params_1['MRMMapping'])
         assert(rawDataHandler.msExperiment.getChromatograms()[
             0].getProduct().getMZ() == 0.0)
@@ -216,7 +217,8 @@ class TestFileReaderOpenMS():
             'FeaturePlotter': [{
                 'name': 'export_format', 'value': 'pdf', 'type': 'string'}]}
 
-        fileReaderOpenMS.parse_rawDataProcessingParameters(rawDataHandler, parameters_file)
+        fileReaderOpenMS.parse_rawDataProcessingParameters(
+            rawDataHandler, parameters_file)
         
         test_parameters = [ 
             "MRMFeatureFinderScoring",
@@ -228,6 +230,7 @@ class TestFileReaderOpenMS():
             "MRMFeatureValidator.validate_MRMFeatures",
             "MRMFeatureFilter.filter_MRMFeatures.qc",
         ]
+        assert("AbsoluteQuantitation" in rawDataHandler.getParameters())
         assert("MRMMapping" in rawDataHandler.getParameters())
         assert(len(rawDataHandler.getParameters()["ChromatogramExtractor"]) == 0)
         for parameter in test_parameters:

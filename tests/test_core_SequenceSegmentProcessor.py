@@ -3,6 +3,11 @@ from smartPeak.core.SequenceSegmentProcessor import SequenceSegmentProcessor
 from smartPeak.core.SequenceSegmentHandler import SequenceSegmentHandler
 from smartPeak.core.SequenceHandler import SequenceHandler
 import copy
+# 3rd part libraries
+try:
+    import pyopenms
+except ImportError as e:
+    print(e)
 
 
 class TestSequenceSegmentProcessor():
@@ -83,12 +88,65 @@ class TestSequenceSegmentProcessor():
         sequenceSegmentHandler = SequenceSegmentHandler()
         sequenceSegmentProcessor = SequenceSegmentProcessor()
 
-        # load in the test data
+        # set-up the class parameters 
+        absquant_params = {"AbsoluteQuantitation": [
+            {"name": "min_points", "value": 4},
+            {"name": "max_bias", "value": 30.0},
+            {"name": "min_correlation_coefficient", "value": 0.9},
+            {"name": "max_iters", "value": 100},
+            {"name": "outlier_detection_method", "value": "iter_jackknife"},
+            {"name": "use_chauvenet", "value": "false"},
+        ]}
+
+        # set up the quantitation method 
+        aqm = pyopenms.AbsoluteQuantitationMethod()
+        feature_name = "peak_apex_int"
+        transformation_model = "linear"
+        param = pyopenms.Param()
+        param.setValue("slope", 1.0)
+        param.setValue("intercept", 0.0)
+        param.setValue("x_weight", "ln(x)")
+        param.setValue("y_weight", "ln(y)")
+        param.setValue("x_datum_min", -1e12)
+        param.setValue("x_datum_max", 1e12)
+        param.setValue("y_datum_min", -1e12)
+        param.setValue("y_datum_max", 1e12)
+        aqm.setTransformationModel(transformation_model)
+        aqm.setTransformationModelParams(param)
+
+        # set-up the quant_method map
+        quant_methods = []
+        # component_1
+        aqm.setComponentName("ser-L.ser-L_1.Light")
+        aqm.setISName("ser-L.ser-L_1.Heavy")
+        aqm.setFeatureName(feature_name)
+        aqm.setConcentrationUnits("uM")
+        quant_methods.append(aqm)
+        # component_2
+        aqm.setComponentName("amp.amp_1.Light")
+        aqm.setISName("amp.amp_1.Heavy")
+        aqm.setFeatureName(feature_name)  # test IS outside component_group
+        aqm.setConcentrationUnits("uM")
+        quant_methods.append(aqm)
+        # component_3
+        aqm.setComponentName("atp.atp_1.Light")
+        aqm.setISName("atp.atp_1.Heavy")
+        aqm.setFeatureName(feature_name)
+        aqm.setConcentrationUnits("uM")
+        quant_methods.append(aqm)
+
+        sequenceSegmentHandler.setQuantitationMethods(quant_methods)
+
+        # set up the featureMaps and runConcentrations
+        feature_maps, runs = self.make_featuresAndStandarsConcentrations()
+        sequenceSegmentHandler.setStandardsConcentrations(runs)
+        sequenceSegmentHandler.setQuantitationMethods(feature_maps)
 
         # test
         sequenceSegmentProcessor.optimizeCalibrationCurves(
             sequenceSegmentHandler,
-            sequenceHandler)
+            sequenceHandler,
+            AbsoluteQuantitation_params_I=absquant_params)
         assert(sequenceSegmentHandler.getQuantitationMethods()[
             0].getComponentName() == "")
         assert(sequenceSegmentHandler.getQuantitationMethods()[
@@ -107,5 +165,118 @@ class TestSequenceSegmentProcessor():
             0].getLLOQ() == 0.99)
         assert(sequenceSegmentHandler.getQuantitationMethods()[
             0].getULOQ() == 0.99)
+    
+    def make_featuresAndStandarsConcentrations(self):
 
-        pass
+        # ser-L.ser-L_1.Light
+        x1 = [
+            2.32e4, 2.45e4, 1.78e4, 2.11e4, 1.91e4,
+            2.06e4, 1.85e4, 1.53e4, 1.40e4, 1.03e4, 
+            1.07e4, 6.68e3, 5.27e3, 2.83e3]
+        y1 = [
+            4.94e3, 6.55e3, 7.37e3, 1.54e4, 2.87e4,
+            5.41e4, 1.16e5, 1.85e5, 3.41e5, 7.54e5,
+            9.76e5, 1.42e6, 1.93e6, 2.23e6] 
+        z1 = [
+            1.00e-2, 2.00e-2, 4.00e-2, 1.00e-1, 2.00e-1, 
+            4.00e-1, 1.00e0, 2.00e0, 4.00e0, 1.00e1, 
+            2.00e1, 4.00e1, 1.00e2, 2.00e2]
+        
+        # amp.amp_1.Light
+        x2 = [
+            2.15e5, 2.32e5, 2.69e5, 2.53e5, 2.50e5, 
+            2.75e5, 2.67e5, 3.31e5, 3.15e5, 3.04e5, 
+            3.45e5, 3.91e5, 4.62e5, 3.18e5]
+        y2 = [
+            4.40e2, 1.15e3, 1.53e3, 2.01e3, 4.47e3, 
+            7.36e3, 2.18e4, 4.46e4, 8.50e4, 2.33e5, 
+            5.04e5, 1.09e6, 2.54e6, 3.64e6] 
+        z2 = [
+            2.00e-3, 4.00e-3, 8.00e-3, 2.00e-2, 4.00e-2, 
+            8.00e-2, 2.00e-1, 4.00e-1, 8.00e-1, 2.00e0, 
+            4.00e0, 8.00e0, 2.00e1, 4.00e1]
+        
+        # atp.atp_1.Light
+        x3 = [
+            8.28e2, 1.32e3, 1.57e3, 1.63e3, 1.48e3, 
+            2.43e3, 4.44e3, 1.03e4, 1.75e4, 6.92e4, 
+            1.97e5, 2.69e5, 3.20e5, 3.22e5]
+        y3 = [
+            2.21e2, 4.41e2, 3.31e2, 2.21e2, 3.09e2, 
+            5.96e2, 1.26e3, 2.49e3, 1.12e4, 8.79e4, 
+            4.68e5, 1.38e6, 3.46e6, 4.19e6] 
+        z3 = [
+            2.00e-3, 4.00e-3, 8.00e-3, 2.00e-2, 4.00e-2, 
+            8.00e-2, 2.00e-1, 4.00e-1, 8.00e-1, 2.00e0, 
+            4.00e0, 8.00e0, 2.00e1, 4.00e1]
+
+        feature_maps = []
+        feature_map = pyopenms.FeatureMap()
+        mrm_feature = pyopenms.MRMFeature()
+        component = pyopenms.Feature()
+        IS_component = pyopenms.Feature()
+        runs = []
+        run = pyopenms.AbsoluteQuantitationStandards()
+        for i in range(len(x1)):
+            sample_name = "level" + str(i)
+            # ser-L.ser-L_1.Light
+            # featureMap
+            component.setMetaValue("native_id", "ser-L.ser-L_1.Light")
+            component.setMetaValue("peak_apex_int", y1[i])
+            IS_component.setMetaValue("native_id", "ser-L.ser-L_1.Heavy")
+            IS_component.setMetaValue("peak_apex_int", x1[i])
+            mrm_feature.setSubordinates(component, IS_component)
+            feature_map.append(mrm_feature)
+
+            # runConcentrations
+            run.sample_name = sample_name
+            run.component_name = "ser-L.ser-L_1.Light"
+            run.IS_component_name = "ser-L.ser-L_1.Heavy"
+            run.actual_concentration = z1[i]
+            run.IS_actual_concentration = 1.0
+            run.concentration_units = "uM"
+            run.dilution_factor = 1.0
+            runs.append(run)
+
+            # amp.amp_1.Light
+            # featureMap
+            component.setMetaValue("native_id", "amp.amp_1.Light")
+            component.setMetaValue("peak_apex_int", y2[i])
+            IS_component.setMetaValue("native_id", "amp.amp_1.Heavy")
+            IS_component.setMetaValue("peak_apex_int", x2[i])
+            mrm_feature.setSubordinates(component, IS_component)
+            feature_map.append(mrm_feature)
+
+            # runConcentrations
+            run.sample_name = sample_name
+            run.component_name = "amp.amp_1.Light"
+            run.IS_component_name = "amp.amp_1.Heavy"
+            run.actual_concentration = z2[i]
+            run.IS_actual_concentration = 1.0
+            run.concentration_units = "uM"
+            run.dilution_factor = 1.0
+            runs.append(run)
+
+            # atp.atp_1.Light
+            # featureMap
+            component.setMetaValue("native_id", "atp.atp_1.Light")
+            component.setMetaValue("peak_apex_int", y3[i])
+            IS_component.setMetaValue("native_id", "atp.atp_1.Heavy")
+            IS_component.setMetaValue("peak_apex_int", x3[i])
+            mrm_feature.setSubordinates(component, IS_component)
+            feature_map.append(mrm_feature)
+
+            # runConcentrations
+            run.sample_name = sample_name
+            run.component_name = "atp.atp_1.Light"
+            run.IS_component_name = "atp.atp_1.Heavy"
+            run.actual_concentration = z3[i]
+            run.IS_actual_concentration = 1.0
+            run.concentration_units = "uM"
+            run.dilution_factor = 1.0
+            runs.append(run)
+
+            feature_map.setPrimaryMSRunPath(sample_name)
+            feature_maps.append(feature_map)
+
+        return feature_maps, runs

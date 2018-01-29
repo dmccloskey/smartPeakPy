@@ -19,3 +19,7 @@ m = __main__()
 
 # from tests import runAllTests
 # runAllTests()
+
+from tests.test_core_SequenceSegmentProcessor import TestSequenceSegmentProcessor
+test = TestSequenceSegmentProcessor()
+test.test_optimizeCalibrationCurves()
