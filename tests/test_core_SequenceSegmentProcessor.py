@@ -79,9 +79,33 @@ class TestSequenceSegmentProcessor():
         assert(sample_indices == [0, 2])
 
     def test_optimizeCalibrationCurves(self):
-        """No test"""
-        # sequenceHandler = SequenceHandler()
-        # sequenceSegmentHandler = SequenceSegmentHandler()
-        # sequenceSegmentProcessor = SequenceSegmentProcessor()
+        sequenceHandler = SequenceHandler()
+        sequenceSegmentHandler = SequenceSegmentHandler()
+        sequenceSegmentProcessor = SequenceSegmentProcessor()
+
+        # load in the test data
+
+        # test
+        sequenceSegmentProcessor.optimizeCalibrationCurves(
+            sequenceSegmentHandler,
+            sequenceHandler)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            0].getComponentName() == "")
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            0].getISName() == "")
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            0].getFeatureName() == "")
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            0].getTransformationModelParams().getValue("slope") == 1.0)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            0].getTransformationModelParams().getValue("intercept") == 1.0)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            0].getNPoints() == 4)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            0].getCorrelationCoefficient() == 0.99)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            0].getLLOQ() == 0.99)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            0].getULOQ() == 0.99)
 
         pass
