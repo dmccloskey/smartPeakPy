@@ -35,7 +35,8 @@ class SequenceSegmentProcessor():
         self,
         sequenceSegmentHandler_IO,
         sequenceHandler_I,
-        AbsoluteQuantitation_params_I={}):
+        AbsoluteQuantitation_params_I={}
+    ):
         """Optimize the calibration curve for all components
         
         Args:
@@ -55,7 +56,8 @@ class SequenceSegmentProcessor():
             return
 
         standards_featureMaps = [
-            sequenceHandler_I.sequence[index].featureMap for index in standards_indices]
+            sequenceHandler_I.sequence[index].getRawData().getFeatureMap() 
+            for index in standards_indices]
 
         # use the python wrapper C++ methods to optimize each calibration curve
         components_to_concentrations = {}
@@ -69,6 +71,8 @@ class SequenceSegmentProcessor():
                 row.getComponentName(),
                 feature_concentrations
             )
+            components_to_concentrations.update({
+                row.getComponentName(): feature_concentrations})
 
         # add in the method parameters
         if AbsoluteQuantitation_params_I and AbsoluteQuantitation_params_I is not None:
@@ -81,6 +85,8 @@ class SequenceSegmentProcessor():
                 )
             absoluteQuantitation.setParameters(parameters) 
 
+            absoluteQuantitation.setQuantMethods(
+                sequenceSegmentHandler_IO.getQuantitationMethods())
             # find the optimal calibration curve for each component
             # TODO: update to use the python wrapper C++ method
             absoluteQuantitation.optimizeCalibrationCurves(components_to_concentrations) 

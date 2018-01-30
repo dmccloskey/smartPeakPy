@@ -91,10 +91,10 @@ class TestSequenceSegmentProcessor():
 
         # set-up the class parameters 
         absquant_params = {"AbsoluteQuantitation": [
-            {"name": "min_points", "value": 4},
-            {"name": "max_bias", "value": 30.0},
-            {"name": "min_correlation_coefficient", "value": 0.9},
-            {"name": "max_iters", "value": 100},
+            {"name": "min_points", "value": "4"},
+            {"name": "max_bias", "value": "30.0"},
+            {"name": "min_correlation_coefficient", "value": "0.9"},
+            {"name": "max_iters", "value": "100"},
             {"name": "outlier_detection_method", "value": "iter_jackknife"},
             {"name": "use_chauvenet", "value": "false"},
         ]}
@@ -112,63 +112,112 @@ class TestSequenceSegmentProcessor():
         param.setValue("x_datum_max".encode("utf-8"), 1e12)
         param.setValue("y_datum_min".encode("utf-8"), -1e12)
         param.setValue("y_datum_max".encode("utf-8"), 1e12)
-        aqm.setTransformationModel(transformation_model)
-        aqm.setTransformationModelParams(param)
 
         # set-up the quant_method map
         quant_methods = []
         # component_1
+        aqm = pyopenms.AbsoluteQuantitationMethod()
         aqm.setComponentName("ser-L.ser-L_1.Light")
         aqm.setISName("ser-L.ser-L_1.Heavy")
         aqm.setFeatureName(feature_name)
         aqm.setConcentrationUnits("uM")
+        aqm.setTransformationModel(transformation_model)
+        aqm.setTransformationModelParams(param)
         quant_methods.append(aqm)
         # component_2
+        aqm = pyopenms.AbsoluteQuantitationMethod()
         aqm.setComponentName("amp.amp_1.Light")
         aqm.setISName("amp.amp_1.Heavy")
-        aqm.setFeatureName(feature_name)  # test IS outside component_group
+        aqm.setFeatureName(feature_name)
         aqm.setConcentrationUnits("uM")
+        aqm.setTransformationModel(transformation_model)
+        aqm.setTransformationModelParams(param)
         quant_methods.append(aqm)
         # component_3
+        aqm = pyopenms.AbsoluteQuantitationMethod()
         aqm.setComponentName("atp.atp_1.Light")
         aqm.setISName("atp.atp_1.Heavy")
         aqm.setFeatureName(feature_name)
         aqm.setConcentrationUnits("uM")
+        aqm.setTransformationModel(transformation_model)
+        aqm.setTransformationModelParams(param)
         quant_methods.append(aqm)
 
         sequenceSegmentHandler.setQuantitationMethods(quant_methods)
 
         # set up the featureMaps, runConcentrations, and sequence
         runs = []
-        self.make_featuresAndStandarsConcentrations(sequenceHandler, runs)
-        sequenceSegmentHandler.setSampleIndices(range(len(sequenceHandler.sequence)))
+        self.make_featuresAndStandardsConcentrations(sequenceHandler, runs)
         sequenceSegmentHandler.setStandardsConcentrations(runs)
+
+        # register the sequence group manually
+        sequenceSegmentHandler.setSampleIndices(range(len(sequenceHandler.sequence)))
 
         # test
         sequenceSegmentProcessor.optimizeCalibrationCurves(
             sequenceSegmentHandler,
             sequenceHandler,
-            AbsoluteQuantitation_params_I=absquant_params)
+            AbsoluteQuantitation_params_I=absquant_params["AbsoluteQuantitation"])
         assert(sequenceSegmentHandler.getQuantitationMethods()[
-            0].getComponentName() == "")
+            0].getComponentName() == b'amp.amp_1.Light')
         assert(sequenceSegmentHandler.getQuantitationMethods()[
-            0].getISName() == "")
+            0].getISName() == b'amp.amp_1.Heavy')
         assert(sequenceSegmentHandler.getQuantitationMethods()[
-            0].getFeatureName() == "")
+            0].getFeatureName() == b"peak_apex_int")
         assert(sequenceSegmentHandler.getQuantitationMethods()[
-            0].getTransformationModelParams().getValue("slope") == 1.0)
+            0].getTransformationModelParams().getValue("slope") == 0.957996830126945)
         assert(sequenceSegmentHandler.getQuantitationMethods()[
-            0].getTransformationModelParams().getValue("intercept") == 1.0)
+            0].getTransformationModelParams().getValue(
+                "intercept") == -1.0475433871941753)
         assert(sequenceSegmentHandler.getQuantitationMethods()[
-            0].getNPoints() == 4)
+            0].getNPoints() == 11)
         assert(sequenceSegmentHandler.getQuantitationMethods()[
-            0].getCorrelationCoefficient() == 0.99)
+            0].getCorrelationCoefficient() == 0.9991692616730385)
         assert(sequenceSegmentHandler.getQuantitationMethods()[
-            0].getLLOQ() == 0.99)
+            0].getLLOQ() == 0.02)
         assert(sequenceSegmentHandler.getQuantitationMethods()[
-            0].getULOQ() == 0.99)
+            0].getULOQ() == 40.0)
+        
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            1].getComponentName() == b'atp.atp_1.Light')
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            1].getISName() == b'atp.atp_1.Heavy')
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            1].getFeatureName() == b"peak_apex_int")
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            1].getTransformationModelParams().getValue("slope") == 0.6230408240794582)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            1].getTransformationModelParams().getValue(
+                "intercept") == 0.36130172586029285)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            1].getNPoints() == 6)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            1].getCorrelationCoefficient() == 0.9982084021849695)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            1].getLLOQ() == 0.02)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            1].getULOQ() == 40.0)
+        
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            2].getComponentName() == b'ser-L.ser-L_1.Light')
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            2].getISName() == b'ser-L.ser-L_1.Heavy')
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            2].getFeatureName() == b"peak_apex_int")
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            2].getTransformationModelParams().getValue("slope") == 0.9011392589148208)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            2].getTransformationModelParams().getValue("intercept") == 1.8701850759567624)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            2].getNPoints() == 11)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            2].getCorrelationCoefficient() == 0.9993200722867581)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            2].getLLOQ() == 0.04)
+        assert(sequenceSegmentHandler.getQuantitationMethods()[
+            2].getULOQ() == 200.0)
     
-    def make_featuresAndStandarsConcentrations(self, sequenceHandler_IO, runs):
+    def make_featuresAndStandardsConcentrations(self, sequenceHandler_IO, runs):
 
         # ser-L.ser-L_1.Light
         x1 = [
@@ -212,15 +261,15 @@ class TestSequenceSegmentProcessor():
             8.00e-2, 2.00e-1, 4.00e-1, 8.00e-1, 2.00e0, 
             4.00e0, 8.00e0, 2.00e1, 4.00e1]
 
-        feature_map = pyopenms.FeatureMap()
-        mrm_feature = pyopenms.MRMFeature()
-        component = pyopenms.Feature()
-        IS_component = pyopenms.Feature()
-        run = pyopenms.AQS_runConcentration()
         for i in range(len(x1)):
             sample_name = "level" + str(i)
+            feature_map = pyopenms.FeatureMap()
 
             # ser-L.ser-L_1.Light
+            mrm_feature = pyopenms.MRMFeature()
+            component = pyopenms.Feature()
+            IS_component = pyopenms.Feature()
+            run = pyopenms.AQS_runConcentration()
             # featureMap
             component.setMetaValue(
                 "native_id".encode("utf-8"), 
@@ -244,6 +293,10 @@ class TestSequenceSegmentProcessor():
             runs.append(run)
 
             # amp.amp_1.Light
+            mrm_feature = pyopenms.MRMFeature()
+            component = pyopenms.Feature()
+            IS_component = pyopenms.Feature()
+            run = pyopenms.AQS_runConcentration()
             # featureMap
             component.setMetaValue(
                 "native_id".encode("utf-8"), 
@@ -267,6 +320,10 @@ class TestSequenceSegmentProcessor():
             runs.append(run)
 
             # atp.atp_1.Light
+            mrm_feature = pyopenms.MRMFeature()
+            component = pyopenms.Feature()
+            IS_component = pyopenms.Feature()
+            run = pyopenms.AQS_runConcentration()
             # featureMap
             component.setMetaValue(
                 "native_id".encode("utf-8"), 
@@ -300,6 +357,7 @@ class TestSequenceSegmentProcessor():
             meta_data["sequence_segment_name"] = "segment1"
             sequenceHandler_IO.addSampleToSequence(meta_data, None)
 
+            # add in the featureMap manually
             rawDataHandler = RawDataHandler()
             rawDataHandler.setFeatureMap(feature_map)
             sequenceHandler_IO.sequence[i].setRawData(rawDataHandler)

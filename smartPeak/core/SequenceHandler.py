@@ -49,9 +49,21 @@ class SequenceHandler():
     def getDirDynamic(self):
         return self.dir_dynamic
 
+    def setSequence(self, sequence_I):
+        """Set the sequence"""
+        self.sequence = sequence_I
+
     def getSequence(self):
         """Return sequence"""
         return self.sequence
+
+    def setSequenceGroups(self, sequence_groups_I):
+        """Set the sequence_groups"""
+        self.sequence_groups = sequence_groups_I
+
+    def getSequenceGroups(self):
+        """Return sequence_groups"""
+        return self.sequence_groups
 
     def getDefaultStaticFilenames(self, dir_I):
         """Return the default map of filetype to filename for static files
