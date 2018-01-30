@@ -37,6 +37,14 @@ class RawDataHandler():
         self.quantitation_methods = None
         self.feature_filter = None
         self.feature_qc = None
+        
+    def setFeatureMap(self, featureMap_I):
+        """Set the featureMap"""
+        self.featureMap = featureMap_I
+
+    def getFeatureMap(self):
+        """Return the featureMap"""
+        return self.featureMap
 
     def setParameters(self, parameters_I):
         """Set the parameters"""

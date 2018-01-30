@@ -59,7 +59,7 @@ class SequenceSegmentProcessor():
 
         # use the python wrapper C++ methods to optimize each calibration curve
         components_to_concentrations = {}
-        for row in sequenceSegmentHandler_IO.getQuantMethods():
+        for row in sequenceSegmentHandler_IO.getQuantitationMethods():
             # map standards to features
             absoluteQuantitationStandards = pyopenms.AbsoluteQuantitationStandards()
             feature_concentrations = []

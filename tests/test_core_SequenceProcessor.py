@@ -9,7 +9,7 @@ import copy
 
 class TestSequenceProcessor():
 
-    def test_groupSamplesInSequence(self):
+    def test_segmentSamplesInSequence(self):
         sequenceHandler = SequenceHandler()
         sequenceSegmentHandler = SequenceSegmentHandler()
         sequenceProcessor = SequenceProcessor()
@@ -41,7 +41,7 @@ class TestSequenceProcessor():
         
         sequenceSegmentHandler.quantitation_methods = "Test"
 
-        sequenceProcessor.groupSamplesInSequence(sequenceHandler, sequenceSegmentHandler)
+        sequenceProcessor.segmentSamplesInSequence(sequenceHandler, sequenceSegmentHandler)
         assert(len(sequenceHandler.sequence_groups) == 2)
         assert(sequenceHandler.sequence_groups[0].sample_indices == [0, 1])
         assert(sequenceHandler.sequence_groups[1].sample_indices == [2])

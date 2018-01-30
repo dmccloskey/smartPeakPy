@@ -70,7 +70,7 @@ class SequenceProcessor():
             pass
         
         # initialize the sequence
-        self.groupSamplesInSequence(sequenceHandler_IO, sequenceSegmentHandler)
+        self.segmentSamplesInSequence(sequenceHandler_IO, sequenceSegmentHandler)
         self.addRawDataHandlerToSequence(sequenceHandler_IO, rawDataHandler)
 
     def addRawDataHandlerToSequence(
@@ -87,8 +87,8 @@ class SequenceProcessor():
             # copy the object to persist the data
             sample.raw_data = copy.copy(rawDataHandler_I)
 
-    def groupSamplesInSequence(self, sequenceHandler_IO, sequenceSegmentHandler_I=None):
-        """group samples in a sequence
+    def segmentSamplesInSequence(self, sequenceHandler_IO, sequenceSegmentHandler_I=None):
+        """Segment samples in a sequence
 
         An optional template SequenceSegmentHandler can be added to all groups
         

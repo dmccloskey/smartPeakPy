@@ -2,6 +2,7 @@
 from smartPeak.core.SequenceSegmentProcessor import SequenceSegmentProcessor
 from smartPeak.core.SequenceSegmentHandler import SequenceSegmentHandler
 from smartPeak.core.SequenceHandler import SequenceHandler
+from smartPeak.core.RawDataHandler import RawDataHandler
 import copy
 # 3rd part libraries
 try:
@@ -103,14 +104,14 @@ class TestSequenceSegmentProcessor():
         feature_name = "peak_apex_int"
         transformation_model = "linear"
         param = pyopenms.Param()
-        param.setValue("slope", 1.0)
-        param.setValue("intercept", 0.0)
-        param.setValue("x_weight", "ln(x)")
-        param.setValue("y_weight", "ln(y)")
-        param.setValue("x_datum_min", -1e12)
-        param.setValue("x_datum_max", 1e12)
-        param.setValue("y_datum_min", -1e12)
-        param.setValue("y_datum_max", 1e12)
+        param.setValue("slope".encode("utf-8"), 1.0)
+        param.setValue("intercept".encode("utf-8"), 0.0)
+        param.setValue("x_weight".encode("utf-8"), "ln(x)".encode("utf-8"))
+        param.setValue("y_weight".encode("utf-8"), "ln(y)".encode("utf-8"))
+        param.setValue("x_datum_min".encode("utf-8"), -1e12)
+        param.setValue("x_datum_max".encode("utf-8"), 1e12)
+        param.setValue("y_datum_min".encode("utf-8"), -1e12)
+        param.setValue("y_datum_max".encode("utf-8"), 1e12)
         aqm.setTransformationModel(transformation_model)
         aqm.setTransformationModelParams(param)
 
@@ -137,10 +138,11 @@ class TestSequenceSegmentProcessor():
 
         sequenceSegmentHandler.setQuantitationMethods(quant_methods)
 
-        # set up the featureMaps and runConcentrations
-        feature_maps, runs = self.make_featuresAndStandarsConcentrations()
+        # set up the featureMaps, runConcentrations, and sequence
+        runs = []
+        self.make_featuresAndStandarsConcentrations(sequenceHandler, runs)
+        sequenceSegmentHandler.setSampleIndices(range(len(sequenceHandler.sequence)))
         sequenceSegmentHandler.setStandardsConcentrations(runs)
-        sequenceSegmentHandler.setQuantitationMethods(feature_maps)
 
         # test
         sequenceSegmentProcessor.optimizeCalibrationCurves(
@@ -166,7 +168,7 @@ class TestSequenceSegmentProcessor():
         assert(sequenceSegmentHandler.getQuantitationMethods()[
             0].getULOQ() == 0.99)
     
-    def make_featuresAndStandarsConcentrations(self):
+    def make_featuresAndStandarsConcentrations(self, sequenceHandler_IO, runs):
 
         # ser-L.ser-L_1.Light
         x1 = [
@@ -210,73 +212,94 @@ class TestSequenceSegmentProcessor():
             8.00e-2, 2.00e-1, 4.00e-1, 8.00e-1, 2.00e0, 
             4.00e0, 8.00e0, 2.00e1, 4.00e1]
 
-        feature_maps = []
         feature_map = pyopenms.FeatureMap()
         mrm_feature = pyopenms.MRMFeature()
         component = pyopenms.Feature()
         IS_component = pyopenms.Feature()
-        runs = []
-        run = pyopenms.AbsoluteQuantitationStandards()
+        run = pyopenms.AQS_runConcentration()
         for i in range(len(x1)):
             sample_name = "level" + str(i)
+
             # ser-L.ser-L_1.Light
             # featureMap
-            component.setMetaValue("native_id", "ser-L.ser-L_1.Light")
-            component.setMetaValue("peak_apex_int", y1[i])
-            IS_component.setMetaValue("native_id", "ser-L.ser-L_1.Heavy")
-            IS_component.setMetaValue("peak_apex_int", x1[i])
-            mrm_feature.setSubordinates(component, IS_component)
-            feature_map.append(mrm_feature)
+            component.setMetaValue(
+                "native_id".encode("utf-8"), 
+                "ser-L.ser-L_1.Light".encode("utf-8"))
+            component.setMetaValue("peak_apex_int".encode("utf-8"), y1[i])
+            IS_component.setMetaValue(
+                "native_id".encode("utf-8"), 
+                "ser-L.ser-L_1.Heavy".encode("utf-8"))
+            IS_component.setMetaValue("peak_apex_int".encode("utf-8"), x1[i])
+            mrm_feature.setSubordinates([component, IS_component])
+            feature_map.push_back(mrm_feature)
 
             # runConcentrations
-            run.sample_name = sample_name
-            run.component_name = "ser-L.ser-L_1.Light"
-            run.IS_component_name = "ser-L.ser-L_1.Heavy"
+            run.sample_name = sample_name.encode("utf-8")
+            run.component_name = "ser-L.ser-L_1.Light".encode("utf-8")
+            run.IS_component_name = "ser-L.ser-L_1.Heavy".encode("utf-8")
             run.actual_concentration = z1[i]
             run.IS_actual_concentration = 1.0
-            run.concentration_units = "uM"
+            run.concentration_units = "uM".encode("utf-8")
             run.dilution_factor = 1.0
             runs.append(run)
 
             # amp.amp_1.Light
             # featureMap
-            component.setMetaValue("native_id", "amp.amp_1.Light")
-            component.setMetaValue("peak_apex_int", y2[i])
-            IS_component.setMetaValue("native_id", "amp.amp_1.Heavy")
-            IS_component.setMetaValue("peak_apex_int", x2[i])
-            mrm_feature.setSubordinates(component, IS_component)
-            feature_map.append(mrm_feature)
+            component.setMetaValue(
+                "native_id".encode("utf-8"), 
+                "amp.amp_1.Light".encode("utf-8"))
+            component.setMetaValue("peak_apex_int".encode("utf-8"), y2[i])
+            IS_component.setMetaValue(
+                "native_id".encode("utf-8"), 
+                "amp.amp_1.Heavy".encode("utf-8"))
+            IS_component.setMetaValue("peak_apex_int".encode("utf-8"), x2[i])
+            mrm_feature.setSubordinates([component, IS_component])
+            feature_map.push_back(mrm_feature)
 
             # runConcentrations
-            run.sample_name = sample_name
-            run.component_name = "amp.amp_1.Light"
-            run.IS_component_name = "amp.amp_1.Heavy"
+            run.sample_name = sample_name.encode("utf-8")
+            run.component_name = "amp.amp_1.Light".encode("utf-8")
+            run.IS_component_name = "amp.amp_1.Heavy".encode("utf-8")
             run.actual_concentration = z2[i]
             run.IS_actual_concentration = 1.0
-            run.concentration_units = "uM"
+            run.concentration_units = "uM".encode("utf-8")
             run.dilution_factor = 1.0
             runs.append(run)
 
             # atp.atp_1.Light
             # featureMap
-            component.setMetaValue("native_id", "atp.atp_1.Light")
-            component.setMetaValue("peak_apex_int", y3[i])
-            IS_component.setMetaValue("native_id", "atp.atp_1.Heavy")
-            IS_component.setMetaValue("peak_apex_int", x3[i])
-            mrm_feature.setSubordinates(component, IS_component)
-            feature_map.append(mrm_feature)
+            component.setMetaValue(
+                "native_id".encode("utf-8"), 
+                "atp.atp_1.Light".encode("utf-8"))
+            component.setMetaValue("peak_apex_int".encode("utf-8"), y3[i])
+            IS_component.setMetaValue(
+                "native_id".encode("utf-8"), 
+                "atp.atp_1.Heavy".encode("utf-8"))
+            IS_component.setMetaValue("peak_apex_int".encode("utf-8"), x3[i])
+            mrm_feature.setSubordinates([component, IS_component])
+            feature_map.push_back(mrm_feature)
 
             # runConcentrations
-            run.sample_name = sample_name
-            run.component_name = "atp.atp_1.Light"
-            run.IS_component_name = "atp.atp_1.Heavy"
+            run.sample_name = sample_name.encode("utf-8")
+            run.component_name = "atp.atp_1.Light".encode("utf-8")
+            run.IS_component_name = "atp.atp_1.Heavy".encode("utf-8")
             run.actual_concentration = z3[i]
             run.IS_actual_concentration = 1.0
-            run.concentration_units = "uM"
+            run.concentration_units = "uM".encode("utf-8")
             run.dilution_factor = 1.0
             runs.append(run)
 
-            feature_map.setPrimaryMSRunPath(sample_name)
-            feature_maps.append(feature_map)
+            feature_map.setPrimaryMSRunPath([sample_name.encode("utf-8")])
 
-        return feature_maps, runs
+            # register the sample in the sequence
+            meta_data = {}
+            meta_data["sample_name"] = sample_name
+            meta_data["sample_group_name"] = "group1"
+            meta_data["sample_type"] = "Standard"
+            meta_data["filename"] = "filename" + str(i)
+            meta_data["sequence_segment_name"] = "segment1"
+            sequenceHandler_IO.addSampleToSequence(meta_data, None)
+
+            rawDataHandler = RawDataHandler()
+            rawDataHandler.setFeatureMap(feature_map)
+            sequenceHandler_IO.sequence[i].setRawData(rawDataHandler)
