@@ -91,7 +91,7 @@ class SequenceSegmentProcessor():
             # TODO: update to use the python wrapper C++ method
             absoluteQuantitation.optimizeCalibrationCurves(components_to_concentrations) 
 
-            sequenceSegmentHandler_IO.setOptimizedComponentsToConcentrations(
+            sequenceSegmentHandler_IO.setComponentsToConcentrations(
                 components_to_concentrations
             )
             sequenceSegmentHandler_IO.setQuantitationMethods(
@@ -100,7 +100,7 @@ class SequenceSegmentProcessor():
     def processSequenceSegment(
         self, sequenceSegmentHandler_IO,
         sequenceHandler_I,
-        sequence_group_processing_event,
+        sequence_segment_processing_event,
         parameters,
         filenames={},
         verbose_I=False
@@ -109,7 +109,7 @@ class SequenceSegmentProcessor():
         
         Args:
             sequenceSegmentHandler_IO (SequenceSegmentHandler)
-            sequence_group_processing_methods (str): string representing a
+            sequence_segment_processing_methods (str): string representing a
                 sequence group processing methods
             
         """
@@ -117,24 +117,24 @@ class SequenceSegmentProcessor():
         fileWriterOpenMS = FileWriterOpenMS()
 
         try:
-            if sequence_group_processing_event == "calculate_calibration":
+            if sequence_segment_processing_event == "calculate_calibration":
                 self.optimizeCalibrationCurves(
                     sequenceSegmentHandler_IO, sequenceHandler_I,
                     AbsoluteQuantitation_params_I=parameters["AbsoluteQuantitation"])
-            elif sequence_group_processing_event == "store_quantitation_methods":
+            elif sequence_segment_processing_event == "store_quantitation_methods":
                 fileWriterOpenMS.store_quantitationMethods(
                     sequenceSegmentHandler_IO,
                     filenames["quantitationMethods_csv_o"])
-            elif sequence_group_processing_event == "load_quantitation_methods":
+            elif sequence_segment_processing_event == "load_quantitation_methods":
                 fileReaderOpenMS.load_quantitationMethods(
                     sequenceSegmentHandler_IO,
                     filenames["quantitationMethods_csv_i"])
-            # elif sequence_group_processing_event == "store_optimized_components_to_concentrations":
+            # elif sequence_segment_processing_event == "store_components_to_concentrations":
             #     pass
             else:                
                 print(
                     "Sequence group processing event " +
-                    sequence_group_processing_event +
+                    sequence_segment_processing_event +
                     " was not recognized.")
         except Exception as e:
             print(e)
@@ -164,11 +164,11 @@ class SequenceSegmentProcessor():
         
         return default
 
-    def checkSequenceSegmentProcessing(self, sequence_group_processing):
+    def checkSequenceSegmentProcessing(self, sequence_segment_processing):
         """check the sequence processing steps
 
         Args:
-            sequence_group_processing (list): list of sequence group processing events
+            sequence_segment_processing (list): list of sequence group processing events
             
         Returns:
             bool: True if all events are valid, False otherwise
@@ -180,7 +180,7 @@ class SequenceSegmentProcessor():
             "calculate_variability"]
 
         valid = True
-        for event in sequence_group_processing:
+        for event in sequence_segment_processing:
             if event not in valid_events:
                 print("Sequence group processing event " + event + " is not valid.")
                 valid = False

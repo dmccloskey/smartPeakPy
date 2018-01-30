@@ -170,5 +170,5 @@ def runAllTests():
 
     from tests.test_main import testMain
     test = testMain()
-    test.test_main_LCMS_MRM()
+    test.test_main_LCMS_MRM_Unknown()
     test.test_main_GCMS_SIM()

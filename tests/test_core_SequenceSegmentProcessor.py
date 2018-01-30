@@ -56,19 +56,19 @@ class TestSequenceSegmentProcessor():
         meta_data1 = copy.copy(meta_data_required)
         meta_data1.update({
             'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
-            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_segment', 'sample_type': 'Unknown'})
         featuremap1 = None
         
         meta_data2 = copy.copy(meta_data_required)
         meta_data2.update({
             'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
-            'sequence_segment_name': 'sequence_group', 'sample_type': 'Standard'})
+            'sequence_segment_name': 'sequence_segment', 'sample_type': 'Standard'})
         featuremap2 = None
         
         meta_data3 = copy.copy(meta_data_required)
         meta_data3.update({
             'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
-            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_segment', 'sample_type': 'Unknown'})
         featuremap3 = None
 
         # add the injections to the sequence
