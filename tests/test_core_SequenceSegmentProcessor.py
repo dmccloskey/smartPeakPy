@@ -21,13 +21,19 @@ class TestSequenceSegmentProcessor():
         events = [
             "calculate_calibration",
             "calculate_carryover",
-            "calculate_variability"]
+            "calculate_variability",
+            "store_quantitation_methods",
+            "load_quantitation_methods",
+            "store_components_to_concentrations"]
         assert(sequenceSegmentProcessor.checkSequenceSegmentProcessing(events))
         
         events = [
             "calculate_calibration",
             "carryover",
-            "calculate_variability"]
+            "calculate_variability",
+            "store_quantitation_methods",
+            "load_quantitation_methods",
+            "store_components_to_concentrations"]
         assert(~sequenceSegmentProcessor.checkSequenceSegmentProcessing(events))
 
     def test_getDefaultSequenceSegmentProcessingWorkflow(self):

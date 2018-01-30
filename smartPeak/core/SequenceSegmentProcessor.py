@@ -177,7 +177,11 @@ class SequenceSegmentProcessor():
         valid_events = [
             "calculate_calibration",
             "calculate_carryover",
-            "calculate_variability"]
+            "calculate_variability",
+            "store_quantitation_methods",
+            "load_quantitation_methods",
+            "store_components_to_concentrations"
+            ]
 
         valid = True
         for event in sequence_segment_processing:
