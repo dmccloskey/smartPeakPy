@@ -172,3 +172,4 @@ def runAllTests():
     test = testMain()
     test.test_main_LCMS_MRM_Unknown()
     test.test_main_GCMS_SIM()
+    test.test_main_LCMS_MRM_Standards()

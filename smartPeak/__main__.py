@@ -106,7 +106,9 @@ class __main__():
             "select_features",
             # "validate_features",
             # "quantify_features",
-            # "check_features",
+            "check_features",
+            "store_features", 
+            # "plot_features"
         ]
         sequenceProcessor.processSequence(
             sequenceHandler,

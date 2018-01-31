@@ -110,7 +110,7 @@ class testMain():
         """Test HPLC UV example"""
         m = __main__()
         
-        m.example_LCMS_MRM_Standards(
+        m.example_LCMS_MRM_Unknowns(
             dir_I=example_dir + 'HPLC_UV',
             delimiter=',',
             )
@@ -138,15 +138,8 @@ class testMain():
     def test_main_LCMS_MRM_Standards(self):
         """Test LCMS MRM example with standard sample types"""
         m = __main__()
-
-        # m.main(
-        #     filename_sequence=example_dir + 'LCMS_MRM/sequence.csv',
-        #     filename_params=example_dir + 'LCMS_MRM/parameters.csv',
-        #     delimiter=',',
-        #     )
-        # assert(~os.path.isfile(example_dir + 'LCMS_MRM/mzML/skippedSamples.csv'))
         
-        m.main2(
+        m.example_LCMS_MRM_Standards(
             dir_I=example_dir + 'LCMS_MRM_Standards',
             delimiter=',',
             )
