@@ -152,7 +152,7 @@ def runAllTests():
     test.test_addRawDataHandlerToSequence()
     test.test_createSequence()
     test.test_processSequence()
-    # test.test_processSequenceSegments()
+    test.test_processSequenceSegments()
 
     from tests.test_io_SequenceWriter import TestSequenceWriter
     test = TestSequenceWriter()
@@ -174,4 +174,5 @@ def runAllTests():
     test = testMain()
     test.test_main_LCMS_MRM_Unknown()
     test.test_main_GCMS_SIM()
-    test.test_main_LCMS_MRM_Standards()
+    # test.test_main_HPLC_UV()  # TODO: optimize peak picking
+    # test.test_main_LCMS_MRM_Standards()   # TODO: optimize calibrator fitting

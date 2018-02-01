@@ -148,11 +148,11 @@ class testMain():
         fileReaderOpenMS = FileReaderOpenMS()
         fileReaderOpenMS.load_featureMap(
             rawDataHandler, example_dir + 
-            'LCMS_MRM/features/170808_Jonathan_yeast_Sacc1_1x.featureXML')
+            'LCMS_MRM_Standards/features/150516_CM1_Level1.featureXML')
         fm1 = rawDataHandler.featureMap
         fileReaderOpenMS.load_featureMap(
             rawDataHandler, example_dir + 
-            'LCMS_MRM/features/170808_Jonathan_yeast_Sacc1_1x_test.featureXML')
+            'LCMS_MRM_Standards/features/150516_CM1_Level1_test.featureXML')
         fm2 = rawDataHandler.featureMap
         assert(
             fm1[50].getSubordinates()[0].getMetaValue("native_id") == 

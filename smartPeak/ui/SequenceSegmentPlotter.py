@@ -77,7 +77,7 @@ class SequenceSegmentPlotter():
             # extract out the points
             x_values = []
             y_values = []
-            for point in points[0]:  # bug in pyopenms bindings?
+            for point in points:
                 # feature ratios
                 feature_ratio = absoluteQuantitation.calculateRatio(
                     point.feature,

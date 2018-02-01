@@ -17,14 +17,5 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-# from tests import runAllTests
-# runAllTests()
-
-from tests.test_core_SequenceHandler import TestSequenceHandler
-test = TestSequenceHandler()
-test.test_getDefaultStaticFilenames()
-test.test_getDefaultDynamicFilenames()
-
-from tests.test_main import testMain
-test = testMain()
-test.test_main_LCMS_MRM_Standards()
+from tests import runAllTests
+runAllTests()

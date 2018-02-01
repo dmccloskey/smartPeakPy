@@ -63,34 +63,6 @@ class SequenceSegmentProcessor():
             sequenceHandler_I.sequence[index].getRawData().getFeatureMap() 
             for index in standards_indices]
 
-        # use the python wrapper C++ methods to optimize each calibration curve
-        components_to_concentrations = {}
-        for row in sequenceSegmentHandler_IO.getQuantitationMethods():
-            # map standards to features
-            absoluteQuantitationStandards = pyopenms.AbsoluteQuantitationStandards()
-            feature_concentrations = []
-            absoluteQuantitationStandards.getComponentFeatureConcentrations(
-                sequenceSegmentHandler_IO.standards_concentrations,
-                standards_featureMaps,
-                row.getComponentName(),
-                feature_concentrations
-            )
-
-            # remove features with an actual concentration of 0.0 or less
-            feature_concentrations_pruned = []
-            for feature in feature_concentrations:
-                if feature.actual_concentration > 0.0:
-                    feature_concentrations_pruned.append(feature)
-
-            # remove components without any points
-            if feature_concentrations_pruned:
-                components_to_concentrations.update({
-                    row.getComponentName(): feature_concentrations_pruned})
-
-        sequenceSegmentHandler_IO.setComponentsToConcentrations(
-            components_to_concentrations
-        )
-
         # add in the method parameters
         if AbsoluteQuantitation_params_I and AbsoluteQuantitation_params_I is not None:
             utilities = Utilities()
@@ -104,10 +76,38 @@ class SequenceSegmentProcessor():
 
             absoluteQuantitation.setQuantMethods(
                 sequenceSegmentHandler_IO.getQuantitationMethods())
-            # find the optimal calibration curve for each component
-            # TODO: update to use the python wrapper C++ method
-            absoluteQuantitation.optimizeCalibrationCurves(components_to_concentrations) 
 
+            # use the python wrapper C++ methods to optimize each calibration curve
+            components_to_concentrations = {}
+            for row in sequenceSegmentHandler_IO.getQuantitationMethods():
+                # map standards to features
+                absoluteQuantitationStandards = pyopenms.AbsoluteQuantitationStandards()
+                feature_concentrations = []
+                absoluteQuantitationStandards.getComponentFeatureConcentrations(
+                    sequenceSegmentHandler_IO.standards_concentrations,
+                    standards_featureMaps,
+                    row.getComponentName(),
+                    feature_concentrations
+                )
+
+                # remove features with an actual concentration of 0.0 or less
+                feature_concentrations_pruned = []
+                for feature in feature_concentrations:
+                    if feature.actual_concentration > 0.0:
+                        feature_concentrations_pruned.append(feature)
+
+                # remove components without any points
+                if len(feature_concentrations_pruned) == 0:
+                    continue
+
+                # find the optimial calibration curve for each component
+                absoluteQuantitation.optimizeSingleCalibrationCurve(
+                    row.getComponentName(), feature_concentrations_pruned)
+
+                components_to_concentrations.update({
+                        row.getComponentName(): feature_concentrations_pruned})
+
+            # store results
             sequenceSegmentHandler_IO.setComponentsToConcentrations(
                 components_to_concentrations
             )
@@ -161,11 +161,18 @@ class SequenceSegmentProcessor():
 
         try:
             if sequence_segment_processing_event == "calculate_calibration":
+                # optimize the calibrators
                 self.optimizeCalibrationCurves(
                     sequenceSegmentHandler_IO, sequenceHandler_I,
                     AbsoluteQuantitation_params_I=parameters["AbsoluteQuantitation"],
                     verbose_I=verbose_I
                 )
+                # update each sample in the sequence segment with the
+                # updated quantitationMethods
+                for index in sequenceSegmentHandler_IO.getSampleIndices(): 
+                    sequenceHandler_I.getSequence()[
+                        index].getRawData().setQuantitationMethods(
+                            sequenceSegmentHandler_IO.getQuantitationMethods())
             elif sequence_segment_processing_event == "store_quantitation_methods":
                 fileWriterOpenMS.store_quantitationMethods(
                     sequenceSegmentHandler_IO,
