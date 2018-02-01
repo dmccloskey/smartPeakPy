@@ -169,7 +169,7 @@ def runAllTests():
     test.test_getDefaultSequenceSegmentProcessingWorkflow()
     test.test_getSampleIndicesBySampleType()
     test.test_optimizeCalibrationCurves()
-    test.test_processSequenceSegment()
+    test.test_processSequenceSegment() 
 
     from tests.test_main import testMain
     test = testMain()
