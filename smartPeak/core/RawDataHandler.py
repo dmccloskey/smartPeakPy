@@ -10,7 +10,7 @@ class RawDataHandler():
         self.swath = None
         # output
         self.featureMap = None
-        self.meta_data = None
+        self.meta_data = {"sample_name": "", "filename": ""}
         self.validation_metrics = None
         # input (reused between RawDataHandlers)
         self.parameters = None
@@ -29,7 +29,7 @@ class RawDataHandler():
         self.swath = None
         # output
         self.featureMap = None
-        self.meta_data = None
+        self.meta_data = {"sample_name": "", "filename": ""}
         # input (reused between RawDataHandlers)
         self.parameters = None
         self.targeted = None

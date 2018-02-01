@@ -369,3 +369,7 @@ class TestSequenceSegmentProcessor():
             rawDataHandler = RawDataHandler()
             rawDataHandler.setFeatureMap(feature_map)
             sequenceHandler_IO.sequence[i].setRawData(rawDataHandler)
+
+        def test_processSequenceSegment(self):
+            """TODO: add test body"""
+            pass
