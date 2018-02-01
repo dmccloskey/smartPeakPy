@@ -17,5 +17,10 @@ m = __main__()
 #     delimiter=',',
 #     )
 
-from tests import runAllTests
-runAllTests()
+# from tests import runAllTests
+# runAllTests()
+
+from tests.test_main import testMain
+test = testMain()
+# test.test_main_HPLC_UV()  # TODO: optimize peak picking
+test.test_main_LCMS_MRM_Standards()   # TODO: optimize calibrator fitting
