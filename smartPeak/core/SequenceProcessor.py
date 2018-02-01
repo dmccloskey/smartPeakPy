@@ -210,13 +210,14 @@ class SequenceProcessor():
                     sequence_segment_processing_methods_set)
                     
             # process the sequence
-            for event in sequence_segment_processing_methods:
-                
+            for event in sequence_segment_processing_methods:                
                 sequenceSegmentProcessor.processSequenceSegment(
                     sequence_segment,
                     sequenceHandler_IO,
                     event,
-                    sequence_segment.getSampleIndices[0].getParameters(),  # assumption
+                    sequenceHandler_IO.getSequence()[
+                        sequence_segment.getSampleIndices()[
+                            0]].getRawData().getParameters(),  # assumption
                     # that all parameters are the same for each sample in the
                     # sequence segment!
                     sequenceHandler_IO.getDefaultDynamicFilenames(

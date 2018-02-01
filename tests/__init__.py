@@ -143,6 +143,8 @@ def runAllTests():
     test.test_getMetaValue()
     test.test_parse_metaData()
     test.test_getSamplesInSequence()
+    test.test_getDefaultStaticFilenames()
+    test.test_getDefaultDynamicFilenames()
 
     from tests.test_core_SequenceProcessor import TestSequenceProcessor
     test = TestSequenceProcessor()

@@ -99,7 +99,7 @@ class SequenceHandler():
             'standardsConcentrations_csv_i': '''%s/%s''' % (
                 dir_I, "standardsConcentrations.csv"),
             'featureQC_csv_i': '''%s/%s''' % (dir_I, "featureQCs.csv"),
-            'db_json_i': '''%s/%s''' % (dir_I, "featureQCs.csv")
+            'db_json_i': '''%s/%s''' % (dir_I, "db.json")
             }
         return filenames
 
@@ -124,9 +124,9 @@ class SequenceHandler():
             'featureXML_o': '''%s/features/%s.FeatureXML''' % (dir_I, sample_name_I),
             'feature_csv_o': '''%s/features/%s.csv''' % (dir_I, sample_name_I),
             'featureXML_i': '''%s/features/%s.FeatureXML''' % (dir_I, sample_name_I),
-            'quantitation_methods_o': '''%s/features/%s_quantitationMethods.csv''' % (
+            'quantitation_methods_csv_o': '''%s/features/%s_quantitationMethods.csv''' % (
                 dir_I, sample_name_I),
-            'components_to_concentrations_o': '''%s/features/
+            'components_to_concentrations_csv_o': '''%s/features/
                 %s_componentsToConcentrations.csv''' % (dir_I, sample_name_I),
             }
         return filenames

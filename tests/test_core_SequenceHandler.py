@@ -156,8 +156,22 @@ class TestSequenceHandler():
 
     def test_getDefaultStaticFilenames(self):
         sequenceHandler = SequenceHandler()
-        # TODO
+        defaults = sequenceHandler.getDefaultStaticFilenames("Data")
+        assert("sequence_csv_i" in defaults.keys())
+        assert("parameters_csv_i" in defaults.keys())
+        assert("traML_csv_i" in defaults.keys())
+        assert("featureFilter_csv_i" in defaults.keys())
+        assert("quantitationMethods_csv_i" in defaults.keys())
+        assert("standardsConcentrations_csv_i" in defaults.keys())
+        assert("featureQC_csv_i" in defaults.keys())
+        assert("db_json_i" in defaults.keys())
 
     def test_getDefaultDynamicFilenames(self):
         sequenceHandler = SequenceHandler()
-        # TODO
+        defaults = sequenceHandler.getDefaultDynamicFilenames("Data", "test1")
+        assert("mzML_i" in defaults.keys())
+        assert("featureXML_o" in defaults.keys())
+        assert("feature_csv_o" in defaults.keys())
+        assert("featureXML_i" in defaults.keys())
+        assert("quantitation_methods_csv_o" in defaults.keys())
+        assert("components_to_concentrations_csv_o" in defaults.keys())

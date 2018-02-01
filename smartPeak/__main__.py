@@ -108,6 +108,7 @@ class __main__():
         #     # "plot_features"
         # ]
         raw_data_processing_methods = [
+            "load_raw_data",
             "load_features",
         ]
         sequenceProcessor.processSequence(
@@ -117,8 +118,6 @@ class __main__():
         # 2. process optimize calibrators
         sequence_segment_processing_methods = [
             "calculate_calibration",
-            "calculate_carryover",
-            "calculate_variability",
             "store_quantitation_methods",
             # "load_quantitation_methods",
             # "store_components_to_concentrations"
