@@ -68,8 +68,10 @@ class RawDataProcessor():
             rawDataHandler_IO.targeted, 
             rawDataHandler_IO.trafo,
             rawDataHandler_IO.swath)
-        
-        rawDataHandler_IO.featureMap = output
+
+        output.setPrimaryMSRunPath([rawDataHandler_IO.getMetaData()[
+            "sample_name"].encode("utf-8")])
+        rawDataHandler_IO.setFeatureMap(output)
 
     def filterFeatures(
         self,
@@ -113,7 +115,10 @@ class RawDataProcessor():
                 output_filtered,
                 rawDataHandler_IO.feature_filter,
                 rawDataHandler_IO.targeted)
-            rawDataHandler_IO.featureMap = output_filtered
+
+            output_filtered.setPrimaryMSRunPath([rawDataHandler_IO.getMetaData()[
+                "sample_name"].encode("utf-8")])
+            rawDataHandler_IO.setFeatureMap(output_filtered)
 
     def checkFeatures(
         self,
@@ -157,7 +162,10 @@ class RawDataProcessor():
                 output_filtered,
                 rawDataHandler_IO.feature_qc,
                 rawDataHandler_IO.targeted)
-            rawDataHandler_IO.featureMap = output_filtered
+
+            output_filtered.setPrimaryMSRunPath([rawDataHandler_IO.getMetaData()[
+                "sample_name"].encode("utf-8")])
+            rawDataHandler_IO.setFeatureMap(output_filtered)
 
     def selectFeatures(
         self,
@@ -207,7 +215,10 @@ class RawDataProcessor():
             #     tr_expected = calibrators,    
             #     select_criteria = MRMFeatureSelector_select_params_I,     
             # )
-            rawDataHandler_IO.featureMap = output_selected
+
+            output_selected.setPrimaryMSRunPath([rawDataHandler_IO.getMetaData()[
+                "sample_name"].encode("utf-8")])
+            rawDataHandler_IO.setFeatureMap(output_selected)
 
     def extract_metaData(self, rawDataHandler_IO, verbose_I=False):
         """Extracts metadata from the chromatogram
@@ -278,10 +289,13 @@ class RawDataProcessor():
                 features=rawDataHandler_IO.featureMap,
                 Tr_window=float(MRMRFeatureValidator_params_I[0]['value'])
                 )
-            rawDataHandler_IO.featureMap = features_mapped
+
+            features_mapped.setPrimaryMSRunPath([rawDataHandler_IO.getMetaData()[
+                "sample_name"].encode("utf-8")])
+            rawDataHandler_IO.setFeatureMap(features_mapped)
             rawDataHandler_IO.validation_metrics = validation_metrics
 
-    def export_featurePlots(
+    def plotFeatures(
         self,     
         rawDataHandler_IO,   
         features_pdf_o,
@@ -427,14 +441,13 @@ class RawDataProcessor():
                         'MRMFeatureFilter.filter_MRMFeatures.qc'],
                     verbose_I=verbose_I)
             elif raw_data_processing_event == "store_features":
-                self.extract_metaData(rawDataHandler_IO)
                 fileWriterOpenMS.store_featureMap(
                     rawDataHandler_IO, 
                     filenames["featureXML_o"], 
                     filenames["feature_csv_o"],
                     verbose_I=verbose_I)
             elif raw_data_processing_event == "plot_features":
-                self.export_featurePlots(
+                self.plotFeatures(
                     rawDataHandler_IO,
                     filenames["features_pdf_o"],
                     FeaturePlotter_params_I=parameters[

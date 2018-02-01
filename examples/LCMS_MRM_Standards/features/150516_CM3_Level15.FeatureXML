@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <featureMap version="1.9" xsi:noNamespaceSchemaLocation="http://open-ms.sourceforge.net/schemas/FeatureXML_1_9.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<UserParam type="stringList" name="spectra_data" value="[150516_CM3_Level15]"/>
 	<featureList count="99">
 		<feature id="f_4694839254591673795">
 			<position dim="0">15.8775086321513</position>
@@ -63,6 +64,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="23dpg.23dpg_2.Light"/>
@@ -151,6 +154,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="2mcit.2mcit_2.Light"/>
@@ -243,6 +248,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.000548067026307238"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="35cgmp.35cgmp_2.Light"/>
@@ -347,6 +354,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_8730786330277090730_11155582079077688131">
 					<position dim="0">3.6250731241862</position>
@@ -415,6 +424,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="2.98343938215618"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -511,6 +522,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="AICAr.AICAr_1.Heavy"/>
@@ -591,6 +604,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="Pool_2pg_3pg.Pool_2pg_3pg_2.Light"/>
@@ -744,6 +759,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -848,6 +865,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -952,6 +971,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="adn.adn_1.Heavy"/>
@@ -1067,6 +1088,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_2732817592556626912_13612269445551677063">
 					<position dim="0">14.390587899526</position>
@@ -1146,6 +1169,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.0077893323762097"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="adp.adp_2.Light"/>
@@ -1236,6 +1261,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="adpglc.adpglc_2.Light"/>
@@ -1344,6 +1371,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="akg.akg_1.Heavy"/>
@@ -1433,6 +1462,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="ala-L.ala-L_2.Light"/>
@@ -1525,6 +1556,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="amp.amp_2.Light"/>
@@ -1646,6 +1679,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -1742,6 +1777,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_14487937775785986126_13485560391526780232">
 					<position dim="0">0.971334966786703</position>
@@ -1802,6 +1839,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.00155814402077177"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="asn-L.asn-L_1.Light"/>
@@ -1952,6 +1991,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -2036,6 +2077,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_1573197051417539767_2950385612797153169">
 					<position dim="0">15.8645444714864</position>
@@ -2084,6 +2127,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.01154120758177"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="atp.atp_2.Light"/>
@@ -2170,6 +2215,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="camp.camp_2.Light"/>
@@ -2254,6 +2301,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -2337,6 +2386,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="cit.cit_1.Heavy"/>
@@ -2431,6 +2482,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_12750670426552321818_7858884442855443920">
 					<position dim="0">0.991098306020101</position>
@@ -2489,6 +2542,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.0841473675559815"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -2632,6 +2687,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_14996832060254320205_12944084127338012416">
 					<position dim="0">8.30120370381673</position>
@@ -2739,6 +2796,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.00415957494692508"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="cmp.cmp_2.Light"/>
@@ -2829,6 +2888,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_14955567200853064198_532252484964278109">
 					<position dim="0">16.608104679362</position>
@@ -2883,6 +2944,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.0113445105889635"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="coa.coa_1.Heavy"/>
@@ -2985,6 +3048,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="ctp.ctp_2.Light"/>
@@ -3075,6 +3140,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="cytd.cytd_1.Heavy"/>
@@ -3163,6 +3230,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_7504342964794205602_1095290112729538046">
 					<position dim="0">14.6530473157247</position>
@@ -3215,6 +3284,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.812820962407087"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="dadp.dadp_1.Heavy"/>
@@ -3308,6 +3379,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="damp.damp_2.Light"/>
@@ -3392,6 +3465,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="datp.datp_2.Light"/>
@@ -3478,6 +3553,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_17224718616693896253_9604569668045639642">
 					<position dim="0">14.0927527773539</position>
@@ -3528,6 +3605,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="1.53318722509828"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="dcdp.dcdp_2.Light"/>
@@ -3670,6 +3749,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="dcmp.dcmp_2.Light"/>
@@ -3756,6 +3837,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="dctp.dctp_2.Light"/>
@@ -3863,6 +3946,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_16727634380307100206_15713012738826039748">
 					<position dim="0">14.3994243395487</position>
@@ -3934,6 +4019,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.0211877684281363"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -4022,6 +4109,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_327970702806310659_5080354837524751300">
 					<position dim="0">15.8810047304789</position>
@@ -4074,6 +4163,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.0610223888181257"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -4181,6 +4272,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_6238745815362062083_7058988501687507552">
 					<position dim="0">11.120611991628</position>
@@ -4252,6 +4345,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.158143738394283"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="dhap.dhap_2.Light"/>
@@ -4356,6 +4451,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="dimp.dimp_2.Light"/>
@@ -4445,6 +4542,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="20.8907830423081"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="ditp.ditp_1.Heavy"/>
@@ -4534,6 +4633,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="dtdpglu.dtdpglu_2.Light"/>
@@ -4629,6 +4730,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="dtmp.dtmp_1.Light"/>
@@ -4711,6 +4814,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="15.5635003493667"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -4816,6 +4921,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="dump.dump_2.Light"/>
@@ -4898,6 +5005,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.274187698254731"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="dutp.dutp_2.Light"/>
@@ -5049,6 +5158,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -5137,6 +5248,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="f6p.f6p_2.Light"/>
@@ -5222,6 +5335,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_7402776304049352100_3480196275327119397">
 					<position dim="0">15.3967659932454</position>
@@ -5271,6 +5386,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.00678308589526772"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="fad.fad_2.Light"/>
@@ -5357,6 +5474,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="fdp.fdp_2.Light"/>
@@ -5444,6 +5563,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="fol.fol_2.Light"/>
@@ -5538,6 +5659,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="fum.fum_1.Heavy"/>
@@ -5644,6 +5767,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="g1p.g1p_2.Light"/>
@@ -5766,6 +5891,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="g3p.g3p_2.Light"/>
@@ -5885,6 +6012,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="g6p.g6p_2.Heavy"/>
@@ -6014,6 +6143,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="gam6p.gam6p_2.Light"/>
@@ -6112,6 +6243,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_4841622423603375238_4571752078423276828">
 					<position dim="0">14.3919626004537</position>
@@ -6174,6 +6307,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.583132683040498"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="gdp.gdp_2.Light"/>
@@ -6328,6 +6463,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="glu-L.glu-L_2.Light"/>
@@ -6433,6 +6570,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -6537,6 +6676,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -6683,6 +6824,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="glyc3p.glyc3p_1.Heavy"/>
@@ -6789,6 +6932,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -6892,6 +7037,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="gmp.gmp_2.Light"/>
@@ -6982,6 +7129,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="gsn.gsn_2.Light"/>
@@ -7082,6 +7231,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="gthox.gthox_2.Light"/>
@@ -7253,6 +7404,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="gthrd.gthrd_2.Light"/>
@@ -7336,6 +7489,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="gtp.gtp_2.Light"/>
@@ -7427,6 +7582,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_477849049193920484_12681290969716187598">
 					<position dim="0">1.22605570322673</position>
@@ -7482,6 +7639,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.00896794518685164"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -7589,6 +7748,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_8806902162299666580_8480548109861530711">
 					<position dim="0">0.941357115427653</position>
@@ -7660,6 +7821,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.0959298551939627"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="his-L.his-L_1.Heavy"/>
@@ -7743,6 +7906,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -7831,6 +7996,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="imp.imp_2.Light"/>
@@ -7919,6 +8086,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="itp.itp_2.Light"/>
@@ -8096,6 +8265,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -8199,6 +8370,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_12500902341696492576_732765635739960927">
 					<position dim="0">16.8206832936605</position>
@@ -8266,6 +8439,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -8363,6 +8538,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_1064759425494888444_11488533804613534528">
 					<position dim="0">1.22723185780843</position>
@@ -8424,6 +8601,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.00497038665258316"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -8525,6 +8704,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="mmal.mmal_2.Light"/>
@@ -8614,6 +8795,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="nadh.nadh_2.Light"/>
@@ -8707,6 +8890,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_7077772065305686839_4567742825221519438">
 					<position dim="0">14.3832074831645</position>
@@ -8764,6 +8949,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.00215269131771152"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="nadp.nadp_2.Light"/>
@@ -8852,6 +9039,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="nadph.nadph_2.Light"/>
@@ -8937,6 +9126,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="oaa.oaa_1.Heavy"/>
@@ -9029,6 +9220,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="orn.orn_1.Heavy"/>
@@ -9146,6 +9339,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_14848114565731096150_16740581764154050279">
 					<position dim="0">2.21173181304932</position>
@@ -9227,6 +9422,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.0167011857001102"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="phe-L.phe-L_2.Light"/>
@@ -9342,6 +9539,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_4845852849143523192_6490836505613584716">
 					<position dim="0">16.045323029836</position>
@@ -9421,6 +9620,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.0561314259138175"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="phpyr.phpyr_2.Light"/>
@@ -9506,6 +9707,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_13659265089975805525_14815100899650868627">
 					<position dim="0">16.0414571177165</position>
@@ -9555,6 +9758,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="1.48841090858104"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="prpp.prpp_2.Light"/>
@@ -9674,6 +9879,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="pyr.pyr_2.Light"/>
@@ -9788,6 +9995,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -9884,6 +10093,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -9993,6 +10204,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="ru5p-D.ru5p-D_2.Light"/>
@@ -10084,6 +10297,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="s7p.s7p_1.Heavy"/>
@@ -10178,6 +10393,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_3587610834309126993_8837742783905880493">
 					<position dim="0">0.968552538553874</position>
@@ -10236,6 +10453,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.371890541381985"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -10348,6 +10567,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_7404258690320389404_1844718067134037841">
 					<position dim="0">2.94288595581055</position>
@@ -10424,6 +10645,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.0447787206461289"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="skm.skm_2.Light"/>
@@ -10549,6 +10772,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="succoa.succoa_1.Heavy"/>
@@ -10641,6 +10866,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_2640426237625304628_10555997141085096769">
 					<position dim="0">0.988571231842041</position>
@@ -10697,6 +10924,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.0212155011866591"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="thr-L.thr-L_1.Heavy"/>
@@ -10784,6 +11013,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="none"/>
@@ -10907,6 +11138,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="trp-L.trp-L_2.Light"/>
@@ -11014,6 +11247,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_10494715956292106849_13911407812879573044">
 					<position dim="0">1.30594371312459</position>
@@ -11085,6 +11320,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.00562301131894417"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="tyr-L.tyr-L_2.Light"/>
@@ -11189,6 +11426,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="udp.udp_1.Heavy"/>
@@ -11289,6 +11528,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="udpg.udpg_2.Light"/>
@@ -11386,6 +11627,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 				<feature id="f_15406525776398408977_5490658657980312564">
 					<position dim="0">15.21407066981</position>
@@ -11447,6 +11690,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0.000982490503573429"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="udpglcur.udpglcur_2.Light"/>
@@ -11554,6 +11799,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="ump.ump_1.Heavy"/>
@@ -11658,6 +11905,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="calculated_concentration" value="0"/>
+					<UserParam type="string" name="concentration_units" value="uM"/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="urate.urate_1.Heavy"/>
@@ -11762,6 +12011,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="uri.uri_2.Light"/>
@@ -11843,6 +12094,8 @@
 					<UserParam type="string" name="FeatureLevel" value="MS2"/>
 					<UserParam type="int" name="QC_transition_pass" value="1"/>
 					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="string" name="calculated_concentration" value=""/>
+					<UserParam type="string" name="concentration_units" value=""/>
 				</feature>
 			</subordinate>
 			<UserParam type="string" name="potentialOutlier" value="utp.utp_2.Light"/>

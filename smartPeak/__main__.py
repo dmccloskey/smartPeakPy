@@ -109,22 +109,25 @@ class __main__():
         # ]
         raw_data_processing_methods = [
             "load_raw_data",
-            "load_features",
+            "load_features"
         ]
         sequenceProcessor.processSequence(
             sequenceHandler,
-            raw_data_processing_methods_I=raw_data_processing_methods)
+            raw_data_processing_methods_I=raw_data_processing_methods,
+            verbose_I=True)
 
         # 2. process optimize calibrators
         sequence_segment_processing_methods = [
             "calculate_calibration",
+            # "plot_calibrators",
             "store_quantitation_methods",
             # "load_quantitation_methods",
             # "store_components_to_concentrations"
         ]
         sequenceProcessor.processSequenceSegments(
             sequenceHandler,
-            sequence_segment_processing_methods_I=sequence_segment_processing_methods)
+            sequence_segment_processing_methods_I=sequence_segment_processing_methods,
+            verbose_I=True)
 
         # 3. quantify standards for QC
         raw_data_processing_methods = [
@@ -141,7 +144,8 @@ class __main__():
         ]
         sequenceProcessor.processSequence(
             sequenceHandler,
-            raw_data_processing_methods_I=raw_data_processing_methods)
+            raw_data_processing_methods_I=raw_data_processing_methods,
+            verbose_I=True)
 
         # write out a summary of all files
         sequenceSummary_csv_i = '''%s/SequenceSummary.csv''' % (dir_I)
@@ -149,5 +153,5 @@ class __main__():
             sequenceHandler,
             filename=sequenceSummary_csv_i,
             meta_data=['calculated_concentration'],
-            sample_types=['Unknown']
+            sample_types=['Standard']
         )

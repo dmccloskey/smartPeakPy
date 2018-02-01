@@ -24,7 +24,8 @@ class TestSequenceSegmentProcessor():
             "calculate_variability",
             "store_quantitation_methods",
             "load_quantitation_methods",
-            "store_components_to_concentrations"]
+            "store_components_to_concentrations",
+            "plot_calibrators"]
         assert(sequenceSegmentProcessor.checkSequenceSegmentProcessing(events))
         
         events = [
@@ -33,7 +34,8 @@ class TestSequenceSegmentProcessor():
             "calculate_variability",
             "store_quantitation_methods",
             "load_quantitation_methods",
-            "store_components_to_concentrations"]
+            "store_components_to_concentrations",
+            "plot_calibrators"]
         assert(~sequenceSegmentProcessor.checkSequenceSegmentProcessing(events))
 
     def test_getDefaultSequenceSegmentProcessingWorkflow(self):

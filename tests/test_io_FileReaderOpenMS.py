@@ -230,6 +230,9 @@ class TestFileReaderOpenMS():
             "MRMFeatureValidator.validate_MRMFeatures",
             "MRMFeatureFilter.filter_MRMFeatures.qc",
         ]
+        
+        assert("SequenceSegmentPlotter" in rawDataHandler.getParameters())
+        assert("FeaturePlotter" in rawDataHandler.getParameters())
         assert("AbsoluteQuantitation" in rawDataHandler.getParameters())
         assert("MRMMapping" in rawDataHandler.getParameters())
         assert(len(rawDataHandler.getParameters()["ChromatogramExtractor"]) == 0)

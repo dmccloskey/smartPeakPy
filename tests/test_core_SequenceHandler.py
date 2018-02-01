@@ -169,9 +169,11 @@ class TestSequenceHandler():
     def test_getDefaultDynamicFilenames(self):
         sequenceHandler = SequenceHandler()
         defaults = sequenceHandler.getDefaultDynamicFilenames("Data", "test1")
+        assert("features_pdf_o" in defaults.keys())
+        assert("calibrators_pdf_o" in defaults.keys())
         assert("mzML_i" in defaults.keys())
         assert("featureXML_o" in defaults.keys())
         assert("feature_csv_o" in defaults.keys())
         assert("featureXML_i" in defaults.keys())
-        assert("quantitation_methods_csv_o" in defaults.keys())
-        assert("components_to_concentrations_csv_o" in defaults.keys())
+        assert("quantitationMethods_csv_o" in defaults.keys())
+        assert("componentsToConcentrations_csv_o" in defaults.keys())

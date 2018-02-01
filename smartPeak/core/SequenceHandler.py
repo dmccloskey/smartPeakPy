@@ -124,9 +124,13 @@ class SequenceHandler():
             'featureXML_o': '''%s/features/%s.FeatureXML''' % (dir_I, sample_name_I),
             'feature_csv_o': '''%s/features/%s.csv''' % (dir_I, sample_name_I),
             'featureXML_i': '''%s/features/%s.FeatureXML''' % (dir_I, sample_name_I),
-            'quantitation_methods_csv_o': '''%s/features/%s_quantitationMethods.csv''' % (
+            'features_pdf_o': '''%s/features/%s''' % (dir_I, sample_name_I),
+            # .pdf added dynamically
+            'calibrators_pdf_o': '''%s/features/%s''' % (dir_I, sample_name_I),
+            # .pdf added dynamically
+            'quantitationMethods_csv_o': '''%s/features/%s_quantitationMethods.csv''' % (
                 dir_I, sample_name_I),
-            'components_to_concentrations_csv_o': '''%s/features/
+            'componentsToConcentrations_csv_o': '''%s/features/
                 %s_componentsToConcentrations.csv''' % (dir_I, sample_name_I),
             }
         return filenames

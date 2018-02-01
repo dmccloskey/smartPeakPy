@@ -46,6 +46,14 @@ class RawDataHandler():
         """Return the featureMap"""
         return self.featureMap
 
+    def setMetaData(self, meta_data_I):
+        """Set the meta_data"""
+        self.meta_data = meta_data_I
+
+    def getMetaData(self):
+        """Return the meta_data"""
+        return self.meta_data
+
     def setParameters(self, parameters_I):
         """Set the parameters"""
         self.parameters = parameters_I

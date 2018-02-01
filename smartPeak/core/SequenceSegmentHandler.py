@@ -59,7 +59,7 @@ class SequenceSegmentHandler():
         self.components_to_concentrations = \
             components_to_concentrations_I
         
-    def getOptimizedComponentsToConcentrations(self):
+    def getComponentsToConcentrations(self):
         """Return the components_to_concentrations"""
         return self.components_to_concentrations
 

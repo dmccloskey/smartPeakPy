@@ -76,8 +76,8 @@ class SequenceProcessor():
     def addRawDataHandlerToSequence(
         self, sequenceHandler_IO, rawDataHandler_I
     ):
-        """Add template RawDataHandler and SequenceSegmentHandler to all
-        samples and sequence groups in the sequence
+        """Add template RawDataHandler to all samples in the sequence.
+        Also, copy all meta_data to the RawDataHandler
         
         Args:
             sequenceHandler_IO (SequenceHandler): sequence handler
@@ -85,7 +85,9 @@ class SequenceProcessor():
         """
         for sample in sequenceHandler_IO.sequence:
             # copy the object to persist the data
-            sample.raw_data = copy.copy(rawDataHandler_I)
+            sample.setRawData(copy.copy(rawDataHandler_I))
+            # update the meta_data for the rawDataHandlers
+            sample.getRawData().setMetaData(sample.getMetaData())
 
     def segmentSamplesInSequence(self, sequenceHandler_IO, sequenceSegmentHandler_I=None):
         """Segment samples in a sequence
@@ -131,6 +133,7 @@ class SequenceProcessor():
         self, sequenceHandler_IO,
         sample_names_I=[],
         raw_data_processing_methods_I={},
+        verbose_I=False
     ):
         """process a sequence of samples
         
@@ -165,7 +168,8 @@ class SequenceProcessor():
                     sample.raw_data.parameters,
                     sequenceHandler_IO.getDefaultDynamicFilenames(
                         sequenceHandler_IO.getDirDynamic(),
-                        sample.getMetaData()["sample_name"])
+                        sample.getMetaData()["sample_name"]),
+                        verbose_I=verbose_I
                     )
 
     def processSequenceSegments(
@@ -222,4 +226,5 @@ class SequenceProcessor():
                     # sequence segment!
                     sequenceHandler_IO.getDefaultDynamicFilenames(
                         sequenceHandler_IO.getDirDynamic(),
-                        sequence_segment.getSequenceSegmentName()))
+                        sequence_segment.getSequenceSegmentName()),
+                    verbose_I=verbose_I)

@@ -2,6 +2,7 @@
 from smartPeak.io.FileReaderOpenMS import FileReaderOpenMS
 from smartPeak.io.FileWriterOpenMS import FileWriterOpenMS
 from smartPeak.core.Utilities import Utilities
+from smartPeak.ui.SequenceSegmentPlotter import SequenceSegmentPlotter
 try:
     import pyopenms
 except ImportError as e:
@@ -35,7 +36,8 @@ class SequenceSegmentProcessor():
         self,
         sequenceSegmentHandler_IO,
         sequenceHandler_I,
-        AbsoluteQuantitation_params_I={}
+        AbsoluteQuantitation_params_I={},
+        verbose_I=False
     ):
         """Optimize the calibration curve for all components
         
@@ -44,6 +46,8 @@ class SequenceSegmentProcessor():
             sequenceHandler_I (SequenceHandler)
             
         """
+        if verbose_I:
+            print("optimizing calibrators")
 
         # get all standards
         standards_indices = self.getSampleIndicesBySampleType(
@@ -71,8 +75,21 @@ class SequenceSegmentProcessor():
                 row.getComponentName(),
                 feature_concentrations
             )
-            components_to_concentrations.update({
-                row.getComponentName(): feature_concentrations})
+
+            # remove features with an actual concentration of 0.0 or less
+            feature_concentrations_pruned = []
+            for feature in feature_concentrations:
+                if feature.actual_concentration > 0.0:
+                    feature_concentrations_pruned.append(feature)
+
+            # remove components without any points
+            if feature_concentrations_pruned:
+                components_to_concentrations.update({
+                    row.getComponentName(): feature_concentrations_pruned})
+
+        sequenceSegmentHandler_IO.setComponentsToConcentrations(
+            components_to_concentrations
+        )
 
         # add in the method parameters
         if AbsoluteQuantitation_params_I and AbsoluteQuantitation_params_I is not None:
@@ -95,7 +112,33 @@ class SequenceSegmentProcessor():
                 components_to_concentrations
             )
             sequenceSegmentHandler_IO.setQuantitationMethods(
-                absoluteQuantitation.getQuantMethods())
+                absoluteQuantitation.getQuantMethods())    
+
+    def plotCalibrators(
+        self,     
+        sequenceSegmentHandler_I,   
+        calibrators_pdf_o,
+        SequenceSegmentPlotter_params_I={},
+        verbose_I=False
+    ):
+        """Export plots of peaks with features annotated
+
+        Args:
+            sequenceSegmentHandler_I (SequenceSegmentHandler): 
+            calibrators_pdf_o (str): filename
+
+        """
+        if verbose_I:
+            print("Plotting calibrators")
+
+        # export diagnostic plots
+        if SequenceSegmentPlotter_params_I and calibrators_pdf_o is not None:
+            sequenceSegmentPlotter = SequenceSegmentPlotter()
+            sequenceSegmentPlotter.setParameters(SequenceSegmentPlotter_params_I)
+            sequenceSegmentPlotter.plotCalibrationPoints(
+                filename_I=calibrators_pdf_o,
+                sequenceSegmentHandler_I=sequenceSegmentHandler_I
+            )
 
     def processSequenceSegment(
         self, sequenceSegmentHandler_IO,
@@ -120,17 +163,28 @@ class SequenceSegmentProcessor():
             if sequence_segment_processing_event == "calculate_calibration":
                 self.optimizeCalibrationCurves(
                     sequenceSegmentHandler_IO, sequenceHandler_I,
-                    AbsoluteQuantitation_params_I=parameters["AbsoluteQuantitation"])
+                    AbsoluteQuantitation_params_I=parameters["AbsoluteQuantitation"],
+                    verbose_I=verbose_I
+                )
             elif sequence_segment_processing_event == "store_quantitation_methods":
                 fileWriterOpenMS.store_quantitationMethods(
                     sequenceSegmentHandler_IO,
-                    filenames["quantitationMethods_csv_o"])
+                    filenames["quantitationMethods_csv_o"],
+                    verbose_I=verbose_I)
             elif sequence_segment_processing_event == "load_quantitation_methods":
                 fileReaderOpenMS.load_quantitationMethods(
                     sequenceSegmentHandler_IO,
-                    filenames["quantitationMethods_csv_i"])
+                    filenames["quantitationMethods_csv_i"],
+                    verbose_I=verbose_I)
             # elif sequence_segment_processing_event == "store_components_to_concentrations":
             #     pass
+            elif sequence_segment_processing_event == "plot_calibrators":
+                self.plotCalibrators(
+                    sequenceSegmentHandler_IO,  
+                    filenames["calibrators_pdf_o"],
+                    SequenceSegmentPlotter_params_I=parameters['SequenceSegmentPlotter'],
+                    verbose_I=verbose_I
+                )
             else:                
                 print(
                     "Sequence group processing event " +
@@ -180,7 +234,8 @@ class SequenceSegmentProcessor():
             "calculate_variability",
             "store_quantitation_methods",
             "load_quantitation_methods",
-            "store_components_to_concentrations"
+            "store_components_to_concentrations",
+            "plot_calibrators"
             ]
 
         valid = True

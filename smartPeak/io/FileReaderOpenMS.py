@@ -32,7 +32,7 @@ class FileReaderOpenMS():
 
         """
         if verbose_I:
-            print("loading quantitation methods")
+            print("loading standards concentrations")
 
         try:
             standards_concentrations = []
@@ -507,6 +507,8 @@ class FileReaderOpenMS():
 
         # check for workflow parameters integrity
         required_parameters = [
+            "SequenceSegmentPlotter",
+            "FeaturePlotter",
             "AbsoluteQuantitation",
             "mzML",
             "MRMMapping",
