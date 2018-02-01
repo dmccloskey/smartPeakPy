@@ -97,24 +97,24 @@ class __main__():
             delimiter=","
         )
 
-        # process all files
+        # 1. process all files
+        # raw_data_processing_methods = [
+        #     "load_raw_data",
+        #     "pick_features",
+        #     "filter_features",
+        #     "select_features",
+        #     "check_features",
+        #     "store_features", 
+        #     # "plot_features"
+        # ]
         raw_data_processing_methods = [
-            "load_raw_data",
-            # "load_features",
-            "pick_features",
-            "filter_features",
-            "select_features",
-            # "validate_features",
-            # "quantify_features",
-            "check_features",
-            "store_features", 
-            # "plot_features"
+            "load_features",
         ]
         sequenceProcessor.processSequence(
             sequenceHandler,
             raw_data_processing_methods_I=raw_data_processing_methods)
 
-        # process optimize calibrators
+        # 2. process optimize calibrators
         sequence_segment_processing_methods = [
             "calculate_calibration",
             "calculate_carryover",
@@ -127,7 +127,7 @@ class __main__():
             sequenceHandler,
             sequence_segment_processing_methods_I=sequence_segment_processing_methods)
 
-        # quantify standards
+        # 3. quantify standards for QC
         raw_data_processing_methods = [
             # "load_raw_data",
             # "load_features",
