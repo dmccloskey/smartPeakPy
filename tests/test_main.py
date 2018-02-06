@@ -148,21 +148,21 @@ class testMain():
         fileReaderOpenMS = FileReaderOpenMS()
         fileReaderOpenMS.load_featureMap(
             rawDataHandler, example_dir + 
-            'HPLC_UV_Standards/features/0p5ug.featureXML')
+            'HPLC_UV_Standards/features/100ug.featureXML')
         fm1 = rawDataHandler.featureMap
         fileReaderOpenMS.load_featureMap(
             rawDataHandler, example_dir + 
-            'HPLC_UV_Standards/features/0p5ug_test.featureXML')
+            'HPLC_UV_Standards/features/100ug_test.featureXML')
         fm2 = rawDataHandler.featureMap
         assert(
-            fm1[50].getSubordinates()[0].getMetaValue("native_id") == 
-            fm2[50].getSubordinates()[0].getMetaValue("native_id"))
+            fm1[0].getSubordinates()[0].getMetaValue("native_id") == 
+            fm2[0].getSubordinates()[0].getMetaValue("native_id"))
         assert(
-            fm1[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 
-            fm2[50].getSubordinates()[0].getMetaValue("peak_apex_int"))
+            fm1[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 
+            fm2[0].getSubordinates()[0].getMetaValue("peak_apex_int"))
         assert(
-            fm1[50].getSubordinates()[0].getRT() == 
-            fm2[50].getSubordinates()[0].getRT())
+            fm1[0].getSubordinates()[0].getRT() == 
+            fm2[0].getSubordinates()[0].getRT())
 
     def test_main_LCMS_MRM_Standards(self):
         """Test LCMS MRM example with standard sample types"""
