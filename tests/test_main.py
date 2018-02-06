@@ -57,8 +57,8 @@ class testMain():
         #     shallow=False
         #     ))
 
-    def test_main_GCMS_SIM(self):
-        """Test GCMS SIM example"""
+    def test_main_GCMS_SIM_Unknown(self):
+        """Test GCMS SIM Unknowns example"""
         m = __main__()
 
         # m.main(
@@ -69,7 +69,7 @@ class testMain():
         # assert(~os.path.isfile(example_dir + 'GCMS_SIM/mzML/skippedSamples.csv'))
 
         m.example_LCMS_MRM_Unknowns(
-            dir_I=example_dir + 'GCMS_SIM',
+            dir_I=example_dir + 'GCMS_SIM_Unknowns',
             delimiter=',',
             )
 
@@ -78,11 +78,11 @@ class testMain():
 
         fileReaderOpenMS.load_featureMap(
             rawDataHandler, example_dir + 
-            'GCMS_SIM/features/GCMS_SIM.featureXML')
+            'GCMS_SIM_Unknowns/features/GCMS_SIM.featureXML')
         fm1 = rawDataHandler.featureMap
         fileReaderOpenMS.load_featureMap(
             rawDataHandler, example_dir + 
-            'GCMS_SIM/features/GCMS_SIM_test.featureXML')
+            'GCMS_SIM_Unknowns/features/GCMS_SIM_test.featureXML')
         fm2 = rawDataHandler.featureMap
         assert(
             fm1[15].getSubordinates()[0].getMetaValue("native_id") == 
@@ -106,12 +106,12 @@ class testMain():
         #     shallow=False
         #     ))
 
-    def test_main_HPLC_UV(self):
-        """Test HPLC UV example"""
+    def test_main_HPLC_UV_Unknown(self):
+        """Test HPLC UV Unknown example"""
         m = __main__()
         
         m.example_LCMS_MRM_Unknowns(
-            dir_I=example_dir + 'HPLC_UV',
+            dir_I=example_dir + 'HPLC_UV_Unknowns',
             delimiter=',',
             )
 
@@ -119,15 +119,44 @@ class testMain():
         fileReaderOpenMS = FileReaderOpenMS()
         fileReaderOpenMS.load_featureMap(
             rawDataHandler, example_dir + 
-            'HPLC_UV/features/20171013_HMP_C61_ISO_P1_GA1_UV_VIS_2.featureXML')
+            'HPLC_UV_Unknowns/features/20171013_HMP_C61_ISO_P1_GA1_UV_VIS_2.featureXML')
         fm1 = rawDataHandler.featureMap
         fileReaderOpenMS.load_featureMap(
             rawDataHandler, example_dir + 
-            'HPLC_UV/features/20171013_HMP_C61_ISO_P1_GA1_UV_VIS_2_test.featureXML')
+            'HPLC_UV_Unknowns/features/20171013_HMP_C61_ISO_P1_GA1_UV_VIS_2_test.featureXML')
         fm2 = rawDataHandler.featureMap
         assert(
             fm1[0].getSubordinates()[0].getMetaValue("native_id") == 
             fm2[50].getSubordinates()[0].getMetaValue("native_id"))
+        assert(
+            fm1[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 
+            fm2[0].getSubordinates()[0].getMetaValue("peak_apex_int"))
+        assert(
+            fm1[0].getSubordinates()[0].getRT() == 
+            fm2[0].getSubordinates()[0].getRT())
+
+    def test_main_HPLC_UV_Standards(self):
+        """Test HPLC_UV example with standard sample types"""
+        m = __main__()
+        
+        m.example_LCMS_MRM_Standards(
+            dir_I=example_dir + 'HPLC_UV_Standards',
+            delimiter=',',
+            )
+
+        rawDataHandler = RawDataHandler()
+        fileReaderOpenMS = FileReaderOpenMS()
+        fileReaderOpenMS.load_featureMap(
+            rawDataHandler, example_dir + 
+            'HPLC_UV_Standards/features/100ug.featureXML')
+        fm1 = rawDataHandler.featureMap
+        fileReaderOpenMS.load_featureMap(
+            rawDataHandler, example_dir + 
+            'HPLC_UV_Standards/features/100ug_test.featureXML')
+        fm2 = rawDataHandler.featureMap
+        assert(
+            fm1[0].getSubordinates()[0].getMetaValue("native_id") == 
+            fm2[0].getSubordinates()[0].getMetaValue("native_id"))
         assert(
             fm1[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 
             fm2[0].getSubordinates()[0].getMetaValue("peak_apex_int"))
