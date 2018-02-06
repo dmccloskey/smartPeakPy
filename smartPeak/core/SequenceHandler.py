@@ -15,14 +15,16 @@ class SequenceHandler():
         sequence (list): list of SampleHandlers
         index_to_sample (dict): index to sample_name
         index_to_sample (dict): sample_name to index
-        sequence_groups (list): list of SequenceSegmentHandlers
+        sequence_segments (list): list of SequenceSegmentHandlers
+        sample_groups (list): list of SampleGrouptHandlers
 
         """
         # sequence
         self.sequence = []
         self.index_to_sample = {}
         self.sample_to_index = {}
-        self.sequence_groups = []
+        self.sequence_segments = []
+        self.sample_groups = []
 
         # directories and filenames
         self.dir_static = None
@@ -49,9 +51,29 @@ class SequenceHandler():
     def getDirDynamic(self):
         return self.dir_dynamic
 
+    def setSequence(self, sequence_I):
+        """Set the sequence"""
+        self.sequence = sequence_I
+
     def getSequence(self):
         """Return sequence"""
         return self.sequence
+
+    def setSequenceSegments(self, sequence_segments_I):
+        """Set the sequence_segments"""
+        self.sequence_segments = sequence_segments_I
+
+    def getSequenceSegments(self):
+        """Return sequence_segments"""
+        return self.sequence_segments
+
+    def setSampleGroups(self, sample_groups_I):
+        """Set the sample_groups"""
+        self.sample_groups = sample_groups_I
+
+    def getSampleGroups(self):
+        """Return sample_groups"""
+        return self.sample_groups
 
     def getDefaultStaticFilenames(self, dir_I):
         """Return the default map of filetype to filename for static files
@@ -77,7 +99,7 @@ class SequenceHandler():
             'standardsConcentrations_csv_i': '''%s/%s''' % (
                 dir_I, "standardsConcentrations.csv"),
             'featureQC_csv_i': '''%s/%s''' % (dir_I, "featureQCs.csv"),
-            'db_json_i': '''%s/%s''' % (dir_I, "featureQCs.csv")
+            'db_json_i': '''%s/%s''' % (dir_I, "db.json")
             }
         return filenames
 
@@ -89,7 +111,8 @@ class SequenceHandler():
         
         Args:
             dir_I (str): the directory that all files can be found
-            sample_name_I (str): the name of the file (also the sample_name)
+            sample_name_I (str): the name of the file
+                (also the sample_name, sample_group_name, or sequence_segment_name)
             
         Returns:
             dict: filenames
@@ -102,45 +125,34 @@ class SequenceHandler():
             'feature_csv_o': '''%s/features/%s.csv''' % (dir_I, sample_name_I),
             'featureXML_i': '''%s/features/%s.FeatureXML''' % (dir_I, sample_name_I),
             'features_pdf_o': '''%s/features/%s''' % (dir_I, sample_name_I),
+            # .pdf added dynamically
+            'calibrators_pdf_o': '''%s/features/%s''' % (dir_I, sample_name_I),
+            # .pdf added dynamically
+            'quantitationMethods_csv_o': '''%s/features/%s_quantitationMethods.csv''' % (
+                dir_I, sample_name_I),
+            'componentsToConcentrations_csv_o': '''%s/features/
+                %s_componentsToConcentrations.csv''' % (dir_I, sample_name_I),
             }
         return filenames
 
     def addSampleToSequence(
         self, meta_data_I, featureMap_I, 
-        raw_data_processing_I=None, sequence_group_processing_I=None
     ):
         """add meta_data and featureMap to a sequence list
 
         Args:
             meta_data_I (dict): dictionary of meta data (e.g., sample_name)
             featureMap_I (FeatureMap): processed data in a FeatureMap
-            raw_data_processing_I (dict): dictionary of sample processing steps
-            sequence_group_processing_I (dict): dictionary of sequence processing steps for the
-                sample
 
         Returns:
             dict: injection: dictionary of meta_data and FeatureMap
         """
 
         meta_data = self.parse_metaData(meta_data_I)
-        
-        if raw_data_processing_I is not None:
-            raw_data_processing = self.parse_rawDataProcessing(
-                raw_data_processing_I, meta_data["sample_type"])
-        else:
-            raw_data_processing = raw_data_processing_I
-
-        if sequence_group_processing_I is not None:
-            sequence_group_processing = self.parse_sequenceSegmentProcessing(
-                sequence_group_processing_I, meta_data["sample_type"])
-        else:
-            sequence_group_processing = sequence_group_processing_I
 
         sample = SampleHandler()
         sample.meta_data = meta_data
         sample.featureMap = featureMap_I
-        sample.raw_data_processing = raw_data_processing
-        sample.sequence_group_processing = sequence_group_processing
 
         self.sequence.append(sample)
         self.index_to_sample[len(self.sequence)-1] = meta_data["sample_name"]

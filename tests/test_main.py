@@ -9,8 +9,8 @@ from smartPeak.io.FileReaderOpenMS import FileReaderOpenMS
 
 class testMain():
 
-    def test_main_LCMS_MRM(self):
-        """Test LCMS MRM example"""
+    def test_main_LCMS_MRM_Unknown(self):
+        """Test LCMS MRM example with Unknown sample types"""
         m = __main__()
 
         # m.main(
@@ -20,8 +20,8 @@ class testMain():
         #     )
         # assert(~os.path.isfile(example_dir + 'LCMS_MRM/mzML/skippedSamples.csv'))
         
-        m.main2(
-            dir_I=example_dir + 'LCMS_MRM',
+        m.example_LCMS_MRM_Unknowns(
+            dir_I=example_dir + 'LCMS_MRM_Unknowns',
             delimiter=',',
             )
 
@@ -68,7 +68,7 @@ class testMain():
         #     )
         # assert(~os.path.isfile(example_dir + 'GCMS_SIM/mzML/skippedSamples.csv'))
 
-        m.main2(
+        m.example_LCMS_MRM_Unknowns(
             dir_I=example_dir + 'GCMS_SIM',
             delimiter=',',
             )
@@ -110,7 +110,7 @@ class testMain():
         """Test HPLC UV example"""
         m = __main__()
         
-        m.main2(
+        m.example_LCMS_MRM_Unknowns(
             dir_I=example_dir + 'HPLC_UV',
             delimiter=',',
             )
@@ -134,3 +134,32 @@ class testMain():
         assert(
             fm1[0].getSubordinates()[0].getRT() == 
             fm2[0].getSubordinates()[0].getRT())
+
+    def test_main_LCMS_MRM_Standards(self):
+        """Test LCMS MRM example with standard sample types"""
+        m = __main__()
+        
+        m.example_LCMS_MRM_Standards(
+            dir_I=example_dir + 'LCMS_MRM_Standards',
+            delimiter=',',
+            )
+
+        rawDataHandler = RawDataHandler()
+        fileReaderOpenMS = FileReaderOpenMS()
+        fileReaderOpenMS.load_featureMap(
+            rawDataHandler, example_dir + 
+            'LCMS_MRM_Standards/features/150516_CM1_Level1.featureXML')
+        fm1 = rawDataHandler.featureMap
+        fileReaderOpenMS.load_featureMap(
+            rawDataHandler, example_dir + 
+            'LCMS_MRM_Standards/features/150516_CM1_Level1_test.featureXML')
+        fm2 = rawDataHandler.featureMap
+        assert(
+            fm1[50].getSubordinates()[0].getMetaValue("native_id") == 
+            fm2[50].getSubordinates()[0].getMetaValue("native_id"))
+        assert(
+            fm1[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 
+            fm2[50].getSubordinates()[0].getMetaValue("peak_apex_int"))
+        assert(
+            fm1[50].getSubordinates()[0].getRT() == 
+            fm2[50].getSubordinates()[0].getRT())

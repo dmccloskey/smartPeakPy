@@ -10,7 +10,7 @@ class RawDataHandler():
         self.swath = None
         # output
         self.featureMap = None
-        self.meta_data = None
+        self.meta_data = {"sample_name": "", "filename": ""}
         self.validation_metrics = None
         # input (reused between RawDataHandlers)
         self.parameters = None
@@ -29,7 +29,7 @@ class RawDataHandler():
         self.swath = None
         # output
         self.featureMap = None
-        self.meta_data = None
+        self.meta_data = {"sample_name": "", "filename": ""}
         # input (reused between RawDataHandlers)
         self.parameters = None
         self.targeted = None
@@ -37,6 +37,22 @@ class RawDataHandler():
         self.quantitation_methods = None
         self.feature_filter = None
         self.feature_qc = None
+        
+    def setFeatureMap(self, featureMap_I):
+        """Set the featureMap"""
+        self.featureMap = featureMap_I
+
+    def getFeatureMap(self):
+        """Return the featureMap"""
+        return self.featureMap
+
+    def setMetaData(self, meta_data_I):
+        """Set the meta_data"""
+        self.meta_data = meta_data_I
+
+    def getMetaData(self):
+        """Return the meta_data"""
+        return self.meta_data
 
     def setParameters(self, parameters_I):
         """Set the parameters"""

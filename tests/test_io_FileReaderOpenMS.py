@@ -52,7 +52,8 @@ class TestFileReaderOpenMS():
 
         # load MSExperiment
         mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
-        fileReaderOpenMS.load_MSExperiment(rawDataHandler, mzML_i,
+        fileReaderOpenMS.load_MSExperiment(
+            rawDataHandler, mzML_i,
             MRMMapping_params_I=self.params_1['MRMMapping'])
         assert(rawDataHandler.msExperiment.getChromatograms()[
             0].getProduct().getMZ() == 0.0)
@@ -153,10 +154,20 @@ class TestFileReaderOpenMS():
             data_dir, "standardsConcentrations_1.csv")
         fileReaderOpenMS.load_standardsConcentrations( 
             sequenceSegmentHandler, standardsConcentrations_csv_i)
-        assert(sequenceSegmentHandler.standards_concentrations[0].getLLOQ() == 0.25)
-        assert(sequenceSegmentHandler.standards_concentrations[0].getULOQ() == 2.5)
         assert(sequenceSegmentHandler.standards_concentrations[
-            0].getComponentName() == b'23dpg.23dpg_1.Light')
+            0].sample_name == b'150516_CM1_Level1')
+        assert(sequenceSegmentHandler.standards_concentrations[
+            0].component_name == b'23dpg.23dpg_1.Light')
+        assert(sequenceSegmentHandler.standards_concentrations[
+            0].IS_component_name == b'23dpg.23dpg_1.Heavy')
+        assert(sequenceSegmentHandler.standards_concentrations[
+            0].actual_concentration == 0.0)
+        assert(sequenceSegmentHandler.standards_concentrations[
+            0].IS_actual_concentration == 1.0)
+        assert(sequenceSegmentHandler.standards_concentrations[
+            0].concentration_units == b'uM')
+        assert(sequenceSegmentHandler.standards_concentrations[
+            0].dilution_factor == 1.0)
 
     def test_load_featureFilter(self):
         rawDataHandler = RawDataHandler()
@@ -216,7 +227,8 @@ class TestFileReaderOpenMS():
             'FeaturePlotter': [{
                 'name': 'export_format', 'value': 'pdf', 'type': 'string'}]}
 
-        fileReaderOpenMS.parse_rawDataProcessingParameters(rawDataHandler, parameters_file)
+        fileReaderOpenMS.parse_rawDataProcessingParameters(
+            rawDataHandler, parameters_file)
         
         test_parameters = [ 
             "MRMFeatureFinderScoring",
@@ -228,6 +240,10 @@ class TestFileReaderOpenMS():
             "MRMFeatureValidator.validate_MRMFeatures",
             "MRMFeatureFilter.filter_MRMFeatures.qc",
         ]
+        
+        assert("SequenceSegmentPlotter" in rawDataHandler.getParameters())
+        assert("FeaturePlotter" in rawDataHandler.getParameters())
+        assert("AbsoluteQuantitation" in rawDataHandler.getParameters())
         assert("MRMMapping" in rawDataHandler.getParameters())
         assert(len(rawDataHandler.getParameters()["ChromatogramExtractor"]) == 0)
         for parameter in test_parameters:

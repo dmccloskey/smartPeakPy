@@ -32,7 +32,7 @@ class FileReaderOpenMS():
 
         """
         if verbose_I:
-            print("loading quantitation methods")
+            print("loading standards concentrations")
 
         try:
             standards_concentrations = []
@@ -477,7 +477,9 @@ class FileReaderOpenMS():
         featureQCFile.load(featureQC_csv_i.encode('utf-8'), featureQC)
         rawDataHandler_IO.feature_qc = featureQC
 
-    def read_rawDataProcessingParameters(self, rawDataHandler_IO, filename, delimiter=','):
+    def read_rawDataProcessingParameters(
+        self, rawDataHandler_IO, filename, delimiter=','
+    ):
         """Import a rawDataProcessing parameters file
 
         the rawDataProcessing parameters are read in from a .csv file.
@@ -491,7 +493,8 @@ class FileReaderOpenMS():
         if filename is not None:
             fileReader = FileReader()
             fileReader.read_openMSParams(filename, delimiter)
-            self.parse_rawDataProcessingParameters(rawDataHandler_IO, fileReader.getData())
+            self.parse_rawDataProcessingParameters(
+                rawDataHandler_IO, fileReader.getData())
             fileReader.clear_data()
 
     def parse_rawDataProcessingParameters(self, rawDataHandler_IO, parameters_file):
@@ -504,6 +507,9 @@ class FileReaderOpenMS():
 
         # check for workflow parameters integrity
         required_parameters = [
+            "SequenceSegmentPlotter",
+            "FeaturePlotter",
+            "AbsoluteQuantitation",
             "mzML",
             "MRMMapping",
             "ChromatogramExtractor", 

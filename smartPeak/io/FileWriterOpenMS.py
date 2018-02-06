@@ -12,26 +12,27 @@ class FileWriterOpenMS():
     def store_quantitationMethods(
         self,
         sequenceSegmentHandler_IO,
-        quantitationMethods_csv_i,
+        quantitationMethods_csv_o,
         verbose_I=False
     ):
         """Store AbsoluteQuantitationMethods
 
         Args:
             sequenceSegmentHandler_IO (SampleHandler)
-            quantitationMethods_csv_i (str): filename
+            quantitationMethods_csv_o (str): filename
 
         Internals:
             quantitationMethods (list): list of AbsoluteQuantitationMethod objects
 
         """
         if verbose_I:
-            print("loading quantitation methods")
+            print("storing quantitation methods")
 
-        quantitationMethods = []
-        if quantitationMethods_csv_i is not None:
+        if quantitationMethods_csv_o is not None:
             aqmf = pyopenms.AbsoluteQuantitationMethodFile()
-            aqmf.store(quantitationMethods_csv_i, quantitationMethods)
+            aqmf.store(
+                quantitationMethods_csv_o, 
+                sequenceSegmentHandler_IO.getQuantitationMethods())
 
     def store_featureMap(
         self,

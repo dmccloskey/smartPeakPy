@@ -9,7 +9,7 @@ import copy
 
 class TestSequenceProcessor():
 
-    def test_groupSamplesInSequence(self):
+    def test_segmentSamplesInSequence(self):
         sequenceHandler = SequenceHandler()
         sequenceSegmentHandler = SequenceSegmentHandler()
         sequenceProcessor = SequenceProcessor()
@@ -19,19 +19,19 @@ class TestSequenceProcessor():
         meta_data1 = copy.copy(meta_data_required)
         meta_data1.update({
             'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
-            'sequence_segment_name': 'sequence_group1', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_segment1', 'sample_type': 'Unknown'})
         featuremap1 = None
         
         meta_data2 = copy.copy(meta_data_required)
         meta_data2.update({
             'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
-            'sequence_segment_name': 'sequence_group1', 'sample_type': 'Standard'})
+            'sequence_segment_name': 'sequence_segment1', 'sample_type': 'Standard'})
         featuremap2 = None
         
         meta_data3 = copy.copy(meta_data_required)
         meta_data3.update({
             'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
-            'sequence_segment_name': 'sequence_group2', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_segment2', 'sample_type': 'Unknown'})
         featuremap3 = None
 
         # add the injections to the sequence
@@ -41,11 +41,11 @@ class TestSequenceProcessor():
         
         sequenceSegmentHandler.quantitation_methods = "Test"
 
-        sequenceProcessor.groupSamplesInSequence(sequenceHandler, sequenceSegmentHandler)
-        assert(len(sequenceHandler.sequence_groups) == 2)
-        assert(sequenceHandler.sequence_groups[0].sample_indices == [0, 1])
-        assert(sequenceHandler.sequence_groups[1].sample_indices == [2])
-        assert(sequenceHandler.sequence_groups[0].quantitation_methods == "Test")
+        sequenceProcessor.segmentSamplesInSequence(sequenceHandler, sequenceSegmentHandler)
+        assert(len(sequenceHandler.sequence_segments) == 2)
+        assert(sequenceHandler.sequence_segments[0].sample_indices == [0, 1])
+        assert(sequenceHandler.sequence_segments[1].sample_indices == [2])
+        assert(sequenceHandler.sequence_segments[0].quantitation_methods == "Test")
 
     def test_addRawDataHandlerToSequence(self):
         sequenceHandler = SequenceHandler()
@@ -57,19 +57,19 @@ class TestSequenceProcessor():
         meta_data1 = copy.copy(meta_data_required)
         meta_data1.update({
             'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
-            'sequence_segment_name': 'sequence_group1', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_segment1', 'sample_type': 'Unknown'})
         featuremap1 = None
         
         meta_data2 = copy.copy(meta_data_required)
         meta_data2.update({
             'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
-            'sequence_segment_name': 'sequence_group1', 'sample_type': 'Standard'})
+            'sequence_segment_name': 'sequence_segment1', 'sample_type': 'Standard'})
         featuremap2 = None
         
         meta_data3 = copy.copy(meta_data_required)
         meta_data3.update({
             'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
-            'sequence_segment_name': 'sequence_group2', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_segment2', 'sample_type': 'Unknown'})
         featuremap3 = None
 
         # add the injections to the sequence
@@ -122,8 +122,8 @@ class TestSequenceProcessor():
         assert(sequenceHandler.sequence[
             0].raw_data.quantitation_methods[
             0].getComponentName() == b'23dpg.23dpg_1.Light')
-        assert(len(sequenceHandler.sequence_groups) == 1)
-        assert(sequenceHandler.sequence_groups[
+        assert(len(sequenceHandler.sequence_segments) == 1)
+        assert(sequenceHandler.sequence_segments[
             0].quantitation_methods[
             0].getComponentName() == b'23dpg.23dpg_1.Light')
 
@@ -176,6 +176,9 @@ class TestSequenceProcessor():
             }
 
         sequenceHandler.setFilenames(filenames)
+        sequenceHandler.setDirDynamic(data_dir)
+
+        sequenceHandler.setFilenames(filenames)
         sequenceProcessor.createSequence(
             sequenceHandler,
             delimiter=","
@@ -183,4 +186,5 @@ class TestSequenceProcessor():
         sequenceProcessor.processSequenceSegments(
             sequenceHandler)
 
-        assert()
+        # TODO: add a formal test
+        # for now, test should run without erroring out if all files are found 

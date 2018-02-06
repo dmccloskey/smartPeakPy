@@ -18,19 +18,19 @@ class TestSequenceHandler():
         meta_data1 = copy.copy(meta_data_required)
         meta_data1.update({
             'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
-            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_segment', 'sample_type': 'Unknown'})
         featuremap1 = None
         
         meta_data2 = copy.copy(meta_data_required)
         meta_data2.update({
             'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
-            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_segment', 'sample_type': 'Unknown'})
         featuremap2 = None
         
         meta_data3 = copy.copy(meta_data_required)
         meta_data3.update({
             'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
-            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_segment', 'sample_type': 'Unknown'})
         featuremap3 = None
 
         # add the injections to the sequence
@@ -121,19 +121,19 @@ class TestSequenceHandler():
         meta_data1 = copy.copy(meta_data_required)
         meta_data1.update({
             'filename': 'file1', 'sample_name': 'sample1', 'sample_group_name': 'sample',
-            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_segment', 'sample_type': 'Unknown'})
         featuremap1 = None
         
         meta_data2 = copy.copy(meta_data_required)
         meta_data2.update({
             'filename': 'file2', 'sample_name': 'sample2', 'sample_group_name': 'sample',
-            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_segment', 'sample_type': 'Unknown'})
         featuremap2 = None
         
         meta_data3 = copy.copy(meta_data_required)
         meta_data3.update({
             'filename': 'file3', 'sample_name': 'sample3', 'sample_group_name': 'sample',
-            'sequence_segment_name': 'sequence_group', 'sample_type': 'Unknown'})
+            'sequence_segment_name': 'sequence_segment', 'sample_type': 'Unknown'})
         featuremap3 = None
 
         # add the injections to the sequence
@@ -156,8 +156,24 @@ class TestSequenceHandler():
 
     def test_getDefaultStaticFilenames(self):
         sequenceHandler = SequenceHandler()
-        # TODO
+        defaults = sequenceHandler.getDefaultStaticFilenames("Data")
+        assert("sequence_csv_i" in defaults.keys())
+        assert("parameters_csv_i" in defaults.keys())
+        assert("traML_csv_i" in defaults.keys())
+        assert("featureFilter_csv_i" in defaults.keys())
+        assert("quantitationMethods_csv_i" in defaults.keys())
+        assert("standardsConcentrations_csv_i" in defaults.keys())
+        assert("featureQC_csv_i" in defaults.keys())
+        assert("db_json_i" in defaults.keys())
 
     def test_getDefaultDynamicFilenames(self):
         sequenceHandler = SequenceHandler()
-        # TODO
+        defaults = sequenceHandler.getDefaultDynamicFilenames("Data", "test1")
+        assert("features_pdf_o" in defaults.keys())
+        assert("calibrators_pdf_o" in defaults.keys())
+        assert("mzML_i" in defaults.keys())
+        assert("featureXML_o" in defaults.keys())
+        assert("feature_csv_o" in defaults.keys())
+        assert("featureXML_i" in defaults.keys())
+        assert("quantitationMethods_csv_o" in defaults.keys())
+        assert("componentsToConcentrations_csv_o" in defaults.keys())

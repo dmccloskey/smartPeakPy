@@ -1,4 +1,4 @@
-FROM dmccloskey/docker-openms:AbsoluteQuantitation
+FROM dmccloskey/docker-openms:develop
 USER root
 
 # install PTVS
@@ -13,4 +13,4 @@ USER user
 # # RUN:
 # docker run -v //C/path_to_data/Data/:/home/user/Data/
 #  //C/path_to_repo/smartPeak/:/home/user/code/
-#  dmccloskey/docker-pyopenms-vscode:AbsoluteQuantitation python /home/user/code/debug_local.py
+#  dmccloskey/docker-pyopenms-vscode:develop python /home/user/code/debug_local.py

@@ -70,14 +70,14 @@ class SequenceProcessor():
             pass
         
         # initialize the sequence
-        self.groupSamplesInSequence(sequenceHandler_IO, sequenceSegmentHandler)
+        self.segmentSamplesInSequence(sequenceHandler_IO, sequenceSegmentHandler)
         self.addRawDataHandlerToSequence(sequenceHandler_IO, rawDataHandler)
 
     def addRawDataHandlerToSequence(
         self, sequenceHandler_IO, rawDataHandler_I
     ):
-        """Add template RawDataHandler and SequenceSegmentHandler to all
-        samples and sequence groups in the sequence
+        """Add template RawDataHandler to all samples in the sequence.
+        Also, copy all meta_data to the RawDataHandler
         
         Args:
             sequenceHandler_IO (SequenceHandler): sequence handler
@@ -85,26 +85,28 @@ class SequenceProcessor():
         """
         for sample in sequenceHandler_IO.sequence:
             # copy the object to persist the data
-            sample.raw_data = copy.copy(rawDataHandler_I)
+            sample.setRawData(copy.copy(rawDataHandler_I))
+            # update the meta_data for the rawDataHandlers
+            sample.getRawData().setMetaData(sample.getMetaData())
 
-    def groupSamplesInSequence(self, sequenceHandler_IO, sequenceSegmentHandler_I=None):
-        """group samples in a sequence
+    def segmentSamplesInSequence(self, sequenceHandler_IO, sequenceSegmentHandler_I=None):
+        """Segment samples in a sequence
 
-        An optional template SequenceSegmentHandler can be added to all groups
+        An optional template SequenceSegmentHandler can be added to all segments
         
         Args:
             sequenceHandler_IO (SequenceHandler): sequence handler
-            sequenceSegmentHandler_I (SequenceSegmentHandler): sequence group handler
+            sequenceSegmentHandler_I (SequenceSegmentHandler): sequence segment handler
         """
 
-        sequence_groups_dict = {}
+        sequence_segments_dict = {}
         for cnt, sample in enumerate(sequenceHandler_IO.sequence):
-            if sample.meta_data["sequence_segment_name"] not in sequence_groups_dict.keys():
-                sequence_groups_dict[sample.meta_data["sequence_segment_name"]] = []
-            sequence_groups_dict[sample.meta_data["sequence_segment_name"]].append(cnt)
+            if sample.meta_data["sequence_segment_name"] not in sequence_segments_dict.keys():
+                sequence_segments_dict[sample.meta_data["sequence_segment_name"]] = []
+            sequence_segments_dict[sample.meta_data["sequence_segment_name"]].append(cnt)
         
-        sequence_groups = []
-        for k, v in sequence_groups_dict.items():
+        sequence_segments = []
+        for k, v in sequence_segments_dict.items():
             # pass a copy that can be edited
             if sequenceSegmentHandler_I is not None:
                 sequenceSegmentHandler = copy.copy(sequenceSegmentHandler_I)
@@ -112,14 +114,26 @@ class SequenceProcessor():
                 sequenceSegmentHandler = SequenceSegmentHandler()
             sequenceSegmentHandler.sequence_segment_name = k
             sequenceSegmentHandler.sample_indices = v
-            sequence_groups.append(sequenceSegmentHandler)
+            sequence_segments.append(sequenceSegmentHandler)
 
-        sequenceHandler_IO.sequence_groups = sequence_groups
+        sequenceHandler_IO.setSequenceSegments(sequence_segments)
+
+    def groupSamplesInSequence(self, sequenceHandler_IO, sampleGroupHandler_I=None):
+        """Group samples in a sequence
+
+        An optional template SampleGroupHandler can be added to all groups
+        
+        Args:
+            sequenceHandler_IO (SequenceHandler): sequence handler
+            sampleGroupHandler_I (SampleGrouptHandler): sample group handler
+        """
+        pass
 
     def processSequence(
         self, sequenceHandler_IO,
         sample_names_I=[],
         raw_data_processing_methods_I={},
+        verbose_I=False
     ):
         """process a sequence of samples
         
@@ -142,7 +156,7 @@ class SequenceProcessor():
             else:
                 raw_data_processing_methods = \
                     rawDataProcessor.getDefaultRawDataProcessingWorkflow(
-                        sample.meta_data["sample_type"])
+                        sample.getMetaData()["sample_type"])
                 # if sample.raw_data.quantitation_methods is None:
                 #     raw_data_processing_methods["quantify_peak"] = False
                     
@@ -154,174 +168,63 @@ class SequenceProcessor():
                     sample.raw_data.parameters,
                     sequenceHandler_IO.getDefaultDynamicFilenames(
                         sequenceHandler_IO.getDirDynamic(),
-                        sample.meta_data["sample_name"])
+                        sample.getMetaData()["sample_name"]),
+                        verbose_I=verbose_I
                     )
 
     def processSequenceSegments(
         self, sequenceHandler_IO,
-        sample_names=[],
         sequence_segment_names=[],
-        raw_data_processing_methods={},
-        sequence_group_processing_methods={},
+        sequence_segment_processing_methods_I=[],
         verbose_I=False
     ):
         """process a sequence of samples by sequence groups
         
         Args:
             sequenceHandler_IO (SequenceHandler): the sequence class
-            sample_names (list): name of the sample
             sequence_segment_names (list): name of the sequence group
-            raw_data_process_methods (list): name of the raw data method to execute
-            sequence_group_processing_methods (list): name of the sequence group
+            sequence_segment_processing_methods_I (list): name of the sequence sequence
                 method to execute
         """
         # classes
-        seqGroupProcessor = SequenceSegmentProcessor()
-        rawDataProcessor = RawDataProcessor()
+        sequenceSegmentProcessor = SequenceSegmentProcessor()
 
-        # process by sequence group
-        for sequence_group in sequenceHandler_IO.sequence_groups:
-            # 1: process all Standards
-            sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
-                sequenceSegmentHandler_I=sequence_group,
-                sequenceHandler_I=sequenceHandler_IO,
-                sample_type="Standard"
-            )
-            # pick, filter, select, and check
-            raw_data_processing_methods = \
-                sequenceHandler_IO.getDefaultRawDataProcessingWorkflow(None)
-            for index in sample_indices:
-                rawDataProcessor.processRawData(
-                    sequenceHandler_IO.sequence[index].raw_data,
-                    raw_data_processing_methods,
-                    sequenceHandler_IO.parameters,
-                    sequenceHandler_IO.getDefaultDynamicFilenames(
-                        sequenceHandler_IO.getDirDynamic(),
-                        sequenceHandler_IO.sequence[index].meta_data["sample_name"])
-                    )
-            # calculate the calibration curves
-            seqGroupProcessor.optimizeCalibrationCurves(
-                sequence_group, sequenceHandler_IO)
-            # quantify and check
-            raw_data_processing_methods = {
-                "pick_peaks": False,
-                "filter_peaks": False,
-                "select_peaks": False,
-                "validate_peaks": False,
-                "quantify_peaks": True,
-                "check_peaks": True}
-            for index in sample_indices:
-                rawDataProcessor.processRawData(
-                    sequenceHandler_IO.sequence[index].raw_data,
-                    raw_data_processing_methods,
-                    sequenceHandler_IO.parameters)
-                # copy out the feature map
-                sequenceHandler_IO.sequence[index].featureMap = \
-                    sequenceHandler_IO.sequence[index].raw_data.featureMap
+        # handle the user input
+        sequence_segments = sequenceHandler_IO.getSequenceSegments()
+        if sequence_segment_names:
+            sequence_segments = [
+                s for s in sequenceHandler_IO.getSequenceSegments() 
+                if s in sequence_segment_names]
 
-            # 2: process all Unknowns
-            sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
-                sequenceSegmentHandler_I=sequence_group,
-                sequenceHandler_I=sequenceHandler_IO,
-                sample_type="Unknown"
-            )
-            for index in sample_indices:
-                # copy over updated quantitation_methods
-                sequenceHandler_IO.sequence[index].raw_data.quantitation_methods = \
-                    sequence_group.quantitation_methods                
-                rawDataProcessor.processRawData(
-                    sequenceHandler_IO.sequence[index].raw_data,
-                    sequenceHandler_IO.sequence[index].raw_data_processing,
-                    sequenceHandler_IO.parameters,
+        # process by sequence segment
+        for sequence_segment in sequence_segments:
+            # handle user desired raw_data_processing_methods
+            if sequence_segment_processing_methods_I:
+                sequence_segment_processing_methods = \
+                    sequence_segment_processing_methods_I
+            else:
+                sequence_segment_processing_methods_set = set()
+                for sample_index in sequence_segment.getSampleIndices():
+                    sample_type = sequenceHandler_IO.sequence[
+                        sample_index].getMetaData()["sample_type"]
+                    sequence_segment_processing_methods_set.update(
+                        sequenceSegmentProcessor.getDefaultSequenceSegmentProcessingWorkflow(
+                            sample_type))
+                sequence_segment_processing_methods = list(
+                    sequence_segment_processing_methods_set)
+                    
+            # process the sequence
+            for event in sequence_segment_processing_methods:                
+                sequenceSegmentProcessor.processSequenceSegment(
+                    sequence_segment,
+                    sequenceHandler_IO,
+                    event,
+                    sequenceHandler_IO.getSequence()[
+                        sequence_segment.getSampleIndices()[
+                            0]].getRawData().getParameters(),  # assumption
+                    # that all parameters are the same for each sample in the
+                    # sequence segment!
                     sequenceHandler_IO.getDefaultDynamicFilenames(
                         sequenceHandler_IO.getDirDynamic(),
-                        sequenceHandler_IO.sequence[index].meta_data["sample_name"])
-                    )
-                # copy out the feature map
-                sequenceHandler_IO.sequence[index].featureMap = \
-                    sequenceHandler_IO.sequence[index].raw_data.featureMap
-
-            # 3: process all QCs
-            sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
-                sequenceSegmentHandler_I=sequence_group,
-                sequenceHandler_I=sequenceHandler_IO,
-                sample_type="QC"
-            )
-            for index in sample_indices:
-                # copy over updated quantitation_methods
-                sequenceHandler_IO.sequence[index].raw_data.quantitation_methods = \
-                    sequence_group.quantitation_methods
-                rawDataProcessor.processRawData(
-                    sequenceHandler_IO.sequence[index].raw_data,
-                    sequenceHandler_IO.sequence[index].raw_data_processing,
-                    sequenceHandler_IO.parameters,
-                    sequenceHandler_IO.getDefaultDynamicFilenames(
-                        sequenceHandler_IO.getDirDynamic(),
-                        sequenceHandler_IO.sequence[index].meta_data["sample_name"])
-                    )
-                # copy out the feature map
-                sequenceHandler_IO.sequence[index].featureMap = \
-                    sequenceHandler_IO.sequence[index].raw_data.featureMap
-            # # calculate the QCs
-            # seqGroupProcessor.calculateQCs(
-            #     sequence_group, sequenceHandler_IO)
-
-            # 4: process all Blanks
-            sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
-                sequenceSegmentHandler_I=sequence_group,
-                sequenceHandler_I=sequenceHandler_IO,
-                sample_type="Blank"
-            )
-            for index in sample_indices:
-                # copy over updated quantitation_methods
-                sequenceHandler_IO.sequence[index].raw_data.quantitation_methods = \
-                    sequence_group.quantitation_methods
-                rawDataProcessor.processRawData(
-                    sequenceHandler_IO.sequence[index].raw_data,
-                    sequenceHandler_IO.sequence[index].raw_data_processing,
-                    sequenceHandler_IO.parameters,
-                    sequenceHandler_IO.getDefaultDynamicFilenames(
-                        sequenceHandler_IO.getDirDynamic(),
-                        sequenceHandler_IO.sequence[index].meta_data["sample_name"])
-                    )
-                # copy out the feature map
-                sequenceHandler_IO.sequence[index].featureMap = \
-                    sequenceHandler_IO.sequence[index].raw_data.featureMap
-            
-            # 5: process all Double Blanks
-            sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
-                sequenceSegmentHandler_I=sequence_group,
-                sequenceHandler_I=sequenceHandler_IO,
-                sample_type="Double Blank"
-            )
-            for index in sample_indices:
-                rawDataProcessor.processRawData(
-                    sequenceHandler_IO.sequence[index].raw_data,
-                    sequenceHandler_IO.sequence[index].raw_data_processing,
-                    sequenceHandler_IO.parameters,
-                    sequenceHandler_IO.getDefaultDynamicFilenames(
-                        sequenceHandler_IO.getDirDynamic(),
-                        sequenceHandler_IO.sequence[index].meta_data["sample_name"])
-                    )
-
-            # 6: process all Solvents
-            sample_indices = seqGroupProcessor.getSampleIndicesBySampleType(
-                sequenceSegmentHandler_I=sequence_group,
-                sequenceHandler_I=sequenceHandler_IO,
-                sample_type="Solvent"
-            )
-            for index in sample_indices:
-                rawDataProcessor.processRawData(
-                    sequenceHandler_IO.sequence[index].raw_data,
-                    sequenceHandler_IO.sequence[index].raw_data_processing,
-                    sequenceHandler_IO.parameters,
-                    sequenceHandler_IO.getDefaultDynamicFilenames(
-                        sequenceHandler_IO.getDirDynamic(),
-                        sequenceHandler_IO.sequence[index].meta_data["sample_name"])
-                    )
-                # copy out the feature map
-                sequenceHandler_IO.sequence[index].featureMap = \
-                    sequenceHandler_IO.sequence[index].raw_data.featureMap
-            # # calculate the carryover
-            # seqGroupProcessor.calculateCarryover(
-            #     sequence_group, sequenceHandler_IO)
+                        sequence_segment.getSequenceSegmentName()),
+                    verbose_I=verbose_I)

@@ -115,7 +115,7 @@ def runAllTests():
     test.test_load_Trafo()
     test.test_load_featureMap()
     test.test_load_quantitationMethods()
-    # test.test_load_standardsConcentrations()
+    test.test_load_standardsConcentrations()
     test.test_load_featureFilter()
     test.test_load_featureQC()
     test.test_read_rawDataProcessingParameters()
@@ -143,14 +143,16 @@ def runAllTests():
     test.test_getMetaValue()
     test.test_parse_metaData()
     test.test_getSamplesInSequence()
+    test.test_getDefaultStaticFilenames()
+    test.test_getDefaultDynamicFilenames()
 
     from tests.test_core_SequenceProcessor import TestSequenceProcessor
     test = TestSequenceProcessor()
-    test.test_groupSamplesInSequence()
+    test.test_segmentSamplesInSequence()
     test.test_addRawDataHandlerToSequence()
     test.test_createSequence()
     test.test_processSequence()
-    # test.test_processSequenceSegments()
+    test.test_processSequenceSegments()
 
     from tests.test_io_SequenceWriter import TestSequenceWriter
     test = TestSequenceWriter()
@@ -167,8 +169,11 @@ def runAllTests():
     test.test_getDefaultSequenceSegmentProcessingWorkflow()
     test.test_getSampleIndicesBySampleType()
     test.test_optimizeCalibrationCurves()
+    test.test_processSequenceSegment() 
 
     from tests.test_main import testMain
     test = testMain()
-    test.test_main_LCMS_MRM()
+    test.test_main_LCMS_MRM_Unknown()
     test.test_main_GCMS_SIM()
+    # test.test_main_HPLC_UV()  # TODO: optimize peak picking
+    # test.test_main_LCMS_MRM_Standards()   # TODO: optimize calibrator fitting

@@ -19,7 +19,7 @@ class FeaturePlotter():
         self.annotate_features = None
         self.export_type = None
     
-    def clearParamaeters(self):
+    def clear(self):
         """Reset parameters"""
         self.annotate_features = None
         self.export_type = None
