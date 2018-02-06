@@ -57,8 +57,8 @@ class testMain():
         #     shallow=False
         #     ))
 
-    def test_main_GCMS_SIM(self):
-        """Test GCMS SIM example"""
+    def test_main_GCMS_SIM_Unknown(self):
+        """Test GCMS SIM Unknowns example"""
         m = __main__()
 
         # m.main(
@@ -69,7 +69,7 @@ class testMain():
         # assert(~os.path.isfile(example_dir + 'GCMS_SIM/mzML/skippedSamples.csv'))
 
         m.example_LCMS_MRM_Unknowns(
-            dir_I=example_dir + 'GCMS_SIM',
+            dir_I=example_dir + 'GCMS_SIM_Unknowns',
             delimiter=',',
             )
 
@@ -106,12 +106,12 @@ class testMain():
         #     shallow=False
         #     ))
 
-    def test_main_HPLC_UV(self):
-        """Test HPLC UV example"""
+    def test_main_HPLC_UV_Unknown(self):
+        """Test HPLC UV Unkown example"""
         m = __main__()
         
         m.example_LCMS_MRM_Unknowns(
-            dir_I=example_dir + 'HPLC_UV',
+            dir_I=example_dir + 'HPLC_UV_Unknowns',
             delimiter=',',
             )
 

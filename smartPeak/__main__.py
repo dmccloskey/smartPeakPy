@@ -53,7 +53,7 @@ class __main__():
         # store all features
         raw_data_processing_methods = [
             "store_features", 
-            # "plot_features"
+            "plot_features"
         ]
         sequenceProcessor.processSequence(
             sequenceHandler,
