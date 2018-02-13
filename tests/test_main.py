@@ -192,3 +192,32 @@ class testMain():
         assert(
             fm1[50].getSubordinates()[0].getRT() == 
             fm2[50].getSubordinates()[0].getRT())
+
+    def test_main_LCMS_MRM_QCs(self):
+        """Test LCMS MRM example with quality control sample types"""
+        m = __main__()
+        
+        m.example_LCMS_MRM_Unknowns(
+            dir_I=example_dir + 'LCMS_MRM_QCs',
+            delimiter=',',
+            )
+
+        # rawDataHandler = RawDataHandler()
+        # fileReaderOpenMS = FileReaderOpenMS()
+        # fileReaderOpenMS.load_featureMap(
+        #     rawDataHandler, example_dir + 
+        #     'LCMS_MRM_QCs/features/150516_CM1_Level1.featureXML')
+        # fm1 = rawDataHandler.featureMap
+        # fileReaderOpenMS.load_featureMap(
+        #     rawDataHandler, example_dir + 
+        #     'LCMS_MRM_QCs/features/150516_CM1_Level1_test.featureXML')
+        # fm2 = rawDataHandler.featureMap
+        # assert(
+        #     fm1[50].getSubordinates()[0].getMetaValue("native_id") == 
+        #     fm2[50].getSubordinates()[0].getMetaValue("native_id"))
+        # assert(
+        #     fm1[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 
+        #     fm2[50].getSubordinates()[0].getMetaValue("peak_apex_int"))
+        # assert(
+        #     fm1[50].getSubordinates()[0].getRT() == 
+        #     fm2[50].getSubordinates()[0].getRT())

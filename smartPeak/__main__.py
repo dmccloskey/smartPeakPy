@@ -45,19 +45,12 @@ class __main__():
             # "validate_features",
             "quantify_features",
             "check_features",
-        ]
-        sequenceProcessor.processSequence(
-            sequenceHandler,
-            raw_data_processing_methods_I=raw_data_processing_methods)
-
-        # store all features
-        raw_data_processing_methods = [
             "store_features", 
             "plot_features"
         ]
         sequenceProcessor.processSequence(
             sequenceHandler,
-            raw_data_processing_methods_I=raw_data_processing_methods) 
+            raw_data_processing_methods_I=raw_data_processing_methods)
 
         # write out a summary of all files
         sequenceSummary_csv_i = '''%s/SequenceSummary.csv''' % (dir_I)
