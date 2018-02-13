@@ -1,3 +1,12 @@
+# VSCode remote debugging
+######
+import ptvsd
+ptvsd.enable_attach("my_secret", address=('0.0.0.0', 3000))
+# enable the below line of code only if you want the application to wait
+# until the debugger has attached to it
+ptvsd.wait_for_attach()
+######
+
 # -*- coding: utf-8 -*-
 from smartPeak.core.SequenceHandler import SequenceHandler
 from smartPeak.core.SequenceProcessor import SequenceProcessor
@@ -51,7 +60,6 @@ sequence_segment_processing_methods = [
     "calculate_calibration",
     "plot_calibrators",
     "store_quantitation_methods",
-    # "load_quantitation_methods",
     # "store_components_to_concentrations"
 ]
 sequenceProcessor.processSequenceSegments(
@@ -61,16 +69,9 @@ sequenceProcessor.processSequenceSegments(
 
 # 3. quantify standards for QC
 raw_data_processing_methods = [
-    # "load_raw_data",
-    # "load_features",
-    # "pick_features",
-    # "filter_features",
-    # "select_features",
-    # "validate_features",
     "quantify_features",
     "check_features",
     "store_features", 
-    # "plot_features"
 ]
 sequenceProcessor.processSequence(
     sequenceHandler,

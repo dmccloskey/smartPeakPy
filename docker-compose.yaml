@@ -2,18 +2,15 @@ version: "3"
 
 services:
   pyopenms:
-    image: dmccloskey/smartpeak:latest
+    image: dmccloskey/docker-pyopenms-vscode:develop
     volumes:
       ## Input/Output file directory
       # WIN:
-      - //C/Users/dmccloskey/Desktop/LCMS_MRM/:/home/user/Data/
-      - //C/Users/dmccloskey/Desktop/LCMS_MRM/main.py:/home/user/code/main.py
-      # LINUX/MAC
-      # - /home/systemsbiochemistry1/Documents/Data/:/home/user/Data/
-      # - /home/systemsbiochemistry1/Documents/main.py:/home/user/code/main.py
+      - //C/Users/domccl/Dropbox (UCSD SBRG)/Project_SmartPeak/SGI_demo_01/RO_Anions_Quant/:/home/user/Data/
+      - //C/Users//domccl/GitHub/smartPeak/:/home/user/code/
     ports:
       - "3000:3000"
-    command: python /home/user/code/main.py
+    command: python /home/user/code/debug_remote.py #testing
     networks:
       - pyopenms_network
     
