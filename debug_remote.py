@@ -46,43 +46,44 @@ raw_data_processing_methods = [
     "pick_features",
     "filter_features",
     "select_features",
-    "check_features",
-    "store_features", 
-    "plot_features"
-]
-sequenceProcessor.processSequence(
-    sequenceHandler,
-    raw_data_processing_methods_I=raw_data_processing_methods,
-    verbose_I=True)
-
-# 2. process optimize calibrators
-sequence_segment_processing_methods = [
-    "calculate_calibration",
-    "plot_calibrators",
-    "store_quantitation_methods",
-    # "store_components_to_concentrations"
-]
-sequenceProcessor.processSequenceSegments(
-    sequenceHandler,
-    sequence_segment_processing_methods_I=sequence_segment_processing_methods,
-    verbose_I=True)
-
-# 3. quantify standards for QC
-raw_data_processing_methods = [
     "quantify_features",
     "check_features",
     "store_features", 
+    # "plot_features"
 ]
 sequenceProcessor.processSequence(
     sequenceHandler,
     raw_data_processing_methods_I=raw_data_processing_methods,
     verbose_I=True)
+
+# # 2. process optimize calibrators
+# sequence_segment_processing_methods = [
+#     "calculate_calibration",
+#     "plot_calibrators",
+#     "store_quantitation_methods",
+#     # "store_components_to_concentrations"
+# ]
+# sequenceProcessor.processSequenceSegments(
+#     sequenceHandler,
+#     sequence_segment_processing_methods_I=sequence_segment_processing_methods,
+#     verbose_I=True)
+
+# # 3. quantify standards for QC
+# raw_data_processing_methods = [
+#     "quantify_features",
+#     "check_features",
+#     "store_features", 
+# ]
+# sequenceProcessor.processSequence(
+#     sequenceHandler,
+#     raw_data_processing_methods_I=raw_data_processing_methods,
+#     verbose_I=True)
 
 # write out a summary of all files
 sequenceSummary_csv_i = '''%s/SequenceSummary.csv''' % (dir_I)
 sequenceWriter.write_dataMatrixFromMetaValue(
     sequenceHandler,
     filename=sequenceSummary_csv_i,
-    meta_data=['calculated_concentration'],
-    sample_types=['Standard']
+    meta_data=['calculated_concentration', 'RT'],
+    sample_types=['Standard', 'Unknown']
 )
