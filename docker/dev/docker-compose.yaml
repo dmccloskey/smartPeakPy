@@ -5,16 +5,16 @@ services:
     image: dmccloskey/docker-pyopenms-vscode:develop
     volumes:
       ## Input/Output file directory
-      - //C/Users/domccl/Dropbox (UCSD SBRG)/Project_FastPeak/Data/:/home/user/Data/
-      # - //C/Users/dmccloskey/Dropbox (UCSD SBRG)/Project_FastPeak/Data/:/home/user/Data/
+      # - //C/Users/domccl/Dropbox (UCSD SBRG)/Project_FastPeak/Data/:/home/user/Data/
+      - //C/Users/dmccloskey/Dropbox (UCSD SBRG)/Project_FastPeak/Data/:/home/user/Data/
       # - /home/systemsbiochemistry1/Documents/Data/:/home/user/Data/
       ## MS data directory
       # - //C/Users/domccl/Dropbox (UCSD SBRG)/absciexQTRAP5500_dataProcessing/analyst/data/mzML_BloodProject01/Unknowns_mzML/:/home/user/mzML_validationData/
       # # - //C/Users/domccl/Dropbox (UCSD SBRG)/absciexQTRAP5500_dataProcessing/analyst/data/mzML_validationData/Unknowns/:/home/user/mzML_validationData/
       # - /home/systemsbiochemistry1/Documents/mzML_BloodProject01/Unknowns_mzML/:/home/user/mzML_validationData/
       ## EXE directory
-      - //C/Users//domccl/GitHub/smartPeak/:/home/user/code/
-      # - //C/Users/dmccloskey/Documents/GitHub/smartPeak/:/home/user/code/
+      # - //C/Users//domccl/GitHub/smartPeak/:/home/user/code/
+      - //C/Users/dmccloskey/Documents/GitHub/smartPeak/:/home/user/code/
       # - /home/systemsbiochemistry1/Documents/GitHub/smartPeak/:/home/user/code/
     ports:
       - "3000:3000"
