@@ -112,7 +112,69 @@ class SequenceSegmentProcessor():
                 components_to_concentrations
             )
             sequenceSegmentHandler_IO.setQuantitationMethods(
-                absoluteQuantitation.getQuantMethods())    
+                absoluteQuantitation.getQuantMethods()) 
+
+    def calculateQCVariance(
+        self,
+        sequenceSegmentHandler_IO,
+        sequenceHandler_I,
+        _params_I={},
+        verbose_I=False
+    ):
+        """Calculate the variance within the calibrators
+        
+        Args:
+            sequenceSegmentHandler_I (SequenceSegmentHandler)
+            sequenceHandler_I (SequenceHandler)
+            
+        """
+        if verbose_I:
+            print("calculating QCs")
+
+        # get all QCs
+        QC_indices = self.getSampleIndicesBySampleType(
+            sequenceSegmentHandler_IO, sequenceHandler_I,
+            "QC"
+        )
+
+        # check if there are any QCs to calculate the variance from
+        if not QC_indices:
+            return
+
+        QC_featureMaps = [
+            sequenceHandler_I.sequence[index].getRawData().getFeatureMap() 
+            for index in QC_indices]
+
+    def calculateBlanks(
+        self,
+        sequenceSegmentHandler_IO,
+        sequenceHandler_I,
+        _params_I={},
+        verbose_I=False
+    ):
+        """Find background interference in the blanks
+        
+        Args:
+            sequenceSegmentHandler_I (SequenceSegmentHandler)
+            sequenceHandler_I (SequenceHandler)
+            
+        """
+        if verbose_I:
+            print("calculating Blanks")
+
+        # get all Blanks
+        Blank_indices = self.getSampleIndicesBySampleType(
+            sequenceSegmentHandler_IO, sequenceHandler_I,
+            "Blank"
+        )
+
+        # check if there are any Blanks to find background in
+        if not Blank_indices:
+            return
+
+        Blank_featureMaps = [
+            sequenceHandler_I.sequence[index].getRawData().getFeatureMap() 
+            for index in Blank_indices]
 
     def plotCalibrators(
         self,     
