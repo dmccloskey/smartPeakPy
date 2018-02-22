@@ -22,4 +22,5 @@ m = __main__()
 
 from tests.test_main import testMain
 test = testMain()
-test.test_main_LCMS_MRM_QCs()
+test.test_main_HPLC_UV_Standards()
+# test.test_main_LCMS_MRM_QCs()
