@@ -157,6 +157,7 @@ def runAllTests():
     from tests.test_io_SequenceWriter import TestSequenceWriter
     test = TestSequenceWriter()
     test.test_makeDataMatrixFromMetaValue()
+    test.test_makeDataTableFromMetaValue()
 
     from tests.test_io_SequenceReader import TestSequenceReader
     test = TestSequenceReader()

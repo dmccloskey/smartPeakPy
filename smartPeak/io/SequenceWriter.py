@@ -29,7 +29,13 @@ class SequenceWriter():
 
         Returns:
             list: rows: list of dicts
+            list: list of headers in the order to write to .csv
         """
+        # assign the headers
+        header = ["sample_name", "sample_type", "component_group_name", "component_name"]
+        meta_data.sort()
+        header += meta_data
+
         # collect the metaValues
         list_dict = []
         for d in sequenceHandler_I.sequence:
@@ -55,7 +61,7 @@ class SequenceWriter():
                             else:
                                 row_dict[meta_value] = None                    
                     list_dict.append(row_dict)
-        return list_dict
+        return list_dict, header
 
     def write_dataTableFromMetaValue(
         self,
@@ -74,12 +80,8 @@ class SequenceWriter():
         """
 
         # fixed header order
-        header = ["sample_name", "sample_type", "component_group_name", "component_name"]
-        meta_data.sort()
-        header += meta_data
-
-        data_O = []
-        data_O = self.makeDataTableFromMetaValue(
+        data_O, header = [], []
+        data_O, header = self.makeDataTableFromMetaValue(
             sequenceHandler_I,
             meta_data=meta_data, sample_types=sample_types)        
 

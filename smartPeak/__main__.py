@@ -48,6 +48,12 @@ class __main__():
             "store_features", 
             # "plot_features"
         ]
+
+        # process all files
+        raw_data_processing_methods = [
+            "load_raw_data",
+            "load_features",
+        ]
         sequenceProcessor.processSequence(
             sequenceHandler,
             raw_data_processing_methods_I=raw_data_processing_methods,
@@ -59,6 +65,18 @@ class __main__():
             sequenceHandler,
             filename=sequenceSummary_csv_i,
             meta_data=['calculated_concentration'],
+            sample_types=['Unknown']
+        )
+
+        featureSummary_csv_i = '''%s/FeatureSummary.csv''' % (dir_I)
+        sequenceWriter.write_dataTableFromMetaValue(
+            sequenceHandler,
+            filename=featureSummary_csv_i,
+            meta_data=[
+                "sn_score", "peak_apex_int", "total_width", "width_at_50", 
+                "tailing_factor", "asymmetry_factor", "baseline_delta_2_height", 
+                "points_across_baseline", "points_across_half_height", "logSN", 
+                "calculated_concentration"],
             sample_types=['Unknown']
         )
 
