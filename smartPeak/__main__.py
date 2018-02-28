@@ -46,7 +46,7 @@ class __main__():
             "quantify_features",
             "check_features",
             "store_features", 
-            "plot_features"
+            # "plot_features"
         ]
         sequenceProcessor.processSequence(
             sequenceHandler,
@@ -95,6 +95,7 @@ class __main__():
             "load_raw_data",
             "pick_features",
             "filter_features",
+            "filter_features",
             "select_features",
             "check_features",
             "store_features", 
@@ -102,7 +103,13 @@ class __main__():
         ]
         # raw_data_processing_methods = [
         #     "load_raw_data",
-        #     "load_features"
+        #     "load_features",
+        #     "filter_features",
+        #     "check_features",
+        #     "store_features", 
+        #     # "quantify_features",
+        #     # "store_features", 
+        #     # "plot_features"
         # ]
         sequenceProcessor.processSequence(
             sequenceHandler,
