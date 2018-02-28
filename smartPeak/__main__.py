@@ -50,7 +50,8 @@ class __main__():
         ]
         sequenceProcessor.processSequence(
             sequenceHandler,
-            raw_data_processing_methods_I=raw_data_processing_methods)
+            raw_data_processing_methods_I=raw_data_processing_methods,
+            verbose_I=True)
 
         # write out a summary of all files
         sequenceSummary_csv_i = '''%s/SequenceSummary.csv''' % (dir_I)

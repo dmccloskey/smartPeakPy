@@ -24,6 +24,6 @@ from tests.test_main import testMain
 test = testMain()
 # test.test_main_LCMS_MRM_Unknown()
 # test.test_main_GCMS_SIM_Unknown()
-test.test_main_HPLC_UV_Standards()  # TODO: bug in thresholds
+# test.test_main_HPLC_UV_Standards()  # TODO: bug in thresholds
 test.test_main_HPLC_UV_Unknown()
 # test.test_main_LCMS_MRM_Standards()  # TODO: optimize calibrator fitting
