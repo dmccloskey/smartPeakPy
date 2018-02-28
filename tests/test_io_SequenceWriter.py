@@ -91,13 +91,13 @@ class TestSequenceWriter():
             seqhandler,
             meta_data=["peak_apex_int", "logSN"], sample_types=["Unknown"])
         
-        assert(len(data) == 700)
+        assert(len(data) == 1657)
         assert(data[0]["sample_name"] == '170808_Jonathan_yeast_Sacc1_1x')
         assert(data[0]["sample_type"] == 'Unknown')
         assert(data[0]["component_group_name"] == '23dpg')
-        assert(data[0]["component_name"] == '23dpg.23dpg_1.Light')
-        assert(data[0]["peak_apex_int"] == 5281.0)
-        assert(data[0]["logSN"] == 2.98516162760778)
+        assert(data[0]["component_name"] == '23dpg.23dpg_1.Heavy')
+        assert(data[0]["peak_apex_int"] == 235.0)
+        assert(data[0]["logSN"] == 3.52866193485212)
 
         header_test = [
             "sample_name", "sample_type", "component_group_name", "component_name"] + [

@@ -60,7 +60,7 @@ class SequenceWriter():
                                 row_dict[meta_value] = datum
                             else:
                                 row_dict[meta_value] = None                    
-                    list_dict.append(row_dict)
+                        list_dict.append(row_dict)
         return list_dict, header
 
     def write_dataTableFromMetaValue(
