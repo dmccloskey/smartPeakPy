@@ -54,6 +54,7 @@ class __main__():
             "load_raw_data",
             "load_features",
             "check_features",
+            "store_features", 
         ]
         sequenceProcessor.processSequence(
             sequenceHandler,
@@ -77,7 +78,7 @@ class __main__():
                 "peak_apex_int", "total_width", "width_at_50", 
                 "tailing_factor", "asymmetry_factor", "baseline_delta_2_height", 
                 "points_across_baseline", "points_across_half_height", "logSN",
-                "QC_transition_message"],
+                "QC_transition_message", "calculated_concentration"],
             sample_types=['Unknown']
         )
 
