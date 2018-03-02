@@ -49,13 +49,13 @@ class __main__():
             # "plot_features"
         ]
 
-        # process all files
-        raw_data_processing_methods = [
-            "load_raw_data",
-            "load_features",
-            "check_features",
-            "store_features", 
-        ]
+        # # process all files
+        # raw_data_processing_methods = [
+        #     "load_raw_data",
+        #     "load_features",
+        #     "check_features",
+        #     "store_features", 
+        # ]
         sequenceProcessor.processSequence(
             sequenceHandler,
             raw_data_processing_methods_I=raw_data_processing_methods,
