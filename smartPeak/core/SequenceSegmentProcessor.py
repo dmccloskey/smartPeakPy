@@ -112,7 +112,57 @@ class SequenceSegmentProcessor():
                 components_to_concentrations
             )
             sequenceSegmentHandler_IO.setQuantitationMethods(
-                absoluteQuantitation.getQuantMethods())    
+                absoluteQuantitation.getQuantMethods())  
+
+    def estimateBackgroundFilter(
+        self,
+        sequenceSegmentHandler_IO,
+        sequenceHandler_I,
+        sample_type_I="Blank",
+        _params_I={},
+        verbose_I=False
+    ):
+        """Find heavy transition background interference in the
+        Double Blank samples or light transition background
+        interference in the Blank samples
+        
+        Args:
+            sequenceSegmentHandler_I (SequenceSegmentHandler)
+            sequenceHandler_I (SequenceHandler)
+            sample_type_I (str): "Blank" or "Double Blank"
+            
+        """
+        if verbose_I:
+            print("estimating the background interference filter")
+
+        if sample_type_I not in ["Blank", "Double Blank", "Solvent"]:
+            print(
+                "Sample type " + sample_type_I +
+                " not supported for estimating the background.")
+        # get all Blanks
+        Blank_indices = self.getSampleIndicesBySampleType(
+            sequenceSegmentHandler_IO, sequenceHandler_I,
+            sample_type_I
+        )
+
+        # check if there are any Blanks to find background in
+        if not Blank_indices:
+            return
+
+        Blank_featureMaps = [
+            sequenceHandler_I.sequence[index].getRawData().getFeatureMap() 
+            for index in Blank_indices] 
+
+        if sample_type_I == "Double Blank":
+            # calculate the average for the Heavy transitions
+            pass
+        elif sample_type_I == "Blank":
+            # calculate the average for the Light transitions
+            pass
+
+        # reduce by e.g., 80%
+
+        # update the featureFilter or featureQC
 
     def plotCalibrators(
         self,     
