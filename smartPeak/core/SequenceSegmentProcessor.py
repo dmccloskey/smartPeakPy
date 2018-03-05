@@ -145,37 +145,6 @@ class SequenceSegmentProcessor():
             sequenceHandler_I.sequence[index].getRawData().getFeatureMap() 
             for index in QC_indices]
 
-    def calculateBlanks(
-        self,
-        sequenceSegmentHandler_IO,
-        sequenceHandler_I,
-        _params_I={},
-        verbose_I=False
-    ):
-        """Find background interference in the blanks
-        
-        Args:
-            sequenceSegmentHandler_I (SequenceSegmentHandler)
-            sequenceHandler_I (SequenceHandler)
-            
-        """
-        if verbose_I:
-            print("calculating Blanks")
-
-        # get all Blanks
-        Blank_indices = self.getSampleIndicesBySampleType(
-            sequenceSegmentHandler_IO, sequenceHandler_I,
-            "Blank"
-        )
-
-        # check if there are any Blanks to find background in
-        if not Blank_indices:
-            return
-
-        Blank_featureMaps = [
-            sequenceHandler_I.sequence[index].getRawData().getFeatureMap() 
-            for index in Blank_indices]
-
     def plotCalibrators(
         self,     
         sequenceSegmentHandler_I,   
