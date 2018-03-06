@@ -11,6 +11,7 @@ class testMain():
 
     def test_main_LCMS_MRM_Unknown(self):
         """Test LCMS MRM example with Unknown sample types"""
+        print("running test_main_LCMS_MRM_Unknown")
         m = __main__()
 
         # m.main(
@@ -29,11 +30,11 @@ class testMain():
         fileReaderOpenMS = FileReaderOpenMS()
         fileReaderOpenMS.load_featureMap(
             rawDataHandler, example_dir + 
-            'LCMS_MRM/features/170808_Jonathan_yeast_Sacc1_1x.featureXML')
+            'LCMS_MRM_Unknowns/features/170808_Jonathan_yeast_Sacc1_1x.featureXML')
         fm1 = rawDataHandler.featureMap
         fileReaderOpenMS.load_featureMap(
             rawDataHandler, example_dir + 
-            'LCMS_MRM/features/170808_Jonathan_yeast_Sacc1_1x_test.featureXML')
+            'LCMS_MRM_Unknowns/features/170808_Jonathan_yeast_Sacc1_1x_test.featureXML')
         fm2 = rawDataHandler.featureMap
         assert(
             fm1[50].getSubordinates()[0].getMetaValue("native_id") == 
@@ -47,18 +48,19 @@ class testMain():
 
         # # TODO: why is this not working?
         # assert(filecmp.cmp(
-        #     example_dir + 'LCMS_MRM/features/170808_Jonathan_yeast_Sacc1_1x.featureXML',
-        #     example_dir + 'LCMS_MRM/features/170808_Jonathan_yeast_Sacc1_1x_test.featureXML',
+        #     example_dir + 'LCMS_MRM_Unknowns/features/170808_Jonathan_yeast_Sacc1_1x.featureXML',
+        #     example_dir + 'LCMS_MRM_Unknowns/features/170808_Jonathan_yeast_Sacc1_1x_test.featureXML',
         #     shallow=False
         #     ))
         # assert(filecmp.cmp(
-        #     example_dir + 'LCMS_MRM/SequenceSummary.csv',
-        #     example_dir + 'LCMS_MRM/SequenceSummary_test.csv',
+        #     example_dir + 'LCMS_MRM_Unknowns/SequenceSummary.csv',
+        #     example_dir + 'LCMS_MRM_Unknowns/SequenceSummary_test.csv',
         #     shallow=False
         #     ))
 
     def test_main_GCMS_SIM_Unknown(self):
         """Test GCMS SIM Unknowns example"""
+        print("running test_main_GCMS_SIM_Unknown")
         m = __main__()
 
         # m.main(
@@ -108,6 +110,7 @@ class testMain():
 
     def test_main_HPLC_UV_Unknown(self):
         """Test HPLC UV Unknown example"""
+        print("running test_main_HPLC_UV_Unknown")
         m = __main__()
         
         m.example_LCMS_MRM_Unknowns(
@@ -127,7 +130,7 @@ class testMain():
         fm2 = rawDataHandler.featureMap
         assert(
             fm1[0].getSubordinates()[0].getMetaValue("native_id") == 
-            fm2[50].getSubordinates()[0].getMetaValue("native_id"))
+            fm2[0].getSubordinates()[0].getMetaValue("native_id"))
         assert(
             fm1[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 
             fm2[0].getSubordinates()[0].getMetaValue("peak_apex_int"))
@@ -137,6 +140,7 @@ class testMain():
 
     def test_main_HPLC_UV_Standards(self):
         """Test HPLC_UV example with standard sample types"""
+        print("running test_main_HPLC_UV_Standards")
         m = __main__()
         
         m.example_LCMS_MRM_Standards(
@@ -166,6 +170,7 @@ class testMain():
 
     def test_main_LCMS_MRM_Standards(self):
         """Test LCMS MRM example with standard sample types"""
+        print("running test_main_LCMS_MRM_Standards")
         m = __main__()
         
         m.example_LCMS_MRM_Standards(
@@ -192,3 +197,33 @@ class testMain():
         assert(
             fm1[50].getSubordinates()[0].getRT() == 
             fm2[50].getSubordinates()[0].getRT())
+
+    def test_main_LCMS_MRM_QCs(self):
+        """Test LCMS MRM example with quality control sample types"""
+        print("running test_main_LCMS_MRM_QCs")
+        m = __main__()
+        
+        m.example_LCMS_MRM_Unknowns(
+            dir_I=example_dir + 'LCMS_MRM_QCs',
+            delimiter=',',
+            )
+
+        # rawDataHandler = RawDataHandler()
+        # fileReaderOpenMS = FileReaderOpenMS()
+        # fileReaderOpenMS.load_featureMap(
+        #     rawDataHandler, example_dir + 
+        #     'LCMS_MRM_QCs/features/150516_CM1_Level1.featureXML')
+        # fm1 = rawDataHandler.featureMap
+        # fileReaderOpenMS.load_featureMap(
+        #     rawDataHandler, example_dir + 
+        #     'LCMS_MRM_QCs/features/150516_CM1_Level1_test.featureXML')
+        # fm2 = rawDataHandler.featureMap
+        # assert(
+        #     fm1[50].getSubordinates()[0].getMetaValue("native_id") == 
+        #     fm2[50].getSubordinates()[0].getMetaValue("native_id"))
+        # assert(
+        #     fm1[50].getSubordinates()[0].getMetaValue("peak_apex_int") == 
+        #     fm2[50].getSubordinates()[0].getMetaValue("peak_apex_int"))
+        # assert(
+        #     fm1[50].getSubordinates()[0].getRT() == 
+        #     fm2[50].getSubordinates()[0].getRT())

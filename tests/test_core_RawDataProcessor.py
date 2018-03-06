@@ -86,7 +86,7 @@ class TestRawDataProcessor():
         assert(rawDataHandler.featureMap[0].getSubordinates()[
             0].getRT() == 15.894456338119507)  # refactor to use pytest.approx
         assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getMetaValue("peak_apex_int") == 0.0)
+            0].getMetaValue("peak_apex_int") == 640.0)
         assert(rawDataHandler.featureMap[50].getSubordinates()[
             0].getMetaValue("native_id") == b'acon-C.acon-C_1.Heavy')
         assert(rawDataHandler.featureMap[50].getSubordinates()[

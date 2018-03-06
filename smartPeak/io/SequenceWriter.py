@@ -12,6 +12,88 @@ except ImportError as e:
 class SequenceWriter():
     """A class to write SequenceHandlers"""
 
+    def makeDataTableFromMetaValue(
+        self,
+        sequenceHandler_I,
+        meta_data=['calculated_concentration'],
+        sample_types=['Unknown']
+    ):
+        """make a data matrix from a feature metaValue for 
+            specified sample types
+
+        Args:
+            sequenceHandler_I (SequenceHandler)
+            meta_data (list): 
+                list of strings specifying the name of the feature metaValue
+            sample_types (list): list of strings corresponding to sample types
+
+        Returns:
+            list: rows: list of dicts
+            list: list of headers in the order to write to .csv
+        """
+        # assign the headers
+        header = ["sample_name", "sample_type", "component_group_name", "component_name"]
+        meta_data.sort()
+        header += meta_data
+
+        # collect the metaValues
+        list_dict = []
+        for d in sequenceHandler_I.sequence:
+            if d.meta_data['sample_type'] in sample_types:
+                sample_name = d.meta_data['sample_name']
+                for feature in d.raw_data.featureMap:
+                    component_group_name = feature.getMetaValue(
+                        "PeptideRef").decode('utf-8')
+                    for subordinate in feature.getSubordinates():
+                        row_dict = {}
+                        row_dict["sample_type"] = d.meta_data['sample_type']
+                        row_dict["sample_name"] = sample_name
+                        row_dict["component_group_name"] = component_group_name
+                        row_dict["component_name"] = subordinate.getMetaValue(
+                            'native_id').decode('utf-8')
+                        for meta_value in meta_data:
+                            datum = sequenceHandler_I.getMetaValue(
+                                feature, subordinate, meta_value)
+                            if datum and datum is not None:                                
+                                if isinstance(datum, bytes):
+                                    datum = datum.decode('utf-8')
+                                row_dict[meta_value] = datum
+                            else:
+                                row_dict[meta_value] = None                    
+                        list_dict.append(row_dict)
+        return list_dict, header
+
+    def write_dataTableFromMetaValue(
+        self,
+        sequenceHandler_I,
+        filename,
+        meta_data=['calculated_concentration'],
+        sample_types=['Unknown']
+    ):
+        """export data table from feature metaValue to .csv
+
+        Args:
+            sequenceHandler_I (SequenceHandler)
+            filename (string): name of the file
+            ...
+
+        """
+
+        # fixed header order
+        data_O, header = [], []
+        data_O, header = self.makeDataTableFromMetaValue(
+            sequenceHandler_I,
+            meta_data=meta_data, sample_types=sample_types)        
+
+        # write dict to csv
+        with open(filename, 'w', newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=header)
+            try:
+                writer.writeheader()
+                writer.writerows(data_O)
+            except csv.Error as e:
+                sys.exit(e)
+
     def makeDataMatrixFromMetaValue(
         self,
         sequenceHandler_I,

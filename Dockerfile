@@ -1,4 +1,4 @@
-FROM dmccloskey/docker-openms:AbsoluteQuantitation
+FROM dmccloskey/docker-openms:develop
 USER root
 
 EXPOSE 3000
