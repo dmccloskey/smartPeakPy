@@ -114,7 +114,7 @@ class SequenceSegmentProcessor():
             sequenceSegmentHandler_IO.setQuantitationMethods(
                 absoluteQuantitation.getQuantMethods()) 
 
-    def calculateQCVariance(
+    def calculateVariance(
         self,
         sequenceSegmentHandler_IO,
         sequenceHandler_I,
