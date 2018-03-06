@@ -131,9 +131,9 @@ class testMain():
         assert(
             fm1[0].getSubordinates()[0].getMetaValue("native_id") == 
             fm2[0].getSubordinates()[0].getMetaValue("native_id"))
-        # assert(
-        #     fm1[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 
-        #     fm2[0].getSubordinates()[0].getMetaValue("peak_apex_int"))
+        assert(
+            fm1[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 
+            fm2[0].getSubordinates()[0].getMetaValue("peak_apex_int"))
         assert(
             fm1[0].getSubordinates()[0].getRT() == 
             fm2[0].getSubordinates()[0].getRT())
@@ -161,9 +161,9 @@ class testMain():
         assert(
             fm1[0].getSubordinates()[0].getMetaValue("native_id") == 
             fm2[0].getSubordinates()[0].getMetaValue("native_id"))
-        # assert(
-        #     fm1[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 
-        #     fm2[0].getSubordinates()[0].getMetaValue("peak_apex_int"))
+        assert(
+            fm1[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 
+            fm2[0].getSubordinates()[0].getMetaValue("peak_apex_int"))
         assert(
             fm1[0].getSubordinates()[0].getRT() == 
             fm2[0].getSubordinates()[0].getRT())
