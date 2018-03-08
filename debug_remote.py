@@ -7,6 +7,7 @@ ptvsd.enable_attach("my_secret", address=('0.0.0.0', 3000))
 ptvsd.wait_for_attach()
 ######
 
+<<<<<<< HEAD
 # -*- coding: utf-8 -*-
 from smartPeak.core.SequenceHandler import SequenceHandler
 from smartPeak.core.SequenceProcessor import SequenceProcessor
@@ -87,3 +88,26 @@ sequenceWriter.write_dataMatrixFromMetaValue(
     meta_data=['calculated_concentration', 'RT'],
     sample_types=['Standard', 'Unknown']
 )
+=======
+from smartPeak.__main__ import __main__
+m = __main__()
+
+# # GCMS_fullScan
+# m.main(
+#     filename_filenames='/home/user/Data/GCMS_fullScan/filenames.csv',
+#     filename_params='/home/user/Data/GCMS_fullScan/MRMFeatureFinderScoring_params.csv',
+#     delimiter=',',
+#     )
+
+# from tests import runAllTests
+# runAllTests()
+
+from tests.test_main import testMain
+test = testMain()
+# test.test_main_LCMS_MRM_Unknown()
+# test.test_main_GCMS_SIM_Unknown()
+# test.test_main_HPLC_UV_Standards()  # TODO: bug in thresholds
+test.test_main_HPLC_UV_Unknown()
+# test.test_main_LCMS_MRM_Standards()  # TODO: optimize calibrator fitting
+# test.test_main_LCMS_MRM_QCs()
+>>>>>>> develop

@@ -837,7 +837,7 @@ class MRMFeatureSelector():
         #       print("%s:%s"%(var.name,var.primal))
         return Tr_optimal
 
-    def make_score(self, tr_dict_row, score_weights):
+    def make_score(self, tr_dict_row, score_weights, verbose_I=False):
         """make the score
 
         Args:
@@ -859,7 +859,8 @@ class MRMFeatureSelector():
                 if not isinstance(value, complex) and value > 0.0:
                     score_1 *= value
             except Exception as e:
-                print(e)
+                if verbose_I:
+                    print(e)
         return score_1
 
     def checkVariableName(self, var_name):
