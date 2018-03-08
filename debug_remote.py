@@ -87,3 +87,15 @@ sequenceWriter.write_dataMatrixFromMetaValue(
     meta_data=['calculated_concentration', 'RT'],
     sample_types=['Standard', 'Unknown']
 )
+
+featureSummary_csv_i = '''%s/FeatureSummary.csv''' % (dir_I)
+sequenceWriter.write_dataTableFromMetaValue(
+    sequenceHandler,
+    filename=featureSummary_csv_i,
+    meta_data=[
+        "peak_apex_int", "total_width", "width_at_50", 
+        "tailing_factor", "asymmetry_factor", "baseline_delta_2_height", 
+        "points_across_baseline", "points_across_half_height", "logSN",
+        "QC_transition_message", "calculated_concentration"],
+    sample_types=['Unknown', 'Standard']
+)
