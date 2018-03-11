@@ -53,8 +53,6 @@ class __main__():
         # raw_data_processing_methods = [
         #     "load_raw_data",
         #     "load_features",
-        #     "check_features",
-        #     "store_features", 
         # ]
         sequenceProcessor.processSequence(
             sequenceHandler,
@@ -78,7 +76,9 @@ class __main__():
                 "peak_apex_int", "total_width", "width_at_50", 
                 "tailing_factor", "asymmetry_factor", "baseline_delta_2_height", 
                 "points_across_baseline", "points_across_half_height", "logSN",
-                "QC_transition_message", "calculated_concentration"],
+                "calculated_concentration",
+                "QC_transition_message", "QC_transition_pass", "QC_transition_score",
+                "QC_transition_group_message", "QC_transition_group_score"],
             sample_types=['Unknown']
         )
 
