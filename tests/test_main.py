@@ -238,27 +238,27 @@ class testMain():
         fm2 = rawDataHandler.featureMap
 
         # # Script to extract out hull points from features of interest
-        # # -----
-        # id1 = None
-        # id2 = None
+        # from smartPeak.io.FileWriter import FileWriter
+        # fileWriter = FileWriter()
+        # raw_data = []
         # for id_f,fm in enumerate(fm1): 
-        #     for id_sub,sub in enumerate(fm.getSubordinates()): 
-        #         if sub.getMetaValue("native_id").decode("utf-8") == "glu-L.glu-L_1.Heavy": 
-        #             id1 = (id_f, id_sub)
-        #         if sub.getMetaValue("native_id").decode("utf-8") == "adp.adp_2.Light": 
-        #             id2 = (id_f, id_sub)
-        # glu = fm1[id1[0]].getSubordinates()[id1[1]]
-        # print(glu.getConvexHull().getHullPoints())
-        # adp = fm1[id2[0]].getSubordinates()[id2[1]]
-        # print(adp.getConvexHull().getHullPoints())
-        # id3 = None
-        # for id_f, fm in enumerate(fm2): 
-        #     for id_sub, sub in enumerate(fm.getSubordinates()): 
-        #         if sub.getMetaValue("native_id").decode("utf-8") == "fad.fad_1.Light": 
-        #             id3 = (id_f, id_sub)                    
-        # fad = fm2[id3[0]].getSubordinates()[id3[1]]
-        # print(fad.getConvexHull().getHullPoints())
-        # # -----
+        #     for id_sub,sub in enumerate(fm.getSubordinates()):
+        # #         if sub.getMetaValue("native_id").decode("utf-8") == "glu-L.glu-L_1.Heavy": # 150601_0_BloodProject01_PLT_QC_Broth-1
+        # #         if sub.getMetaValue("native_id").decode("utf-8") == "adp.adp_2.Light": # 150601_0_BloodProject01_PLT_QC_Broth-1
+        # #         if sub.getMetaValue("native_id").decode("utf-8") == "fad.fad_1.Light": # 150601_0_BloodProject01_PLT_QC_Broth-1-10.0x
+        #         component_name = sub.getMetaValue("native_id").decode("utf-8")
+        #         hull_points = sub.getConvexHull().getHullPoints()
+        #         for hull_point in hull_points:
+        #             tmp = {
+        #                 "component_name": component_name,
+        #                 "time": hull_point[0],
+        #                 "intensity": hull_point[1]
+        #             }
+        #             raw_data.append(tmp)
+        # fileWriter.add_data(raw_data)
+        # fileWriter.write_dict2csv(
+        #      example_dir + 
+        #     "LCMS_MRM_QCs/features/150601_0_BloodProject01_PLT_QC_Broth-1-rawData.csv")
 
         assert(
             fm1[50].getSubordinates()[0].getMetaValue("native_id") == 
