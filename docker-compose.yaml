@@ -2,13 +2,12 @@ version: "3"
 
 services:
   pyopenms:
-    image: dmccloskey/docker-pyopenms-vscode:develop
+    image: dmccloskey/smartpeak:latest
     volumes:
       ## Input/Output file directory
       # WIN:
-      - //C/Users/domccl/Dropbox (UCSD SBRG)/Project_SmartPeak/GoldenLab_PreExperiment/GoldenLab_Standards/:/home/user/Data/
-      # - //C/Users/domccl/Dropbox (UCSD SBRG)/Project_SmartPeak/GoldenLab_PreExperiment/GoldenLab_Unknowns/:/home/user/Data/
-      - //C/Users/domccl/GitHub/smartPeak/main.py:/home/user/code/main.py
+      # - //C/Users/domccl/Dropbox (UCSD SBRG)/Project_SmartPeak/GoldenLab_PreExperiment/GoldenLab_Standards/:/home/user/Data/
+      - //C/Users/domccl/Dropbox (UCSD SBRG)/Project_SmartPeak/GoldenLab_PreExperiment/GoldenLab_Unknowns/:/home/user/Data/
       - //C/Users//domccl/GitHub/smartPeak/:/home/user/code/
       # LINUX/MAC
       # - /home/systemsbiochemistry1/Documents/Data/:/home/user/Data/
