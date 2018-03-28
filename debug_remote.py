@@ -42,12 +42,12 @@ sequenceProcessor.createSequence(
 # 1. process all files
 raw_data_processing_methods = [
     "load_raw_data",
-    "load_features",
-    # "pick_features",
-    # "filter_features",
-    # "select_features",
-    # "check_features",
-    # "store_features", 
+    # "load_features",
+    "pick_features",
+    "filter_features",
+    "select_features",
+    "check_features",
+    "store_features", 
 ]
 sequenceProcessor.processSequence(
     sequenceHandler,
@@ -66,26 +66,26 @@ sequenceProcessor.processSequence(
 #     sequence_segment_processing_methods_I=sequence_segment_processing_methods,
 #     verbose_I=True)
 
-# # 3. quantify standards for QC
-# raw_data_processing_methods = [
-#     "quantify_features",
-#     "check_features",
-#     "store_features", 
-#     # "plot_features"
-# ]
-# sequenceProcessor.processSequence(
-#     sequenceHandler,
-#     raw_data_processing_methods_I=raw_data_processing_methods,
-#     verbose_I=True)
+# 3. quantify standards for QC
+raw_data_processing_methods = [
+    "quantify_features",
+    "check_features",
+    "store_features", 
+    # "plot_features"
+]
+sequenceProcessor.processSequence(
+    sequenceHandler,
+    raw_data_processing_methods_I=raw_data_processing_methods,
+    verbose_I=True)
 
-# # write out a summary of all files
-# sequenceSummary_csv_i = '''%s/SequenceSummary.csv''' % (dir_I)
-# sequenceWriter.write_dataMatrixFromMetaValue(
-#     sequenceHandler,
-#     filename=sequenceSummary_csv_i,
-#     meta_data=['calculated_concentration', 'RT'],
-#     sample_types=['Standard', 'Unknown']
-# )
+# write out a summary of all files
+sequenceSummary_csv_i = '''%s/SequenceSummary.csv''' % (dir_I)
+sequenceWriter.write_dataMatrixFromMetaValue(
+    sequenceHandler,
+    filename=sequenceSummary_csv_i,
+    meta_data=['calculated_concentration', 'RT'],
+    sample_types=['Standard', 'Unknown']
+)
 
 featureSummary_csv_i = '''%s/FeatureSummary.csv''' % (dir_I)
 sequenceWriter.write_dataTableFromMetaValue(
