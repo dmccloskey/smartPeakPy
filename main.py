@@ -38,6 +38,7 @@ def main():
         # "load_features",
         "pick_features",
         "filter_features",
+        "filter_features",
         "select_features",
         "check_features",
         "store_features", 
@@ -90,6 +91,8 @@ def main():
             "points_across_baseline", "points_across_half_height", "logSN",
             "QC_transition_message", "QC_transition_score", "calculated_concentration"],
         sample_types=['Unknown', 'Standard']
+    )
+
 
 if __name__ == "__main__":
     main()
