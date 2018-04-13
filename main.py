@@ -35,10 +35,10 @@ def main():
     # 1. process all files
     raw_data_processing_methods = [
         "load_raw_data",
-        # "load_features",
+        "load_features",
         "pick_features",
-        "filter_features",
-        "filter_features",
+        # "filter_features",
+        # "filter_features",
         "select_features",
         "check_features",
         "store_features", 
@@ -48,17 +48,17 @@ def main():
         raw_data_processing_methods_I=raw_data_processing_methods,
         verbose_I=True)
 
-    # 2. process optimize calibrators
-    sequence_segment_processing_methods = [
-        "calculate_calibration",
-        # "plot_calibrators",
-        "store_quantitation_methods",
-        # "store_components_to_concentrations"
-    ]
-    sequenceProcessor.processSequenceSegments(
-        sequenceHandler,
-        sequence_segment_processing_methods_I=sequence_segment_processing_methods,
-        verbose_I=True)
+    # # 2. process optimize calibrators
+    # sequence_segment_processing_methods = [
+    #     "calculate_calibration",
+    #     # "plot_calibrators",
+    #     "store_quantitation_methods",
+    #     # "store_components_to_concentrations"
+    # ]
+    # sequenceProcessor.processSequenceSegments(
+    #     sequenceHandler,
+    #     sequence_segment_processing_methods_I=sequence_segment_processing_methods,
+    #     verbose_I=True)
 
     # 3. quantify standards for QC
     raw_data_processing_methods = [
