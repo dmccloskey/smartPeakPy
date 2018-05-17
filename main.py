@@ -35,9 +35,9 @@ def main():
     # 1. process all files
     raw_data_processing_methods = [
         "load_raw_data",
-        "load_features",
+        # "load_features",
         "pick_features",
-        # "filter_features",
+        "filter_features",
         # "filter_features",
         "select_features",
         "check_features",
