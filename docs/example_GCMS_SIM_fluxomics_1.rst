@@ -12,7 +12,8 @@ Relative quantitation of Unknown samples by GC-MS using single ion monitoring (S
 Step 1: File conversion
 -----------------------
 1. Use proteoWizard to convert the raw data file to the open-source format .mzML (already done)
-2. Drop the converted files in the folder "mzML"
+2. Convert the file using the TOPPtool command `FileConverter -test -in input.mzML -out output.mzML  -convert_to_chromatograms`
+3. Drop the converted files in the folder "mzML"
 
 Step 2: Define the target transitions
 -------------------------------------
