@@ -36,6 +36,7 @@ raw_data_processing_methods = [
     # "load_features"
     "pick_features",
     "filter_features",
+    "filter_features",
     "select_features",
     "check_features",
     "store_features", 
