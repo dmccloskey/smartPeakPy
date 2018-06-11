@@ -272,7 +272,7 @@ class RawDataProcessor():
         MRMRFeatureValidator_params_I={},
         verbose_I=False
     ):
-        """Validate the selected peaks agains reference data
+        """Validate the selected peaks against reference data
 
         Args:
             rawDataHandler_IO (RawDataHandler): raw data file class

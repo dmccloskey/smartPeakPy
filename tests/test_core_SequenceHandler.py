@@ -160,10 +160,12 @@ class TestSequenceHandler():
         assert("sequence_csv_i" in defaults.keys())
         assert("parameters_csv_i" in defaults.keys())
         assert("traML_csv_i" in defaults.keys())
-        assert("featureFilter_csv_i" in defaults.keys())
+        assert("featureFilterComponents_csv_i" in defaults.keys())
+        assert("featureFilterComponentGroups_csv_i" in defaults.keys())
+        assert("featureQCComponents_csv_i" in defaults.keys())
+        assert("featureQCComponentGroups_csv_i" in defaults.keys())
         assert("quantitationMethods_csv_i" in defaults.keys())
         assert("standardsConcentrations_csv_i" in defaults.keys())
-        assert("featureQC_csv_i" in defaults.keys())
         assert("db_json_i" in defaults.keys())
 
     def test_getDefaultDynamicFilenames(self):

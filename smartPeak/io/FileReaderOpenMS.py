@@ -435,37 +435,45 @@ class FileReaderOpenMS():
     def load_featureFilter(
         self,
         rawDataHandler_IO,
-        featureFilter_csv_i,
+        featureFilterComponents_csv_i,
+        featureFilterComponentGroups_csv_i,
         verbose_I=False
     ):
         """Load the feature filters
         
         Args:
             rawDataHandler_IO (RawDataHandler): sample object; updated in place
-            featureFilter_csv_i (str): filename
+            featureFilterComponents_csv_i (str): filename
+            featureFilterComponentGroups_csv_i (str): filename
         
         """
         if verbose_I:
             print("Loading feature_filter")
 
         # read in the parameters for the MRMFeatureQC
-        featureQC = pyopenms.MRMFeatureQC()        
-        if featureFilter_csv_i is not None:
-            featureQCFile = pyopenms.MRMFeatureQCFile()
-            featureQCFile.load(featureFilter_csv_i.encode('utf-8'), featureQC)
+        featureQC = pyopenms.MRMFeatureQC()
+        featureQCFile = pyopenms.MRMFeatureQCFile()
+        if featureFilterComponents_csv_i is not None:
+            featureQCFile.load(
+                featureFilterComponents_csv_i.encode('utf-8'), featureQC, False)
+        if featureFilterComponentGroups_csv_i is not None:
+            featureQCFile.load(
+                featureFilterComponentGroups_csv_i.encode('utf-8'), featureQC, True)
         rawDataHandler_IO.feature_filter = featureQC
 
     def load_featureQC(
         self,
         rawDataHandler_IO,
-        featureQC_csv_i,
+        featureQCComponents_csv_i,
+        featureQCComponentGroups_csv_i,
         verbose_I=False
     ):
         """Load the feature QCs
         
         Args:
             rawDataHandler_IO (RawDataHandler): sample object; updated in place
-            featureQC_csv_i (str): filename
+            featureQCComponents_csv_i (str): filename
+            featureQCComponentGroups_csv_i (str): filename
         
         """
         if verbose_I:
@@ -474,7 +482,12 @@ class FileReaderOpenMS():
         # read in the parameters for the MRMFeatureQC
         featureQC = pyopenms.MRMFeatureQC()
         featureQCFile = pyopenms.MRMFeatureQCFile()
-        featureQCFile.load(featureQC_csv_i.encode('utf-8'), featureQC)
+        if featureQCComponents_csv_i is not None:
+            featureQCFile.load(
+                featureQCComponents_csv_i.encode('utf-8'), featureQC, False)
+        if featureQCComponentGroups_csv_i is not None:
+            featureQCFile.load(
+                featureQCComponentGroups_csv_i.encode('utf-8'), featureQC, True)
         rawDataHandler_IO.feature_qc = featureQC
 
     def read_rawDataProcessingParameters(

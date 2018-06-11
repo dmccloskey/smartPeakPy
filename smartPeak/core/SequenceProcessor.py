@@ -45,10 +45,14 @@ class SequenceProcessor():
                 rawDataHandler, sequenceHandler_IO.filenames["traML_csv_i"],
                 verbose_I=verbose_I)
             fileReaderOpenMS.load_featureFilter(
-                rawDataHandler, sequenceHandler_IO.filenames["featureFilter_csv_i"],
+                rawDataHandler, 
+                sequenceHandler_IO.filenames["featureFilterComponents_csv_i"],
+                sequenceHandler_IO.filenames["featureFilterComponentGroups_csv_i"],
                 verbose_I=verbose_I)
             fileReaderOpenMS.load_featureQC(
-                rawDataHandler, sequenceHandler_IO.filenames["featureQC_csv_i"],
+                rawDataHandler, 
+                sequenceHandler_IO.filenames["featureQCComponents_csv_i"],
+                sequenceHandler_IO.filenames["featureQCComponentGroups_csv_i"],
                 verbose_I=verbose_I)
             # raw data files (i.e., mzML, trafo, etc.,  will be loaded dynamically)
 
