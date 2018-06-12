@@ -14,7 +14,7 @@ class TestRawDataProcessor():
     def load_data(self):
         filereader = FileReaderOpenMS()
         rawDataHandler = RawDataHandler()
-        filename_params = '''%s%s''' % (data_dir, "params_1.csv")
+        filename_params = '''%s%s''' % (data_dir, "params_1_core_RawDataProcessor.csv")
         filereader.read_rawDataProcessingParameters(rawDataHandler, filename_params, ",")
         self.params_1 = rawDataHandler.getParameters()
         rawDataHandler.clear()
@@ -84,13 +84,13 @@ class TestRawDataProcessor():
         assert(rawDataHandler.featureMap[0].getSubordinates()[
             0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
         assert(rawDataHandler.featureMap[0].getSubordinates()[
-            0].getRT() == 15.894456338119507)  # refactor to use pytest.approx
+            0].getRT() == 953.5960553210974)  # refactor to use pytest.approx
         assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getMetaValue("peak_apex_int") == 640.0)
+            0].getMetaValue("peak_apex_int") == 46211.0)
         assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getMetaValue("native_id") == b'acon-C.acon-C_1.Heavy')
+            0].getMetaValue("native_id") == b'Pool_2pg_3pg.Pool_2pg_3pg_1.Heavy')
         assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getRT() == 14.034880456034344)
+            0].getRT() == 1176.249879005432)
 
         # # Previous:
         # assert(rawDataHandler.featureMap[0].getSubordinates()[
@@ -150,13 +150,13 @@ class TestRawDataProcessor():
         assert(rawDataHandler.featureMap[0].getSubordinates()[
             0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
         assert(rawDataHandler.featureMap[0].getSubordinates()[
-            0].getRT() == 15.8944563381195)  # refactor to use pytest.approx
+            0].getRT() == 953.596055321097)  # refactor to use pytest.approx
         assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getMetaValue("peak_apex_int") == 198161.0)
+            0].getMetaValue("peak_apex_int") == 13115.0)
         assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getMetaValue("native_id") == b'glutacon.glutacon_1.Heavy')
+            0].getMetaValue("native_id") == b'itp.itp_1.Heavy')
         assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getRT() == 12.546641343689)
+            0].getRT() == 952.674049445629)
 
         # store
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_2_core_RawDataProcessor") 
@@ -174,7 +174,8 @@ class TestRawDataProcessor():
         fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
         
         # load in the validation data 
-        referenceData_csv_i = '''%s%s''' % (data_dir, "referenceData_1.csv")
+        referenceData_csv_i = '''%s%s''' % (
+            data_dir, "referenceData_1_core_RawDataProcessor.csv")
         ReferenceDataMethods_params_I = []
         ReferenceDataMethods_params_I.extend(self.params_1[
             'ReferenceDataMethods.getAndProcess_referenceData_samples'])
@@ -192,7 +193,7 @@ class TestRawDataProcessor():
         rawDataProcessor.validateFeatures(
             rawDataHandler, self.params_1[
                 'MRMFeatureValidator.validate_MRMFeatures'])
-        assert(rawDataHandler.validation_metrics["accuracy"] == 0.98709677419354835)
+        assert(rawDataHandler.validation_metrics["accuracy"] == 0.98275862068965514)
 
     def test_quantifyComponents(self):
         rawDataHandler = RawDataHandler()
@@ -364,10 +365,10 @@ class TestRawDataProcessor():
         assert(rawDataHandler.featureMap[0].getSubordinates()[
             0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
         assert(rawDataHandler.featureMap[0].getSubordinates()[
-            0].getRT() == 15.894456338119507)  # refactor to use pytest.approx
+            0].getRT() == 953.596055321097)  # refactor to use pytest.approx
         assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getMetaValue("peak_apex_int") == 198161.0)
+            0].getMetaValue("peak_apex_int") == 13115.0)
         assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getMetaValue("native_id") == b'glutacon.glutacon_1.Heavy')
+            0].getMetaValue("native_id") == b'itp.itp_1.Heavy')
         assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getRT() == 12.546641343688965)
+            0].getRT() == 952.674049445629)

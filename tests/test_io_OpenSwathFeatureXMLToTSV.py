@@ -18,7 +18,7 @@ class TestOpenSwathFeatureXMLToTSV():
     
     def load_data(
         self,
-        featureXML_i="features/test_1.featureXML",
+        featureXML_i="features/test_1_algorithm_MRMFeatureValidator.featureXML",
         traML_csv_i="traML_1.csv"
     ):
         """load the test data"""        

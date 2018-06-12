@@ -16,7 +16,7 @@ class TestFileWriterOpenMS():
         fileWriterOpenMS = FileWriterOpenMS()        
 
         # load featureMap
-        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
+        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1_io_FileReaderOpenMS") 
         fileReaderOpenMS.load_featureMap(sampleHandler, featureXML_o)
 
         # load traML

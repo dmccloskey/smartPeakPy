@@ -92,12 +92,18 @@ class TestSequenceProcessor():
             'sequence_csv_i': '''%s%s''' % (data_dir, "sequence_1.csv"),
             'parameters_csv_i': '''%s%s''' % (data_dir, "params_1.csv"),
             'traML_csv_i': '''%s%s''' % (data_dir, "traML_1.csv"),
-            'featureFilter_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
+            'featureFilterComponents_csv_i': '''%s%s''' % (
+                data_dir, "mrmfeatureqccomponents_1.csv"),
+            'featureFilterComponentGroups_csv_i': '''%s%s''' % (
+                data_dir, "mrmfeatureqccomponentgroups_1.csv"),
+            'featureQCComponents_csv_i': '''%s%s''' % (
+                data_dir, "mrmfeatureqccomponents_1.csv"),
+            'featureQCComponentGroups_csv_i': '''%s%s''' % (
+                data_dir, "mrmfeatureqccomponentgroups_1.csv"),
             'quantitationMethods_csv_i': '''%s%s''' % (
                 data_dir, "quantitationMethods_1.csv"),
             'standardsConcentrations_csv_i': '''%s%s''' % (
                 data_dir, "standardsConcentrations_1.csv"),
-            'featureQC_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
             }
 
         sequenceHandler.setFilenames(filenames)
@@ -135,12 +141,18 @@ class TestSequenceProcessor():
             'sequence_csv_i': '''%s%s''' % (data_dir, "sequence_1.csv"),
             'parameters_csv_i': '''%s%s''' % (data_dir, "params_1.csv"),
             'traML_csv_i': '''%s%s''' % (data_dir, "traML_1.csv"),
-            'featureFilter_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
+            'featureFilterComponents_csv_i': '''%s%s''' % (
+                data_dir, "mrmfeatureqccomponents_1.csv"),
+            'featureFilterComponentGroups_csv_i': '''%s%s''' % (
+                data_dir, "mrmfeatureqccomponentgroups_1.csv"),
+            'featureQCComponents_csv_i': '''%s%s''' % (
+                data_dir, "mrmfeatureqccomponents_1.csv"),
+            'featureQCComponentGroups_csv_i': '''%s%s''' % (
+                data_dir, "mrmfeatureqccomponentgroups_1.csv"),
             'quantitationMethods_csv_i': '''%s%s''' % (
                 data_dir, "quantitationMethods_1.csv"),
             'standardsConcentrations_csv_i': '''%s%s''' % (
                 data_dir, "standardsConcentrations_1.csv"),
-            'featureQC_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
             }
 
         sequenceHandler.setFilenames(filenames)
@@ -167,12 +179,18 @@ class TestSequenceProcessor():
             'sequence_csv_i': '''%s%s''' % (data_dir, "sequence_1.csv"),
             'parameters_csv_i': '''%s%s''' % (data_dir, "params_1.csv"),
             'traML_csv_i': '''%s%s''' % (data_dir, "traML_1.csv"),
-            'featureFilter_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
+            'featureFilterComponents_csv_i': '''%s%s''' % (
+                data_dir, "mrmfeatureqccomponents_1.csv"),
+            'featureFilterComponentGroups_csv_i': '''%s%s''' % (
+                data_dir, "mrmfeatureqccomponentgroups_1.csv"),
+            'featureQCComponents_csv_i': '''%s%s''' % (
+                data_dir, "mrmfeatureqccomponents_1.csv"),
+            'featureQCComponentGroups_csv_i': '''%s%s''' % (
+                data_dir, "mrmfeatureqccomponentgroups_1.csv"),
             'quantitationMethods_csv_i': '''%s%s''' % (
                 data_dir, "quantitationMethods_1.csv"),
             'standardsConcentrations_csv_i': '''%s%s''' % (
                 data_dir, "standardsConcentrations_1.csv"),
-            'featureQC_csv_i': '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv"),
             }
 
         sequenceHandler.setFilenames(filenames)

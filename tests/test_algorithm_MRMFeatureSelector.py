@@ -17,7 +17,8 @@ class TestMRMFeatureSelector():
         self,
         featureXML_i="features/150601_0_BloodProject01_PLT_QC_Broth-1_1.featureXML",
         traML_csv_i="BloodProject01_SWATH.csv",
-        mrmfeatureqcs_csv_i="test_pyTOPP_MRMFeatureQCFile.csv",
+        mrmfeatureqccomponents_csv_i="test_pyTOPP_MRMFeatureQCComponents.csv",
+        mrmfeatureqccomponentgroupss_csv_i="test_pyTOPP_MRMFeatureQCComponentGroups.csv",
         filename_params="test_pyTOPP_MRMFeatureSelector_params.csv"
     ):
         """load the test data"""                   
@@ -55,10 +56,12 @@ class TestMRMFeatureSelector():
         featureFilter.setParameters(parameters) 
 
         # read in the parameters for the MRMFeatureQC
-        mrmfeatureqcs_csv_i = data_dir + "/" + mrmfeatureqcs_csv_i
+        mrmfeatureqccomponents_csv_i = data_dir + "/" + mrmfeatureqccomponents_csv_i
+        mrmfeatureqccomponentgroups_csv_i = data_dir + "/" + mrmfeatureqccomponentgroups_csv_i
         featureQC = pyopenms.MRMFeatureQC()
         featureQCFile = pyopenms.MRMFeatureQCFile()
-        featureQCFile.load(mrmfeatureqcs_csv_i.encode('utf-8'), featureQC)
+        featureQCFile.load(mrmfeatureqccomponents_csv_i.encode('utf-8'), featureQC, False)
+        featureQCFile.load(mrmfeatureqccomponentgroups_csv_i.encode('utf-8'), featureQC, True)
         self.featureQC = featureQC  
 
     def test_schedule_MRMFeatures_qmip(self):  
