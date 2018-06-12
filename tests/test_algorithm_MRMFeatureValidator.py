@@ -13,7 +13,7 @@ class TestMRMFeatureValidator():
     
     def load_data(
         self,
-        featureXML_i="features/test_2.featureXML",
+        featureXML_i="features/test_1_algorithm_MRMFeatureValidator.featureXML",
         referenceData_csv_i="referenceData_1.csv",
         filename_params="test_pyTOPP_MRMFeatureValidator_params.csv"
     ):
