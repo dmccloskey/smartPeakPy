@@ -128,8 +128,9 @@ def runAllTests():
     from tests.test_core_RawDataProcessor import TestRawDataProcessor
     test = TestRawDataProcessor()
     test.test_extract_metaData()
-    # test.test_pickFeatures()  #[NOTE: broken due to implicit conversion in MzMLHandlerHelper; waiting on fix]
-    # test.test_filterAndSelect()
+    test.test_pickFeatures()
+    test.test_filterFeatures()
+    test.test_selectFeatures()
     test.test_validateFeatures()
     test.test_quantifyComponents()
     test.test_checkFeatures()
@@ -177,6 +178,6 @@ def runAllTests():
     # test.test_main_LCMS_MRM_Unknown()
     # test.test_main_GCMS_SIM_Unknown()
     # test.test_main_GCMS_FullScan_Unknown()  # TODO: problematic extraction of the chromatograms
-    # test.test_main_HPLC_UV_Standards()  # TODO: bug in thresholds
+    # test.test_main_HPLC_UV_Standards()
     # test.test_main_HPLC_UV_Unknown()
-    # test.test_main_LCMS_MRM_Standards()  # TODO: optimize calibrator fitting
+    # test.test_main_LCMS_MRM_Standards()
