@@ -39,18 +39,6 @@ class testMain():
             fm1[50].getSubordinates()[0].getRT() == 
             fm2[50].getSubordinates()[0].getRT())
 
-        # # TODO: why is this not working?
-        # assert(filecmp.cmp(
-        #     example_dir + 'LCMS_MRM_Unknowns/features/170808_Jonathan_yeast_Sacc1_1x.featureXML',
-        #     example_dir + 'LCMS_MRM_Unknowns/features/170808_Jonathan_yeast_Sacc1_1x_test.featureXML',
-        #     shallow=False
-        #     ))
-        # assert(filecmp.cmp(
-        #     example_dir + 'LCMS_MRM_Unknowns/SequenceSummary.csv',
-        #     example_dir + 'LCMS_MRM_Unknowns/SequenceSummary_test.csv',
-        #     shallow=False
-        #     ))
-
     def test_main_GCMS_SIM_Unknown(self):
         """Test GCMS SIM Unknowns example"""
         print("running test_main_GCMS_SIM_Unknown")
@@ -81,18 +69,6 @@ class testMain():
         assert(
             fm1[15].getSubordinates()[0].getRT() == 
             fm2[15].getSubordinates()[0].getRT())
-        
-        # # TODO: why is this not working?
-        # assert(filecmp.cmp(
-        #     example_dir + 'GCMS_SIM/features/GCMS_SIM.featureXML',
-        #     example_dir + 'GCMS_SIM/features/GCMS_SIM_test.featureXML',
-        #     shallow=False
-        #     ))
-        # assert(filecmp.cmp(
-        #     example_dir + 'GCMS_SIM/SequenceSummary.csv',
-        #     example_dir + 'GCMS_SIM/SequenceSummary_test.csv',
-        #     shallow=False
-        #     ))
 
     def test_main_GCMS_FullScan_Unknown(self):
         """Test GCMS FullScan Unknowns example"""

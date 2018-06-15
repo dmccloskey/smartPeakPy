@@ -14,7 +14,7 @@ class TestRawDataProcessor():
     def load_data(self):
         filereader = FileReaderOpenMS()
         rawDataHandler = RawDataHandler()
-        filename_params = '''%s%s''' % (data_dir, "params_1.csv")
+        filename_params = '''%s%s''' % (data_dir, "params_1_core_RawDataProcessor.csv")
         filereader.read_rawDataProcessingParameters(rawDataHandler, filename_params, ",")
         self.params_1 = rawDataHandler.getParameters()
         rawDataHandler.clear()
@@ -84,20 +84,20 @@ class TestRawDataProcessor():
         assert(rawDataHandler.featureMap[0].getSubordinates()[
             0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
         assert(rawDataHandler.featureMap[0].getSubordinates()[
-            0].getRT() == 15.894456338119507)  # refactor to use pytest.approx
+            0].getRT() == 953.665693772912)  # refactor to use pytest.approx
         assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getMetaValue("peak_apex_int") == 640.0)
+            0].getMetaValue("peak_apex_int") == 0.0)
         assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getMetaValue("native_id") == b'acon-C.acon-C_1.Heavy')
+            0].getMetaValue("native_id") == b'accoa.accoa_1.Heavy')
         assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getRT() == 14.034880456034344)
+            0].getRT() == 1067.5447296543123)
 
         # store
-        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
-        feature_csv_o = '''%s/features/%s.csv''' % (data_dir, "test_1")
+        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1_core_RawDataProcessor") 
+        feature_csv_o = '''%s/features/%s.csv''' % (data_dir, "test_1_core_RawDataProcessor")
         fileWriterOpenMS.store_featureMap(rawDataHandler, featureXML_o, feature_csv_o)
 
-    def test_filterAndSelect(self):
+    def test_filterFeatures(self):
         self.load_data()
         rawDataHandler = RawDataHandler()
         rawDataProcessor = RawDataProcessor()
@@ -117,18 +117,62 @@ class TestRawDataProcessor():
         rawDataProcessor.extract_metaData(rawDataHandler)
 
         # load featureMap
-        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
+        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1_core_RawDataProcessor") 
         fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
 
         # filter and select
-        featureFilter_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+        featureFilterComponents_csv_i = '''%s%s''' % (
+            data_dir, "mrmfeatureqccomponents_1.csv")
+        featureFilterComponentGroups_csv_i = '''%s%s''' % (
+            data_dir, "mrmfeatureqccomponentgroups_1.csv")
         fileReaderOpenMS.load_featureFilter(
-            rawDataHandler,
-            featureFilter_csv_i
-            )
+            rawDataHandler, featureFilterComponents_csv_i,
+            featureFilterComponentGroups_csv_i)
         rawDataProcessor.filterFeatures(
             rawDataHandler,
             self.params_1['MRMFeatureFilter.filter_MRMFeatures'])
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
+            0].getMetaValue("peak_apex_int") == 266403.0)
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
+            0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
+            0].getRT() == 953.665693772912)  # refactor to use pytest.approx
+        assert(rawDataHandler.featureMap[50].getSubordinates()[
+            0].getMetaValue("peak_apex_int") == 49333.0)
+        assert(rawDataHandler.featureMap[50].getSubordinates()[
+            0].getMetaValue("native_id") == b'arg-L.arg-L_1.Heavy')
+        assert(rawDataHandler.featureMap[50].getSubordinates()[
+            0].getRT() == 46.6521683373451)
+
+        # store
+        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_2_core_RawDataProcessor") 
+        feature_csv_o = '''%s/features/%s.csv''' % (data_dir, "test_2_core_RawDataProcessor")
+        fileWriterOpenMS.store_featureMap(rawDataHandler, featureXML_o, feature_csv_o)
+
+    def test_selectFeatures(self):
+        self.load_data()
+        rawDataHandler = RawDataHandler()
+        rawDataProcessor = RawDataProcessor()
+        fileReaderOpenMS = FileReaderOpenMS()
+        fileWriterOpenMS = FileWriterOpenMS()
+        
+        # load traML
+        traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
+        fileReaderOpenMS.load_TraML(rawDataHandler, traML_csv_i)
+
+        # load MSExperiment
+        mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
+        fileReaderOpenMS.load_MSExperiment(
+            rawDataHandler, mzML_i,
+            MRMMapping_params_I=self.params_1['MRMMapping'])
+        
+        rawDataProcessor.extract_metaData(rawDataHandler)
+
+        # load featureMap
+        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_2_core_RawDataProcessor") 
+        fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
+
+        # select
         rawDataProcessor.selectFeatures(
             rawDataHandler,
             self.params_1['MRMFeatureSelector.select_MRMFeatures_qmip'],
@@ -138,17 +182,17 @@ class TestRawDataProcessor():
         assert(rawDataHandler.featureMap[0].getSubordinates()[
             0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
         assert(rawDataHandler.featureMap[0].getSubordinates()[
-            0].getRT() == 15.8944563381195)  # refactor to use pytest.approx
+            0].getRT() == 953.665693772912)  # refactor to use pytest.approx
         assert(rawDataHandler.featureMap[50].getSubordinates()[
             0].getMetaValue("peak_apex_int") == 198161.0)
         assert(rawDataHandler.featureMap[50].getSubordinates()[
             0].getMetaValue("native_id") == b'glutacon.glutacon_1.Heavy')
         assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getRT() == 12.546641343689)
+            0].getRT() == 752.796003723621)
 
         # store
-        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_2") 
-        feature_csv_o = '''%s/features/%s.csv''' % (data_dir, "test_2")
+        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_3_core_RawDataProcessor") 
+        feature_csv_o = '''%s/features/%s.csv''' % (data_dir, "test_3_core_RawDataProcessor")
         fileWriterOpenMS.store_featureMap(rawDataHandler, featureXML_o, feature_csv_o)
 
     def test_validateFeatures(self):        
@@ -158,11 +202,12 @@ class TestRawDataProcessor():
         fileReaderOpenMS = FileReaderOpenMS()
 
         # load featureMap
-        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_2")
+        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_3_core_RawDataProcessor")
         fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
         
         # load in the validation data 
-        referenceData_csv_i = '''%s%s''' % (data_dir, "referenceData_1.csv")
+        referenceData_csv_i = '''%s%s''' % (
+            data_dir, "referenceData_1_core_RawDataProcessor.csv")
         ReferenceDataMethods_params_I = []
         ReferenceDataMethods_params_I.extend(self.params_1[
             'ReferenceDataMethods.getAndProcess_referenceData_samples'])
@@ -195,7 +240,7 @@ class TestRawDataProcessor():
             quantitationMethods_csv_i)
 
         # load featureMap
-        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_2") 
+        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_3_core_RawDataProcessor") 
         fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
 
         # quantify the components
@@ -218,14 +263,16 @@ class TestRawDataProcessor():
         fileReaderOpenMS.load_TraML(rawDataHandler, traML_csv_i)
 
         # load featureMap
-        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_2") 
+        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_3_core_RawDataProcessor") 
         fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
 
-        featureQC_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+        featureQCComponents_csv_i = '''%s%s''' % (
+            data_dir, "mrmfeatureqccomponents_1.csv")
+        featureQCComponentGroups_csv_i = '''%s%s''' % (
+            data_dir, "mrmfeatureqccomponentgroups_1.csv")
         fileReaderOpenMS.load_featureQC(
-            rawDataHandler,
-            featureQC_csv_i
-            )
+            rawDataHandler, featureQCComponents_csv_i,
+            featureQCComponentGroups_csv_i)
         rawDataProcessor.checkFeatures(
             rawDataHandler,
             self.params_1['MRMFeatureFilter.filter_MRMFeatures.qc'])
@@ -247,8 +294,10 @@ class TestRawDataProcessor():
                 "select_features",
                 "quantify_features",
                 "check_features"]
-        assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow("Unknown") == workflow)
-        assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow("Standard") == workflow)
+        assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow(
+            "Unknown") == workflow)
+        assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow(
+            "Standard") == workflow)
         assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow("QC") == workflow)
         assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow("Blank") == workflow)
         workflow = [
@@ -257,8 +306,10 @@ class TestRawDataProcessor():
                 "filter_features",
                 "select_features",
                 "check_features"]
-        assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow("Double Blank") == workflow)
-        assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow("Solvent") == workflow)
+        assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow(
+            "Double Blank") == workflow)
+        assert(rawDataProcessor.getDefaultRawDataProcessingWorkflow(
+            "Solvent") == workflow)
 
     def test_checkRawDataProcessingWorkflow(self):
         rawDataProcessor = RawDataProcessor()
@@ -274,7 +325,8 @@ class TestRawDataProcessor():
             "check_features",
             "plot_features",
             "store_features"]
-        assert(rawDataProcessor.checkRawDataProcessingWorkflow(raw_data_processing_methods))
+        assert(rawDataProcessor.checkRawDataProcessingWorkflow(
+            raw_data_processing_methods))
 
         raw_data_processing_methods = ["load_features"]
         assert(~rawDataProcessor.checkRawDataProcessingWorkflow(
@@ -289,21 +341,28 @@ class TestRawDataProcessor():
         # load files
         traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
         fileReaderOpenMS.load_TraML(rawDataHandler, traML_csv_i)
-        featureFilter_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+
+        featureFilterComponents_csv_i = '''%s%s''' % (
+            data_dir, "mrmfeatureqccomponents_1.csv")
+        featureFilterComponentGroups_csv_i = '''%s%s''' % (
+            data_dir, "mrmfeatureqccomponentgroups_1.csv")
         fileReaderOpenMS.load_featureFilter(
-            rawDataHandler,
-            featureFilter_csv_i
-            )
+            rawDataHandler, featureFilterComponents_csv_i,
+            featureFilterComponentGroups_csv_i)
+
         quantitationMethods_csv_i = '''%s%s''' % (
             data_dir, "quantitationMethods_1.csv")
         fileReaderOpenMS.load_quantitationMethods(
             rawDataHandler,
             quantitationMethods_csv_i)
-        featureQC_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
+
+        featureQCComponents_csv_i = '''%s%s''' % (
+            data_dir, "mrmfeatureqccomponents_1.csv")
+        featureQCComponentGroups_csv_i = '''%s%s''' % (
+            data_dir, "mrmfeatureqccomponentgroups_1.csv")
         fileReaderOpenMS.load_featureQC(
-            rawDataHandler,
-            featureQC_csv_i
-            )
+            rawDataHandler, featureQCComponents_csv_i,
+            featureQCComponentGroups_csv_i)
 
         # test all
         raw_data_processing_events = [
@@ -338,10 +397,10 @@ class TestRawDataProcessor():
         assert(rawDataHandler.featureMap[0].getSubordinates()[
             0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
         assert(rawDataHandler.featureMap[0].getSubordinates()[
-            0].getRT() == 15.894456338119507)  # refactor to use pytest.approx
-        assert(rawDataHandler.featureMap[50].getSubordinates()[
+            0].getRT() == 953.665693772912)  # refactor to use pytest.approx
+        assert(rawDataHandler.featureMap[49].getSubordinates()[
             0].getMetaValue("peak_apex_int") == 198161.0)
-        assert(rawDataHandler.featureMap[50].getSubordinates()[
+        assert(rawDataHandler.featureMap[49].getSubordinates()[
             0].getMetaValue("native_id") == b'glutacon.glutacon_1.Heavy')
-        assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getRT() == 12.546641343688965)
+        assert(rawDataHandler.featureMap[49].getSubordinates()[
+            0].getRT() == 752.7960037236212)

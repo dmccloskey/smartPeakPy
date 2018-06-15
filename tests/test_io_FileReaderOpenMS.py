@@ -115,7 +115,7 @@ class TestFileReaderOpenMS():
         fileReaderOpenMS = FileReaderOpenMS()
 
         # load featureMap
-        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1") 
+        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1_io_FileReaderOpenMS") 
         fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
 
         assert(rawDataHandler.featureMap[0].getSubordinates()[
@@ -125,7 +125,7 @@ class TestFileReaderOpenMS():
         assert(rawDataHandler.featureMap[0].getSubordinates()[
             0].getRT() == 15.8944563381195)  # refactor to use pytest.approx
         assert(rawDataHandler.featureMap[50].getSubordinates()[
-            0].getMetaValue("peak_apex_int") == 0.0)
+            0].getMetaValue("peak_apex_int") == 640.0)  # [NOTE: was 0.0]
         assert(rawDataHandler.featureMap[50].getSubordinates()[
             0].getMetaValue("native_id") == b'acon-C.acon-C_1.Heavy')
         assert(rawDataHandler.featureMap[50].getSubordinates()[
@@ -174,8 +174,13 @@ class TestFileReaderOpenMS():
         fileReaderOpenMS = FileReaderOpenMS()
 
         # load traML
-        featureFiltercsv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
-        fileReaderOpenMS.load_featureFilter(rawDataHandler, featureFiltercsv_i)
+        featureFilterComponents_csv_i = '''%s%s''' % (
+            data_dir, "mrmfeatureqccomponents_1.csv")
+        featureFilterComponentGroups_csv_i = '''%s%s''' % (
+            data_dir, "mrmfeatureqccomponentgroups_1.csv")
+        fileReaderOpenMS.load_featureFilter(
+            rawDataHandler, featureFilterComponents_csv_i,
+            featureFilterComponentGroups_csv_i)
         assert(rawDataHandler.feature_filter.component_qcs[
             0].component_name == b'arg-L.arg-L_1.Heavy')
         assert(rawDataHandler.feature_filter.component_group_qcs[
@@ -186,8 +191,13 @@ class TestFileReaderOpenMS():
         fileReaderOpenMS = FileReaderOpenMS()
 
         # load traML
-        featureQC_csv_i = '''%s%s''' % (data_dir, "mrmfeatureqcs_1.csv")
-        fileReaderOpenMS.load_featureQC(rawDataHandler, featureQC_csv_i)
+        featureQCComponents_csv_i = '''%s%s''' % (
+            data_dir, "mrmfeatureqccomponents_1.csv")
+        featureQCComponentGroups_csv_i = '''%s%s''' % (
+            data_dir, "mrmfeatureqccomponentgroups_1.csv")
+        fileReaderOpenMS.load_featureQC(
+            rawDataHandler, featureQCComponents_csv_i,
+            featureQCComponentGroups_csv_i)
         assert(rawDataHandler.feature_qc.component_qcs[
             0].component_name == b'arg-L.arg-L_1.Heavy')
         assert(rawDataHandler.feature_qc.component_group_qcs[

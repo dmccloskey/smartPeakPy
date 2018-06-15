@@ -93,12 +93,18 @@ class SequenceHandler():
             'sequence_csv_i': '''%s/%s''' % (dir_I, "sequence.csv"),
             'parameters_csv_i': '''%s/%s''' % (dir_I, "parameters.csv"),
             'traML_csv_i': '''%s/%s''' % (dir_I, "traML.csv"),
-            'featureFilter_csv_i': '''%s/%s''' % (dir_I, "featureFilters.csv"),
+            'featureFilterComponents_csv_i': '''%s/%s''' % (
+                dir_I, "featureFilterComponents.csv"),
+            'featureFilterComponentGroups_csv_i': '''%s/%s''' % (
+                dir_I, "featureFilterComponentGroups.csv"),
+            'featureQCComponents_csv_i': '''%s/%s''' % (
+                dir_I, "featureQCComponents.csv"),
+            'featureQCComponentGroups_csv_i': '''%s/%s''' % (
+                dir_I, "featureQCComponentGroups.csv"),
             'quantitationMethods_csv_i': '''%s/%s''' % (
                 dir_I, "quantitationMethods.csv"),
             'standardsConcentrations_csv_i': '''%s/%s''' % (
                 dir_I, "standardsConcentrations.csv"),
-            'featureQC_csv_i': '''%s/%s''' % (dir_I, "featureQCs.csv"),
             'db_json_i': '''%s/%s''' % (dir_I, "db.json")
             }
         return filenames
