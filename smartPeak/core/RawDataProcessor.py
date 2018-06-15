@@ -110,6 +110,26 @@ class RawDataProcessor():
                 )
             featureFilter.setParameters(parameters)   
 
+            # # 1: filter out components
+            # feature_filter = copy.copy(rawDataHandler_IO.feature_filter)
+            # feature_filter.component_group_qcs = []
+
+            # output_filtered = copy.copy(rawDataHandler_IO.featureMap)
+            # featureFilter.FilterFeatureMap(
+            #     output_filtered,
+            #     feature_filter,
+            #     rawDataHandler_IO.targeted)
+
+            # # 2: filter out component groups
+            # feature_filter = copy.copy(rawDataHandler_IO.feature_filter)
+            # feature_filter.component_qcs = []
+
+            # output_filtered = copy.copy(rawDataHandler_IO.featureMap)
+            # featureFilter.FilterFeatureMap(
+            #     output_filtered,
+            #     feature_filter,
+            #     rawDataHandler_IO.targeted)
+
             output_filtered = copy.copy(rawDataHandler_IO.featureMap)
             featureFilter.FilterFeatureMap(
                 output_filtered,

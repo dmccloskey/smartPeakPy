@@ -403,4 +403,4 @@ class TestRawDataProcessor():
         assert(rawDataHandler.featureMap[49].getSubordinates()[
             0].getMetaValue("native_id") == b'glutacon.glutacon_1.Heavy')
         assert(rawDataHandler.featureMap[49].getSubordinates()[
-            0].getRT() == 752.796003723621)
+            0].getRT() == 752.7960037236212)

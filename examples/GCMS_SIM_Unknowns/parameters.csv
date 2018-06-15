@@ -20,7 +20,7 @@ MRMFeatureFinderScoring,TransitionGroupPicker:resample_boundary,float,0.05,15,,F
 MRMFeatureFinderScoring,TransitionGroupPicker:compute_peak_quality,string,FALSE,FALSE,,Tries to compute a quality value for each peakgroup and detect outlier transitions. The resulting score is centered around zero and values above 0 are generally good and below -1 or -2 are usually bad.,TRUE,,
 MRMFeatureFinderScoring,TransitionGroupPicker:compute_peak_shape_metrics,string,TRUE,FALSE,,"Calulates various peak shape metrics (e.g., tailing) that can be used for downstream QC/QA.",TRUE,,
 MRMFeatureFinderScoring,TransitionGroupPicker:boundary_selection_method,string,largest,largest,largest;widest,Method to use when selecting the best boundaries for peaks.,TRUE,,
-MRMFeatureFinderScoring,TransitionGroupPicker:use_consensus,string,FALSE,TRUE,true; false,"Use consensus peak boundaries when computing transition group picking (if false, compute independent peak boundaries for each transition)",TRUE,,
+MRMFeatureFinderScoring,TransitionGroupPicker:use_consensus,string,TRUE,TRUE,true; false,"Use consensus peak boundaries when computing transition group picking (if false, compute independent peak boundaries for each transition)",TRUE,,
 MRMFeatureFinderScoring,TransitionGroupPicker:PeakPickerMRM:sgolay_frame_length,int,15,15,,The number of subsequent data points used for smoothing.  This number has to be uneven. If it is not; 1 will be added.,TRUE,,
 MRMFeatureFinderScoring,TransitionGroupPicker:PeakPickerMRM:sgolay_polynomial_order,int,3,3,,Order of the polynomial that is fitted.,TRUE,,
 MRMFeatureFinderScoring,TransitionGroupPicker:PeakPickerMRM:gauss_width,float,6,50,,Gaussian width in seconds; estimated peak size.,TRUE,360,

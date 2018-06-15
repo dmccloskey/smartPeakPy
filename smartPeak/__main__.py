@@ -41,6 +41,7 @@ class __main__():
             # "load_features",
             "pick_features",
             "filter_features",
+            "filter_features",
             "select_features",
             # "validate_features",
             "quantify_features",
@@ -49,10 +50,11 @@ class __main__():
             # "plot_features"
         ]
 
-        # # process all files
+        # # load and plot all files
         # raw_data_processing_methods = [
         #     "load_raw_data",
-        #     "load_features",
+        #     "load_features", 
+        #     "plot_features"
         # ]
         sequenceProcessor.processSequence(
             sequenceHandler,
@@ -114,6 +116,7 @@ class __main__():
         # 1. process all files
         raw_data_processing_methods = [
             "load_raw_data",
+            # "load_features", 
             "pick_features",
             "filter_features",
             "filter_features",
@@ -122,16 +125,6 @@ class __main__():
             "store_features", 
             # "plot_features"
         ]
-        # raw_data_processing_methods = [
-        #     "load_raw_data",
-        #     "load_features",
-        #     "filter_features",
-        #     "check_features",
-        #     "store_features", 
-        #     # "quantify_features",
-        #     # "store_features", 
-        #     # "plot_features"
-        # ]
         sequenceProcessor.processSequence(
             sequenceHandler,
             raw_data_processing_methods_I=raw_data_processing_methods,
@@ -152,17 +145,18 @@ class __main__():
 
         # 3. quantify standards for QC
         raw_data_processing_methods = [
-            # "load_raw_data",
-            # "load_features",
-            # "pick_features",
-            # "filter_features",
-            # "select_features",
-            # "validate_features",
             "quantify_features",
             "check_features",
             "store_features", 
             # "plot_features"
-        ]
+        ]        
+
+        # # load and plot all files
+        # raw_data_processing_methods = [
+        #     "load_raw_data",
+        #     "load_features", 
+        #     "plot_features"
+        # ]
         sequenceProcessor.processSequence(
             sequenceHandler,
             raw_data_processing_methods_I=raw_data_processing_methods,
