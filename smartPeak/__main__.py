@@ -116,14 +116,14 @@ class __main__():
         # 1. process all files
         raw_data_processing_methods = [
             "load_raw_data",
-            # "load_features", 
-            "pick_features",
-            "filter_features",
-            "filter_features",
-            "select_features",
-            "check_features",
-            "store_features", 
-            # "plot_features"
+            "load_features", 
+            # "pick_features",
+            # "filter_features",
+            # "filter_features",
+            # "select_features",
+            # "check_features",
+            # "store_features", 
+            # # "plot_features"
         ]
         sequenceProcessor.processSequence(
             sequenceHandler,
@@ -168,7 +168,7 @@ class __main__():
             sequenceHandler,
             filename=sequenceSummary_csv_i,
             meta_data=['calculated_concentration'],
-            sample_types=['Standard']
+            sample_types=['Standard', 'Uknown']
         )
 
     def example_LCMS_MRM_Validation(
