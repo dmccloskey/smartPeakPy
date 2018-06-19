@@ -246,13 +246,44 @@ class testMain():
             fm1[50].getSubordinates()[0].getRT() == 
             fm2[50].getSubordinates()[0].getRT())
 
-    def test_main_HPLC_FLD_Unknowns(self):
-        """Test HPLC_FLD example with standard and unknown sample types"""
-        print("running test_main_HPLC_FLD_Unknowns")
+    def test_main_HPLC_FLD_Emission1_StandardsAndUnknowns(self):
+        """Test HPLC_FLD example with standard and unknown sample types for FLD Emission 1"""
+        print("running test_main_HPLC_FLD_Emission1_StandardsAndUnknowns")
         m = __main__()
         
         m.example_LCMS_MRM_Standards(
-            dir_I=example_dir + 'HPLC_FLD_Unknowns',
+            dir_I=example_dir + 'HPLC_FLD_Emission1_StandardsAndUnknowns',
+            delimiter=',',
+            )
+
+        # [TODO: update]
+        # rawDataHandler = RawDataHandler()
+        # fileReaderOpenMS = FileReaderOpenMS()
+        # fileReaderOpenMS.load_featureMap(
+        #     rawDataHandler, example_dir + 
+        #     'HPLC_UV_Standards/features/100ug.featureXML')
+        # fm1 = rawDataHandler.featureMap
+        # fileReaderOpenMS.load_featureMap(
+        #     rawDataHandler, example_dir + 
+        #     'HPLC_UV_Standards/features/100ug_test.featureXML')
+        # fm2 = rawDataHandler.featureMap
+        # assert(
+        #     fm1[0].getSubordinates()[0].getMetaValue("native_id") == 
+        #     fm2[0].getSubordinates()[0].getMetaValue("native_id"))
+        # assert(
+        #     fm1[0].getSubordinates()[0].getMetaValue("peak_apex_int") == 
+        #     fm2[0].getSubordinates()[0].getMetaValue("peak_apex_int"))
+        # assert(
+        #     fm1[0].getSubordinates()[0].getRT() == 
+        #     fm2[0].getSubordinates()[0].getRT())
+
+    def test_main_HPLC_FLD_Emission2_StandardsAndUnknowns(self):
+        """Test HPLC_FLD example with standard and unknown sample types for FLD Emission 2"""
+        print("running test_main_HPLC_FLD_Emission2_StandardsAndUnknowns")
+        m = __main__()
+        
+        m.example_LCMS_MRM_Standards(
+            dir_I=example_dir + 'HPLC_FLD_Emission2_StandardsAndUnknowns',
             delimiter=',',
             )
 

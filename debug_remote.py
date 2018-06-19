@@ -22,4 +22,4 @@ m = __main__()
 
 from tests.test_main import testMain
 test = testMain()
-test.test_main_HPLC_FLD_Unknowns()
+test.test_main_HPLC_FLD_Emmission1_StandardsAndUnknowns()
