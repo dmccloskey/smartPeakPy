@@ -246,13 +246,13 @@ class testMain():
             fm1[50].getSubordinates()[0].getRT() == 
             fm2[50].getSubordinates()[0].getRT())
 
-    def test_main_HPLC_FLD_Emission1_StandardsAndUnknowns(self):
+    def test_main_HPLC_FLD_E1_All(self):
         """Test HPLC_FLD example with standard and unknown sample types for FLD Emission 1"""
-        print("running test_main_HPLC_FLD_Emission1_StandardsAndUnknowns")
+        print("running test_main_HPLC_FLD_E1_All")
         m = __main__()
         
         m.example_LCMS_MRM_Standards(
-            dir_I=example_dir + 'HPLC_FLD_Emission1_StandardsAndUnknowns',
+            dir_I=example_dir + 'HPLC_FLD_E1_All',
             delimiter=',',
             )
 
@@ -277,13 +277,13 @@ class testMain():
         #     fm1[0].getSubordinates()[0].getRT() == 
         #     fm2[0].getSubordinates()[0].getRT())
 
-    def test_main_HPLC_FLD_Emission2_StandardsAndUnknowns(self):
+    def test_main_HPLC_FLD_E2_All(self):
         """Test HPLC_FLD example with standard and unknown sample types for FLD Emission 2"""
-        print("running test_main_HPLC_FLD_Emission2_StandardsAndUnknowns")
+        print("running test_main_HPLC_FLD_E2_All")
         m = __main__()
         
         m.example_LCMS_MRM_Standards(
-            dir_I=example_dir + 'HPLC_FLD_Emission2_StandardsAndUnknowns',
+            dir_I=example_dir + 'HPLC_FLD_E2_All',
             delimiter=',',
             )
 
