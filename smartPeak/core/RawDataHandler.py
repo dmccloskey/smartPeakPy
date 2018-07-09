@@ -12,6 +12,7 @@ class RawDataHandler():
         self.featureMap = None
         self.meta_data = {"sample_name": "", "filename": ""}
         self.validation_metrics = None
+        self.featureMapHistory = []
         # input (reused between RawDataHandlers)
         self.parameters = None
         self.targeted = None
@@ -30,6 +31,7 @@ class RawDataHandler():
         # output
         self.featureMap = None
         self.meta_data = {"sample_name": "", "filename": ""}
+        self.featureMapHistory = []
         # input (reused between RawDataHandlers)
         self.parameters = None
         self.targeted = None
@@ -101,3 +103,11 @@ class RawDataHandler():
     def getFeatureQC(self):
         """Return the feature_qc"""
         return self.feature_qc
+        
+    def saveCurrentFeatureMapToHistory(self):
+        """Save the current featureMap to the history"""
+        self.featureMapHistory.append(self.featureMap)
+        
+    def getFeatureMapHistory(self):
+        """the the featureMap to the history"""
+        return self.featureMapHistory

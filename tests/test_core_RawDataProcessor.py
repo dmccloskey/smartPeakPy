@@ -404,3 +404,40 @@ class TestRawDataProcessor():
             0].getMetaValue("native_id") == b'glutacon.glutacon_1.Heavy')
         assert(rawDataHandler.featureMap[49].getSubordinates()[
             0].getRT() == 752.7960037236212)
+
+    def test_annotateUsedFeatures(self):
+        self.load_data()
+        rawDataHandler = RawDataHandler()
+        rawDataProcessor = RawDataProcessor()
+        fileReaderOpenMS = FileReaderOpenMS()
+        
+        # load traML
+        traML_csv_i = '''%s%s''' % (data_dir, "traML_1.csv")
+        fileReaderOpenMS.load_TraML(rawDataHandler, traML_csv_i)
+
+        # load MSExperiment
+        mzML_i = '''%s/mzML/%s''' % (data_dir, "mzML_1.mzML")
+        fileReaderOpenMS.load_MSExperiment(
+            rawDataHandler, mzML_i,
+            MRMMapping_params_I=self.params_1['MRMMapping'])
+        
+        rawDataProcessor.extract_metaData(rawDataHandler)
+
+        # load featureMap
+        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1_core_RawDataProcessor") 
+        fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
+        rawDataHandler.saveCurrentFeatureMapToHistory()
+        featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_3_core_RawDataProcessor") 
+        fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
+
+        # select
+        rawDataProcessor.annotateUsedFeatures(
+            rawDataHandler)
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
+            0].getMetaValue("used_").decode("utf-8") == "true")
+        assert(rawDataHandler.featureMap[0].getSubordinates()[
+            0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
+        assert(rawDataHandler.featureMap[50].getSubordinates()[
+            0].getMetaValue("used_").decode("utf-8") == "false")
+        assert(rawDataHandler.featureMap[50].getSubordinates()[
+            0].getMetaValue("native_id") == b'accoa.accoa_1.Heavy')
