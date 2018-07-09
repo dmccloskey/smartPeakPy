@@ -571,4 +571,40 @@ class RawDataProcessor():
                 "select_features",
                 "check_features"]
         
-        return default
+        return default   
+
+    def annotateUsedFeatures(
+        self,
+        rawDataHandler_IO,
+        verbose_I=False
+    ):
+        """Annotate the most recent featureMap in the history with the
+        filtered/selected features of the current featureMap
+        and then replace the current featureMap with the annotated one
+        
+        Args:
+            rawDataHandler_IO (RawDataHandler): raw data file class
+                
+        """
+
+        # select features
+        if verbose_I:
+            print("Annotating used features")
+        
+        features_annotated = pyopenms.FeatureMap()
+        for feature_copy in rawDataHandler_IO.getFeatureMapHistory()[0]:    
+            subordinates_annotated = []
+            for subordinate_copy in feature_copy.getSubordinates():
+                subordinate_copy.setMetaValue("used_".encode('utf-8'), "false".encode('utf-8'))
+                subordinates_annotated.append(subordinate_copy)
+            for feature_select in rawDataHandler_IO.getFeatureMap(): 
+                if feature_select.getUniqueId() == feature_copy.getUniqueId():
+                    for subordinate_copy in subordinates_annotated:
+                        for subordinate_select in feature_select.getSubordinates():
+                            if subordinate_select.getMetaValue("native_id") == subordinate_copy.getMetaValue("native_id"):
+                                subordinate_copy.setMetaValue("used_".encode('utf-8'), "true".encode('utf-8'))
+                    break        
+            feature_copy.setSubordinates(subordinates_annotated)
+            features_annotated.push_back(feature_copy)
+
+        rawDataHandler_IO.setFeatureMap(features_annotated)
