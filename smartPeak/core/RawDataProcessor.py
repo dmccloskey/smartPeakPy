@@ -602,8 +602,7 @@ class RawDataProcessor():
                     for subordinate_copy in subordinates_annotated:
                         for subordinate_select in feature_select.getSubordinates():
                             if subordinate_select.getMetaValue("native_id") == subordinate_copy.getMetaValue("native_id"):
-                                subordinate_copy.setMetaValue("used_".encode('utf-8'), "true".encode('utf-8'))
-                    break        
+                                subordinate_copy.setMetaValue("used_".encode('utf-8'), "true".encode('utf-8'))        
             feature_copy.setSubordinates(subordinates_annotated)
             features_annotated.push_back(feature_copy)
 

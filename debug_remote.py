@@ -28,14 +28,23 @@ sequenceProcessor.createSequence(
     delimiter=","
 )
 
+# # process and store all files
+# raw_data_processing_methods = [
+#     "load_raw_data",
+#     # "load_features",
+#     "pick_features",
+#     "quantify_features",
+#     "check_features",
+#     "store_features",
+# ]
+# sequenceProcessor.processSequence(
+#     sequenceHandler,
+#     raw_data_processing_methods_I=raw_data_processing_methods,
+#     verbose_I=True)
+
 # process and store all files
 raw_data_processing_methods = [
-    "load_raw_data",
-    # "load_features",
-    "pick_features",
-    "quantify_features",
-    "check_features",
-    "store_features",
+    "load_features",
 ]
 sequenceProcessor.processSequence(
     sequenceHandler,
