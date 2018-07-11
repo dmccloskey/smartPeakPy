@@ -42,43 +42,31 @@ sequenceProcessor.createSequence(
 #     raw_data_processing_methods_I=raw_data_processing_methods,
 #     verbose_I=True)
 
-# process and store all files
-raw_data_processing_methods = [
-    "load_features",
-]
-sequenceProcessor.processSequence(
-    sequenceHandler,
-    raw_data_processing_methods_I=raw_data_processing_methods,
-    verbose_I=True)
-
-for sample in sequenceHandler.getSequence():
-    sample.getRawData().saveCurrentFeatureMapToHistory()
-
 # filter and select
 raw_data_processing_methods = [
+    "clear_feature_history",
+    "load_features",
+    "save_features",
     "filter_features",
     "select_features",
-]
-sequenceProcessor.processSequence(
-    sequenceHandler,
-    raw_data_processing_methods_I=raw_data_processing_methods,
-    verbose_I=True)
-
-rawDataProcessor = RawDataProcessor()
-for sample in sequenceHandler.getSequence():
-    rawDataProcessor.annotateUsedFeatures(sample.getRawData(), verbose_I=True)
-
-# report and plot only
-raw_data_processing_methods = [
-    # "load_raw_data",
-    # "load_features",
+    "annotate_used_features",
     "store_features",
-    # "plot_features"
 ]
 sequenceProcessor.processSequence(
     sequenceHandler,
     raw_data_processing_methods_I=raw_data_processing_methods,
     verbose_I=True)
+
+# # report and plot only
+# raw_data_processing_methods = [
+#     "load_raw_data",
+#     "load_features",
+#     "plot_features"
+# ]
+# sequenceProcessor.processSequence(
+#     sequenceHandler,
+#     raw_data_processing_methods_I=raw_data_processing_methods,
+#     verbose_I=True)
 
 # write out a summary of all files
 # sequenceSummary_csv_i = '''%s/SequenceSummary.csv''' % (dir_I)

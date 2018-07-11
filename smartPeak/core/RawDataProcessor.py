@@ -473,6 +473,16 @@ class RawDataProcessor():
                     FeaturePlotter_params_I=parameters[
                         'FeaturePlotter'],
                     verbose_I=verbose_I)
+            elif raw_data_processing_event == "save_features":
+                self.saveCurrentFeatureMapToHistory(
+                    rawDataHandler_IO,
+                    verbose_I=verbose_I)
+            elif raw_data_processing_event == "annotate_used_features":
+                self.annotateUsedFeatures(
+                    rawDataHandler_IO,
+                    verbose_I=verbose_I)
+            elif raw_data_processing_event == "clear_feature_history":
+                rawDataHandler_IO.featureMapHistory = []
             else:
                 print(
                     "Raw data processing event " +
@@ -505,7 +515,10 @@ class RawDataProcessor():
             "quantify_features",
             "check_features",
             "plot_features",
-            "store_features"]
+            "store_features",
+            "save_features",
+            "annotate_used_features",
+            "clear_feature_history"]
         valid = True
         for event in raw_data_processing_I:
             if event not in valid_events:
@@ -592,7 +605,7 @@ class RawDataProcessor():
             print("Annotating used features")
         
         features_annotated = pyopenms.FeatureMap()
-        for feature_copy in rawDataHandler_IO.getFeatureMapHistory()[0]:    
+        for feature_copy in rawDataHandler_IO.getFeatureMapHistory()[-1]:    
             subordinates_annotated = []
             for subordinate_copy in feature_copy.getSubordinates():
                 subordinate_copy.setMetaValue("used_".encode('utf-8'), "false".encode('utf-8'))
@@ -600,10 +613,38 @@ class RawDataProcessor():
             for feature_select in rawDataHandler_IO.getFeatureMap(): 
                 if feature_select.getUniqueId() == feature_copy.getUniqueId():
                     for subordinate_copy in subordinates_annotated:
-                        for subordinate_select in feature_select.getSubordinates():
-                            if subordinate_select.getMetaValue("native_id") == subordinate_copy.getMetaValue("native_id"):
-                                subordinate_copy.setMetaValue("used_".encode('utf-8'), "true".encode('utf-8'))        
+                        # for subordinate_select in feature_select.getSubordinates():
+                        #     if subordinate_select.getMetaValue("native_id") == subordinate_copy.getMetaValue("native_id"):
+                        #         subordinate_copy.setMetaValue("used_".encode('utf-8'), "true".encode('utf-8'))
+                        subordinate_copy.setMetaValue("used_".encode('utf-8'), "true".encode('utf-8'))
+                    break        
             feature_copy.setSubordinates(subordinates_annotated)
             features_annotated.push_back(feature_copy)
 
         rawDataHandler_IO.setFeatureMap(features_annotated)
+
+    def saveCurrentFeatureMapToHistory(
+        self,
+        rawDataHandler_IO,
+        verbose_I=False
+    ):
+        """Save the current featureMap to the history
+        
+        Args:
+            rawDataHandler_IO (RawDataHandler): raw data file class
+                
+        """
+
+        # select features
+        if verbose_I:
+            print("Saving features")
+        
+        features_annotated = pyopenms.FeatureMap()
+        for feature_copy in rawDataHandler_IO.getFeatureMap():    
+            subordinates_annotated = []
+            for subordinate_copy in feature_copy.getSubordinates():
+                subordinates_annotated.append(subordinate_copy)
+            feature_copy.setSubordinates(subordinates_annotated)
+            features_annotated.push_back(feature_copy)
+
+        rawDataHandler_IO.featureMapHistory.append(features_annotated)

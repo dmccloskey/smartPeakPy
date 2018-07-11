@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 class RawDataHandler():
     def __init__(self):
         # input
@@ -103,10 +102,6 @@ class RawDataHandler():
     def getFeatureQC(self):
         """Return the feature_qc"""
         return self.feature_qc
-        
-    def saveCurrentFeatureMapToHistory(self):
-        """Save the current featureMap to the history"""
-        self.featureMapHistory.append(self.featureMap)
         
     def getFeatureMapHistory(self):
         """the the featureMap to the history"""
