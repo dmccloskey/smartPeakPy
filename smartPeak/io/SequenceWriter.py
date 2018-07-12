@@ -131,18 +131,20 @@ class SequenceWriter():
                         component_group_name = feature.getMetaValue(
                             "PeptideRef").decode('utf-8')
                         for subordinate in feature.getSubordinates():
-                            row_tuple_name = (
-                                component_group_name, 
-                                subordinate.getMetaValue(
-                                    'native_id').decode('utf-8'), meta_value)
-                            datum = sequenceHandler_I.getMetaValue(
-                                feature, subordinate, meta_value)
-                            if datum and datum is not None:                                
-                                if isinstance(datum, bytes):
-                                    datum = datum.decode('utf-8')
-                                data_dict[sample_name][row_tuple_name] = datum
-                                columns.add(sample_name)
-                                rows.add(row_tuple_name)
+                            if subordinate.getMetaValue("used_") is None \
+                            or subordinate.getMetaValue("used_").decode("utf-8") == "true":
+                                row_tuple_name = (
+                                    component_group_name, 
+                                    subordinate.getMetaValue(
+                                        'native_id').decode('utf-8'), meta_value)
+                                datum = sequenceHandler_I.getMetaValue(
+                                    feature, subordinate, meta_value)
+                                if datum and datum is not None:                                
+                                    if isinstance(datum, bytes):
+                                        datum = datum.decode('utf-8')
+                                    data_dict[sample_name][row_tuple_name] = datum
+                                    columns.add(sample_name)
+                                    rows.add(row_tuple_name)
         columns = list(columns)
         columns.sort()
         rows = list(rows)
@@ -170,7 +172,9 @@ class SequenceWriter():
         Args:
             sequenceHandler_I (SequenceHandler)
             filename (string): name of the file
-            ...
+            meta_data (list): 
+                list of strings specifying the name of the feature metaValue
+            sample_types (list): list of strings corresponding to sample types
 
         """
 

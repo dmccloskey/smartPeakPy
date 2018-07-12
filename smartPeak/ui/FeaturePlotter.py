@@ -129,9 +129,11 @@ class FeaturePlotter():
                 feature = [
                     f for f in features
                     if f.getMetaValue(
-                        "PeptideRef") == component_group_name]
+                        "PeptideRef") == component_group_name
+                        and (f.getSubordinates()[0].getMetaValue("used_") is None
+                        or f.getSubordinates()[0].getMetaValue("used_").decode("utf-8") == "true")] 
                 if feature:
-                    feature = feature[0]
+                    feature = feature[0]  #BUG: can no longer assume a single feature
             else:
                 feature = []
 
@@ -147,7 +149,9 @@ class FeaturePlotter():
                     if feature:
                         subordinate = [
                             s for s in feature.getSubordinates()
-                            if s.getMetaValue("native_id") == component_name]
+                            if s.getMetaValue("native_id") == component_name
+                            and (s.getMetaValue("used_") is None 
+                            or s.getMetaValue("used_").decode("utf-8") == "true")]
                         if subordinate:
                             subordinate = subordinate[0]
                     else:
