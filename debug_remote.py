@@ -1,18 +1,16 @@
-# VSCode remote debugging
-######
-import ptvsd
-ptvsd.enable_attach("my_secret", address=('0.0.0.0', 3000))
-# enable the below line of code only if you want the application to wait
-# until the debugger has attached to it
-ptvsd.wait_for_attach()
-######
+# # VSCode remote debugging
+# ######
+# import ptvsd
+# ptvsd.enable_attach("my_secret", address=('0.0.0.0', 3000))
+# # enable the below line of code only if you want the application to wait
+# # until the debugger has attached to it
+# ptvsd.wait_for_attach()
+# ######
 
 # -*- coding: utf-8 -*-
 from smartPeak.core.SequenceHandler import SequenceHandler
 from smartPeak.core.SequenceProcessor import SequenceProcessor
 from smartPeak.io.SequenceWriter import SequenceWriter
-
-from smartPeak.core.RawDataProcessor import RawDataProcessor
 
 sequenceHandler = SequenceHandler()
 sequenceProcessor = SequenceProcessor()
@@ -61,7 +59,7 @@ sequenceProcessor.createSequence(
 raw_data_processing_methods = [
     "load_raw_data",
     "load_features",
-    "plot_features"
+    # "plot_features"
 ]
 sequenceProcessor.processSequence(
     sequenceHandler,
