@@ -324,7 +324,11 @@ class TestRawDataProcessor():
             "quantify_features",
             "check_features",
             "plot_features",
-            "store_features"]
+            "store_features",
+            "clear_feature_history",
+            "save_features",
+            "annotate_used_features",
+            ]
         assert(rawDataProcessor.checkRawDataProcessingWorkflow(
             raw_data_processing_methods))
 
@@ -426,7 +430,7 @@ class TestRawDataProcessor():
         # load featureMap
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1_core_RawDataProcessor") 
         fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
-        rawDataHandler.saveCurrentFeatureMapToHistory()
+        rawDataProcessor.saveCurrentFeatureMapToHistory(rawDataHandler)
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_3_core_RawDataProcessor") 
         fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
 
@@ -442,7 +446,7 @@ class TestRawDataProcessor():
         assert(rawDataHandler.featureMap[50].getSubordinates()[
             0].getMetaValue("native_id") == b'accoa.accoa_1.Heavy')
 
-    def test_annotateUsedFeatures(self):
+    def test_saveCurrentFeatureMapToHistory(self):
         self.load_data()
         rawDataHandler = RawDataHandler()
         rawDataProcessor = RawDataProcessor()
@@ -463,20 +467,18 @@ class TestRawDataProcessor():
         # load featureMap
         featureXML_o = '''%s/features/%s.featureXML''' % (data_dir, "test_1_core_RawDataProcessor") 
         fileReaderOpenMS.load_featureMap(rawDataHandler, featureXML_o)
-        rawDataHandler.saveCurrentFeatureMapToHistory()
 
-        # select
-        rawDataProcessor.annotateUsedFeatures(
-            rawDataHandler)
-        assert(rawDataHandler.getFeatureMapHistory[-1][0].getSubordinates()[
+        # save the features to history
+        rawDataProcessor.saveCurrentFeatureMapToHistory(rawDataHandler)
+        assert(rawDataHandler.getFeatureMapHistory()[-1][0].getSubordinates()[
             0].getMetaValue("peak_apex_int") == 266403.0)
-        assert(rawDataHandler.getFeatureMapHistory[-1][0].getSubordinates()[
+        assert(rawDataHandler.getFeatureMapHistory()[-1][0].getSubordinates()[
             0].getMetaValue("native_id") == b'23dpg.23dpg_1.Heavy')
-        assert(rawDataHandler.getFeatureMapHistory[-1][0].getSubordinates()[
+        assert(rawDataHandler.getFeatureMapHistory()[-1][0].getSubordinates()[
             0].getRT() == 953.665693772912)  # refactor to use pytest.approx
-        assert(rawDataHandler.getFeatureMapHistory[-1][50].getSubordinates()[
+        assert(rawDataHandler.getFeatureMapHistory()[-1][50].getSubordinates()[
             0].getMetaValue("peak_apex_int") == 0.0)
-        assert(rawDataHandler.getFeatureMapHistory[-1][50].getSubordinates()[
+        assert(rawDataHandler.getFeatureMapHistory()[-1][50].getSubordinates()[
             0].getMetaValue("native_id") == b'accoa.accoa_1.Heavy')
-        assert(rawDataHandler.getFeatureMapHistory[-1][50].getSubordinates()[
-            0].getRT() == 1067.5447296543123)
+        assert(rawDataHandler.getFeatureMapHistory()[-1][50].getSubordinates()[
+            0].getRT() == 1067.54472965431)

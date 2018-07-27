@@ -137,6 +137,8 @@ def runAllTests():
     test.test_getDefaultRawDataProcessingWorkflow()
     test.test_checkRawDataProcessingWorkflow()
     test.test_processRawData()
+    test.test_saveCurrentFeatureMapToHistory()  
+    test.test_annotateUsedFeatures()  
 
     from tests.test_core_SequenceHandler import TestSequenceHandler
     test = TestSequenceHandler()
