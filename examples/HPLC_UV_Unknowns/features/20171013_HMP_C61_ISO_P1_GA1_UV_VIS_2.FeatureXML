@@ -2,7 +2,7 @@
 <featureMap version="1.9" xsi:noNamespaceSchemaLocation="http://open-ms.sourceforge.net/schemas/FeatureXML_1_9.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<UserParam type="stringList" name="spectra_data" value="[20171013_HMP_C61_ISO_P1_GA1_UV_VIS_2]"/>
 	<featureList count="9">
-		<feature id="f_15600963561987541452">
+		<feature id="f_8384769425721223860">
 			<position dim="0">2.02693140582275</position>
 			<position dim="1">0</position>
 			<intensity>0</intensity>
@@ -11,7 +11,7 @@
 			<overallquality>7.85951</overallquality>
 			<charge>0</charge>
 			<subordinate>
-				<feature id="f_15600963561987541452_17186193717643155037">
+				<feature id="f_8384769425721223860_3845416914402030559">
 					<position dim="0">2.02693140582275</position>
 					<position dim="1">0</position>
 					<intensity>1.01249</intensity>
@@ -56,37 +56,37 @@
 						<pt x="2.093333" y="0.119567423344024" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="2.026667"/>
-					<UserParam type="float" name="area_background_level" value="0.0131524165678427"/>
-					<UserParam type="float" name="noise_background_level" value="0.119567423344024"/>
 					<UserParam type="string" name="native_id" value="5-HTP"/>
 					<UserParam type="float" name="peak_apex_int" value="19.8419150936099"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.1"/>
 					<UserParam type="float" name="width_at_10" value="0.093334"/>
 					<UserParam type="float" name="width_at_50" value="0.0499999999999998"/>
+					<UserParam type="float" name="total_width" value="0.11"/>
+					<UserParam type="float" name="tailing_factor" value="1.15382840263996"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.15382840263995"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.0527107915021105"/>
+					<UserParam type="float" name="slope_of_baseline" value="-1.04588304950185"/>
+					<UserParam type="int" name="points_across_baseline" value="34"/>
+					<UserParam type="int" name="points_across_half_height" value="14"/>
+					<UserParam type="float" name="logSN" value="3.01166088693122"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="2.026667"/>
 					<UserParam type="float" name="start_position_at_5" value="1.983333"/>
 					<UserParam type="float" name="start_position_at_10" value="1.983333"/>
 					<UserParam type="float" name="start_position_at_50" value="2.003333"/>
 					<UserParam type="float" name="end_position_at_5" value="2.083333"/>
 					<UserParam type="float" name="end_position_at_10" value="2.076667"/>
 					<UserParam type="float" name="end_position_at_50" value="2.053333"/>
-					<UserParam type="float" name="total_width" value="0.11"/>
-					<UserParam type="float" name="tailing_factor" value="1.15382840263996"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.15382840263995"/>
-					<UserParam type="float" name="slope_of_baseline" value="-1.04588304950185"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.0527107915021105"/>
-					<UserParam type="int" name="points_across_baseline" value="34"/>
-					<UserParam type="int" name="points_across_half_height" value="14"/>
-					<UserParam type="float" name="logSN" value="3.01166088693122"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="1"/>
-					<UserParam type="int" name="QC_transition_pass" value="1"/>
-					<UserParam type="string" name="QC_transition_message" value=""/>
 					<UserParam type="float" name="calculated_concentration" value="79.6447921507998"/>
 					<UserParam type="string" name="concentration_units" value="ug/mL"/>
+					<UserParam type="int" name="QC_transition_pass" value="1"/>
+					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="area_background_level" value="0.0131524165678427"/>
+					<UserParam type="float" name="noise_background_level" value="0.119567423344024"/>
 				</feature>
-				<feature id="f_15600963561987541452_11444592496387625986">
+				<feature id="f_8384769425721223860_5453285342131548525">
 					<position dim="0">2.02693140582275</position>
 					<position dim="1">0</position>
 					<intensity>1.01249</intensity>
@@ -131,41 +131,43 @@
 						<pt x="2.093333" y="0.119567423344024" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="2.026667"/>
-					<UserParam type="float" name="area_background_level" value="0.0131524165678427"/>
-					<UserParam type="float" name="noise_background_level" value="0.119567423344024"/>
 					<UserParam type="string" name="native_id" value="5-HTP2"/>
 					<UserParam type="float" name="peak_apex_int" value="19.8419150936099"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.1"/>
 					<UserParam type="float" name="width_at_10" value="0.093334"/>
 					<UserParam type="float" name="width_at_50" value="0.0499999999999998"/>
+					<UserParam type="float" name="total_width" value="0.11"/>
+					<UserParam type="float" name="tailing_factor" value="1.15382840263996"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.15382840263995"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.0527107915021105"/>
+					<UserParam type="float" name="slope_of_baseline" value="-1.04588304950185"/>
+					<UserParam type="int" name="points_across_baseline" value="34"/>
+					<UserParam type="int" name="points_across_half_height" value="14"/>
+					<UserParam type="float" name="logSN" value="3.01166088693122"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="2.026667"/>
 					<UserParam type="float" name="start_position_at_5" value="1.983333"/>
 					<UserParam type="float" name="start_position_at_10" value="1.983333"/>
 					<UserParam type="float" name="start_position_at_50" value="2.003333"/>
 					<UserParam type="float" name="end_position_at_5" value="2.083333"/>
 					<UserParam type="float" name="end_position_at_10" value="2.076667"/>
 					<UserParam type="float" name="end_position_at_50" value="2.053333"/>
-					<UserParam type="float" name="total_width" value="0.11"/>
-					<UserParam type="float" name="tailing_factor" value="1.15382840263996"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.15382840263995"/>
-					<UserParam type="float" name="slope_of_baseline" value="-1.04588304950185"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.0527107915021105"/>
-					<UserParam type="int" name="points_across_baseline" value="34"/>
-					<UserParam type="int" name="points_across_half_height" value="14"/>
-					<UserParam type="float" name="logSN" value="3.01166088693122"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="1"/>
-					<UserParam type="int" name="QC_transition_pass" value="1"/>
-					<UserParam type="string" name="QC_transition_message" value=""/>
 					<UserParam type="string" name="calculated_concentration" value=""/>
 					<UserParam type="string" name="concentration_units" value=""/>
+					<UserParam type="int" name="QC_transition_pass" value="1"/>
+					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="area_background_level" value="0.0131524165678427"/>
+					<UserParam type="float" name="noise_background_level" value="0.119567423344024"/>
 				</feature>
 			</subordinate>
-			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
+			<UserParam type="string" name="potentialOutlier" value="none"/>
+			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 			<UserParam type="string" name="PeptideRef" value="5-HTP"/>
 			<UserParam type="float" name="leftWidth" value="1.98000001907349"/>
 			<UserParam type="float" name="rightWidth" value="2.09333300590515"/>
+			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
 			<UserParam type="float" name="peak_apices_sum" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution_weighted" value="0"/>
@@ -182,15 +184,13 @@
 			<UserParam type="float" name="var_log_sn_score" value="3.01166088693122"/>
 			<UserParam type="float" name="var_elution_model_fit_score" value="0.0297195762395859"/>
 			<UserParam type="float" name="main_var_xx_lda_prelim_score" value="7.85951080486791"/>
-			<UserParam type="float" name="xx_lda_prelim_score" value="7.85951080486791"/>
 			<UserParam type="float" name="PrecursorMZ" value="0"/>
+			<UserParam type="float" name="xx_lda_prelim_score" value="7.85951080486791"/>
 			<UserParam type="float" name="QC_transition_group_score" value="1"/>
 			<UserParam type="int" name="QC_transition_group_pass" value="1"/>
 			<UserParam type="string" name="QC_transition_group_message" value=""/>
-			<UserParam type="string" name="potentialOutlier" value="none"/>
-			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 		</feature>
-		<feature id="f_9629710089273931638">
+		<feature id="f_7389189074675258477">
 			<position dim="0">5.28568704022217</position>
 			<position dim="1">0</position>
 			<intensity>0</intensity>
@@ -199,7 +199,7 @@
 			<overallquality>6.12868</overallquality>
 			<charge>0</charge>
 			<subordinate>
-				<feature id="f_9629710089273931638_2354586336882573363">
+				<feature id="f_7389189074675258477_10117841838790294806">
 					<position dim="0">5.28568704022217</position>
 					<position dim="1">0</position>
 					<intensity>0.0581165</intensity>
@@ -226,37 +226,37 @@
 						<pt x="5.313333" y="0.216463327738183" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="5.286667"/>
-					<UserParam type="float" name="area_background_level" value="0.0108231663869091"/>
-					<UserParam type="float" name="noise_background_level" value="0.216463327738183"/>
 					<UserParam type="string" name="native_id" value="5-hydroxyindole"/>
 					<UserParam type="float" name="peak_apex_int" value="1.98874673035977"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.0499999999999998"/>
 					<UserParam type="float" name="width_at_10" value="0.0499999999999998"/>
 					<UserParam type="float" name="width_at_50" value="0.0366660000000003"/>
+					<UserParam type="float" name="total_width" value="0.0499999999999998"/>
+					<UserParam type="float" name="tailing_factor" value="1.07139796005831"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.14279592011662"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.0839270818617139"/>
+					<UserParam type="float" name="slope_of_baseline" value="-0.16690970964112"/>
+					<UserParam type="int" name="points_across_baseline" value="16"/>
+					<UserParam type="int" name="points_across_half_height" value="10"/>
+					<UserParam type="float" name="logSN" value="0.831085722419893"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="5.286667"/>
 					<UserParam type="float" name="start_position_at_5" value="5.263333"/>
 					<UserParam type="float" name="start_position_at_10" value="5.263333"/>
 					<UserParam type="float" name="start_position_at_50" value="5.266667"/>
 					<UserParam type="float" name="end_position_at_5" value="5.313333"/>
 					<UserParam type="float" name="end_position_at_10" value="5.313333"/>
 					<UserParam type="float" name="end_position_at_50" value="5.303333"/>
-					<UserParam type="float" name="total_width" value="0.0499999999999998"/>
-					<UserParam type="float" name="tailing_factor" value="1.07139796005831"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.14279592011662"/>
-					<UserParam type="float" name="slope_of_baseline" value="-0.16690970964112"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.0839270818617139"/>
-					<UserParam type="int" name="points_across_baseline" value="16"/>
-					<UserParam type="int" name="points_across_half_height" value="10"/>
-					<UserParam type="float" name="logSN" value="0.831085722419893"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="0.75"/>
-					<UserParam type="int" name="QC_transition_pass" value="0"/>
-					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
 					<UserParam type="float" name="calculated_concentration" value="0.058116540312767"/>
 					<UserParam type="string" name="concentration_units" value="ug/mL"/>
+					<UserParam type="int" name="QC_transition_pass" value="0"/>
+					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
+					<UserParam type="float" name="area_background_level" value="0.0108231663869091"/>
+					<UserParam type="float" name="noise_background_level" value="0.216463327738183"/>
 				</feature>
-				<feature id="f_9629710089273931638_10225144701815159211">
+				<feature id="f_7389189074675258477_13859030058761504026">
 					<position dim="0">5.28568704022217</position>
 					<position dim="1">0</position>
 					<intensity>0.0581165</intensity>
@@ -283,41 +283,43 @@
 						<pt x="5.313333" y="0.216463327738183" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="5.286667"/>
-					<UserParam type="float" name="area_background_level" value="0.0108231663869091"/>
-					<UserParam type="float" name="noise_background_level" value="0.216463327738183"/>
 					<UserParam type="string" name="native_id" value="5-hydroxyindole2"/>
 					<UserParam type="float" name="peak_apex_int" value="1.98874673035977"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.0499999999999998"/>
 					<UserParam type="float" name="width_at_10" value="0.0499999999999998"/>
 					<UserParam type="float" name="width_at_50" value="0.0366660000000003"/>
+					<UserParam type="float" name="total_width" value="0.0499999999999998"/>
+					<UserParam type="float" name="tailing_factor" value="1.07139796005831"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.14279592011662"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.0839270818617139"/>
+					<UserParam type="float" name="slope_of_baseline" value="-0.16690970964112"/>
+					<UserParam type="int" name="points_across_baseline" value="16"/>
+					<UserParam type="int" name="points_across_half_height" value="10"/>
+					<UserParam type="float" name="logSN" value="0.831085722419893"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="5.286667"/>
 					<UserParam type="float" name="start_position_at_5" value="5.263333"/>
 					<UserParam type="float" name="start_position_at_10" value="5.263333"/>
 					<UserParam type="float" name="start_position_at_50" value="5.266667"/>
 					<UserParam type="float" name="end_position_at_5" value="5.313333"/>
 					<UserParam type="float" name="end_position_at_10" value="5.313333"/>
 					<UserParam type="float" name="end_position_at_50" value="5.303333"/>
-					<UserParam type="float" name="total_width" value="0.0499999999999998"/>
-					<UserParam type="float" name="tailing_factor" value="1.07139796005831"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.14279592011662"/>
-					<UserParam type="float" name="slope_of_baseline" value="-0.16690970964112"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.0839270818617139"/>
-					<UserParam type="int" name="points_across_baseline" value="16"/>
-					<UserParam type="int" name="points_across_half_height" value="10"/>
-					<UserParam type="float" name="logSN" value="0.831085722419893"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="0.75"/>
-					<UserParam type="int" name="QC_transition_pass" value="0"/>
-					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
 					<UserParam type="string" name="calculated_concentration" value=""/>
 					<UserParam type="string" name="concentration_units" value=""/>
+					<UserParam type="int" name="QC_transition_pass" value="0"/>
+					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
+					<UserParam type="float" name="area_background_level" value="0.0108231663869091"/>
+					<UserParam type="float" name="noise_background_level" value="0.216463327738183"/>
 				</feature>
 			</subordinate>
-			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
+			<UserParam type="string" name="potentialOutlier" value="none"/>
+			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 			<UserParam type="string" name="PeptideRef" value="5-hydroxyindole"/>
 			<UserParam type="float" name="leftWidth" value="5.26000022888184"/>
 			<UserParam type="float" name="rightWidth" value="5.31333303451538"/>
+			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
 			<UserParam type="float" name="peak_apices_sum" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution_weighted" value="0"/>
@@ -334,15 +336,13 @@
 			<UserParam type="float" name="var_log_sn_score" value="0.831085722419893"/>
 			<UserParam type="float" name="var_elution_model_fit_score" value="0.0904598012566566"/>
 			<UserParam type="float" name="main_var_xx_lda_prelim_score" value="6.12867711493613"/>
-			<UserParam type="float" name="xx_lda_prelim_score" value="6.12867711493613"/>
 			<UserParam type="float" name="PrecursorMZ" value="0"/>
+			<UserParam type="float" name="xx_lda_prelim_score" value="6.12867711493613"/>
 			<UserParam type="float" name="QC_transition_group_score" value="1"/>
 			<UserParam type="int" name="QC_transition_group_pass" value="1"/>
 			<UserParam type="string" name="QC_transition_group_message" value=""/>
-			<UserParam type="string" name="potentialOutlier" value="none"/>
-			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 		</feature>
-		<feature id="f_9436031952433882781">
+		<feature id="f_361798878630776898">
 			<position dim="0">5.28568704022217</position>
 			<position dim="1">0</position>
 			<intensity>0</intensity>
@@ -351,7 +351,7 @@
 			<overallquality>6.13916</overallquality>
 			<charge>0</charge>
 			<subordinate>
-				<feature id="f_9436031952433882781_5516101243013905398">
+				<feature id="f_361798878630776898_5153085782500493761">
 					<position dim="0">5.28568704022217</position>
 					<position dim="1">0</position>
 					<intensity>0.0581165</intensity>
@@ -378,37 +378,37 @@
 						<pt x="5.313333" y="0.216463327738183" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="5.286667"/>
-					<UserParam type="float" name="area_background_level" value="0.0108231663869091"/>
-					<UserParam type="float" name="noise_background_level" value="0.216463327738183"/>
 					<UserParam type="string" name="native_id" value="Acetylserotonin"/>
 					<UserParam type="float" name="peak_apex_int" value="1.98874673035977"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.0499999999999998"/>
 					<UserParam type="float" name="width_at_10" value="0.0499999999999998"/>
 					<UserParam type="float" name="width_at_50" value="0.0366660000000003"/>
+					<UserParam type="float" name="total_width" value="0.0499999999999998"/>
+					<UserParam type="float" name="tailing_factor" value="1.07139796005831"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.14279592011662"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.0839270818617139"/>
+					<UserParam type="float" name="slope_of_baseline" value="-0.16690970964112"/>
+					<UserParam type="int" name="points_across_baseline" value="16"/>
+					<UserParam type="int" name="points_across_half_height" value="10"/>
+					<UserParam type="float" name="logSN" value="0.831085722419893"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="5.286667"/>
 					<UserParam type="float" name="start_position_at_5" value="5.263333"/>
 					<UserParam type="float" name="start_position_at_10" value="5.263333"/>
 					<UserParam type="float" name="start_position_at_50" value="5.266667"/>
 					<UserParam type="float" name="end_position_at_5" value="5.313333"/>
 					<UserParam type="float" name="end_position_at_10" value="5.313333"/>
 					<UserParam type="float" name="end_position_at_50" value="5.303333"/>
-					<UserParam type="float" name="total_width" value="0.0499999999999998"/>
-					<UserParam type="float" name="tailing_factor" value="1.07139796005831"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.14279592011662"/>
-					<UserParam type="float" name="slope_of_baseline" value="-0.16690970964112"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.0839270818617139"/>
-					<UserParam type="int" name="points_across_baseline" value="16"/>
-					<UserParam type="int" name="points_across_half_height" value="10"/>
-					<UserParam type="float" name="logSN" value="0.831085722419893"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="0.75"/>
-					<UserParam type="int" name="QC_transition_pass" value="0"/>
-					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
 					<UserParam type="float" name="calculated_concentration" value="5.25666189458696"/>
 					<UserParam type="string" name="concentration_units" value="ug/mL"/>
+					<UserParam type="int" name="QC_transition_pass" value="0"/>
+					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
+					<UserParam type="float" name="area_background_level" value="0.0108231663869091"/>
+					<UserParam type="float" name="noise_background_level" value="0.216463327738183"/>
 				</feature>
-				<feature id="f_9436031952433882781_10357856375059747889">
+				<feature id="f_361798878630776898_262222277933507660">
 					<position dim="0">5.28568704022217</position>
 					<position dim="1">0</position>
 					<intensity>0.0581165</intensity>
@@ -435,41 +435,43 @@
 						<pt x="5.313333" y="0.216463327738183" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="5.286667"/>
-					<UserParam type="float" name="area_background_level" value="0.0108231663869091"/>
-					<UserParam type="float" name="noise_background_level" value="0.216463327738183"/>
 					<UserParam type="string" name="native_id" value="Acetylserotonin2"/>
 					<UserParam type="float" name="peak_apex_int" value="1.98874673035977"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.0499999999999998"/>
 					<UserParam type="float" name="width_at_10" value="0.0499999999999998"/>
 					<UserParam type="float" name="width_at_50" value="0.0366660000000003"/>
+					<UserParam type="float" name="total_width" value="0.0499999999999998"/>
+					<UserParam type="float" name="tailing_factor" value="1.07139796005831"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.14279592011662"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.0839270818617139"/>
+					<UserParam type="float" name="slope_of_baseline" value="-0.16690970964112"/>
+					<UserParam type="int" name="points_across_baseline" value="16"/>
+					<UserParam type="int" name="points_across_half_height" value="10"/>
+					<UserParam type="float" name="logSN" value="0.831085722419893"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="5.286667"/>
 					<UserParam type="float" name="start_position_at_5" value="5.263333"/>
 					<UserParam type="float" name="start_position_at_10" value="5.263333"/>
 					<UserParam type="float" name="start_position_at_50" value="5.266667"/>
 					<UserParam type="float" name="end_position_at_5" value="5.313333"/>
 					<UserParam type="float" name="end_position_at_10" value="5.313333"/>
 					<UserParam type="float" name="end_position_at_50" value="5.303333"/>
-					<UserParam type="float" name="total_width" value="0.0499999999999998"/>
-					<UserParam type="float" name="tailing_factor" value="1.07139796005831"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.14279592011662"/>
-					<UserParam type="float" name="slope_of_baseline" value="-0.16690970964112"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.0839270818617139"/>
-					<UserParam type="int" name="points_across_baseline" value="16"/>
-					<UserParam type="int" name="points_across_half_height" value="10"/>
-					<UserParam type="float" name="logSN" value="0.831085722419893"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="0.75"/>
-					<UserParam type="int" name="QC_transition_pass" value="0"/>
-					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
 					<UserParam type="string" name="calculated_concentration" value=""/>
 					<UserParam type="string" name="concentration_units" value=""/>
+					<UserParam type="int" name="QC_transition_pass" value="0"/>
+					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
+					<UserParam type="float" name="area_background_level" value="0.0108231663869091"/>
+					<UserParam type="float" name="noise_background_level" value="0.216463327738183"/>
 				</feature>
 			</subordinate>
-			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
+			<UserParam type="string" name="potentialOutlier" value="none"/>
+			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 			<UserParam type="string" name="PeptideRef" value="Acetylserotonin"/>
 			<UserParam type="float" name="leftWidth" value="5.26000022888184"/>
 			<UserParam type="float" name="rightWidth" value="5.31333303451538"/>
+			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
 			<UserParam type="float" name="peak_apices_sum" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution_weighted" value="0"/>
@@ -486,15 +488,13 @@
 			<UserParam type="float" name="var_log_sn_score" value="0.831085722419893"/>
 			<UserParam type="float" name="var_elution_model_fit_score" value="0.0904598012566566"/>
 			<UserParam type="float" name="main_var_xx_lda_prelim_score" value="6.13916261981765"/>
-			<UserParam type="float" name="xx_lda_prelim_score" value="6.13916261981765"/>
 			<UserParam type="float" name="PrecursorMZ" value="0"/>
+			<UserParam type="float" name="xx_lda_prelim_score" value="6.13916261981765"/>
 			<UserParam type="float" name="QC_transition_group_score" value="1"/>
 			<UserParam type="int" name="QC_transition_group_pass" value="1"/>
 			<UserParam type="string" name="QC_transition_group_message" value=""/>
-			<UserParam type="string" name="potentialOutlier" value="none"/>
-			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 		</feature>
-		<feature id="f_12969470971513417569">
+		<feature id="f_13959743207144201220">
 			<position dim="0">7.30120471350098</position>
 			<position dim="1">0</position>
 			<intensity>0</intensity>
@@ -503,7 +503,7 @@
 			<overallquality>6.13719</overallquality>
 			<charge>0</charge>
 			<subordinate>
-				<feature id="f_12969470971513417569_18401223189226543967">
+				<feature id="f_13959743207144201220_15698918664235959067">
 					<position dim="0">7.30120471350098</position>
 					<position dim="1">0</position>
 					<intensity>0.0610854</intensity>
@@ -539,37 +539,37 @@
 						<pt x="7.343333" y="0.230105336920804" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="7.3"/>
-					<UserParam type="float" name="area_background_level" value="0.0184084269536644"/>
-					<UserParam type="float" name="noise_background_level" value="0.230105336920804"/>
 					<UserParam type="string" name="native_id" value="Acetyltryptamine"/>
 					<UserParam type="float" name="peak_apex_int" value="1.33356820640018"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.0800000000000001"/>
 					<UserParam type="float" name="width_at_10" value="0.0800000000000001"/>
 					<UserParam type="float" name="width_at_50" value="0.0599999999999996"/>
+					<UserParam type="float" name="total_width" value="0.0800000000000001"/>
+					<UserParam type="float" name="tailing_factor" value="1.09089917364389"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.18179834728778"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.00191236518893824"/>
+					<UserParam type="float" name="slope_of_baseline" value="-0.0025502694149945"/>
+					<UserParam type="int" name="points_across_baseline" value="25"/>
+					<UserParam type="int" name="points_across_half_height" value="17"/>
+					<UserParam type="float" name="logSN" value="0.462392865719381"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="7.3"/>
 					<UserParam type="float" name="start_position_at_5" value="7.263333"/>
 					<UserParam type="float" name="start_position_at_10" value="7.263333"/>
 					<UserParam type="float" name="start_position_at_50" value="7.273333"/>
 					<UserParam type="float" name="end_position_at_5" value="7.343333"/>
 					<UserParam type="float" name="end_position_at_10" value="7.343333"/>
 					<UserParam type="float" name="end_position_at_50" value="7.333333"/>
-					<UserParam type="float" name="total_width" value="0.0800000000000001"/>
-					<UserParam type="float" name="tailing_factor" value="1.09089917364389"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.18179834728778"/>
-					<UserParam type="float" name="slope_of_baseline" value="-0.0025502694149945"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.00191236518893824"/>
-					<UserParam type="int" name="points_across_baseline" value="25"/>
-					<UserParam type="int" name="points_across_half_height" value="17"/>
-					<UserParam type="float" name="logSN" value="0.462392865719381"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="0.833333333333333"/>
-					<UserParam type="int" name="QC_transition_pass" value="0"/>
-					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[total_width]"/>
 					<UserParam type="float" name="calculated_concentration" value="4.02802709936294"/>
 					<UserParam type="string" name="concentration_units" value="ug/mL"/>
+					<UserParam type="int" name="QC_transition_pass" value="0"/>
+					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[total_width]"/>
+					<UserParam type="float" name="area_background_level" value="0.0184084269536644"/>
+					<UserParam type="float" name="noise_background_level" value="0.230105336920804"/>
 				</feature>
-				<feature id="f_12969470971513417569_15459261378263141875">
+				<feature id="f_13959743207144201220_820709841585987430">
 					<position dim="0">7.30120471350098</position>
 					<position dim="1">0</position>
 					<intensity>0.0610854</intensity>
@@ -605,41 +605,43 @@
 						<pt x="7.343333" y="0.230105336920804" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="7.3"/>
-					<UserParam type="float" name="area_background_level" value="0.0184084269536644"/>
-					<UserParam type="float" name="noise_background_level" value="0.230105336920804"/>
 					<UserParam type="string" name="native_id" value="Acetyltryptamine2"/>
 					<UserParam type="float" name="peak_apex_int" value="1.33356820640018"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.0800000000000001"/>
 					<UserParam type="float" name="width_at_10" value="0.0800000000000001"/>
 					<UserParam type="float" name="width_at_50" value="0.0599999999999996"/>
+					<UserParam type="float" name="total_width" value="0.0800000000000001"/>
+					<UserParam type="float" name="tailing_factor" value="1.09089917364389"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.18179834728778"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.00191236518893824"/>
+					<UserParam type="float" name="slope_of_baseline" value="-0.0025502694149945"/>
+					<UserParam type="int" name="points_across_baseline" value="25"/>
+					<UserParam type="int" name="points_across_half_height" value="17"/>
+					<UserParam type="float" name="logSN" value="0.462392865719381"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="7.3"/>
 					<UserParam type="float" name="start_position_at_5" value="7.263333"/>
 					<UserParam type="float" name="start_position_at_10" value="7.263333"/>
 					<UserParam type="float" name="start_position_at_50" value="7.273333"/>
 					<UserParam type="float" name="end_position_at_5" value="7.343333"/>
 					<UserParam type="float" name="end_position_at_10" value="7.343333"/>
 					<UserParam type="float" name="end_position_at_50" value="7.333333"/>
-					<UserParam type="float" name="total_width" value="0.0800000000000001"/>
-					<UserParam type="float" name="tailing_factor" value="1.09089917364389"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.18179834728778"/>
-					<UserParam type="float" name="slope_of_baseline" value="-0.0025502694149945"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.00191236518893824"/>
-					<UserParam type="int" name="points_across_baseline" value="25"/>
-					<UserParam type="int" name="points_across_half_height" value="17"/>
-					<UserParam type="float" name="logSN" value="0.462392865719381"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="0.833333333333333"/>
-					<UserParam type="int" name="QC_transition_pass" value="0"/>
-					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[total_width]"/>
 					<UserParam type="string" name="calculated_concentration" value=""/>
 					<UserParam type="string" name="concentration_units" value=""/>
+					<UserParam type="int" name="QC_transition_pass" value="0"/>
+					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[total_width]"/>
+					<UserParam type="float" name="area_background_level" value="0.0184084269536644"/>
+					<UserParam type="float" name="noise_background_level" value="0.230105336920804"/>
 				</feature>
 			</subordinate>
-			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
+			<UserParam type="string" name="potentialOutlier" value="Acetyltryptamine"/>
+			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 			<UserParam type="string" name="PeptideRef" value="Acetyltryptamine"/>
 			<UserParam type="float" name="leftWidth" value="7.26000022888184"/>
 			<UserParam type="float" name="rightWidth" value="7.34666681289673"/>
+			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
 			<UserParam type="float" name="peak_apices_sum" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution_weighted" value="0"/>
@@ -656,15 +658,13 @@
 			<UserParam type="float" name="var_log_sn_score" value="0.462392865719381"/>
 			<UserParam type="float" name="var_elution_model_fit_score" value="-0.0432682894170284"/>
 			<UserParam type="float" name="main_var_xx_lda_prelim_score" value="6.13718840084138"/>
-			<UserParam type="float" name="xx_lda_prelim_score" value="6.13718840084138"/>
 			<UserParam type="float" name="PrecursorMZ" value="0"/>
+			<UserParam type="float" name="xx_lda_prelim_score" value="6.13718840084138"/>
 			<UserParam type="float" name="QC_transition_group_score" value="1"/>
 			<UserParam type="int" name="QC_transition_group_pass" value="1"/>
 			<UserParam type="string" name="QC_transition_group_message" value=""/>
-			<UserParam type="string" name="potentialOutlier" value="Acetyltryptamine"/>
-			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 		</feature>
-		<feature id="f_4114901746651463381">
+		<feature id="f_3632043005655404635">
 			<position dim="0">6.96494694329834</position>
 			<position dim="1">0</position>
 			<intensity>0</intensity>
@@ -673,7 +673,7 @@
 			<overallquality>7.76697</overallquality>
 			<charge>0</charge>
 			<subordinate>
-				<feature id="f_4114901746651463381_17072321434287189834">
+				<feature id="f_3632043005655404635_17755438040161696864">
 					<position dim="0">6.96494694329834</position>
 					<position dim="1">0</position>
 					<intensity>5.52749</intensity>
@@ -738,37 +738,37 @@
 						<pt x="7.076667" y="0.217895242169716" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="6.963333"/>
-					<UserParam type="float" name="area_background_level" value="0.0384948987483971"/>
-					<UserParam type="float" name="noise_background_level" value="0.217895242169716"/>
 					<UserParam type="string" name="native_id" value="Melatonin"/>
 					<UserParam type="float" name="peak_apex_int" value="94.8598603062272"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.123333"/>
 					<UserParam type="float" name="width_at_10" value="0.106666"/>
 					<UserParam type="float" name="width_at_50" value="0.0566659999999999"/>
+					<UserParam type="float" name="total_width" value="0.176666999999999"/>
+					<UserParam type="float" name="tailing_factor" value="1.15625410158813"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.28573265332361"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.00323788717487271"/>
+					<UserParam type="float" name="slope_of_baseline" value="-0.30714552509575"/>
+					<UserParam type="int" name="points_across_baseline" value="54"/>
+					<UserParam type="int" name="points_across_half_height" value="16"/>
+					<UserParam type="float" name="logSN" value="4.56983470672947"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="6.963333"/>
 					<UserParam type="float" name="start_position_at_5" value="6.91"/>
 					<UserParam type="float" name="start_position_at_10" value="6.916667"/>
 					<UserParam type="float" name="start_position_at_50" value="6.936667"/>
 					<UserParam type="float" name="end_position_at_5" value="7.033333"/>
 					<UserParam type="float" name="end_position_at_10" value="7.023333"/>
 					<UserParam type="float" name="end_position_at_50" value="6.993333"/>
-					<UserParam type="float" name="total_width" value="0.176666999999999"/>
-					<UserParam type="float" name="tailing_factor" value="1.15625410158813"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.28573265332361"/>
-					<UserParam type="float" name="slope_of_baseline" value="-0.30714552509575"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.00323788717487271"/>
-					<UserParam type="int" name="points_across_baseline" value="54"/>
-					<UserParam type="int" name="points_across_half_height" value="16"/>
-					<UserParam type="float" name="logSN" value="4.56983470672947"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="1"/>
-					<UserParam type="int" name="QC_transition_pass" value="1"/>
-					<UserParam type="string" name="QC_transition_message" value=""/>
 					<UserParam type="float" name="calculated_concentration" value="337.641053698762"/>
 					<UserParam type="string" name="concentration_units" value="ug/mL"/>
+					<UserParam type="int" name="QC_transition_pass" value="1"/>
+					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="area_background_level" value="0.0384948987483971"/>
+					<UserParam type="float" name="noise_background_level" value="0.217895242169716"/>
 				</feature>
-				<feature id="f_4114901746651463381_9662779437370570006">
+				<feature id="f_3632043005655404635_11882576461109723258">
 					<position dim="0">6.96494694329834</position>
 					<position dim="1">0</position>
 					<intensity>5.52749</intensity>
@@ -833,41 +833,43 @@
 						<pt x="7.076667" y="0.217895242169716" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="6.963333"/>
-					<UserParam type="float" name="area_background_level" value="0.0384948987483971"/>
-					<UserParam type="float" name="noise_background_level" value="0.217895242169716"/>
 					<UserParam type="string" name="native_id" value="Melatonin2"/>
 					<UserParam type="float" name="peak_apex_int" value="94.8598603062272"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.123333"/>
 					<UserParam type="float" name="width_at_10" value="0.106666"/>
 					<UserParam type="float" name="width_at_50" value="0.0566659999999999"/>
+					<UserParam type="float" name="total_width" value="0.176666999999999"/>
+					<UserParam type="float" name="tailing_factor" value="1.15625410158813"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.28573265332361"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.00323788717487271"/>
+					<UserParam type="float" name="slope_of_baseline" value="-0.30714552509575"/>
+					<UserParam type="int" name="points_across_baseline" value="54"/>
+					<UserParam type="int" name="points_across_half_height" value="16"/>
+					<UserParam type="float" name="logSN" value="4.56983470672947"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="6.963333"/>
 					<UserParam type="float" name="start_position_at_5" value="6.91"/>
 					<UserParam type="float" name="start_position_at_10" value="6.916667"/>
 					<UserParam type="float" name="start_position_at_50" value="6.936667"/>
 					<UserParam type="float" name="end_position_at_5" value="7.033333"/>
 					<UserParam type="float" name="end_position_at_10" value="7.023333"/>
 					<UserParam type="float" name="end_position_at_50" value="6.993333"/>
-					<UserParam type="float" name="total_width" value="0.176666999999999"/>
-					<UserParam type="float" name="tailing_factor" value="1.15625410158813"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.28573265332361"/>
-					<UserParam type="float" name="slope_of_baseline" value="-0.30714552509575"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.00323788717487271"/>
-					<UserParam type="int" name="points_across_baseline" value="54"/>
-					<UserParam type="int" name="points_across_half_height" value="16"/>
-					<UserParam type="float" name="logSN" value="4.56983470672947"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="1"/>
-					<UserParam type="int" name="QC_transition_pass" value="1"/>
-					<UserParam type="string" name="QC_transition_message" value=""/>
 					<UserParam type="string" name="calculated_concentration" value=""/>
 					<UserParam type="string" name="concentration_units" value=""/>
+					<UserParam type="int" name="QC_transition_pass" value="1"/>
+					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="area_background_level" value="0.0384948987483971"/>
+					<UserParam type="float" name="noise_background_level" value="0.217895242169716"/>
 				</feature>
 			</subordinate>
-			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
+			<UserParam type="string" name="potentialOutlier" value="Melatonin"/>
+			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 			<UserParam type="string" name="PeptideRef" value="Melatonin"/>
 			<UserParam type="float" name="leftWidth" value="6.89666700363159"/>
 			<UserParam type="float" name="rightWidth" value="7.07999992370605"/>
+			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
 			<UserParam type="float" name="peak_apices_sum" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution_weighted" value="0"/>
@@ -884,15 +886,13 @@
 			<UserParam type="float" name="var_log_sn_score" value="4.56983470672947"/>
 			<UserParam type="float" name="var_elution_model_fit_score" value="0.682656228542328"/>
 			<UserParam type="float" name="main_var_xx_lda_prelim_score" value="7.76697356196835"/>
-			<UserParam type="float" name="xx_lda_prelim_score" value="7.76697356196835"/>
 			<UserParam type="float" name="PrecursorMZ" value="0"/>
+			<UserParam type="float" name="xx_lda_prelim_score" value="7.76697356196835"/>
 			<UserParam type="float" name="QC_transition_group_score" value="1"/>
 			<UserParam type="int" name="QC_transition_group_pass" value="1"/>
 			<UserParam type="string" name="QC_transition_group_message" value=""/>
-			<UserParam type="string" name="potentialOutlier" value="Melatonin"/>
-			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 		</feature>
-		<feature id="f_11692182214073833445">
+		<feature id="f_4482986986562490624">
 			<position dim="0">5.28568704022217</position>
 			<position dim="1">0</position>
 			<intensity>0</intensity>
@@ -901,7 +901,7 @@
 			<overallquality>6.15398</overallquality>
 			<charge>0</charge>
 			<subordinate>
-				<feature id="f_11692182214073833445_13333235066732793690">
+				<feature id="f_4482986986562490624_3896455291403543115">
 					<position dim="0">5.28568704022217</position>
 					<position dim="1">0</position>
 					<intensity>0.0581165</intensity>
@@ -928,37 +928,37 @@
 						<pt x="5.313333" y="0.216463327738183" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="5.286667"/>
-					<UserParam type="float" name="area_background_level" value="0.0108231663869091"/>
-					<UserParam type="float" name="noise_background_level" value="0.216463327738183"/>
 					<UserParam type="string" name="native_id" value="Riboflavin"/>
 					<UserParam type="float" name="peak_apex_int" value="1.98874673035977"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.0499999999999998"/>
 					<UserParam type="float" name="width_at_10" value="0.0499999999999998"/>
 					<UserParam type="float" name="width_at_50" value="0.0366660000000003"/>
+					<UserParam type="float" name="total_width" value="0.0499999999999998"/>
+					<UserParam type="float" name="tailing_factor" value="1.07139796005831"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.14279592011662"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.0839270818617139"/>
+					<UserParam type="float" name="slope_of_baseline" value="-0.16690970964112"/>
+					<UserParam type="int" name="points_across_baseline" value="16"/>
+					<UserParam type="int" name="points_across_half_height" value="10"/>
+					<UserParam type="float" name="logSN" value="0.831085722419893"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="5.286667"/>
 					<UserParam type="float" name="start_position_at_5" value="5.263333"/>
 					<UserParam type="float" name="start_position_at_10" value="5.263333"/>
 					<UserParam type="float" name="start_position_at_50" value="5.266667"/>
 					<UserParam type="float" name="end_position_at_5" value="5.313333"/>
 					<UserParam type="float" name="end_position_at_10" value="5.313333"/>
 					<UserParam type="float" name="end_position_at_50" value="5.303333"/>
-					<UserParam type="float" name="total_width" value="0.0499999999999998"/>
-					<UserParam type="float" name="tailing_factor" value="1.07139796005831"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.14279592011662"/>
-					<UserParam type="float" name="slope_of_baseline" value="-0.16690970964112"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.0839270818617139"/>
-					<UserParam type="int" name="points_across_baseline" value="16"/>
-					<UserParam type="int" name="points_across_half_height" value="10"/>
-					<UserParam type="float" name="logSN" value="0.831085722419893"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="0.75"/>
-					<UserParam type="int" name="QC_transition_pass" value="0"/>
-					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
 					<UserParam type="float" name="calculated_concentration" value="1.9604835211912"/>
 					<UserParam type="string" name="concentration_units" value="ug/mL"/>
+					<UserParam type="int" name="QC_transition_pass" value="0"/>
+					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
+					<UserParam type="float" name="area_background_level" value="0.0108231663869091"/>
+					<UserParam type="float" name="noise_background_level" value="0.216463327738183"/>
 				</feature>
-				<feature id="f_11692182214073833445_14854407634275308382">
+				<feature id="f_4482986986562490624_1777546746565102980">
 					<position dim="0">5.28568704022217</position>
 					<position dim="1">0</position>
 					<intensity>0.0581165</intensity>
@@ -985,41 +985,43 @@
 						<pt x="5.313333" y="0.216463327738183" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="5.286667"/>
-					<UserParam type="float" name="area_background_level" value="0.0108231663869091"/>
-					<UserParam type="float" name="noise_background_level" value="0.216463327738183"/>
 					<UserParam type="string" name="native_id" value="Riboflavin2"/>
 					<UserParam type="float" name="peak_apex_int" value="1.98874673035977"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.0499999999999998"/>
 					<UserParam type="float" name="width_at_10" value="0.0499999999999998"/>
 					<UserParam type="float" name="width_at_50" value="0.0366660000000003"/>
+					<UserParam type="float" name="total_width" value="0.0499999999999998"/>
+					<UserParam type="float" name="tailing_factor" value="1.07139796005831"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.14279592011662"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.0839270818617139"/>
+					<UserParam type="float" name="slope_of_baseline" value="-0.16690970964112"/>
+					<UserParam type="int" name="points_across_baseline" value="16"/>
+					<UserParam type="int" name="points_across_half_height" value="10"/>
+					<UserParam type="float" name="logSN" value="0.831085722419893"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="5.286667"/>
 					<UserParam type="float" name="start_position_at_5" value="5.263333"/>
 					<UserParam type="float" name="start_position_at_10" value="5.263333"/>
 					<UserParam type="float" name="start_position_at_50" value="5.266667"/>
 					<UserParam type="float" name="end_position_at_5" value="5.313333"/>
 					<UserParam type="float" name="end_position_at_10" value="5.313333"/>
 					<UserParam type="float" name="end_position_at_50" value="5.303333"/>
-					<UserParam type="float" name="total_width" value="0.0499999999999998"/>
-					<UserParam type="float" name="tailing_factor" value="1.07139796005831"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.14279592011662"/>
-					<UserParam type="float" name="slope_of_baseline" value="-0.16690970964112"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.0839270818617139"/>
-					<UserParam type="int" name="points_across_baseline" value="16"/>
-					<UserParam type="int" name="points_across_half_height" value="10"/>
-					<UserParam type="float" name="logSN" value="0.831085722419893"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="0.75"/>
-					<UserParam type="int" name="QC_transition_pass" value="0"/>
-					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
 					<UserParam type="string" name="calculated_concentration" value=""/>
 					<UserParam type="string" name="concentration_units" value=""/>
+					<UserParam type="int" name="QC_transition_pass" value="0"/>
+					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
+					<UserParam type="float" name="area_background_level" value="0.0108231663869091"/>
+					<UserParam type="float" name="noise_background_level" value="0.216463327738183"/>
 				</feature>
 			</subordinate>
-			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
+			<UserParam type="string" name="potentialOutlier" value="none"/>
+			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 			<UserParam type="string" name="PeptideRef" value="Riboflavin"/>
 			<UserParam type="float" name="leftWidth" value="5.26000022888184"/>
 			<UserParam type="float" name="rightWidth" value="5.31333303451538"/>
+			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
 			<UserParam type="float" name="peak_apices_sum" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution_weighted" value="0"/>
@@ -1036,15 +1038,13 @@
 			<UserParam type="float" name="var_log_sn_score" value="0.831085722419893"/>
 			<UserParam type="float" name="var_elution_model_fit_score" value="0.0904598012566566"/>
 			<UserParam type="float" name="main_var_xx_lda_prelim_score" value="6.15397804388165"/>
-			<UserParam type="float" name="xx_lda_prelim_score" value="6.15397804388165"/>
 			<UserParam type="float" name="PrecursorMZ" value="0"/>
+			<UserParam type="float" name="xx_lda_prelim_score" value="6.15397804388165"/>
 			<UserParam type="float" name="QC_transition_group_score" value="1"/>
 			<UserParam type="int" name="QC_transition_group_pass" value="1"/>
 			<UserParam type="string" name="QC_transition_group_message" value=""/>
-			<UserParam type="string" name="potentialOutlier" value="none"/>
-			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 		</feature>
-		<feature id="f_3975212318519156655">
+		<feature id="f_12775868538343022003">
 			<position dim="0">1.88777617462158</position>
 			<position dim="1">0</position>
 			<intensity>0</intensity>
@@ -1053,7 +1053,7 @@
 			<overallquality>5.70027</overallquality>
 			<charge>0</charge>
 			<subordinate>
-				<feature id="f_3975212318519156655_4739313672258177933">
+				<feature id="f_12775868538343022003_9660075076647950315">
 					<position dim="0">1.88777617462158</position>
 					<position dim="1">0</position>
 					<intensity>0.0356422</intensity>
@@ -1078,37 +1078,37 @@
 						<pt x="1.913333" y="0.434273090480338" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="1.886667"/>
-					<UserParam type="float" name="area_background_level" value="0.0188183558297844"/>
-					<UserParam type="float" name="noise_background_level" value="0.434273090480338"/>
 					<UserParam type="string" name="native_id" value="Serotonin"/>
 					<UserParam type="float" name="peak_apex_int" value="1.12071600181173"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.0433329999999998"/>
 					<UserParam type="float" name="width_at_10" value="0.0433329999999998"/>
 					<UserParam type="float" name="width_at_50" value="0.0433329999999998"/>
+					<UserParam type="float" name="total_width" value="0.0433329999999998"/>
+					<UserParam type="float" name="tailing_factor" value="1.29996400071998"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.59992800143996"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.72871939152319"/>
+					<UserParam type="float" name="slope_of_baseline" value="-0.816687482910548"/>
+					<UserParam type="int" name="points_across_baseline" value="14"/>
+					<UserParam type="int" name="points_across_half_height" value="13"/>
+					<UserParam type="float" name="logSN" value="0.459901524375474"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="1.886667"/>
 					<UserParam type="float" name="start_position_at_5" value="1.87"/>
 					<UserParam type="float" name="start_position_at_10" value="1.87"/>
 					<UserParam type="float" name="start_position_at_50" value="1.87"/>
 					<UserParam type="float" name="end_position_at_5" value="1.913333"/>
 					<UserParam type="float" name="end_position_at_10" value="1.913333"/>
 					<UserParam type="float" name="end_position_at_50" value="1.913333"/>
-					<UserParam type="float" name="total_width" value="0.0433329999999998"/>
-					<UserParam type="float" name="tailing_factor" value="1.29996400071998"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.59992800143996"/>
-					<UserParam type="float" name="slope_of_baseline" value="-0.816687482910548"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.72871939152319"/>
-					<UserParam type="int" name="points_across_baseline" value="14"/>
-					<UserParam type="int" name="points_across_half_height" value="13"/>
-					<UserParam type="float" name="logSN" value="0.459901524375474"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="0.666666666666667"/>
-					<UserParam type="int" name="QC_transition_pass" value="0"/>
-					<UserParam type="string" name="QC_transition_message" value="metaValue[baseline_delta_2_height];metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
 					<UserParam type="float" name="calculated_concentration" value="3.72029129488567"/>
 					<UserParam type="string" name="concentration_units" value="ug/mL"/>
+					<UserParam type="int" name="QC_transition_pass" value="0"/>
+					<UserParam type="string" name="QC_transition_message" value="metaValue[baseline_delta_2_height];metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
+					<UserParam type="float" name="area_background_level" value="0.0188183558297844"/>
+					<UserParam type="float" name="noise_background_level" value="0.434273090480338"/>
 				</feature>
-				<feature id="f_3975212318519156655_17820105563489119919">
+				<feature id="f_12775868538343022003_15568741545243042793">
 					<position dim="0">1.88777617462158</position>
 					<position dim="1">0</position>
 					<intensity>0.0356422</intensity>
@@ -1133,41 +1133,43 @@
 						<pt x="1.913333" y="0.434273090480338" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="1.886667"/>
-					<UserParam type="float" name="area_background_level" value="0.0188183558297844"/>
-					<UserParam type="float" name="noise_background_level" value="0.434273090480338"/>
 					<UserParam type="string" name="native_id" value="Serotonin2"/>
 					<UserParam type="float" name="peak_apex_int" value="1.12071600181173"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.0433329999999998"/>
 					<UserParam type="float" name="width_at_10" value="0.0433329999999998"/>
 					<UserParam type="float" name="width_at_50" value="0.0433329999999998"/>
+					<UserParam type="float" name="total_width" value="0.0433329999999998"/>
+					<UserParam type="float" name="tailing_factor" value="1.29996400071998"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.59992800143996"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.72871939152319"/>
+					<UserParam type="float" name="slope_of_baseline" value="-0.816687482910548"/>
+					<UserParam type="int" name="points_across_baseline" value="14"/>
+					<UserParam type="int" name="points_across_half_height" value="13"/>
+					<UserParam type="float" name="logSN" value="0.459901524375474"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="1.886667"/>
 					<UserParam type="float" name="start_position_at_5" value="1.87"/>
 					<UserParam type="float" name="start_position_at_10" value="1.87"/>
 					<UserParam type="float" name="start_position_at_50" value="1.87"/>
 					<UserParam type="float" name="end_position_at_5" value="1.913333"/>
 					<UserParam type="float" name="end_position_at_10" value="1.913333"/>
 					<UserParam type="float" name="end_position_at_50" value="1.913333"/>
-					<UserParam type="float" name="total_width" value="0.0433329999999998"/>
-					<UserParam type="float" name="tailing_factor" value="1.29996400071998"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.59992800143996"/>
-					<UserParam type="float" name="slope_of_baseline" value="-0.816687482910548"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.72871939152319"/>
-					<UserParam type="int" name="points_across_baseline" value="14"/>
-					<UserParam type="int" name="points_across_half_height" value="13"/>
-					<UserParam type="float" name="logSN" value="0.459901524375474"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="0.666666666666667"/>
-					<UserParam type="int" name="QC_transition_pass" value="0"/>
-					<UserParam type="string" name="QC_transition_message" value="metaValue[baseline_delta_2_height];metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
 					<UserParam type="string" name="calculated_concentration" value=""/>
 					<UserParam type="string" name="concentration_units" value=""/>
+					<UserParam type="int" name="QC_transition_pass" value="0"/>
+					<UserParam type="string" name="QC_transition_message" value="metaValue[baseline_delta_2_height];metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
+					<UserParam type="float" name="area_background_level" value="0.0188183558297844"/>
+					<UserParam type="float" name="noise_background_level" value="0.434273090480338"/>
 				</feature>
 			</subordinate>
-			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
+			<UserParam type="string" name="potentialOutlier" value="none"/>
+			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 			<UserParam type="string" name="PeptideRef" value="Serotonin"/>
 			<UserParam type="float" name="leftWidth" value="1.86666703224182"/>
 			<UserParam type="float" name="rightWidth" value="1.91666698455811"/>
+			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
 			<UserParam type="float" name="peak_apices_sum" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution_weighted" value="0"/>
@@ -1184,15 +1186,13 @@
 			<UserParam type="float" name="var_log_sn_score" value="0.459901524375474"/>
 			<UserParam type="float" name="var_elution_model_fit_score" value="0.187004402279854"/>
 			<UserParam type="float" name="main_var_xx_lda_prelim_score" value="5.70026762093417"/>
-			<UserParam type="float" name="xx_lda_prelim_score" value="5.70026762093417"/>
 			<UserParam type="float" name="PrecursorMZ" value="0"/>
+			<UserParam type="float" name="xx_lda_prelim_score" value="5.70026762093417"/>
 			<UserParam type="float" name="QC_transition_group_score" value="1"/>
 			<UserParam type="int" name="QC_transition_group_pass" value="1"/>
 			<UserParam type="string" name="QC_transition_group_message" value=""/>
-			<UserParam type="string" name="potentialOutlier" value="none"/>
-			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 		</feature>
-		<feature id="f_2928969563035131211">
+		<feature id="f_9193564483756278163">
 			<position dim="0">3.87882783532715</position>
 			<position dim="1">0</position>
 			<intensity>0</intensity>
@@ -1201,7 +1201,7 @@
 			<overallquality>5.95465</overallquality>
 			<charge>0</charge>
 			<subordinate>
-				<feature id="f_2928969563035131211_5270019267726400585">
+				<feature id="f_9193564483756278163_15169271124662374355">
 					<position dim="0">3.87882783532715</position>
 					<position dim="1">0</position>
 					<intensity>0.0464289</intensity>
@@ -1231,37 +1231,37 @@
 						<pt x="3.91" y="0.168105788444332" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="3.88"/>
-					<UserParam type="float" name="area_background_level" value="0.00903811413286076"/>
-					<UserParam type="float" name="noise_background_level" value="0.150635235547679"/>
 					<UserParam type="string" name="native_id" value="Tryptamine"/>
 					<UserParam type="float" name="peak_apex_int" value="1.28434085055907"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.0600000000000001"/>
 					<UserParam type="float" name="width_at_10" value="0.0600000000000001"/>
 					<UserParam type="float" name="width_at_50" value="0.0466660000000001"/>
+					<UserParam type="float" name="total_width" value="0.0600000000000001"/>
+					<UserParam type="float" name="tailing_factor" value="1.00000000000001"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.00000000000001"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="0.013602738625847"/>
+					<UserParam type="float" name="slope_of_baseline" value="0.017470552896653"/>
+					<UserParam type="int" name="points_across_baseline" value="19"/>
+					<UserParam type="int" name="points_across_half_height" value="13"/>
+					<UserParam type="float" name="logSN" value="0.384778610313514"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="3.88"/>
 					<UserParam type="float" name="start_position_at_5" value="3.85"/>
 					<UserParam type="float" name="start_position_at_10" value="3.85"/>
 					<UserParam type="float" name="start_position_at_50" value="3.856667"/>
 					<UserParam type="float" name="end_position_at_5" value="3.91"/>
 					<UserParam type="float" name="end_position_at_10" value="3.91"/>
 					<UserParam type="float" name="end_position_at_50" value="3.903333"/>
-					<UserParam type="float" name="total_width" value="0.0600000000000001"/>
-					<UserParam type="float" name="tailing_factor" value="1.00000000000001"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.00000000000001"/>
-					<UserParam type="float" name="slope_of_baseline" value="0.017470552896653"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="0.013602738625847"/>
-					<UserParam type="int" name="points_across_baseline" value="19"/>
-					<UserParam type="int" name="points_across_half_height" value="13"/>
-					<UserParam type="float" name="logSN" value="0.384778610313514"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="0.75"/>
-					<UserParam type="int" name="QC_transition_pass" value="0"/>
-					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
 					<UserParam type="float" name="calculated_concentration" value="2.7422378109929"/>
 					<UserParam type="string" name="concentration_units" value="ug/mL"/>
+					<UserParam type="int" name="QC_transition_pass" value="0"/>
+					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
+					<UserParam type="float" name="area_background_level" value="0.00903811413286076"/>
+					<UserParam type="float" name="noise_background_level" value="0.150635235547679"/>
 				</feature>
-				<feature id="f_2928969563035131211_12940467922610998130">
+				<feature id="f_9193564483756278163_1637978229352468522">
 					<position dim="0">3.87882783532715</position>
 					<position dim="1">0</position>
 					<intensity>0.0464289</intensity>
@@ -1291,41 +1291,43 @@
 						<pt x="3.91" y="0.168105788444332" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="3.88"/>
-					<UserParam type="float" name="area_background_level" value="0.00903811413286076"/>
-					<UserParam type="float" name="noise_background_level" value="0.150635235547679"/>
 					<UserParam type="string" name="native_id" value="Tryptamine2"/>
 					<UserParam type="float" name="peak_apex_int" value="1.28434085055907"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.0600000000000001"/>
 					<UserParam type="float" name="width_at_10" value="0.0600000000000001"/>
 					<UserParam type="float" name="width_at_50" value="0.0466660000000001"/>
+					<UserParam type="float" name="total_width" value="0.0600000000000001"/>
+					<UserParam type="float" name="tailing_factor" value="1.00000000000001"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.00000000000001"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="0.013602738625847"/>
+					<UserParam type="float" name="slope_of_baseline" value="0.017470552896653"/>
+					<UserParam type="int" name="points_across_baseline" value="19"/>
+					<UserParam type="int" name="points_across_half_height" value="13"/>
+					<UserParam type="float" name="logSN" value="0.384778610313514"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="3.88"/>
 					<UserParam type="float" name="start_position_at_5" value="3.85"/>
 					<UserParam type="float" name="start_position_at_10" value="3.85"/>
 					<UserParam type="float" name="start_position_at_50" value="3.856667"/>
 					<UserParam type="float" name="end_position_at_5" value="3.91"/>
 					<UserParam type="float" name="end_position_at_10" value="3.91"/>
 					<UserParam type="float" name="end_position_at_50" value="3.903333"/>
-					<UserParam type="float" name="total_width" value="0.0600000000000001"/>
-					<UserParam type="float" name="tailing_factor" value="1.00000000000001"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.00000000000001"/>
-					<UserParam type="float" name="slope_of_baseline" value="0.017470552896653"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="0.013602738625847"/>
-					<UserParam type="int" name="points_across_baseline" value="19"/>
-					<UserParam type="int" name="points_across_half_height" value="13"/>
-					<UserParam type="float" name="logSN" value="0.384778610313514"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="0.75"/>
-					<UserParam type="int" name="QC_transition_pass" value="0"/>
-					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
 					<UserParam type="string" name="calculated_concentration" value=""/>
 					<UserParam type="string" name="concentration_units" value=""/>
+					<UserParam type="int" name="QC_transition_pass" value="0"/>
+					<UserParam type="string" name="QC_transition_message" value="metaValue[logSN];metaValue[points_across_baseline];metaValue[total_width]"/>
+					<UserParam type="float" name="area_background_level" value="0.00903811413286076"/>
+					<UserParam type="float" name="noise_background_level" value="0.150635235547679"/>
 				</feature>
 			</subordinate>
-			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
+			<UserParam type="string" name="potentialOutlier" value="Tryptamine"/>
+			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 			<UserParam type="string" name="PeptideRef" value="Tryptamine"/>
 			<UserParam type="float" name="leftWidth" value="3.84999990463257"/>
 			<UserParam type="float" name="rightWidth" value="3.91000008583069"/>
+			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
 			<UserParam type="float" name="peak_apices_sum" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution_weighted" value="0"/>
@@ -1342,15 +1344,13 @@
 			<UserParam type="float" name="var_log_sn_score" value="0.384778610313514"/>
 			<UserParam type="float" name="var_elution_model_fit_score" value="0.0206284616142511"/>
 			<UserParam type="float" name="main_var_xx_lda_prelim_score" value="5.95465270898183"/>
-			<UserParam type="float" name="xx_lda_prelim_score" value="5.95465270898183"/>
 			<UserParam type="float" name="PrecursorMZ" value="0"/>
+			<UserParam type="float" name="xx_lda_prelim_score" value="5.95465270898183"/>
 			<UserParam type="float" name="QC_transition_group_score" value="1"/>
 			<UserParam type="int" name="QC_transition_group_pass" value="1"/>
 			<UserParam type="string" name="QC_transition_group_message" value=""/>
-			<UserParam type="string" name="potentialOutlier" value="Tryptamine"/>
-			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 		</feature>
-		<feature id="f_11573842854975004856">
+		<feature id="f_16701918700092744573">
 			<position dim="0">3.42282037213135</position>
 			<position dim="1">0</position>
 			<intensity>0</intensity>
@@ -1359,7 +1359,7 @@
 			<overallquality>8.57637</overallquality>
 			<charge>0</charge>
 			<subordinate>
-				<feature id="f_11573842854975004856_10592783498068943132">
+				<feature id="f_16701918700092744573_8116120929657834660">
 					<position dim="0">3.42282037213135</position>
 					<position dim="1">0</position>
 					<intensity>7.64625</intensity>
@@ -1424,37 +1424,37 @@
 						<pt x="3.546667" y="0.182746809767683" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="3.423333"/>
-					<UserParam type="float" name="area_background_level" value="0.0322853306412272"/>
-					<UserParam type="float" name="noise_background_level" value="0.182746809767683"/>
 					<UserParam type="string" name="native_id" value="Tryptophan"/>
 					<UserParam type="float" name="peak_apex_int" value="151.943398223773"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.11"/>
 					<UserParam type="float" name="width_at_10" value="0.093334"/>
 					<UserParam type="float" name="width_at_50" value="0.0500000000000003"/>
+					<UserParam type="float" name="total_width" value="0.176667"/>
+					<UserParam type="float" name="tailing_factor" value="1.26924053261948"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.33335"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.00203209039924219"/>
+					<UserParam type="float" name="slope_of_baseline" value="-0.308762720758761"/>
+					<UserParam type="int" name="points_across_baseline" value="54"/>
+					<UserParam type="int" name="points_across_half_height" value="14"/>
+					<UserParam type="float" name="logSN" value="5.04533475047241"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="3.423333"/>
 					<UserParam type="float" name="start_position_at_5" value="3.38"/>
 					<UserParam type="float" name="start_position_at_10" value="3.383333"/>
 					<UserParam type="float" name="start_position_at_50" value="3.4"/>
 					<UserParam type="float" name="end_position_at_5" value="3.49"/>
 					<UserParam type="float" name="end_position_at_10" value="3.476667"/>
 					<UserParam type="float" name="end_position_at_50" value="3.45"/>
-					<UserParam type="float" name="total_width" value="0.176667"/>
-					<UserParam type="float" name="tailing_factor" value="1.26924053261948"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.33335"/>
-					<UserParam type="float" name="slope_of_baseline" value="-0.308762720758761"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.00203209039924219"/>
-					<UserParam type="int" name="points_across_baseline" value="54"/>
-					<UserParam type="int" name="points_across_half_height" value="14"/>
-					<UserParam type="float" name="logSN" value="5.04533475047241"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="1"/>
-					<UserParam type="int" name="QC_transition_pass" value="1"/>
-					<UserParam type="string" name="QC_transition_message" value=""/>
 					<UserParam type="float" name="calculated_concentration" value="431.080248412921"/>
 					<UserParam type="string" name="concentration_units" value="ug/mL"/>
+					<UserParam type="int" name="QC_transition_pass" value="1"/>
+					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="area_background_level" value="0.0322853306412272"/>
+					<UserParam type="float" name="noise_background_level" value="0.182746809767683"/>
 				</feature>
-				<feature id="f_11573842854975004856_9052147881420308772">
+				<feature id="f_16701918700092744573_9253574441576737331">
 					<position dim="0">3.42282037213135</position>
 					<position dim="1">0</position>
 					<intensity>7.64625</intensity>
@@ -1519,41 +1519,43 @@
 						<pt x="3.546667" y="0.182746809767683" />
 					</convexhull>
 					<UserParam type="float" name="MZ" value="0"/>
-					<UserParam type="float" name="peak_apex_position" value="3.423333"/>
-					<UserParam type="float" name="area_background_level" value="0.0322853306412272"/>
-					<UserParam type="float" name="noise_background_level" value="0.182746809767683"/>
 					<UserParam type="string" name="native_id" value="Tryptophan2"/>
 					<UserParam type="float" name="peak_apex_int" value="151.943398223773"/>
-					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="width_at_5" value="0.11"/>
 					<UserParam type="float" name="width_at_10" value="0.093334"/>
 					<UserParam type="float" name="width_at_50" value="0.0500000000000003"/>
+					<UserParam type="float" name="total_width" value="0.176667"/>
+					<UserParam type="float" name="tailing_factor" value="1.26924053261948"/>
+					<UserParam type="float" name="asymmetry_factor" value="1.33335"/>
+					<UserParam type="float" name="baseline_delta_2_height" value="-0.00203209039924219"/>
+					<UserParam type="float" name="slope_of_baseline" value="-0.308762720758761"/>
+					<UserParam type="int" name="points_across_baseline" value="54"/>
+					<UserParam type="int" name="points_across_half_height" value="14"/>
+					<UserParam type="float" name="logSN" value="5.04533475047241"/>
+					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="peak_apex_position" value="3.423333"/>
 					<UserParam type="float" name="start_position_at_5" value="3.38"/>
 					<UserParam type="float" name="start_position_at_10" value="3.383333"/>
 					<UserParam type="float" name="start_position_at_50" value="3.4"/>
 					<UserParam type="float" name="end_position_at_5" value="3.49"/>
 					<UserParam type="float" name="end_position_at_10" value="3.476667"/>
 					<UserParam type="float" name="end_position_at_50" value="3.45"/>
-					<UserParam type="float" name="total_width" value="0.176667"/>
-					<UserParam type="float" name="tailing_factor" value="1.26924053261948"/>
-					<UserParam type="float" name="asymmetry_factor" value="1.33335"/>
-					<UserParam type="float" name="slope_of_baseline" value="-0.308762720758761"/>
-					<UserParam type="float" name="baseline_delta_2_height" value="-0.00203209039924219"/>
-					<UserParam type="int" name="points_across_baseline" value="54"/>
-					<UserParam type="int" name="points_across_half_height" value="14"/>
-					<UserParam type="float" name="logSN" value="5.04533475047241"/>
-					<UserParam type="string" name="FeatureLevel" value="MS2"/>
+					<UserParam type="float" name="total_xic" value="4802.98419299998"/>
 					<UserParam type="float" name="QC_transition_score" value="1"/>
-					<UserParam type="int" name="QC_transition_pass" value="1"/>
-					<UserParam type="string" name="QC_transition_message" value=""/>
 					<UserParam type="string" name="calculated_concentration" value=""/>
 					<UserParam type="string" name="concentration_units" value=""/>
+					<UserParam type="int" name="QC_transition_pass" value="1"/>
+					<UserParam type="string" name="QC_transition_message" value=""/>
+					<UserParam type="float" name="area_background_level" value="0.0322853306412272"/>
+					<UserParam type="float" name="noise_background_level" value="0.182746809767683"/>
 				</feature>
 			</subordinate>
-			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
+			<UserParam type="string" name="potentialOutlier" value="Tryptophan"/>
+			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 			<UserParam type="string" name="PeptideRef" value="Tryptophan"/>
 			<UserParam type="float" name="leftWidth" value="3.36999988555908"/>
 			<UserParam type="float" name="rightWidth" value="3.54999995231628"/>
+			<UserParam type="float" name="total_xic" value="9605.96838600002"/>
 			<UserParam type="float" name="peak_apices_sum" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution" value="0"/>
 			<UserParam type="float" name="var_xcorr_coelution_weighted" value="0"/>
@@ -1570,13 +1572,11 @@
 			<UserParam type="float" name="var_log_sn_score" value="5.04533475047241"/>
 			<UserParam type="float" name="var_elution_model_fit_score" value="0.437227934598923"/>
 			<UserParam type="float" name="main_var_xx_lda_prelim_score" value="8.57637449411794"/>
-			<UserParam type="float" name="xx_lda_prelim_score" value="8.57637449411794"/>
 			<UserParam type="float" name="PrecursorMZ" value="0"/>
+			<UserParam type="float" name="xx_lda_prelim_score" value="8.57637449411794"/>
 			<UserParam type="float" name="QC_transition_group_score" value="1"/>
 			<UserParam type="int" name="QC_transition_group_pass" value="1"/>
 			<UserParam type="string" name="QC_transition_group_message" value=""/>
-			<UserParam type="string" name="potentialOutlier" value="Tryptophan"/>
-			<UserParam type="float" name="initialPeakQuality" value="1.25"/>
 		</feature>
 	</featureList>
 </featureMap>
