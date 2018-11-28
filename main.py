@@ -36,7 +36,7 @@ raw_data_processing_methods = [
     "clear_feature_history",
     "load_features",
     "save_features",
-    "filter_features",
+    # "filter_features",
     "select_features",
     "annotate_used_features",
     "store_features",
@@ -50,7 +50,7 @@ sequenceProcessor.processSequence(
 raw_data_processing_methods = [
     "load_raw_data",
     "load_features",
-    # "plot_features"
+    "plot_features"
 ]
 sequenceProcessor.processSequence(
     sequenceHandler,
@@ -79,3 +79,14 @@ sequenceWriter.write_dataTableFromMetaValue(
         "QC_transition_group_message", "QC_transition_group_score"],
     sample_types=['Unknown']
 )
+
+# # 3. report and plot only
+# raw_data_processing_methods = [
+#     "load_raw_data",
+#     "load_features",
+#     "plot_features"
+# ]
+# sequenceProcessor.processSequence(
+#     sequenceHandler,
+#     raw_data_processing_methods_I=raw_data_processing_methods,
+#     verbose_I=True)
